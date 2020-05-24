@@ -1,0 +1,36 @@
+@use 'styles/mixins/transition';
+@use 'styles/variables/time';
+@use 'styles/variables/colors';
+@use 'styles/variables/elevation';
+
+$transition-duration: time.$route-transition-duration * 0.75;
+$transition-class-name: route-loading;
+
+:export {
+  transitionDuration: $transition-duration;
+  transitionClassName: $transition-class-name;
+}
+
+.RouteLoading {
+  background: colors.$background;
+  justify-content: center;
+  align-items: center;
+  position: absolute 0;
+  transition: opacity $transition-duration
+    (time.$route-transition-duration - $transition-duration);
+  z-index: elevation.$route-loading;
+  display: flex;
+
+  @include transition.self($transition-class-name, (from)) {
+    opacity: 0;
+  }
+  @include transition.self($transition-class-name, (to, exit)) {
+    opacity: 1;
+  }
+  @include transition.self($transition-class-name, (exit-active)) {
+    opacity: 0;
+  }
+  @include transition.self($transition-class-name, (exit-done)) {
+    display: none;
+  }
+}

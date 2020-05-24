@@ -1,0 +1,44 @@
+@use 'styles/mixins/transition';
+@use 'styles/variables/colors';
+
+$transition-duration: 500ms;
+$transition-class-name: error-message;
+
+:export {
+  timeout: $transition-duration;
+  className: $transition-class-name;
+}
+
+.Container {
+  overflow-y: hidden;
+  position: relative;
+  width: 100%;
+  height: 0;
+  transition: height $transition-duration;
+
+  &.Active {
+    height: 1.1em;
+  }
+}
+
+.ErrorMessage {
+  color: colors.$warning;
+  font-weight: bold;
+
+  @include transition.self($transition-class-name, (enter)) {
+    transform: translateY(-2rem);
+  }
+  @include transition.self($transition-class-name, (enter-active)) {
+    transform: translate(0);
+    transition: transform $transition-duration;
+  }
+  @include transition.self($transition-class-name, (exit)) {
+    transform: translate(0);
+    position: absolute 0 * * 0;
+  }
+  @include transition.self($transition-class-name, (exit-active)) {
+    transform: translateY(-2rem);
+    position: absolute 0 * * 0;
+    transition: transform $transition-duration;
+  }
+}

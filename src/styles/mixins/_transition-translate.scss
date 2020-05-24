@@ -1,0 +1,29 @@
+@use 'styles/mixins/route-transition';
+@use 'styles/variables/time';
+
+@mixin dir($x, $y: 0) {
+  @include route-transition.descendant(enter-from, exit-from) {
+    transition: transform time.$route-transition-duration !important;
+  }
+  @include route-transition.descendant(enter) {
+    transform: translate($x, $y);
+  }
+  @include route-transition.descendant(enter-active, exit) {
+    transform: translateY(0);
+  }
+  @include route-transition.descendant(exit-active) {
+    transform: translate($x, $y);
+  }
+}
+@mixin up {
+  @include dir(0, -100vh);
+}
+@mixin down {
+  @include dir(0, 100vh);
+}
+@mixin right {
+  @include dir(100vw);
+}
+@mixin left {
+  @include dir(-100vw);
+}

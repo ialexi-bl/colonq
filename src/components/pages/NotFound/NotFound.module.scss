@@ -1,0 +1,62 @@
+@use 'styles/variables/time';
+@use 'styles/mixins/route-transition';
+
+.Container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 0 1rem;
+}
+.Title {
+  text-align: center;
+  transition: transform time.$route-transition-duration;
+
+  @include route-transition.descendant(enter) {
+    transform: translate(-100vh);
+  }
+  @include route-transition.descendant(enter-active, exit) {
+    transform: translate(0);
+  }
+  @include route-transition.descendant(exit-active) {
+    transform: translate(-100vh);
+  }
+}
+.Status {
+  display: flex;
+}
+.Colon {
+  width: 2rem;
+
+  path {
+    stroke-dasharray: 6.28;
+    transition: time.$route-transition-duration;
+
+    @include route-transition.descendant(enter) {
+      stroke-dashoffset: 6.4;
+      opacity: 0;
+    }
+    @include route-transition.descendant(enter-active, exit) {
+      opacity: 1;
+      stroke-dashoffset: 0;
+    }
+    @include route-transition.descendant(exit-active) {
+      opacity: 0;
+      stroke-dashoffset: 6.4;
+    }
+  }
+}
+.Code {
+  font-size: 5rem;
+  transition: transform time.$route-transition-duration;
+
+  @include route-transition.descendant(enter) {
+    transform: translate(100vh);
+  }
+  @include route-transition.descendant(enter-active, exit) {
+    transform: translate(0);
+  }
+  @include route-transition.descendant(exit-active) {
+    transform: translate(100vh);
+  }
+}

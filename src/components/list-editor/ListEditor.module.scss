@@ -1,0 +1,33 @@
+@use 'styles/variables/dims';
+@use 'styles/variables/colors';
+@use 'styles/mixins/text-contour';
+@use 'styles/mixins/touch-bg';
+
+$height: dims.$base;
+$error-height: $height + 1.5rem;
+$margin: 5px;
+$transition-duration: 500ms;
+
+:export {
+  height: $height;
+  heightError: $error-height;
+  marginBottom: $margin;
+  timeout: $transition-duration;
+}
+
+.Search {
+  margin-bottom: 1rem;
+  padding: 1rem;
+}
+.Root,
+.Item {
+  transition: height 500ms;
+  overflow: hidden;
+  position: relative;
+}
+.ItemExiting {
+  color: inherit;
+}
+.Absolute {
+  position: absolute 0 0 *;
+}

@@ -1,0 +1,62 @@
+@use 'styles/mixins/transition';
+
+$transition-duration: 500ms;
+$margin: 0.5rem;
+
+:export {
+  transitionDuration: $transition-duration;
+  margin: $margin;
+}
+
+@keyframes word-appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.Set,
+.Word {
+  transition: transform $transition-duration;
+  margin-bottom: $margin;
+  position: absolute 0 0 *;
+}
+.EditorContainer {
+  position: relative !important;
+
+  .Word {
+    margin-left: 2rem;
+    overflow: hidden;
+
+    &.Appearing {
+      animation: word-appear $transition-duration both;
+    }
+    &.Disappearing {
+      animation: word-appear $transition-duration both;
+      animation-direction: reverse;
+    }
+  }
+}
+.Container {
+  overflow: hidden;
+  transition: height $transition-duration;
+}
+.Content {
+  align-items: center;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  // transition: transform $delete-transition-timeout;
+}
+.Search {
+  margin-bottom: 2rem;
+}
+.Label {
+  width: 100%;
+  height: 100%;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+}

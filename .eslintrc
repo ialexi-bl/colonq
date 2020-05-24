@@ -1,0 +1,37 @@
+{
+  "extends": ["react-app", "standard", "prettier"],
+  "plugins": ["sort-imports-es6-autofix", "@typescript-eslint", "react-hooks"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "project": "./tsconfig.json"
+  },
+  "root": true,
+  "env": {
+    "es6": true
+  },
+  "rules": {
+    "no-unused-expressions": "off",
+    "no-debugger": "warn",
+    "no-unused-vars": "warn",
+    "no-useless-constructor": "off",
+    "no-dupe-class-members": "off",
+    "spaced-comment": "warn",
+    "react-hooks/exhaustive-deps": "error",
+    "sort-imports-es6-autofix/sort-imports-es6": ["warn"],
+    "@typescript-eslint/no-useless-constructor": "error",
+    "@typescript-eslint/no-unused-expressions": [
+      "error",
+      {
+        "allowShortCircuit": true,
+        "allowTernary": true
+      }
+    ],
+    "react/jsx-curly-brace-presence": [
+      "warn",
+      {
+        "props": "always"
+      }
+    ]
+  }
+}

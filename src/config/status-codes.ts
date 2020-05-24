@@ -1,0 +1,17 @@
+export enum StatusCode {
+  OK = 'ok',
+  UPDATED = 'updated',
+  OUTDATED = 'outdated',
+  NO_EMAIL = 'no-email',
+  TOO_LONG = 'too-long',
+  DUPLICATE = 'duplicate',
+  VERIFICATION = 'verifying',
+  NOT_MODIFIED = 'not-modified',
+  INVALID_DATA = 'data-invalid',
+  MISSING_SCOPE = 'missing-scope',
+  INVALID_TOKEN = 'token-invalid',
+  EXPIRED_TOKEN = 'token-expired',
+  UNAUTHENTICATED = 'unauthenticated',
+  TOO_MANY_REQUESTS = 'too-many-requests',
+  MISSING_PARAMETER = 'missing-parameter',
+}

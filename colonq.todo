@@ -1,0 +1,8 @@
+Client:
+  ☐ Get rid of ripples
+
+Server:
+  ✔ Sort accents @done(20-04-30 16:11)
+  ✔ Add double letters in brackets for words with ambiguous answer @done(20-05-09 23:01)
+  ✔ Add check that there aren't too many words to set @done(20-05-09 23:01)
+  ☐ Add timeout check for mongodb

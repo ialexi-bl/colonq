@@ -1,0 +1,25 @@
+@use 'styles/mixins/touch-bg';
+@use 'styles/mixins/transition-translate';
+@use 'styles/variables/colors';
+@use 'styles/variables/dims';
+
+.ChoiceButton {
+  @include touch-bg.disable;
+  background: colors.$accent-darker;
+  border-radius: dims.$border-radius;
+  transition: background 300ms;
+
+  &:active,
+  &:hover,
+  &:focus {
+    outline: none;
+    background: darken(colors.$accent, 10%);
+  }
+
+  &.Correct {
+    background: colors.$accept !important;
+  }
+  &.Incorrect {
+    background: colors.$deny !important;
+  }
+}

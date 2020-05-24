@@ -1,0 +1,56 @@
+@use 'styles/variables/dims';
+@use 'styles/variables/colors';
+
+@mixin active-button($color) {
+  background: $color !important;
+  box-shadow: 0 0 $color;
+
+  &:hover {
+    background: darken($color, 2%);
+  }
+  &:focus,
+  &:active {
+    background: darken($color, 4%);
+    box-shadow: 0 0 0 3px transparentize($color, 0.3);
+  }
+}
+
+.CleanButton {
+  background: none;
+  color: inherit;
+  border: none;
+  font: inherit;
+  cursor: pointer;
+
+  &::-moz-focus-inner {
+    border: 0;
+  }
+  &:focus {
+    outline: none;
+  }
+  &:active {
+    outline: none;
+  }
+}
+
+.Button {
+  border-radius: dims.$border-radius;
+  padding: 0.6rem 1rem;
+  transition: 150ms;
+  font-size: 1.2rem;
+  transition: 200ms;
+
+  &.primary {
+    @include active-button(colors.$accent-darker);
+  }
+  &.neutral {
+    @include active-button(colors.$primary-lighter);
+  }
+  &.deny {
+    @include active-button(colors.$deny);
+  }
+  &.disabled {
+    $color: #787181;
+    background: $color;
+  }
+}

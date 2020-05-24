@@ -1,0 +1,13 @@
+@use 'styles/mixins/media';
+
+h2.Subtitle {
+  margin-bottom: 1.3em;
+  color: #ddd;
+  font-weight: normal;
+  text-align: center;
+
+  font-size: 1.4rem !important;
+  @include media.md {
+    font-size: 1.8rem !important;
+  }
+}

@@ -1,0 +1,49 @@
+@keyframes ellipse {
+  from {
+    stroke-dashoffset: 40;
+  }
+  to {
+    stroke-dashoffset: 1190;
+  }
+}
+@keyframes circle {
+  from {
+    stroke-dasharray: 130 0;
+    stroke-dashoffset: -150;
+  }
+  50% {
+    stroke-dasharray: 125 30;
+    stroke-dashoffset: -75;
+  }
+  to {
+    stroke-dasharray: 130 0;
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes path {
+  from {
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dashoffset: 100;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.logoQBody {
+  stroke-dasharray: 1000, 150;
+  animation: ellipse 2s cubic-bezier(0.5, 0.17, 0.5, 0.83) infinite;
+}
+.logoDot1 {
+  stroke-dasharray: 125 25;
+  animation: circle 2s linear infinite;
+}
+.logoDot2 {
+  stroke-dasharray: 125 25;
+  animation: circle 2s 0.2s linear infinite;
+}
+.logoQTail {
+  stroke-dasharray: 456;
+  animation: path 2s ease-in-out infinite;
+}

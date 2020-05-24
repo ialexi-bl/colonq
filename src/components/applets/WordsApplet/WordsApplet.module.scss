@@ -1,0 +1,39 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/dims';
+
+$color: transparentize(colors.$action, 0.8);
+$color-hover: transparentize(colors.$action, 0.5);
+$color-focus: darken($color, 20%);
+
+.Container {
+  height: 100%;
+  overflow: hidden;
+  padding-bottom: 5%;
+}
+.WordsContainer {
+  width: 100%;
+}
+.Hide {
+  $color: transparentize(colors.$action, 0.8);
+  $color-hover: transparentize(colors.$action, 0.5);
+  $color-focus: darken($color, 20%);
+
+  border-radius: dims.$border-radius;
+  transition: color 100ms;
+  position: absolute;
+  bottom: 20%;
+  color: $color;
+  size: 3rem;
+
+  &:hover {
+    color: $color-hover;
+  }
+  &:active,
+  &:focus {
+    color: $color-focus;
+  }
+}
+.CorrectLetter {
+  font-weight: normal;
+  text-decoration: underline;
+}

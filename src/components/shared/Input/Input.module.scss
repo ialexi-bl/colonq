@@ -1,0 +1,51 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/dims';
+
+$border: colors.$accent;
+$error: colors.$warning;
+
+.Input {
+  color: inherit;
+  width: 100%;
+  font-size: inherit;
+  padding: 0.5rem 0.8rem;
+  background: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: 0 0 0 0 $border, inset 0 -3px $border;
+  transition: 150ms ease-in-out;
+  transition-property: box-shadow, border-radius;
+
+  &:-ms-placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+  }
+  &::-ms-placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  &:-moz-placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  &::-moz-placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  &::-webkit-placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  &.Invalid {
+    box-shadow: 0 0 0 0 $error, inset 0 -3px $error;
+
+    &:focus {
+      box-shadow: 0 0 0 3px $error, inset 0 0 $error;
+    }
+  }
+
+  &:focus {
+    outline: none;
+    border-radius: dims.$border-radius;
+    box-shadow: 0 0 0 3px $border, inset 0 0 $border;
+  }
+}

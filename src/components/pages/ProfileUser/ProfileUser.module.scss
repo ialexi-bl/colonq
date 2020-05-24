@@ -1,0 +1,68 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/time';
+@use 'styles/mixins/route-transition';
+
+.Container {
+  flex-direction: column;
+  padding: 2rem 0;
+  display: flex;
+}
+.LinkAccount {
+  max-width: 20rem;
+}
+.Title {
+  padding: 0 2rem;
+}
+.Box {
+  padding: 1rem 2rem;
+  box-shadow: 0 1px 8px colors.$shadow;
+  background: colors.$primary-lighter;
+  margin-bottom: 1rem;
+}
+.InfoBox {
+  font-size: 1.4rem;
+  margin-bottom: 2rem;
+}
+
+.QuitButton {
+  margin: auto 2rem 0;
+  align-self: flex-start;
+
+  // @include route-transition.descendant(enter) {
+  //   transform: translateY(50vh);
+  // }
+  // @include route-transition.descendant(enter-active, exit) {
+  //   transform: translateY(0);
+  //   transition: transform time.$route-transition-duration;
+  // }
+  // @include route-transition.descendant(exit-active) {
+  //   transform: translateY(50vh);
+  //   transition: transform time.$route-transition-duration;
+  // }
+}
+.InfoBox {
+  // transition: transform time.$route-transition-duration;
+
+  // @include route-transition.descendant(enter) {
+  //   transform: translate(-100vw);
+  // }
+  // @include route-transition.descendant(enter-active, exit) {
+  //   transform: translate(0);
+  // }
+  // @include route-transition.descendant(exit-active) {
+  //   transform: translate(-100vw);
+  // }
+}
+.LinkBox {
+  // transition: transform time.$route-transition-duration;
+
+  // @include route-transition.descendant(enter) {
+  //   transform: translate(100vw);
+  // }
+  // @include route-transition.descendant(enter-active, exit) {
+  //   transform: translate(0);
+  // }
+  // @include route-transition.descendant(exit-active) {
+  //   transform: translate(100vw);
+  // }
+}

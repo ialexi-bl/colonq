@@ -1,0 +1,25 @@
+$text: #f3f2ff;
+$shadow: rgba(0, 0, 0, 0.2);
+$hover: rgba(0, 0, 0, 0.1);
+$focus-overflow: rgba(0, 0, 0, 0.17);
+$deny: #e25141;
+$accept: #2fc05f;
+$error: #f44336;
+$warning: #ff4444;
+$error-dark: #b71c1c;
+
+$primary: #151529;
+$primary-shaded: darken($primary, 1%);
+$primary-lighter: lighten($primary, 5%);
+$accent: #8f5bb8;
+$accent-darker: indigo;
+
+$background: $primary;
+$sidebar: $primary-shaded;
+$action: #d0d0d0;
+$hover: #eaeaea;
+$focus: #777;
+
+$layer-1: red;
+$layer-2: red;
+$navigation: red;

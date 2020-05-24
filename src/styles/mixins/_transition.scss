@@ -1,0 +1,22 @@
+@use './transition-controls' as transition;
+
+@mixin self($prefix, $states) {
+  $selector: transition.create-selectors(
+    $prefix,
+    transition.get-states($states),
+    false
+  );
+  #{$selector} {
+    @content;
+  }
+}
+@mixin descendant($prefix, $states) {
+  $selector: transition.create-selectors(
+    $prefix,
+    transition.get-states($states),
+    true
+  );
+  #{$selector} {
+    @content;
+  }
+}

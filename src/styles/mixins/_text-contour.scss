@@ -1,0 +1,6 @@
+@mixin apply($thickness, $color) {
+  text-shadow: $thickness $thickness $color, (-$thickness) (-$thickness) $color,
+    (-$thickness) $thickness $color, $thickness (-$thickness) $color,
+    0 $thickness $color, 0 (-$thickness) $color, $thickness 0 $color,
+    (-$thickness) 0 $color;
+}

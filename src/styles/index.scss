@@ -1,0 +1,61 @@
+@use './mixins/touch-bg';
+@use './mixins/center-content';
+@use './mixins/media';
+@use './variables/colors';
+@use './variables/dims';
+
+#root {
+  overflow: hidden;
+  position: relative;
+  size: 100%;
+
+  padding-bottom: dims.$sidebar-size;
+
+  @include media.md {
+    padding-bottom: 0;
+    padding-top: dims.$sidebar-size;
+  }
+
+  &.no-padding {
+    padding: 0 !important;
+  }
+}
+#app {
+  position: relative;
+  size: 100%;
+}
+
+.scroll-thumb {
+  $bg: rgba(255, 255, 255, 0.1);
+  background: $bg;
+  transition: background-color 100ms;
+  border-radius: 4px;
+  width: 8px !important;
+
+  &:hover {
+    background-color: transparentize($color: $bg, $amount: 0.01);
+  }
+  &:active {
+    background-color: transparentize($color: $bg, $amount: 0.03);
+  }
+}
+.scroll-track {
+  width: 10px !important;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+
+button,
+textarea,
+input,
+select,
+svg,
+a {
+  @include touch-bg.disable;
+}
+
+p {
+  font-size: 1.2rem;
+  margin-bottom: 1.2rem;
+}

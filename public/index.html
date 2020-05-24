@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <title>Тренажёры для укрепления знаний - ColonQ</title>
+
+    <meta name="theme-color" content="#151529" />
+    <meta name="color-scheme" content="only" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
+    <meta
+      name="description"
+      content="Отточи свои знания с помощью удобных тренажёров."
+    />
+
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="stylesheet" href="%PUBLIC_URL%/index.css" />
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-166092289-1"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || []
+      function gtag() {
+        dataLayer.push(arguments)
+      }
+      gtag('js', new Date())
+
+      gtag('config', '%REACT_APP_GA_ID%')
+    </script>
+
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+      ;(function (m, e, t, r, i, k, a) {
+        m[i] =
+          m[i] ||
+          function () {
+            ;(m[i].a = m[i].a || []).push(arguments)
+          }
+        m[i].l = 1 * new Date()
+        ;(k = e.createElement(t)),
+          (a = e.getElementsByTagName(t)[0]),
+          (k.async = 1),
+          (k.src = r),
+          a.parentNode.insertBefore(k, a)
+      })(
+        window,
+        document,
+        'script',
+        'https://mc.yandex.ru/metrika/tag.js',
+        'ym',
+      )
+
+      var ymId = '%REACT_APP_YM_ID%'
+      ym(+ymId, 'init', {
+        clickmap: true,
+        trackLinks: true,
+        accurateTrackBounce: true,
+        webvisor: true,
+        trackHash: true,
+      })
+    </script>
+    <noscript
+      ><div>
+        <img
+          src="https://mc.yandex.ru/watch/62871469"
+          style="position: absolute; left: -9999px;"
+          alt=""
+        /></div
+    ></noscript>
+
+    <script>
+      window.onerror = function (str, url, line, col, e) {
+        try {
+          if (
+            document.getElementById('error-message') ||
+            document.getElementById('root').childNodes.length > 0
+          ) {
+            return
+          }
+
+          var template = document.getElementById('js-disabled')
+          var div = document.createElement('div')
+          div.id = 'error-message'
+          div.className = 'full-height'
+          div.innerHTML = template.innerText
+
+          document.body.appendChild(div)
+          document.body.className += ' no-padding'
+
+          var subtitle = document.getElementById('subtitle')
+          var message = 'Произошла ошибка, которую не удалось обработать. '
+          if (!window.TREE_MOUNTED) {
+            message +=
+              'Это может быть связано с тем, что ты используешь устаревший браузер, <a href="https://browser-update.org/ru/update-browser.html">проверить это можно здесь</a>. '
+          }
+          message +=
+            'Отчёт уже отправлен, попробуй перезагрузить страницу или зайти позже.'
+          subtitle.innerHTML = message
+        } catch (e) {}
+
+        try {
+          var xhr = new XMLHttpRequest()
+          xhr.open('POST', '%REACT_APP_API_URL%/log/error')
+          // prettier-ignore
+          xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8')
+          // prettier-ignore
+          xhr.send(
+          // prettier-ignore
+            JSON.stringify({
+              type: 'unhandled',
+              message: str,
+              stack: e && e.stack,
+              name: e && e.name,
+              file: url,
+              line: line,
+              col: col
+            })
+          )
+        } catch (e) {}
+      }
+    </script>
+    <!-- Polyfills -->
+    <script src="https://unpkg.com/event-target@latest/min.js"></script>
+  </head>
+  <body>
+    <noscript id="js-disabled">
+      <div class="warning full-height">
+        <div class="line">
+          <h1 class="title">
+            <div>C</div>
+            <div>O</div>
+            <div>L</div>
+            <div>O</div>
+            <div>N</div>
+            <div>Q</div>
+          </h1>
+          <p id="subtitle" class="subtitle">
+            Этот сайт не работает с выключенным JavaScript
+          </p>
+        </div>
+      </div>
+    </noscript>
+    <div id="root"></div>
+  </body>
+</html>

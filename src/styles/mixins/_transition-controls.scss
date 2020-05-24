@@ -1,0 +1,103 @@
+@use 'sass:string';
+@use 'sass:list';
+@use 'sass:map';
+
+$availableStates: (
+  'exit': (
+    'exit',
+  ),
+  'exit-active': (
+    'exit-active',
+  ),
+  'exit-done': (
+    'exit-done',
+  ),
+  'enter': (
+    'enter',
+  ),
+  'enter-active': (
+    'enter-active',
+  ),
+  'enter-done': (
+    'enter-done',
+  ),
+  'appear': (
+    'appear',
+  ),
+  'appear-active': (
+    'appear-active',
+  ),
+  'appear-done': (
+    'appear-done',
+  ),
+  'exit-to': (
+    'exit-active',
+    'exit-done',
+  ),
+  'enter-to': (
+    'enter-active',
+    'enter-done',
+  ),
+  'appear-to': (
+    'appear-active',
+    'appear-done',
+  ),
+  'enter-from': (
+    'enter',
+    'enter-active',
+  ),
+  'appear-from': (
+    'appear',
+    'appear-active',
+  ),
+  'exit-from': (
+    'exit',
+    'exit-active',
+  ),
+  'from': (
+    'enter',
+    'appear',
+  ),
+  'active': (
+    'enter-active',
+    'appear-active',
+  ),
+  'done': (
+    'enter-done',
+    'appear-done',
+  ),
+  'to': (
+    'enter-active',
+    'appear-active',
+    'enter-done',
+    'appear-done',
+  ),
+);
+
+@function get-states($states) {
+  $res: ();
+  @each $state in $states {
+    $values: map.get($availableStates, $state);
+    @if $values {
+      @each $value in $values {
+        $res: list.append($res, $value);
+      }
+    }
+  }
+  @return $res;
+}
+
+@function create-selectors($prefix, $values, $nested: false) {
+  $res: '';
+  @each $value in $values {
+    $res: $res + ', ';
+    @if $nested == false {
+      $res: $res + '&';
+    }
+    $res: $res + ':global(.' + $prefix + '-' + $value + ')';
+    @if $nested {
+      $res: $res + ' &';
+    }
+  }
+  @return string.slice($res, 2);
+}
