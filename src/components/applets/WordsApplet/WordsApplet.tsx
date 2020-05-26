@@ -35,6 +35,7 @@ export function createWordsApplet({
     const dispatchGlobally = useDispatch()
     const { dispatch } = useUpdateAppData(manager)
     const { loading, words, next } = useWords(manager, () => {
+      // console.log('loaded')
       dispatchGlobally(hideLoading(APPLET_LOADING))
     })
 
@@ -45,7 +46,7 @@ export function createWordsApplet({
     return (
       <div className={cn(cssUtil.centered, styles.Container)}>
         <Settings />
-        <div className={cn(cssUtil.routeTransitionDown, styles.WordsContainer)}>
+        <div className={cn(cssUtil.routeTransitionUp, styles.WordsContainer)}>
           {words.current === null ? (
             <NoWords />
           ) : (

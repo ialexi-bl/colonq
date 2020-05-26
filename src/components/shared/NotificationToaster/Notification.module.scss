@@ -12,16 +12,17 @@
   box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.4);
   background: colors.$accent-darker;
   align-items: center;
+  line-height: 120%;
 
   @include transition.self(notification, (exit, enter-to, appear-to)) {
     transform: translate(0, 0);
   }
   @include transition.self(notification, (exit-to, from)) {
-    transform: translate(0, 100%);
+    transform: translate(0, -100%);
   }
   @include media.md {
     @include transition.self(notification, (exit-to, from)) {
-      transform: translate(0, -100%);
+      transform: translate(0, 100%);
     }
   }
   @include transition.self(notification, (to, exit-to)) {

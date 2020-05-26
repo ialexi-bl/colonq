@@ -1,6 +1,17 @@
 @use 'styles/mixins/route-transition';
 @use 'styles/variables/time';
 
+@mixin dir-anim($name, $x, $y: 0) {
+  @keyframes anim-#{$name} {
+    from {
+      transform: translate($x, $y);
+    }
+    to {
+      transform: translate(0, 0);
+    }
+  }
+}
+
 @mixin dir($x, $y: 0) {
   @include route-transition.descendant(enter-from, exit-from) {
     transition: transform time.$route-transition-duration !important;

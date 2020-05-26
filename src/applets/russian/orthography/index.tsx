@@ -8,10 +8,10 @@ const options: ChoiceOptions = [
   [['а', 'о'], /\[[оа]\]/i],
   [['з', 'с'], /\[[зс]\]/i],
   [['д', 'т'], /\[[дт]\]/i],
-  [['я', 'е', 'иdex'], /\[[я]\]/i],
+  [['я', 'е'], /\[[я]\]/i],
 ]
 
 export default createWordsApplet({
   manager: new WordsManager('/russian/orthography'),
-  word: getChoiceWord(options, /^(.*?)\[(.{1,2})\](.*)$/),
+  word: getChoiceWord(options, /^(.*?)\[(.{1,3})\](.*)$/),
 })

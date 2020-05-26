@@ -1,13 +1,17 @@
+import { WordEditor } from './WordEditor'
 import {
-  Word,
   WordsAppDataDispatch,
   WordsData,
 } from 'services/app-data/WordsAppData.types'
-import { WordEditor } from './WordEditor'
 import Fuse from 'fuse.js'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import flatMap from 'lodash/flatMap'
 
+export type SearchWord = {
+  label: string
+  index: number
+  setIndex: number
+}
 export type WordsSearchProps = {
   data: WordsData
   value: string
@@ -23,7 +27,7 @@ export function WordsSearch({
   persist,
   dispatch,
 }: WordsSearchProps) {
-  const fuse = useMemo<Fuse<Word, any>>(() => {
+  const fuse = useMemo<Fuse<SearchWord, any>>(() => {
     // NOTE: later persist can be used to store fuse index
     // when modifying items ability is added
 
@@ -31,7 +35,13 @@ export function WordsSearch({
       return persist.current.fuse
     }
 
-    const list = flatMap(data.sets, (x) => x.words)
+    const list = flatMap(data.sets, (x, s) =>
+      x.words.map((word, w) => ({
+        label: word.label,
+        index: w,
+        setIndex: s,
+      })),
+    )
     return (persist.current.fuse = new Fuse(list, {
       keys: ['label'],
       threshold: 0.4,
@@ -40,12 +50,12 @@ export function WordsSearch({
 
   const term = useDebounce(value, 100)
   const render = useCallback(
-    (results: Fuse.FuseResult<Word>[]) => (
+    (results: Fuse.FuseResult<SearchWord>[]) => (
       <>
         {results.map(({ item, refIndex }) => (
           <WordEditor
-            key={`${item.setId}-${item.id}`}
-            word={item}
+            key={`${item.setIndex}-${item.index}`}
+            word={data.sets[item.setIndex].words[item.index]}
             dispatch={dispatch}
             {...getIndexes(data, refIndex)}
           />

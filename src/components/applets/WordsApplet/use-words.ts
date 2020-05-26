@@ -115,7 +115,7 @@ export function useWords(manager: WordsManager, onLoad?: () => unknown) {
         setWords({
           current: word
             ? {
-                id: `${word.setId}-${word.id}`,
+                id: `${word.setId}-${word.id}-${Math.random()}`,
                 data: word,
               }
             : null,

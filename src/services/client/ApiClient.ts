@@ -1,5 +1,10 @@
 import { Endpoints } from 'config/endpoints'
-import { HTTPError, NetworkError, UnknownError } from 'services/errors'
+import {
+  HTTPError,
+  NetworkError,
+  NoStorageError,
+  UnknownError,
+} from 'services/errors'
 import { REACT_APP_YM_ID } from 'config'
 import { ServerResponse } from 'response-types'
 import { sendRequestErrorLog } from 'services/errors/handle-request-error'
@@ -61,16 +66,30 @@ class Client extends EventTarget {
   private _check: string | null = null
 
   public get check() {
-    return (
-      this._check || (this._check = localStorage.getItem(CHECK_KEY) || null)
-    )
+    if (this._check) {
+      return this._check
+    }
+
+    try {
+      this._check = localStorage.getItem(CHECK_KEY) || null
+      return this._check
+    } catch (e) {
+      throw new NoStorageError()
+    }
   }
 
   public set check(check: string | null) {
     this._check = check
 
-    if (check) localStorage.setItem(CHECK_KEY, check)
-    else localStorage.removeItem(CHECK_KEY)
+    try {
+      if (check) {
+        localStorage.setItem(CHECK_KEY, check)
+      } else {
+        localStorage.removeItem(CHECK_KEY)
+      }
+    } catch (e) {
+      throw new NoStorageError()
+    }
   }
 
   private static base64decode(token: string) {
@@ -167,7 +186,7 @@ class Client extends EventTarget {
         id,
       }
 
-      gtag('set', { user_id: id })
+      gtag('config', process.env.REACT_APP_GA_ID!, { user_id: id })
       ym(REACT_APP_YM_ID, 'setUserID', id)
 
       this.dispatchEvent(

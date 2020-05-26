@@ -12,9 +12,6 @@ $background: colors.$primary;
   settingsTransitionClassName: settings-container;
 }
 
-.OpenButton {
-  @include transition-translate.dir(100%);
-}
 .OpenButton,
 .CloseButton {
   position: absolute;

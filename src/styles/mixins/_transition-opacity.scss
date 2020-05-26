@@ -1,6 +1,24 @@
 @use 'styles/mixins/route-transition';
 @use 'styles/variables/time';
 
+@mixin opacity-anim($name) {
+  @keyframes anim-#{$name} {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+@mixin bg-opacity-anim($name) {
+  @keyframes anim-#{$name} {
+    from {
+      background: transparent;
+    }
+  }
+}
+
 @mixin opacity {
   @include route-transition.descendant(enter-from, exit-from) {
     transition: opacity time.$route-transition-duration !important;

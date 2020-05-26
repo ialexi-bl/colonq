@@ -3,18 +3,14 @@ import { Notification } from './Notification'
 import { NotificationDescription } from 'store/view'
 import React, { useState } from 'react'
 
-const COOKIES_ACCEPTED = 'cookies-accepted'
-const notification: NotificationDescription = {
-  type: 'info',
-  hash: 0,
-  text:
-    'ColonQ использует файлы cookie для хранения данных. Продолжая использование, ты даёшь согласие на работу с ними',
-}
-
 export function CookiesNotification() {
-  const [shown, setShown] = useState(
-    () => localStorage.getItem(COOKIES_ACCEPTED) !== '1',
-  )
+  const [shown, setShown] = useState(() => {
+    try {
+      return localStorage.getItem(COOKIES_ACCEPTED) !== '1'
+    } catch (e) {
+      return false
+    }
+  })
 
   return (
     <CSSTransition
@@ -34,4 +30,12 @@ export function CookiesNotification() {
       />
     </CSSTransition>
   )
+}
+
+const COOKIES_ACCEPTED = 'cookies-accepted'
+const notification: NotificationDescription = {
+  type: 'info',
+  hash: 0,
+  text:
+    'ColonQ использует файлы cookie для хранения данных. Продолжая использование, ты даёшь согласие на работу с ними',
 }

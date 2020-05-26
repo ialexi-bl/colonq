@@ -15,5 +15,5 @@ const options: ChoiceOptions = [
 
 export default createWordsApplet({
   manager: new WordsManager('/russian/prefixes'),
-  word: getChoiceWord(options, /^(.*?)\[(.{1,2})\](.*)$/),
+  word: getChoiceWord(options, /^(.*?)\[(.{1,3})\](.*)$/),
 })

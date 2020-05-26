@@ -9,10 +9,10 @@ export async function getLocalData<TData>(
   manager: AppDataManager<TData, any>,
 ): Promise<null | LocalAppData<TData>> {
   try {
-    // const local = JSON.parse(localStorage.getItem(key(manager.applet)) || '')
     const db = await getDb
     const local = await db.get(APPDATA_STORAGE, manager.applet)
 
+    console.log(manager.validate(local.data))
     if (
       local &&
       typeof local === 'object' &&
@@ -21,7 +21,7 @@ export async function getLocalData<TData>(
     ) {
       return {
         version: local.version,
-        data: local.data,
+        data: manager.formatForClient(local.data),
       }
     }
   } catch (e) {}
@@ -31,10 +31,13 @@ export async function setLocalData<TData>(
   manager: AppDataManager<TData, any>,
   data: TData,
   version: number,
+  fromServer = false,
 ) {
   const db = await getDb
-  const local = { version, data: manager.cleanup(data) }
+  const local = {
+    version,
+    data: fromServer ? data : manager.formatForServer(data),
+  }
 
   await db.put(APPDATA_STORAGE, local, manager.applet)
-  // localStorage.setItem(key(manager.applet), JSON.stringify(local))
 }

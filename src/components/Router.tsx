@@ -12,7 +12,7 @@ import { Route, Switch, useLocation } from 'react-router-dom'
 import { getRouteKey, routes } from 'config/routes'
 import { hideLoading, hideNonRouterLoading, showLoading } from 'store/view'
 import { useDispatch, useSelector } from 'react-redux'
-import React, { Suspense, useEffect, useState } from 'react'
+import React, { Suspense, useEffect, useLayoutEffect, useState } from 'react'
 
 declare var gtag: Gtag.Gtag
 
@@ -27,14 +27,14 @@ export function Router() {
   useEffect(() => {
     if (!loading) setInitialized(true)
   }, [loading])
-  useEffect(() => {
+  // Normal useEffect doesn't work, because children open loading
+  // on route change faster, than Router closes all previous loadings
+  useLayoutEffect(() => {
     dispatch(hideNonRouterLoading())
-  }, [location.pathname, dispatch])
-  useEffect(() => {
     gtag('config', REACT_APP_GA_ID, {
       page_path: location.pathname,
     })
-  }, [location.pathname])
+  }, [dispatch, location.pathname])
 
   return (
     <TransitionGroup component={null}>

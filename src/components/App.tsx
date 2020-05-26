@@ -51,8 +51,13 @@ export function App({ maintenance }: { maintenance?: boolean }) {
       // Credentials are received during email verification
       if (location.pathname !== verifyEmail()) {
         ApiClient.init()
-          .catch(() => {
-            dispatch(notifyError(LangErrors.network))
+          .catch((e) => {
+            if (e.name === 'NoStorageError') {
+              dispatch(notifyError(LangErrors.noStorage))
+            } else {
+              dispatch(notifyError(LangErrors.network))
+            }
+
             dispatch(unauthenticate())
           })
           .then(() => {

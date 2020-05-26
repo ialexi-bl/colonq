@@ -10,5 +10,5 @@ const options: ChoiceOptions = [
 
 export default createWordsApplet({
   manager: new WordsManager('/russian/verb-endings'),
-  word: getChoiceWord(options, /^(.*?)\[(.{1,2})\](.*)$/),
+  word: getChoiceWord(options, /^(.*?)\[(.{1,3})\](.*)$/),
 })

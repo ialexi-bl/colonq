@@ -6,14 +6,15 @@ import { NavTitle } from './NavTitle'
 import { ParentSection, Section, siteMap } from 'config/site-map'
 import { Report } from 'components/icons/Report'
 import { feedback } from 'config/routes'
+import { toggleNav } from 'store/view'
 import { useCurrentLocation } from 'hooks/util/use-current-location'
+import { useDispatch } from 'react-redux'
 import { usePrevious } from 'hooks/util/use-previous'
 import { useRipples } from 'hooks/useRipples'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import styles from './Nav.module.scss'
 
 export type NavProps = {
-  close?: () => unknown
   open?: boolean
 }
 export enum State {
@@ -40,7 +41,8 @@ const getTop = (title: HTMLElement | null, Nav: HTMLElement | null) => {
   return (titleRect.top || 0) - (Nav?.getBoundingClientRect().top || 0)
 }
 
-export default React.memo(({ close, open }: NavProps) => {
+export default React.memo(({ open }: NavProps) => {
+  const dispatch = useDispatch()
   const [makeRipple, ripples, clearRipples] = useRipples()
 
   const browserLocation = useCurrentLocation()
@@ -63,14 +65,14 @@ export default React.memo(({ close, open }: NavProps) => {
 
   const startTransition = useCallback(
     (e: React.MouseEvent<HTMLElement>, section: Section, title?: boolean) => {
-      if (title && !section.parent) {
-        close?.()
+      if (section.leaf || (title && !section.parent)) {
+        dispatch(toggleNav(false))
       } else if (!section.leaf) {
         makeRipple(e)
         setNextLocation((title && section.parent) || section.location)
       }
     },
-    [close, makeRipple],
+    [makeRipple, dispatch],
   )
 
   useEffect(() => {
@@ -163,7 +165,11 @@ export default React.memo(({ close, open }: NavProps) => {
         )}
       </NavListContainer>
       <div className={styles.Buttons}>
-        <Link to={feedback()} onClick={close} className={styles.Button}>
+        <Link
+          to={feedback()}
+          // onClick={() => dispatch(toggleNav(false))}
+          className={styles.Button}
+        >
           <Report className={styles.Icon} />
         </Link>
       </div>

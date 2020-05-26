@@ -1,6 +1,22 @@
-.Version {
-  color: rgba(255, 255, 255, 0.5);
-  align-self: flex-start;
-  transform: translateY(-40%);
-  font-family: Helvetica, sans-serif;
+@use 'styles/variables/colors';
+@use 'styles/mixins/center-content';
+
+.Index {
+  .Version {
+    color: rgba(255, 255, 255, 0.5);
+    align-self: flex-start;
+    transform: translateY(-40%);
+    font-family: Helvetica, sans-serif;
+  }
+
+  .TitleContainer {
+    margin: 15vh 0;
+    min-height: 50vh;
+  }
+
+  .Title {
+    font-size: 1.8rem;
+    padding: 0 1rem;
+    text-align: center;
+  }
 }

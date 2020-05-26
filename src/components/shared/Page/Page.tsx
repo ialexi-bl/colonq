@@ -19,6 +19,3 @@ export const Page = ({ className, children, ...props }: ScrollbarProps) => (
     </Scrollbars>
   </div>
 )
-// export const UnscrollablePage = ({ className, ...props }: DivProps) => (
-//   <div className={cn(className, styles.Page)} {...props} />
-// )

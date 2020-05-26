@@ -30,7 +30,7 @@
   background: $bg;
   transition: background-color 100ms;
   border-radius: 4px;
-  width: 8px !important;
+  width: 7px !important;
 
   &:hover {
     background-color: transparentize($color: $bg, $amount: 0.01);
@@ -41,9 +41,9 @@
 }
 .scroll-track {
   width: 10px !important;
-  top: 0;
+  top: 2px;
   right: 0;
-  bottom: 0;
+  bottom: 2px;
 }
 
 button,

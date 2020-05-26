@@ -17,8 +17,7 @@ export class WordsManager extends AppDataManager<
 > {
   constructor(applet: string, public readonly wordRegex: RegExp = /^/) {
     super(applet)
-    this.isWordSet = this.isWordSet.bind(this)
-    this.isWord = this.isWord.bind(this)
+    this.isServerSet = this.isServerSet.bind(this)
   }
 
   public cleanup(data: WordsData): WordsData {
@@ -113,36 +112,40 @@ export class WordsManager extends AppDataManager<
   }
 
   public validate(data: any): data is WordsData {
-    return (
-      data &&
-      typeof data === 'object' &&
-      typeof data.lastId === 'number' &&
-      Array.isArray(data.sets) &&
-      data.sets.every(this.isWordSet)
-    )
+    if (
+      !data ||
+      typeof data !== 'object' ||
+      typeof data.lastId !== 'number' ||
+      typeof data.sets !== 'object'
+    ) {
+      return false
+    }
+
+    for (const set in data.sets) {
+      if (!this.isServerSet(data.sets[set])) {
+        return false
+      }
+    }
+    return true
   }
 
-  public isWordSet(set: any): set is WordsSet {
-    return (
-      set &&
-      typeof set === 'object' &&
-      !isNaN(+set.id) &&
-      typeof set.label === 'string' &&
-      typeof set.enabled === 'boolean' &&
-      Array.isArray(set.words) &&
-      set.words.every(this.isWord)
-    )
-  }
+  public isServerSet(set: any): set is WordsServerSet {
+    if (
+      !set ||
+      typeof set !== 'object' ||
+      typeof set.label !== 'string' ||
+      typeof set.lastId !== 'number' ||
+      typeof set.words !== 'object'
+    ) {
+      return false
+    }
 
-  public isWord(word: any): word is Word {
-    return (
-      word &&
-      typeof word === 'object' &&
-      typeof word.label === 'string' &&
-      typeof word.enabled === 'boolean' &&
-      !isNaN(+word.id) &&
-      !isNaN(+word.setId)
-    )
+    for (const word of set.words) {
+      if (typeof set.words[word] !== 'string') {
+        return false
+      }
+    }
+    return false
   }
 
   public formatForServer(data: WordsData): WordsServerData {

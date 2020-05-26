@@ -7,3 +7,6 @@ export class NetworkError extends Error {
 export class UnknownError extends Error {
   public readonly name = 'UnknownError'
 }
+export class NoStorageError extends Error {
+  public readonly name = 'NoStorageError'
+}

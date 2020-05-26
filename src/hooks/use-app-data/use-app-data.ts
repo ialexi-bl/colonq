@@ -25,6 +25,7 @@ export function useAppData<TData, TAction>(
       if (authLoading) return
       let currentVersion = version
       let currentData = data
+
       if (currentData === null) {
         const local = await getLocalData(manager)
 
@@ -48,7 +49,6 @@ export function useAppData<TData, TAction>(
             fetched: true,
           }),
         )
-        setLocalData(manager, serverData.data, serverData.version)
       } else if (serverData === 'outdated') {
         dispatch(
           setAppData(manager.applet, {
@@ -59,7 +59,11 @@ export function useAppData<TData, TAction>(
         )
         dispatch(uploadAppData(manager, currentData, currentVersion, null))
       } else if (serverData === 'not-modified' && !currentData) {
-        throw new UnknownError()
+        throw new UnknownError(
+          `Unexpected response ${serverData}, while data is ${JSON.stringify(
+            data,
+          )}`,
+        )
       }
       // * NOTE: onLoad is not a dependency, so changing
       // * handler may cause bugs. For now handlers are only static

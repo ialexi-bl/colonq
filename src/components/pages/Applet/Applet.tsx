@@ -1,7 +1,7 @@
 import { NotFound } from '../NotFound'
 import { PageContainer } from 'components/shared/Page'
 import { Section, siteMap } from 'config/site-map'
-import { hideLoading, showLoading } from 'store/view'
+import { showLoading } from 'store/view'
 import { useDispatch } from 'react-redux'
 import { useRouteMatch } from 'react-router'
 import React, { useEffect, useState } from 'react'
@@ -24,13 +24,6 @@ export default function Applet() {
       section.loadComponent().then((x) => setComponent(() => x))
     }
   }, [Component, dispatch, section])
-
-  useEffect(
-    () => () => {
-      dispatch(hideLoading(APPLET_LOADING))
-    },
-    [dispatch],
-  )
 
   if (!section?.leaf) {
     return <NotFound />

@@ -15,11 +15,6 @@ import React, { ErrorInfo } from 'react'
 import cn from 'clsx'
 import styles from './Boundary.module.scss'
 
-declare const gtag: Gtag.Gtag
-declare const ym: ym.Event
-
-const MESSAGE = `Что-то сломалось ${CUTE_FACE}`
-
 export class Boundary extends React.Component<
   | {
       global?: false
@@ -43,9 +38,24 @@ export class Boundary extends React.Component<
     if (this.props.global) {
       this.props.applyClassName('no-padding')
     }
+
+    let gaId, ymId
+    /* eslint-disable no-undef */
+    try {
+      // @ts-ignore
+      gaId = ga.getAll()[0].get('clientId')
+    } catch (e) {}
+    try {
+      // @ts-ignore
+      ymId = Ya._metrika.getCounters()[0].id
+    } catch (e) {}
+    /* eslint-enable no-undef */
+
     ApiClient.post(Endpoints.Api.logError, {
       json: {
         type: 'page',
+        gaId,
+        ymId,
         name: e.name,
         message: e.message,
         stack: `${e.stack}\nComponents stack: ${info.componentStack}`,

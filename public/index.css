@@ -26,16 +26,16 @@ body {
   height: 100%;
 }
 
-a {
+.link {
   transition: color 150ms;
   color: rgb(255, 165, 0);
   text-decoration: none;
 }
-a:hover {
+.link:hover {
   color: rgb(255, 173, 24);
 }
-a:active,
-a:focus {
+.link:active,
+.link:focus {
   color: rgb(237, 153, 0);
 }
 

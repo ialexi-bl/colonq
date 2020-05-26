@@ -10,36 +10,23 @@ export type WordEditorProps = {
   index: number
   state?: TransitionStatus
   style?: CSSProperties
+  virtual?: boolean
   setIndex: number
   className?: string
   dispatch: (action: WordsAppDataAction) => unknown
 }
 
-const removeBrackets = (word: string) => {
-  const match = word.match(/^(.*?)\[(.+)\](.*)$/)
-  if (!match) return word
-
-  const [, start, letters, end] = match
-  const correct =
-    letters.length > 1
-      ? letters.split('').find((x) => x.toLowerCase() !== x) || letters[0]
-      : letters
-  return (
-    <>
-      {start}
-      <strong className={styles.CorrectLetter}>{correct.toLowerCase()}</strong>
-      {end}
-    </>
-  )
-}
-
 export const WordEditor = memo(
   forwardRef<HTMLLIElement, WordEditorProps>(function WordEditor(
-    { word, index, style, setIndex, dispatch, className },
+    { word, index, style, setIndex, dispatch, className, virtual },
     ref,
   ) {
     return (
-      <ListItem ref={ref} style={style} className={cn(styles.Word, className)}>
+      <ListItem
+        ref={ref}
+        style={style}
+        className={cn(styles.Word, virtual && styles.VirtualWord, className)}
+      >
         <ListCheckbox
           checked={word.enabled}
           onChange={() => {
@@ -51,3 +38,22 @@ export const WordEditor = memo(
     )
   }),
 )
+
+const removeBrackets = (word: string) => {
+  word = word.replace(/\\/g, '')
+  const match = word.match(/^(.*?)\[(.+)\](.*)$/)
+  if (!match) return word
+
+  const [, start, letters, end] = match
+  const correct =
+    letters.length > 1
+      ? letters.split('').find((x) => x.toLowerCase() !== x) || letters[0]
+      : letters
+  return (
+    <span>
+      {start}
+      <strong className={styles.CorrectLetter}>{correct.toLowerCase()}</strong>
+      {end}
+    </span>
+  )
+}

@@ -3,12 +3,14 @@ import { CSSTransition } from 'react-transition-group'
 import { CleanButton } from 'components/shared/Button'
 import { Close } from 'components/icons/Close'
 import { More } from 'components/icons/More'
+import { cssUtil } from 'styles'
 import {
   renderScrollThumb,
   renderScrollTrack,
 } from 'components/shared/render-scroll'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Scrollbars from 'react-custom-scrollbars'
+import cn from 'clsx'
 import styles from './AppletSettings.module.scss'
 
 const transitionDuration = parseInt(styles.settingsTransitionDuration)
@@ -54,7 +56,7 @@ export const AppletSettings = function AppletSettings({
   return (
     <>
       <CleanButton
-        className={styles.OpenButton}
+        className={cn(cssUtil.routeTransitionOpacity, styles.OpenButton)}
         onClick={() => setOpen(true)}
         title={'Настройки'}
       >

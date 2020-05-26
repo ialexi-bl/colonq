@@ -72,9 +72,23 @@ export const sendRequestErrorLog = async (e: Error, json?: object) => {
       resBody = await res.text()
     }
 
+    let gaId, ymId
+    /* eslint-disable no-undef */
+    try {
+      // @ts-ignore
+      gaId = ga.getAll()[0].get('clientId')
+    } catch (e) {}
+    try {
+      // @ts-ignore
+      ymId = Ya._metrika.getCounters()[0].id
+    } catch (e) {}
+    /* eslint-enable no-undef */
+
     await ApiClient.post(Endpoints.Api.logError, {
       json: {
         type: 'server',
+        gaId,
+        ymId,
         method: res._req.method,
         code: res.status,
         url: res._req.url,

@@ -7,6 +7,7 @@ declare module 'lang/errors.json' {
     invalidToken: string
     expiredToken: string
     invalidData: string
+    noStorage: string
     tooLong: string
     network: string
     unknown: string

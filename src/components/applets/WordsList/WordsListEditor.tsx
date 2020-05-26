@@ -239,6 +239,7 @@ export const WordsListEditor = memo(function WordsListEditor({
           ++acc
           return (
             <WordEditor
+              virtual
               style={{
                 transform: `translateY(${extraAcc * rem * height}px)`,
                 animation: 'none',
@@ -277,6 +278,7 @@ export const WordsListEditor = memo(function WordsListEditor({
 
           return (
             <WordEditor
+              virtual
               key={`${view.setIndex}-${view.index}`}
               word={view.word}
               dispatch={dispatch}

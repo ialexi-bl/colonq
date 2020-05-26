@@ -9,9 +9,10 @@ import styles from './ChoiceWord.module.scss'
 export type ChoiceOption = [string[], RegExp | ((word: Word) => boolean)]
 export type ChoiceOptions = ChoiceOption[]
 
-const getOptions = (options: ChoiceOptions, word: Word) => {
-  const match = word.label.match(/\[(.{2,})\]/)
-  if (match) return match[1].toLowerCase().split('')
+const getOptions = (options: ChoiceOptions, content: string, word: Word) => {
+  if (content.length > 1) {
+    return content.toLowerCase().split('')
+  }
 
   const option = options.find((option) => {
     if (typeof option[1] === 'function') return option[1](word)
@@ -33,7 +34,11 @@ export default function getChoiceWord(options: ChoiceOptions, regex: RegExp) {
     const [answer, setAnswer] = useState<null | number>(null)
     const { start, prefix, content, postfix, end } = useMemo(() => {
       const match = word.label.match(regex)
-      if (!match) throw new UnknownError()
+      if (!match) {
+        throw new UnknownError(
+          `Failed to parse word ${word.label} with regex ${regex}`,
+        )
+      }
 
       const [, before = '', content, after = ''] = match
       const [, start = '', prefix = ''] = before.match(/^(.*?)\s*([^\s]*)$/)!
@@ -41,11 +46,13 @@ export default function getChoiceWord(options: ChoiceOptions, regex: RegExp) {
       return { start, prefix, content, postfix, end }
     }, [word.label])
 
-    const currentOptions = getOptions(options, word)
-    const correctAnswer = currentOptions.indexOf(extractAnswer(content))
+    const currentOptions = getOptions(options, content, word)
+    const correctAnswer = currentOptions.indexOf(
+      extractAnswer(content).toLowerCase(),
+    )
 
     return (
-      <div className={styles.Container} style={reduceFont(word.label, 1.5)}>
+      <div className={styles.Container} ref={reduceFont}>
         {start}
         <div className={styles.InteractiveWord}>
           {prefix}

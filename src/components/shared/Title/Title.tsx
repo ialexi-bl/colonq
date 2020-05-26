@@ -10,7 +10,7 @@ export interface TitleProps extends HTMLAttributes<HTMLHeadingElement> {
  * Heading with changeable level
  * @param props
  */
-export default React.memo(({ level, className, ...props }: TitleProps) => {
+export function Title({ level, className, ...props }: TitleProps) {
   const H = `h${level}` as 'h1'
   return <H className={cn(styles.Title, className)} {...props} />
-})
+}
