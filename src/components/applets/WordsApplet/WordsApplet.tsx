@@ -23,11 +23,13 @@ export type WordComponent = React.ComponentType<TwoLatestDisplayViewProps<Word>>
 export type LetterChoiceAppletOptions = {
   word: WordComponent
   manager: WordsManager
+  className?: string
 }
 
 export function createWordsApplet({
   word: Word,
   manager,
+  className,
 }: LetterChoiceAppletOptions) {
   const Settings = getWordSettings(manager)
 
@@ -44,7 +46,7 @@ export function createWordsApplet({
     }
 
     return (
-      <div className={cn(cssUtil.centered, styles.Container)}>
+      <div className={cn(cssUtil.centered, styles.Container, className)}>
         <Settings />
         <div className={cn(cssUtil.routeTransitionUp, styles.WordsContainer)}>
           {words.current === null ? (

@@ -1,17 +1,9 @@
-@use 'styles/mixins/touch-bg';
-@use 'styles/variables/colors';
-@use 'styles/variables/dims';
-
-.Applet {
-  size: 100%;
-}
 .Word {
   white-space: nowrap;
   text-align: center;
   font-size: 2.2rem;
   padding: 0 5px;
   text-transform: capitalize;
-  transform-origin: 50% 100%;
   transform-origin: 0 50%;
 }
 .Letter {

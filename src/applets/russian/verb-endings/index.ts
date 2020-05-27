@@ -6,9 +6,10 @@ import { extractLetterAnswer } from '../_common/extract-letter-answer'
 import presentation from './data.json'
 
 const options: ChoiceOptions = [
-  [['а', 'у'], /\[[ау]\]/i],
-  [['я', 'ю'], /\[[яю]\]/i],
-  [['и', 'е'], /\[[еи]\]/i],
+  (content) => content.length > 1 && content.split(''),
+  [/\[[ау]\]/i, ['а', 'у']],
+  [/\[[яю]\]/i, ['я', 'ю']],
+  [/\[[еи]\]/i, ['и', 'е']],
 ]
 
 export default createWordsApplet({

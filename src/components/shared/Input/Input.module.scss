@@ -3,6 +3,7 @@
 
 $border: colors.$accent;
 $error: colors.$warning;
+$accept: colors.$accept;
 
 .Input {
   color: inherit;
@@ -40,6 +41,13 @@ $error: colors.$warning;
 
     &:focus {
       box-shadow: 0 0 0 3px $error, inset 0 0 $error;
+    }
+  }
+  &.Valid {
+    box-shadow: 0 0 0 0 $accept, inset 0 -3px $accept;
+
+    &:focus {
+      box-shadow: 0 0 0 3px $accept, inset 0 0 $accept;
     }
   }
 

@@ -6,12 +6,6 @@ import React, { memo, useState } from 'react'
 import cn from 'clsx'
 import styles from './Accents.module.scss'
 
-export type AccentWordProps = {
-  word: [number, string]
-  onLetterClick: (i: number) => unknown
-  answer: undefined | number
-}
-
 export const vowels = {
   а: true,
   я: true,

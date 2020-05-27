@@ -46,24 +46,8 @@ export function useWords(manager: WordsManager, onLoad?: () => unknown) {
         case 0: {
           return noWords
         }
-        case 1: {
-          const word = cleanData![0]
-          return {
-            current: {
-              data: word,
-              id: `${word.setIndex}-${word.id}-${Math.random()}`,
-            },
-            prev1: current && {
-              ...current,
-              hiding,
-            },
-            prev2: prev1,
-          }
-        }
         default: {
-          const two = count === 2
           const currId = current?.id
-          const prevId = prev1?.id
           const { order, hash } = previousWords.current
 
           let item: TwoLatestDisplayItem<Word>
@@ -74,21 +58,17 @@ export function useWords(manager: WordsManager, onLoad?: () => unknown) {
               id: `${word.setIndex}-${word.id}`,
               data: word,
             }
-          } while (
-            item.id in hash ||
-            item.id === currId ||
-            // eslint-disable-next-line no-unmodified-loop-condition
-            (!two && item.id === prevId)
-          )
+          } while (item.id in hash || item.id === currId)
 
-          if (two) item.id += `-${Math.random()}`
-
-          if (order.length > count * 0.4) {
-            delete hash[order[0]]
-            order.shift()
+          if (count > 3) {
+            if (order.length > count * 0.4) {
+              delete hash[order[0]]
+              order.shift()
+            }
+            hash[item.id] = true
+            order.push(item.id)
           }
-          hash[item.id] = true
-          order.push(item.id)
+          item.id += `-${Math.random()}`
 
           return {
             current: item,

@@ -48,6 +48,7 @@ export const siteMap: Map = {
       '/russian/verb-endings',
       '/russian/prefixes',
       '/russian/orthography',
+      '/russian/paronyms',
     ],
     // items: ['/maths/', '/russian/', '/physics/'],
   },
@@ -85,5 +86,8 @@ export const siteMap: Map = {
   },
   get '/russian/orthography'(): Section {
     return getLeaf('/', 'russian/orthography', 'Орфография')
+  },
+  get '/russian/paronyms'(): Section {
+    return getLeaf('/', 'russian/paronyms', 'Паронимы')
   },
 }
