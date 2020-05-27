@@ -5,14 +5,12 @@
 $transition-duration: 300ms;
 $transition-class-name: two-latest-display;
 
-:export {
-  transitionDuration: $transition-duration;
-  transitionClassName: $transition-class-name;
-}
-
 .Container {
   size: 100%;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @keyframes item-appear {
@@ -30,39 +28,19 @@ $transition-class-name: two-latest-display;
   }
 }
 .Transition {
-  width: 100%;
+  height: 40%;
+  position: absolute;
   animation: item-appear $transition-duration ease-out;
   transition: $transition-duration * 0.75 ease-out;
   transform-origin: 50% 100%;
-
-  // @include transition.self($transition-class-name, (from)) {
-  //   transform: scale(0.85);
-  //   opacity: 0;
-  // }
-  // @include transition.self($transition-class-name, (active)) {
-  //   transform: scale(1);
-  //   opacity: 1;
-  //   transition: $transition-duration * 0.75 $transition-duration * 0.25 ease-out;
-  // }
-
-  // &:not(.TransitionPrevious) {
-  //   @include transition.self($transition-class-name, (exit)) {
-  //     opacity: 0;
-  //   }
-  // }
 }
 .TransitionPrev1 {
-  transform: translateY(-125%) scale(0.65);
-  opacity: 0.7;
-  position: absolute * 0;
-
-  // @include transition.self($transition-class-name, (exit-to)) {
-  // }
+  transform: translateY(-110%) scale(0.6);
+  opacity: 0.75;
 }
 .TransitionPrev2 {
-  transform: translateY(-125%) scale(0.5) translateY(-50%);
+  transform: translateY(-100%) scale(0.5) translateY(-50%);
   opacity: 0;
-  position: absolute * 0;
 }
 .TransitionHiding {
   opacity: 0;

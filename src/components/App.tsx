@@ -25,9 +25,6 @@ export function App({ maintenance }: { maintenance?: boolean }) {
   )
 
   useEffect(() => {
-    window.addEventListener('beforeinstallprompt', (e) => {
-      console.log(e)
-    })
     if (!maintenance) {
       // Defining event listener before query, because if check is absent
       // event can might fire before the listener is bound

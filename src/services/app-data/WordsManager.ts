@@ -13,6 +13,8 @@ export class WordsManager extends AppDataManager<
   WordsUserData,
   WordsAppDataAction
 > {
+  defaultData: WordsUserData = {}
+
   constructor(
     applet: string,
     public readonly presentation: WordsPresentation,

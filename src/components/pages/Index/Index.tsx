@@ -7,7 +7,6 @@ import {
 import { Button } from 'components/shared/Button'
 import { PageContainer } from 'components/shared/Page'
 import { Subtitle } from 'components/shared/Subtitle'
-import { Title } from 'components/shared/Title'
 import { TitleLine } from 'components/shared/TitleLine'
 import { cssUtil } from 'styles'
 import { toggleNav } from 'store/view'
@@ -42,9 +41,6 @@ export default function Index() {
           </Button>
         </TitleLine>
       </div>
-      <Title level={2} className={styles.Title}>
-        Хватит страдать, заучивая теорию
-      </Title>
     </PageContainer>
   )
 }

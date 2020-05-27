@@ -37,7 +37,6 @@ export function createWordsApplet({
     const dispatchGlobally = useDispatch()
     const { dispatch } = useUpdateAppData(manager)
     const { loading, words, next } = useWords(manager, () => {
-      // console.log('loaded')
       dispatchGlobally(hideLoading(APPLET_LOADING))
     })
 
@@ -46,15 +45,14 @@ export function createWordsApplet({
     }
 
     return (
-      <div className={cn(cssUtil.centered, styles.Container, className)}>
+      <div className={cn(styles.Container, className)}>
         <Settings />
-        <div className={cn(cssUtil.routeTransitionUp, styles.WordsContainer)}>
-          {words.current === null ? (
-            <NoWords />
-          ) : (
-            <TwoLatestDisplay component={Word} words={words} next={next} />
-          )}
-        </div>
+
+        {words.current === null ? (
+          <NoWords className={cssUtil.routeTransitionDown} />
+        ) : (
+          <TwoLatestDisplay component={Word} words={words} next={next} />
+        )}
         <CleanButton
           title={'Не показывать'}
           className={cn(cssUtil.routeTransitionOpacity, styles.Hide)}

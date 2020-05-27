@@ -37,3 +37,6 @@
 .centered {
   @include center-content.center;
 }
+.fullSize {
+  size: 100%;
+}

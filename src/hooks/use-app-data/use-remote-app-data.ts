@@ -58,6 +58,13 @@ export function fetchAppData<TData, TStored>(
       throw new UnknownError()
     } catch (e) {
       dispatch(handleRequestError(e))
+      if (manager.defaultData) {
+        return {
+          version: currentVersion || 0,
+          fetched: false,
+          data: manager.formatForClient(manager.defaultData),
+        }
+      }
     }
   }
 }

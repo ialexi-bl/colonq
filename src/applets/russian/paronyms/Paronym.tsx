@@ -3,7 +3,6 @@ import { TwoLatestDisplayViewProps } from 'components/applets/TwoLatestDisplay'
 import { Word } from 'services/app-data/WordsManager.types'
 import { reduceFont } from 'components/applets/WordsApplet/reduce-font'
 import React, { memo, useMemo, useState } from 'react'
-import capitalize from 'lodash/capitalize'
 import styles from './Paronym.module.scss'
 
 export type AccentWordProps = {
@@ -18,7 +17,7 @@ export const Paronym = memo(function Paronym({
   next,
 }: TwoLatestDisplayViewProps<Word>) {
   const [value, setValue] = useState('')
-  const [start, placeholder, end, correct] = useMemo(() => {
+  const [start, helper, end, correct] = useMemo(() => {
     const [, start, content, end] = word.label.match(/^([^[]*)\[(.+?)\](.*)/)!
 
     const options = content.split('|')
@@ -27,18 +26,18 @@ export const Paronym = memo(function Paronym({
     return [start, placeholder, end, correct]
   }, [word.label])
 
-  const valid = value.toLowerCase() === correct.toLowerCase()
+  const valid = (value.trim() || helper).toLowerCase() === correct.toLowerCase()
   return (
     <div className={styles.Word} ref={reduceFont}>
-      {capitalize(start)}
+      {start}
       <Input
-        size={Math.max(placeholder.length, correct.length) + 4}
+        size={Math.max(helper.length, correct.length) + 4}
         value={active ? value : correct}
         valid={!active && valid}
         invalid={!active && !valid}
         tabIndex={active ? 0 : -1}
         onChange={setValue}
-        placeholder={placeholder}
+        placeholder={helper}
         onKeyDown={(e) => {
           if (e.key !== 'Enter') return
           next()

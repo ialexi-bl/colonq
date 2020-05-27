@@ -1,4 +1,6 @@
 export abstract class AppDataManager<TData, TStoredData, TAction> {
+  public defaultData: TStoredData | undefined
+
   public abstract formatForClient(data: TStoredData): TData
   public abstract formatToStore(data: TData): TStoredData
   // public abstract cleanup(data: TData): TData
