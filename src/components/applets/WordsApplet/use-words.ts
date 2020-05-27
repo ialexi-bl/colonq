@@ -1,5 +1,5 @@
 import { TwoLatestDisplayItem, TwoLatestItems } from '../TwoLatestDisplay'
-import { Word, WordsData } from 'services/app-data/WordsAppData.types'
+import { Word, WordSets } from 'services/app-data/WordsManager.types'
 import { WordsManager } from 'services/app-data/WordsManager'
 import { useAppData } from 'hooks/use-app-data'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -14,8 +14,8 @@ const noPreviousWords = {
   order: [] as string[],
   hash: {} as Record<string, true>,
 }
-const filterWords = (data: WordsData, manager: WordsManager) =>
-  data.sets.reduce<Word[]>(
+const filterWords = (sets: WordSets, manager: WordsManager) =>
+  sets.reduce<Word[]>(
     (acc, set) =>
       acc.concat(
         set.words.filter(
@@ -26,13 +26,13 @@ const filterWords = (data: WordsData, manager: WordsManager) =>
   )
 
 export function useWords(manager: WordsManager, onLoad?: () => unknown) {
-  const { loading, data } = useAppData(manager, onLoad)
+  const { loading, data: sets } = useAppData(manager, onLoad)
   const [words, setWords] = useState<TwoLatestItems<Word>>(noWords)
   // * REVIEW: maybe change to FastList one day (https://github.com/isaacs/fast-list)
   const previousWords = useRef(noPreviousWords)
 
   const [cleanData, setCleanData] = useState(
-    () => data && filterWords(data, manager),
+    () => sets && filterWords(sets, manager),
   )
 
   const getNewWords = useCallback(
@@ -51,7 +51,7 @@ export function useWords(manager: WordsManager, onLoad?: () => unknown) {
           return {
             current: {
               data: word,
-              id: `${word.setId}-${word.id}-${Math.random()}`,
+              id: `${word.setIndex}-${word.id}-${Math.random()}`,
             },
             prev1: current && {
               ...current,
@@ -71,7 +71,7 @@ export function useWords(manager: WordsManager, onLoad?: () => unknown) {
             const word = cleanData![random(count)]
 
             item = {
-              id: `${word.setId}-${word.id}`,
+              id: `${word.setIndex}-${word.id}`,
               data: word,
             }
           } while (
@@ -106,8 +106,8 @@ export function useWords(manager: WordsManager, onLoad?: () => unknown) {
 
   const hidden = useRef(false)
   useEffect(() => {
-    if (data) {
-      const filtered = filterWords(data, manager)
+    if (sets) {
+      const filtered = filterWords(sets, manager)
       setCleanData(filtered)
 
       if (!hidden.current) {
@@ -115,7 +115,7 @@ export function useWords(manager: WordsManager, onLoad?: () => unknown) {
         setWords({
           current: word
             ? {
-                id: `${word.setId}-${word.id}-${Math.random()}`,
+                id: `${word.setIndex}-${word.id}-${Math.random()}`,
                 data: word,
               }
             : null,
@@ -129,14 +129,14 @@ export function useWords(manager: WordsManager, onLoad?: () => unknown) {
       setCleanData(null)
     }
     previousWords.current = noPreviousWords
-  }, [data, manager])
+  }, [manager, sets])
 
   const next = useCallback(
     (hiding = false) => {
       hidden.current = hiding
-      setWords((words) => (data ? getNewWords(words, hiding) : noWords))
+      setWords((words) => (sets ? getNewWords(words, hiding) : noWords))
     },
-    [data, getNewWords],
+    [getNewWords, sets],
   )
 
   return {

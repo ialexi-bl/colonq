@@ -21,7 +21,7 @@ export function getWordSettings(manager: WordsManager) {
     return (
       <AppletSettings open={open} setOpen={close}>
         <Title level={2}>Список слов</Title>
-        <WordsList dispatch={dispatch} data={newData} />
+        <WordsList dispatch={dispatch} sets={newData} />
       </AppletSettings>
     )
   }

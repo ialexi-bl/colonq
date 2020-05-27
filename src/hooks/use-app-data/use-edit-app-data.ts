@@ -5,8 +5,8 @@ import { useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useUpdateAppData } from './use-update-app-data'
 
-export function useEditAppData<TData, TAction>(
-  manager: AppDataManager<TData, TAction>,
+export function useEditAppData<TData, TStored, TAction>(
+  manager: AppDataManager<TData, TStored, TAction>,
 ) {
   const dispatchGlobally = useDispatch()
   const { scheduleBackup } = useUpdateAppData(manager)

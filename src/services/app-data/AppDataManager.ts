@@ -1,13 +1,13 @@
-export abstract class AppDataManager<TData, TAction> {
-  public abstract formatForClient(data: any): TData
-  public abstract formatForServer(data: TData): any
-  public abstract cleanup(data: TData): TData
+export abstract class AppDataManager<TData, TStoredData, TAction> {
+  public abstract formatForClient(data: TStoredData): TData
+  public abstract formatToStore(data: TData): TStoredData
+  // public abstract cleanup(data: TData): TData
   public abstract getUploadData(
-    data: TData,
     newData: TData,
-  ): null | Record<string, any>
+    forceAll?: boolean,
+  ): null | TStoredData
 
-  public abstract validate(data: any): data is TData
+  public abstract validate(data: any): data is TStoredData
   public abstract reduce(data: TData, action: TAction): TData
 
   constructor(public readonly applet: string) {}

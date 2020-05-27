@@ -1,31 +1,26 @@
 import { InlineChoice } from 'components/applets/InlineChoice'
 import { TwoLatestDisplayViewProps } from 'components/applets/TwoLatestDisplay'
-import { UnknownError } from 'services/errors'
-import { Word } from 'services/app-data/WordsAppData.types'
+import { Word } from 'services/app-data/WordsManager.types'
 import { reduceFont } from 'components/applets/WordsApplet/reduce-font'
 import React, { memo, useMemo, useState } from 'react'
 import styles from './ChoiceWord.module.scss'
 
-export type ChoiceOption = [string[], RegExp | ((word: Word) => boolean)]
-export type ChoiceOptions = ChoiceOption[]
+type MbString = string | undefined
+export type ExtractAnswer = (content: string, options: string[]) => number
+export type ExtractContent = (word: string) => [MbString, string, MbString]
+export type ChoiceOption = [
+  string[],
+  RegExp | ((content: string, word: Word) => boolean),
+]
+export type ChoiceOptions =
+  | ChoiceOption[]
+  | ((content: string, word: Word) => string[])
 
-const getOptions = (options: ChoiceOptions, content: string, word: Word) => {
-  if (content.length > 1) {
-    return content.toLowerCase().split('')
-  }
-
-  const option = options.find((option) => {
-    if (typeof option[1] === 'function') return option[1](word)
-    return option[1].test(word.label)
-  })
-  return option?.[0] || ['-']
-}
-const extractAnswer = (content: string) =>
-  content.length === 1
-    ? content
-    : content.split('').find((x) => x !== x.toLowerCase()) || ''
-
-export default function getChoiceWord(options: ChoiceOptions, regex: RegExp) {
+export default function getChoiceWord(
+  options: ChoiceOptions,
+  extractContent: ExtractContent,
+  extractAnswer: ExtractAnswer,
+) {
   return memo(function ChoiceWord({
     item: word,
     active,
@@ -33,23 +28,14 @@ export default function getChoiceWord(options: ChoiceOptions, regex: RegExp) {
   }: TwoLatestDisplayViewProps<Word>) {
     const [answer, setAnswer] = useState<null | number>(null)
     const { start, prefix, content, postfix, end } = useMemo(() => {
-      const match = word.label.match(regex)
-      if (!match) {
-        throw new UnknownError(
-          `Failed to parse word ${word.label} with regex ${regex}`,
-        )
-      }
-
-      const [, before = '', content, after = ''] = match
+      const [before = '', content, after = ''] = extractContent(word.label)
       const [, start = '', prefix = ''] = before.match(/^(.*?)\s*([^\s]*)$/)!
       const [, postfix = '', end = ''] = after.match(/^([^\s]*)\s*(.*)$/)!
       return { start, prefix, content, postfix, end }
     }, [word.label])
 
     const currentOptions = getOptions(options, content, word)
-    const correctAnswer = currentOptions.indexOf(
-      extractAnswer(content).toLowerCase(),
-    )
+    const correctAnswer = extractAnswer(content, currentOptions)
 
     return (
       <div className={styles.Container} ref={reduceFont}>
@@ -72,4 +58,21 @@ export default function getChoiceWord(options: ChoiceOptions, regex: RegExp) {
       </div>
     )
   })
+}
+
+const getOptions = (options: ChoiceOptions, content: string, word: Word) => {
+  if (content.length > 1) {
+    return content.toLowerCase().split('')
+  }
+  if (typeof options === 'function') {
+    return options(content, word)
+  }
+
+  const option = options.find((option) => {
+    if (typeof option[1] === 'function') {
+      return option[1](content, word)
+    }
+    return option[1].test(word.label)
+  })
+  return option?.[0] || ['-']
 }

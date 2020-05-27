@@ -3,12 +3,12 @@ import { AppDataManager } from 'services/app-data/AppDataManager'
 import { AppState, MixedDispatch } from 'store/types'
 import { UnknownError } from 'services/errors'
 import { fetchAppData, uploadAppData } from './use-remote-app-data'
-import { getLocalData, setLocalData } from './local-data'
+import { getLocalData } from './local-data'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 
-export function useAppData<TData, TAction>(
-  manager: AppDataManager<TData, TAction>,
+export function useAppData<TData, TStored, TAction>(
+  manager: AppDataManager<TData, TStored, TAction>,
   onLoad?: () => unknown,
 ) {
   const dispatch = useDispatch<MixedDispatch>()
@@ -57,7 +57,15 @@ export function useAppData<TData, TAction>(
             fetched: true,
           }),
         )
-        dispatch(uploadAppData(manager, currentData, currentVersion, null))
+        dispatch(
+          uploadAppData(
+            manager,
+            currentData,
+            currentVersion,
+            currentData,
+            true,
+          ),
+        )
       } else if (serverData === 'not-modified' && !currentData) {
         throw new UnknownError(
           `Unexpected response ${serverData}, while data is ${JSON.stringify(

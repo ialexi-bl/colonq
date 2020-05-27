@@ -1,10 +1,10 @@
 import { AppletSettingsContext } from '../AppletSettings'
 import {
   Word,
+  WordSets,
   WordsAppDataDispatch,
-  WordsData,
   WordsSet,
-} from 'services/app-data/WordsAppData.types'
+} from 'services/app-data/WordsManager.types'
 import { WordEditor } from './WordEditor'
 import { WordsSetEditor } from './WordsSetEditor'
 import { listItemHeight } from 'components/shared/ListItem'
@@ -48,27 +48,27 @@ const ANIMATING = {
 }
 
 export type WordsListEditorProps = {
-  data: WordsData
+  sets: WordSets
   hidden?: boolean
   dispatch: WordsAppDataDispatch
 }
 
 export const WordsListEditor = memo(function WordsListEditor({
-  data,
+  sets,
   hidden,
   dispatch,
 }: WordsListEditorProps) {
   const setScrollListener = useContext(AppletSettingsContext)
   const [status, setStatus] = useState<ItemStatus[]>(() =>
-    [...Array(data.sets.length)].fill(ItemStatus.COLLAPSED),
+    [...Array(sets.length)].fill(ItemStatus.COLLAPSED),
   )
   const [containerHeight, setContainerHeight] = useState<number | 'auto'>(() =>
-    calculateHeight(data, status),
+    calculateHeight(sets, status),
   )
   const [start, setStart] = useState(0)
   const [views, setViews] = useState<View[]>([])
 
-  const timeouts = useRef([...Array(data.sets.length)].fill(0))
+  const timeouts = useRef([...Array(sets.length)].fill(0))
   const scrollTop = useRef(0)
   const last = useRef(0)
 
@@ -82,7 +82,7 @@ export const WordsListEditor = memo(function WordsListEditor({
         } else if (col) {
           status[i] = ItemStatus.UNFOLDING
         }
-        setContainerHeight(calculateHeight(data, status))
+        setContainerHeight(calculateHeight(sets, status))
 
         clearTimeout(timeouts.current[i])
         timeouts.current[i] = setTimeout(() => {
@@ -92,7 +92,7 @@ export const WordsListEditor = memo(function WordsListEditor({
             } else if (col) {
               status[i] = ItemStatus.EXPANDED
             }
-            setContainerHeight(calculateHeight(data, status))
+            setContainerHeight(calculateHeight(sets, status))
             return [...status]
           })
         }, duration)
@@ -100,7 +100,7 @@ export const WordsListEditor = memo(function WordsListEditor({
         return [...status]
       })
     },
-    [data],
+    [sets],
   )
 
   const updateViews = useCallback(() => {
@@ -115,8 +115,8 @@ export const WordsListEditor = memo(function WordsListEditor({
     const index = Math.max(Math.floor(scroll / height) - extraItems, 0)
     const start = index
 
-    for (let i = 0, acc = 0; i < data.sets.length; ++i) {
-      const set = data.sets[i]
+    for (let i = 0, acc = 0; i < sets.length; ++i) {
+      const set = sets[i]
       const exp = status[i] in EXPANDED
       const count = exp ? set.words.length + 1 : 1
 
@@ -131,7 +131,7 @@ export const WordsListEditor = memo(function WordsListEditor({
     if (setIndex < 0) throw new Error('Handle later')
 
     let current =
-      wordIndex < 0 ? data.sets[setIndex] : data.sets[setIndex].words[wordIndex]
+      wordIndex < 0 ? sets[setIndex] : sets[setIndex].words[wordIndex]
 
     const afterAnimated = { current: 0 }
     const views: View[] = [item2view(current, setIndex, wordIndex)]
@@ -140,19 +140,19 @@ export const WordsListEditor = memo(function WordsListEditor({
     let currHeight = 0
 
     while (currHeight < target) {
-      if ('setId' in current) {
-        if (wordIndex < data.sets[setIndex].words.length - 1) {
+      if ('setIndex' in current) {
+        if (wordIndex < sets[setIndex].words.length - 1) {
           wordIndex++
-          current = data.sets[setIndex].words[wordIndex]
-        } else if (setIndex < data.sets.length - 1) {
+          current = sets[setIndex].words[wordIndex]
+        } else if (setIndex < sets.length - 1) {
           ++setIndex
           wordIndex = -1
-          current = data.sets[setIndex]
+          current = sets[setIndex]
         } else break
       } else {
         // Animating folding and unfolding
         if (status[setIndex] in ANIMATING) {
-          const items = data.sets[setIndex].words.slice(
+          const items = sets[setIndex].words.slice(
             0,
             Math.floor((window.innerHeight * 1.3) / rem / height),
           )
@@ -171,18 +171,18 @@ export const WordsListEditor = memo(function WordsListEditor({
           })
           afterAnimated.current = items.length
 
-          if (setIndex < data.sets.length - 1) {
+          if (setIndex < sets.length - 1) {
             ++setIndex
             wordIndex = -1
-            current = data.sets[setIndex]
+            current = sets[setIndex]
           } else break
         } else if (status[setIndex] in EXPANDED && current.words.length > 0) {
           current = current.words[0]
           wordIndex = 0
-        } else if (setIndex < data.sets.length - 1) {
+        } else if (setIndex < sets.length - 1) {
           ++setIndex
           wordIndex = -1
-          current = data.sets[setIndex]
+          current = sets[setIndex]
         } else break
       }
 
@@ -192,12 +192,12 @@ export const WordsListEditor = memo(function WordsListEditor({
 
     setStart(start)
     setViews(views)
-  }, [data.sets, status])
+  }, [sets, status])
 
   useEffect(() => {
     updateViews()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status, data.sets])
+  }, [status, sets])
 
   useEffect(() => {
     if (hidden) {
@@ -324,13 +324,13 @@ type View =
     }
 // #endregion
 
-function calculateHeight(data: WordsData, status: ItemStatus[]) {
+function calculateHeight(sets: WordSets, status: ItemStatus[]) {
   const rem = parseFloat(getComputedStyle(document.documentElement).fontSize)
   let count = 0
-  for (let i = 0, l = data.sets.length; i < l; i++) {
+  for (let i = 0, l = sets.length; i < l; i++) {
     count +=
       status[i] in EXPANDED || status[i] === ItemStatus.FOLDING
-        ? data.sets[i].words.length + 1
+        ? sets[i].words.length + 1
         : 1
   }
   return count * height * rem
@@ -341,7 +341,7 @@ function item2view(
   setIndex: number,
   wordIndex: number,
 ): View {
-  if ('setId' in item) {
+  if ('setIndex' in item) {
     return {
       type: ViewType.WORD,
       word: item,

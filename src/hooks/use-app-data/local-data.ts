@@ -5,14 +5,13 @@ export type LocalAppData<TData> = {
   version: number
   data: TData
 }
-export async function getLocalData<TData>(
-  manager: AppDataManager<TData, any>,
+export async function getLocalData<TData, TStored>(
+  manager: AppDataManager<TData, TStored, any>,
 ): Promise<null | LocalAppData<TData>> {
   try {
     const db = await getDb
     const local = await db.get(APPDATA_STORAGE, manager.applet)
 
-    console.log(manager.validate(local.data))
     if (
       local &&
       typeof local === 'object' &&
@@ -27,16 +26,29 @@ export async function getLocalData<TData>(
   } catch (e) {}
   return null
 }
-export async function setLocalData<TData>(
-  manager: AppDataManager<TData, any>,
+
+export async function setLocalData<TData, TStored>(
+  manager: AppDataManager<TData, TStored, any>,
   data: TData,
   version: number,
-  fromServer = false,
+  fromServer?: false,
+): Promise<void>
+export async function setLocalData<TData, TStored>(
+  manager: AppDataManager<TData, TStored, any>,
+  data: TStored,
+  version: number,
+  fromServer: true,
+): Promise<void>
+export async function setLocalData<TData, TStored>(
+  manager: AppDataManager<TData, TStored, any>,
+  data: TData | TStored,
+  version: number,
+  fromServer: boolean = false,
 ) {
   const db = await getDb
   const local = {
     version,
-    data: fromServer ? data : manager.formatForServer(data),
+    data: fromServer ? data : manager.formatToStore(data as TData),
   }
 
   await db.put(APPDATA_STORAGE, local, manager.applet)

@@ -6,7 +6,7 @@ import {
   TwoLatestDisplay,
   TwoLatestDisplayViewProps,
 } from 'components/applets/TwoLatestDisplay'
-import { Word } from 'services/app-data/WordsAppData.types'
+import { Word } from 'services/app-data/WordsManager.types'
 import { WordsManager } from 'services/app-data/WordsManager'
 import { cssUtil } from 'styles'
 import { getWordSettings } from './WordsSettings'
@@ -65,7 +65,7 @@ export function createWordsApplet({
             dispatch({
               type: 'toggle-item',
               payload: {
-                setIndex: word.setId,
+                setIndex: word.setIndex,
                 index: word.id,
               },
             })

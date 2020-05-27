@@ -1,8 +1,8 @@
 import { WordEditor } from './WordEditor'
 import {
+  WordSets,
   WordsAppDataDispatch,
-  WordsData,
-} from 'services/app-data/WordsAppData.types'
+} from 'services/app-data/WordsManager.types'
 import Fuse from 'fuse.js'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import flatMap from 'lodash/flatMap'
@@ -13,7 +13,7 @@ export type SearchWord = {
   setIndex: number
 }
 export type WordsSearchProps = {
-  data: WordsData
+  sets: WordSets
   value: string
   hidden?: boolean
   persist: React.RefObject<any>
@@ -21,7 +21,7 @@ export type WordsSearchProps = {
 }
 
 export function WordsSearch({
-  data,
+  sets,
   value,
   hidden,
   persist,
@@ -35,7 +35,7 @@ export function WordsSearch({
       return persist.current.fuse
     }
 
-    const list = flatMap(data.sets, (x, s) =>
+    const list = flatMap(sets, (x, s) =>
       x.words.map((word, w) => ({
         label: word.label,
         index: w,
@@ -46,7 +46,7 @@ export function WordsSearch({
       keys: ['label'],
       threshold: 0.4,
     }))
-  }, [data.sets, persist])
+  }, [sets, persist])
 
   const term = useDebounce(value, 100)
   const render = useCallback(
@@ -55,14 +55,14 @@ export function WordsSearch({
         {results.map(({ item, refIndex }) => (
           <WordEditor
             key={`${item.setIndex}-${item.index}`}
-            word={data.sets[item.setIndex].words[item.index]}
+            word={sets[item.setIndex].words[item.index]}
             dispatch={dispatch}
-            {...getIndexes(data, refIndex)}
+            {...getIndexes(sets, refIndex)}
           />
         ))}
       </>
     ),
-    [data, dispatch],
+    [sets, dispatch],
   )
 
   const [results, setResults] = useState(() => render(fuse.search(term)))
@@ -73,9 +73,9 @@ export function WordsSearch({
   return <div style={{ display: hidden ? 'none' : 'block' }}>{results}</div>
 }
 
-function getIndexes(data: WordsData, index: number) {
-  for (let i = 0; i < data.sets.length; ++i) {
-    const set = data.sets[i]
+function getIndexes(sets: WordSets, index: number) {
+  for (let i = 0; i < sets.length; ++i) {
+    const set = sets[i]
     const count = set.words.length
 
     if (count <= index) {

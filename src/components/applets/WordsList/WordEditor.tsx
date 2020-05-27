@@ -1,6 +1,6 @@
 import { ListCheckbox, ListItem } from 'components/shared/ListItem'
 import { TransitionStatus } from 'react-transition-group/Transition'
-import { Word, WordsAppDataAction } from 'services/app-data/WordsAppData.types'
+import { Word, WordsAppDataAction } from 'services/app-data/WordsManager.types'
 import React, { CSSProperties, forwardRef, memo } from 'react'
 import cn from 'clsx'
 import styles from './WordsListEditor.module.scss'

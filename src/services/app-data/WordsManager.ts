@@ -1,105 +1,141 @@
 import { AppDataManager } from './AppDataManager'
 import {
-  Word,
+  WordSets,
   WordsAppDataAction,
   WordsChanges,
-  WordsData,
-  WordsServerData,
-  WordsServerSet,
-  WordsSet,
-  WordsSetChanges,
-} from './WordsAppData.types'
+  WordsPresentation,
+  WordsUserData,
+} from './WordsManager.types'
 import update from 'immutability-helper'
 
 export class WordsManager extends AppDataManager<
-  WordsData,
+  WordSets,
+  WordsUserData,
   WordsAppDataAction
 > {
-  constructor(applet: string, public readonly wordRegex: RegExp = /^/) {
+  constructor(
+    applet: string,
+    public readonly presentation: WordsPresentation,
+    public readonly wordRegex: RegExp = /^/,
+  ) {
     super(applet)
-    this.isServerSet = this.isServerSet.bind(this)
   }
 
-  public cleanup(data: WordsData): WordsData {
-    // NOTE: here data is mutated, might cause bugs somehow
-    delete data.modified
-    data.sets.forEach((set) => {
+  public cleanup(data: WordSets): WordSets {
+    // NOTE: here data is mutated, might cause side effects
+    data.forEach((set) => {
       delete set.modified
       set.words.forEach((word) => {
-        delete word.modified
+        word.original = word.enabled
       })
     })
     return { ...data }
   }
 
   public getUploadData(
-    data: WordsData, // Will be used for deleting items
-    newData: WordsData,
+    sets: WordSets,
+    force?: boolean,
   ): Record<string, any> | null {
-    const changes: WordsChanges = {
-      sets: [],
-    }
+    const changes: WordsChanges = {}
+    let count = 0
 
-    newData.sets.forEach((set) => {
-      if (!set.modified && data) return
+    sets.forEach((set) => {
+      if (!set.modified && !force) return
 
-      const setChanges: WordsSetChanges = { words: [] }
-
+      changes[set.id] = []
       set.words.forEach((word) => {
-        if (!word.modified && data) return
-        setChanges.words.push([word.id, `${+word.enabled}|${word.label}`])
-      })
+        if (word.enabled === word.original && !force) return
 
-      changes.sets.push([set.id, setChanges])
+        ++count
+        changes[set.id].push([word.id, +word.enabled as 0 | 1])
+      })
     })
 
-    return changes.sets.length > 0 ? changes : null
+    return count > 0 ? changes : null
   }
 
-  public reduce(data: WordsData, action: WordsAppDataAction): WordsData {
+  public validate(data: any): data is WordsUserData {
+    return (
+      data &&
+      typeof data === 'object' &&
+      Object.keys(data).every(
+        (key) =>
+          Array.isArray(data[key]) &&
+          data[key].every((e: any) => [0, 1].includes(e)),
+      )
+    )
+  }
+
+  public formatToStore(sets: WordSets): WordsUserData {
+    const serverData: WordsUserData = {}
+
+    sets.forEach((set) => {
+      serverData[set.id] = set.words.map((word) => +word.enabled as 0 | 1)
+    })
+    return serverData
+  }
+
+  public formatForClient(data: WordsUserData): WordSets {
+    return this.presentation.map((set, i) => {
+      const enabled = data[i] || []
+
+      return {
+        id: i,
+        label: set.label,
+        enabled:
+          enabled.length < set.words.length ? true : enabled.some((x) => x),
+        words: set.words.map((word, j) => {
+          return {
+            id: j,
+            label: word,
+            setIndex: i,
+            enabled: !!(enabled[j] ?? true),
+            original: !!(enabled[j] ?? true),
+          }
+        }),
+      }
+    })
+  }
+
+  public reduce(sets: WordSets, action: WordsAppDataAction): WordSets {
     switch (action.type) {
       case 'toggle-set': {
         const { index: setIndex } = action.payload
-        const state = !data.sets[setIndex].enabled
-        return update(data, {
-          modified: { $set: true },
-          sets: {
-            [setIndex]: {
-              modified: { $set: true },
-              enabled: { $set: state },
-              words: (words) =>
-                words.map((word) => ({
-                  ...word,
-                  enabled: state,
-                  modified: true,
-                })),
+        const state = !sets[setIndex].enabled
+
+        return update(sets, {
+          [setIndex]: {
+            modified: { $set: true },
+            enabled: { $set: state },
+            words: (words) => {
+              return words.map((word) => ({
+                ...word,
+                enabled: state,
+                modified: true,
+              }))
             },
           },
         })
       }
       case 'toggle-item': {
         const { setIndex, index } = action.payload
-        const { words } = data.sets[setIndex]
+        const { words } = sets[setIndex]
         const enabled = !words[index].enabled
 
-        return update(data, {
-          modified: { $set: true },
-          sets: {
-            [setIndex]: {
-              modified: { $set: true },
-              enabled: {
-                $set:
-                  enabled ||
-                  words.some((word, i) => i !== index && word.enabled),
-              },
-              words: {
-                [index]: {
-                  enabled: {
-                    $set: enabled,
-                  },
-                  modified: {
-                    $set: true,
-                  },
+        return update(sets, {
+          [setIndex]: {
+            modified: { $set: true },
+            enabled: {
+              $set:
+                enabled ||
+                words.some((word, i) => {
+                  return i !== index && word.enabled
+                }),
+            },
+            words: {
+              [index]: {
+                enabled: {
+                  $set: enabled,
                 },
               },
             },
@@ -107,114 +143,7 @@ export class WordsManager extends AppDataManager<
         })
       }
       default:
-        return data
+        return sets
     }
-  }
-
-  public validate(data: any): data is WordsData {
-    if (
-      !data ||
-      typeof data !== 'object' ||
-      typeof data.lastId !== 'number' ||
-      typeof data.sets !== 'object'
-    ) {
-      return false
-    }
-
-    for (const set in data.sets) {
-      if (!this.isServerSet(data.sets[set])) {
-        return false
-      }
-    }
-    return true
-  }
-
-  public isServerSet(set: any): set is WordsServerSet {
-    if (
-      !set ||
-      typeof set !== 'object' ||
-      typeof set.label !== 'string' ||
-      typeof set.lastId !== 'number' ||
-      typeof set.words !== 'object'
-    ) {
-      return false
-    }
-
-    for (const word of set.words) {
-      if (typeof set.words[word] !== 'string') {
-        return false
-      }
-    }
-    return false
-  }
-
-  public formatForServer(data: WordsData): WordsServerData {
-    const serverData: WordsServerData = {
-      lastId: data.lastId,
-      sets: {},
-    }
-    data.sets.forEach((set) => {
-      const serverSet: WordsServerSet = (serverData.sets[set.id] = {
-        label: set.label,
-        lastId: set.lastId,
-        words: {},
-      })
-      set.words.forEach((word) => {
-        serverSet.words[word.id] = `${+word.enabled}|${word.label}`
-      })
-    })
-    return serverData
-  }
-
-  public formatForClient(data: WordsServerData): WordsData {
-    return {
-      lastId: data.lastId,
-      sets: Object.keys(data.sets).map((key: any) =>
-        this.formatSet(key, data.sets[key]),
-      ),
-    }
-  }
-
-  private formatWord(key: string | number, setId: number, data: string): Word {
-    let label, enabled
-    if ((data[0] === '0' || data[0] === '1') && data[1] === '|') {
-      enabled = !!+data[0]
-      label = data.slice(2)
-    } else {
-      enabled = false
-      label = data
-    }
-    return {
-      id: +key,
-      setId,
-      label,
-      enabled,
-    }
-  }
-
-  private formatSet(
-    key: string | number,
-    set: WordsServerSet,
-    words?: Word[],
-  ): WordsSet {
-    const data: WordsSet = {
-      id: +key,
-      label: set.label,
-      lastId: set.lastId,
-      enabled: false,
-      words: words || [],
-    }
-    if (!words) {
-      Object.keys(set.words).forEach((word) => {
-        const newWord = this.formatWord(word, +key, set.words[word])
-        if (newWord.enabled) {
-          data.enabled = true
-        }
-        data.words.push(newWord)
-      })
-    } else {
-      data.enabled = words.some((w) => w.enabled)
-    }
-    return data
   }
 }

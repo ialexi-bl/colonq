@@ -1,6 +1,6 @@
 import { ChoiceButton } from 'components/applets/ChoiceButton'
 import { TwoLatestDisplayViewProps } from 'components/applets/TwoLatestDisplay'
-import { Word } from 'services/app-data/WordsAppData.types'
+import { Word } from 'services/app-data/WordsManager.types'
 import { reduceFont } from 'components/applets/WordsApplet/reduce-font'
 import React, { memo, useState } from 'react'
 import cn from 'clsx'

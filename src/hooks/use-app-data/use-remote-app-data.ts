@@ -10,7 +10,9 @@ import { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import ApiClient from 'services/client'
 
-export function useUploadAppData<TData>(manager: AppDataManager<TData, any>) {
+export function useUploadAppData<TData, TStored>(
+  manager: AppDataManager<TData, TStored, any>,
+) {
   const dispatch = useDispatch<MixedDispatch>()
 
   return useCallback(
@@ -21,9 +23,9 @@ export function useUploadAppData<TData>(manager: AppDataManager<TData, any>) {
   )
 }
 
-export function fetchAppData<TData>(
+export function fetchAppData<TData, TStored>(
   currentVersion: number | null,
-  manager: AppDataManager<TData, any>,
+  manager: AppDataManager<TData, TStored, any>,
 ): ThunkAction<Promise<AppData<TData> | 'not-modified' | 'outdated' | void>> {
   return async (dispatch) => {
     try {
@@ -60,25 +62,25 @@ export function fetchAppData<TData>(
   }
 }
 
-export function uploadAppData<TData>(
-  manager: AppDataManager<TData, any>,
+export function uploadAppData<TData, TStored>(
+  manager: AppDataManager<TData, TStored, any>,
   newData: TData,
   version: number,
   _data?: TData,
+  force?: boolean,
 ): ThunkAction {
   return async (dispatch, getStore) => {
     const store = getStore()
     if (!store.auth.authenticated) return
 
-    const data =
-      typeof _data === 'undefined' ? store.appData[manager.applet]?.data : _data
+    const data = _data || store.appData[manager.applet]?.data
     if (typeof data === 'undefined') {
       throw new UnknownError(
         'Attempted to modify data that has not been fetched',
       )
     }
 
-    const uploadData = manager.getUploadData(data, newData)
+    const uploadData = manager.getUploadData(newData, force)
     if (!uploadData) return
 
     try {
@@ -94,13 +96,14 @@ export function uploadAppData<TData>(
       )
 
       if (response.status === 'ok') {
-        dispatch(
-          setAppData(manager.applet, {
-            fetched: true,
-            version: response.data.version,
-            data: manager.cleanup(data),
-          }),
-        )
+        // TODO: check if setting data is necessary
+        // dispatch(
+        //   setAppData(manager.applet, {
+        //     fetched: true,
+        //     version: response.data.version,
+        //     data: manager.cleanup(data),
+        //   }),
+        // )
       } else if (response.status === 'updated') {
         const newData = {
           fetched: true,

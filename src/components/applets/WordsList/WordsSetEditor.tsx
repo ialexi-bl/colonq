@@ -2,7 +2,7 @@ import { ListCheckbox, ListItem, ListUnfold } from 'components/shared/ListItem'
 import {
   WordsAppDataAction,
   WordsSet,
-} from 'services/app-data/WordsAppData.types'
+} from 'services/app-data/WordsManager.types'
 import React, { CSSProperties, forwardRef, memo } from 'react'
 import styles from './WordsListEditor.module.scss'
 

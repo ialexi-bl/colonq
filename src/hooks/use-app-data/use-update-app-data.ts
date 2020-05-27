@@ -6,8 +6,8 @@ import { useCallback, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useUploadAppData } from './use-remote-app-data'
 
-export function useUpdateAppData<TData, TAction>(
-  manager: AppDataManager<TData, TAction>,
+export function useUpdateAppData<TData, TStored, TAction>(
+  manager: AppDataManager<TData, TStored, TAction>,
 ) {
   const dispatchGlobally = useDispatch()
   const { data, version } = useSelector<AppState, AppData<TData | null>>(
