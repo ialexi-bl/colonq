@@ -51,6 +51,7 @@ export function useWords(manager: WordsManager, onLoad?: () => unknown) {
           const { order, hash } = previousWords.current
 
           let item: TwoLatestDisplayItem<Word>
+          console.log(hash, currId)
           do {
             const word = cleanData![random(count)]
 
@@ -58,7 +59,8 @@ export function useWords(manager: WordsManager, onLoad?: () => unknown) {
               id: `${word.setIndex}-${word.id}`,
               data: word,
             }
-          } while (item.id in hash || item.id === currId)
+            console.log(item.id)
+          } while (item.id in hash)
 
           if (count > 3) {
             if (order.length > count * 0.4) {

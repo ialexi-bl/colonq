@@ -2,6 +2,8 @@
 @use 'styles/variables/dims';
 
 .OpenButton {
+  // Moving it to the left of settings button
+  transform: translate(-100%);
   bottom: dims.$sidebar-size;
 
   @include media.md {

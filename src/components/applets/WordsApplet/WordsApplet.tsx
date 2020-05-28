@@ -1,5 +1,6 @@
 import { APPLET_LOADING } from 'components/pages/Applet'
 import { CleanButton } from 'components/shared/Button'
+import { GetSettingsLabel, getWordSettings } from './WordsSettings'
 import { Hide } from 'components/icons/Hide'
 import { NoWords } from 'components/applets/NoWords'
 import {
@@ -9,12 +10,11 @@ import {
 import { Word } from 'services/app-data/WordsManager.types'
 import { WordsManager } from 'services/app-data/WordsManager'
 import { cssUtil } from 'styles'
-import { getWordSettings } from './WordsSettings'
 import { hideLoading } from 'store/view'
 import { useDispatch } from 'react-redux'
 import { useUpdateAppData } from 'hooks/use-app-data'
 import { useWords } from './use-words'
-import React from 'react'
+import React, { ComponentType } from 'react'
 import cn from 'clsx'
 
 import styles from './WordsApplet.module.scss'
@@ -24,14 +24,18 @@ export type LetterChoiceAppletOptions = {
   word: WordComponent
   manager: WordsManager
   className?: string
+  help?: ComponentType
+  getSettingsLabel: GetSettingsLabel
 }
 
 export function createWordsApplet({
   word: Word,
+  help: Help = () => null,
   manager,
   className,
+  getSettingsLabel,
 }: LetterChoiceAppletOptions) {
-  const Settings = getWordSettings(manager)
+  const Settings = getWordSettings(manager, getSettingsLabel)
 
   return function WordsApplet() {
     const dispatchGlobally = useDispatch()
@@ -47,6 +51,7 @@ export function createWordsApplet({
     return (
       <div className={cn(styles.Container, className)}>
         <Settings />
+        <Help />
 
         {words.current === null ? (
           <NoWords className={cssUtil.routeTransitionDown} />

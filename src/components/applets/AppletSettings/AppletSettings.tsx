@@ -1,19 +1,19 @@
 import { AppletSettingsContext, ScrollListener } from './context'
-import { CSSTransition } from 'react-transition-group'
-import { CleanButton } from 'components/shared/Button'
-import { Close } from 'components/icons/Close'
 import { More } from 'components/icons/More'
-import { cssUtil } from 'styles'
+import {
+  Overlay,
+  OverlayButton,
+  OverlayCloseButton,
+  overlayButtonIcon,
+} from '../AppletOverlay'
 import {
   renderScrollThumb,
   renderScrollTrack,
 } from 'components/shared/render-scroll'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import Scrollbars from 'react-custom-scrollbars'
-import cn from 'clsx'
 import styles from './AppletSettings.module.scss'
 
-const transitionDuration = parseInt(styles.settingsTransitionDuration)
 export type AppletSettingsProps = {
   open: boolean
   setOpen: (open: boolean) => unknown
@@ -38,57 +38,28 @@ export const AppletSettings = function AppletSettings({
     setListener(() => fn)
   }, [])
 
-  useEffect(() => {
-    if (open) {
-      const keyDown = (e: KeyboardEvent) => {
-        if (e.key === 'Escape') {
-          setOpen(false)
-        }
-      }
-
-      window.addEventListener('keydown', keyDown)
-      return () => {
-        window.removeEventListener('keydown', keyDown)
-      }
-    }
-  }, [setOpen, open])
-
   return (
     <>
-      <CleanButton
-        className={cn(cssUtil.routeTransitionOpacity, styles.OpenButton)}
-        onClick={() => setOpen(true)}
+      <OverlayButton
+        className={styles.OpenButton}
+        setOpen={setOpen}
         title={'Настройки'}
       >
-        <More className={styles.ButtonIcon} />
-      </CleanButton>
-
-      <AppletSettingsContext.Provider value={setScrollListener}>
-        <CSSTransition
-          classNames={styles.settingsTransitionClassName}
-          timeout={transitionDuration}
-          in={open}
-          unmountOnExit
-          mountOnEnter
-        >
+        <More className={overlayButtonIcon} />
+      </OverlayButton>
+      <Overlay open={open} setOpen={setOpen}>
+        <AppletSettingsContext.Provider value={setScrollListener}>
           <Scrollbars
             renderTrackVertical={renderScrollTrack}
             renderThumbVertical={renderScrollThumb}
             onScrollFrame={scrollListener}
-            className={styles.Container}
             ref={(e) => (scrollApi.current = e || scrollApi.current)}
           >
-            <CleanButton
-              onClick={() => setOpen(false)}
-              className={styles.CloseButton}
-              title={'Закрыть'}
-            >
-              <Close className={styles.ButtonIcon} />
-            </CleanButton>
+            <OverlayCloseButton setOpen={setOpen} />
             <div className={styles.Content}>{children}</div>
           </Scrollbars>
-        </CSSTransition>
-      </AppletSettingsContext.Provider>
+        </AppletSettingsContext.Provider>
+      </Overlay>
     </>
   )
 }

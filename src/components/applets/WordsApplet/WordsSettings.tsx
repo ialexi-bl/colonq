@@ -1,11 +1,13 @@
 import { AppletSettings } from '../AppletSettings'
 import { Title } from 'components/shared/Title'
+import { Word } from 'services/app-data/WordsManager.types'
 import { WordsList } from 'components/applets/WordsList'
 import { WordsManager } from 'services/app-data/WordsManager'
 import { useEditAppData } from 'hooks/use-app-data'
-import React, { useRef, useState } from 'react'
+import React, { ReactNode, useRef, useState } from 'react'
 
-export function getWordSettings(manager: WordsManager) {
+export type GetSettingsLabel = (word: Word) => ReactNode
+export function getWordSettings(manager: WordsManager, getSettingsLabel: GetSettingsLabel) {
   return function LetterChoiceAppletSettings() {
     const [open, setOpen] = useState(false)
     const { newData, dispatch, apply } = useEditAppData(manager)
