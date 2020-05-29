@@ -1,6 +1,6 @@
 import { APPLET_LOADING } from 'components/pages/Applet'
 import { CleanButton } from 'components/shared/Button'
-import { GetSettingsLabel, getWordSettings } from './WordsSettings'
+import {  getWordSettings } from './WordsSettings'
 import { Hide } from 'components/icons/Hide'
 import { NoWords } from 'components/applets/NoWords'
 import {
@@ -18,6 +18,7 @@ import React, { ComponentType } from 'react'
 import cn from 'clsx'
 
 import styles from './WordsApplet.module.scss'
+import { GetSettingsLabel } from '../WordsList/WordEditor'
 
 export type WordComponent = React.ComponentType<TwoLatestDisplayViewProps<Word>>
 export type LetterChoiceAppletOptions = {

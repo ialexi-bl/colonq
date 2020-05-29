@@ -7,4 +7,5 @@ const options: ChoiceOptions = () => ['н', 'нн']
 export default createWordsApplet({
   manager: new WordsManager('/russian/n-or-nn', []),
   word: getChoiceWord(options, extractLetterAnswer),
+  getSettingsLabel: (word) => word.label,
 })

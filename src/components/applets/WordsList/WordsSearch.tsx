@@ -1,10 +1,17 @@
-import { WordEditor } from './WordEditor'
 import {
+  Word,
   WordSets,
   WordsAppDataDispatch,
 } from 'services/app-data/WordsManager.types'
+import { WordEditor } from './WordEditor'
 import Fuse from 'fuse.js'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import flatMap from 'lodash/flatMap'
 
 export type SearchWord = {
@@ -18,6 +25,7 @@ export type WordsSearchProps = {
   hidden?: boolean
   persist: React.RefObject<any>
   dispatch: WordsAppDataDispatch
+  getLabel: (word: Word) => ReactNode
 }
 
 export function WordsSearch({
@@ -26,6 +34,7 @@ export function WordsSearch({
   hidden,
   persist,
   dispatch,
+  getLabel,
 }: WordsSearchProps) {
   const fuse = useMemo<Fuse<SearchWord, any>>(() => {
     // NOTE: later persist can be used to store fuse index
@@ -54,6 +63,7 @@ export function WordsSearch({
       <>
         {results.map(({ item, refIndex }) => (
           <WordEditor
+            getLabel={getLabel}
             key={`${item.setIndex}-${item.index}`}
             word={sets[item.setIndex].words[item.index]}
             dispatch={dispatch}
@@ -62,7 +72,7 @@ export function WordsSearch({
         ))}
       </>
     ),
-    [sets, dispatch],
+    [sets, dispatch, getLabel],
   )
 
   const [results, setResults] = useState(() => render(fuse.search(term)))

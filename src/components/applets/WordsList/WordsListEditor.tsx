@@ -1,11 +1,11 @@
 import { AppletSettingsContext } from '../AppletSettings'
+import { GetSettingsLabel, WordEditor } from './WordEditor'
 import {
   Word,
   WordSets,
   WordsAppDataDispatch,
   WordsSet,
 } from 'services/app-data/WordsManager.types'
-import { WordEditor } from './WordEditor'
 import { WordsSetEditor } from './WordsSetEditor'
 import { listItemHeight } from 'components/shared/ListItem'
 import React, {
@@ -53,12 +53,14 @@ export type WordsListEditorProps = {
   sets: WordSets
   hidden?: boolean
   dispatch: WordsAppDataDispatch
+  getLabel: GetSettingsLabel
 }
 
 export const WordsListEditor = memo(function WordsListEditor({
   sets,
   hidden,
   dispatch,
+  getLabel,
 }: WordsListEditorProps) {
   const setScrollListener = useContext(AppletSettingsContext)
   const [status, setStatus] = useState<ItemStatus[]>(() =>
@@ -247,6 +249,7 @@ export const WordsListEditor = memo(function WordsListEditor({
                 animation: 'none',
               }}
               ref={ref}
+              getLabel={getLabel}
               word={view.word}
               setIndex={view.setIndex}
               dispatch={dispatch}
@@ -281,6 +284,7 @@ export const WordsListEditor = memo(function WordsListEditor({
           return (
             <WordEditor
               virtual
+              getLabel={getLabel}
               key={`${view.setIndex}-${view.index}`}
               word={view.word}
               dispatch={dispatch}

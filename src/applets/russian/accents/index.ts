@@ -6,4 +6,5 @@ import presentation from './data.json'
 export default createWordsApplet({
   manager: new WordsManager('/russian/accents', presentation),
   word: AccentWord,
+  getSettingsLabel: (word) => word.label,
 })
