@@ -1,6 +1,6 @@
 import { Item, TwoLatestDisplayProps } from '.'
 import { cssUtil } from 'styles'
-import { reduceSize } from '../WordsApplet/reduce-font'
+import { reduceSize } from './reduce-font'
 import React from 'react'
 import cn from 'clsx'
 import styles from './TwoLatestDisplay.module.scss'

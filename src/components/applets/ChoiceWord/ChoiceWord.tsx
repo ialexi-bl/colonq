@@ -2,7 +2,7 @@ import { InlineChoice } from 'components/applets/InlineChoice'
 import { TwoLatestDisplayViewProps } from 'components/applets/TwoLatestDisplay'
 import { Word } from 'services/app-data/WordsManager.types'
 import React, { memo, useState } from 'react'
-import cn from 'clsx'
+import cn from 'clsx'components/applets/TwoLatestDisplay/reduce-font
 import styles from './ChoiceWord.module.scss'
 
 type MbString = string | undefined
