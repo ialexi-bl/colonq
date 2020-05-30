@@ -16,13 +16,14 @@ $background: colors.$primary;
   position: fixed;
   border-radius: 50%;
   transition: 150ms ease-in-out;
+  transition-property: color, opacity;
   padding: 0.25rem;
   z-index: elevation.$open-settings;
   margin: 0.35rem;
   color: colors.$action;
   size: (dims.$sidebar-size - 2 * 0.35rem);
   right: 10px;
-  
+
   &:hover {
     color: colors.$hover;
   }

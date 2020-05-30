@@ -1,48 +1,49 @@
 @use 'styles/mixins/route-transition';
 @use 'styles/variables/time';
 
-@mixin opacity-anim($name) {
-  @keyframes anim-#{$name} {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
+@keyframes anim-opacity {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
-@mixin bg-opacity-anim($name) {
-  @keyframes anim-#{$name} {
-    from {
-      background: transparent;
-    }
+@keyframes anim-bg-opacity {
+  from {
+    background: transparent;
   }
 }
 
 @mixin opacity {
-  @include route-transition.descendant(enter-from, exit-from) {
-    transition: opacity time.$route-transition-duration !important;
-  }
-  @include route-transition.descendant(enter) {
-    opacity: 0;
-  }
-  @include route-transition.descendant(enter-active, exit) {
+  animation: anim-opacity time.$route-transition-duration;
+  // Entering transitions are done with CSS animations
+  // @include route-transition.descendant(enter-from, exit-from) {
+  // transition: opacity time.$route-transition-duration !important;
+  // }
+  // @include route-transition.descendant(enter) {
+  // opacity: 0;
+  // }
+  @include route-transition.descendant(/* enter-active,  */ exit) {
     opacity: 1;
   }
   @include route-transition.descendant(exit-active) {
+    transition: opacity time.$route-transition-duration !important;
     opacity: 0;
   }
 }
 @mixin bg {
-  @include route-transition.descendant(enter-from, exit-from) {
-    transition: background (time.$route-transition-duration) !important;
-  }
-  :global(.route-transition-enter):not(:global(.route-transition-enter-active))
-    & {
-    transition: background (time.$route-transition-duration) !important;
-    background: transparent;
-  }
-  :global(.route-transition-exit-active) & {
+  animation: anim-bg-opacity time.$route-transition-duration;
+  // Entering transitions are done with CSS animations
+  // @include route-transition.descendant(enter-from, exit-from) {
+  // transition: background (time.$route-transition-duration) !important;
+  // }
+  // :global(.route-transition-enter):not(:global(.route-transition-enter-active))
+  // & {
+  // transition: background (time.$route-transition-duration) !important;
+  // background: transparent;
+  // }
+  @include route-transition.descendant(exit-active) {
     transition: background (time.$route-transition-duration / 3) !important;
     background: transparent;
   }

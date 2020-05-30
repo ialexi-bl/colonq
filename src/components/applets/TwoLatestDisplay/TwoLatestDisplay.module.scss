@@ -11,35 +11,32 @@ $transition-class-name: two-latest-display;
   display: flex;
   align-items: center;
   justify-content: center;
+  // transition: height 100ms;
 }
 
 @keyframes item-appear {
   from {
-    transform: scale(0.85);
+    transform: scale(0.65);
     opacity: 0;
   }
   25% {
-    transform: scale(0.85);
+    transform: scale(0.65);
     opacity: 0;
   }
   to {
-    transform: scale(1);
     opacity: 1;
   }
 }
 .Transition {
-  height: 40%;
   position: absolute;
   animation: item-appear $transition-duration ease-out;
   transition: $transition-duration * 0.75 ease-out;
-  transform-origin: 50% 100%;
+  transition-property: transform, opacity;
 }
 .TransitionPrev1 {
-  transform: translateY(-100%) scale(0.6);
   opacity: 0.75;
 }
 .TransitionPrev2 {
-  transform: translateY(-100%) scale(0.5) translateY(-50%);
   opacity: 0;
 }
 .TransitionHiding {

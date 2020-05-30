@@ -1,7 +1,6 @@
 import { Input } from 'components/shared/Input'
 import { TwoLatestDisplayViewProps } from 'components/applets/TwoLatestDisplay'
 import { Word } from 'services/app-data/WordsManager.types'
-import { reduceFont } from 'components/applets/WordsApplet/reduce-font'
 import React, { memo, useMemo, useState } from 'react'
 import styles from './Paronym.module.scss'
 
@@ -28,7 +27,7 @@ export const Paronym = memo(function Paronym({
 
   const valid = (value.trim() || helper).toLowerCase() === correct.toLowerCase()
   return (
-    <div className={styles.Word} ref={reduceFont}>
+    <div className={styles.Word}>
       {start}
       <Input
         size={Math.max(helper.length, correct.length) + 4}

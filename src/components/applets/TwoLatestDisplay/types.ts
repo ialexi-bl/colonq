@@ -8,6 +8,7 @@ export type TwoLatestDisplayItem<TData> = {
   id: string
   data: TData
   hiding?: boolean
+  scale?: number
 }
 export type TwoLatestItems<TData> = {
   current: Item<TData> | null

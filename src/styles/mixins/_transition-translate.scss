@@ -12,29 +12,40 @@
   }
 }
 
+@include dir-anim('up', 0, -100vh);
+@include dir-anim('down', 0, 100vh);
+@include dir-anim('left', -100vw);
+@include dir-anim('right', 100vw);
+
 @mixin dir($x, $y: 0) {
-  @include route-transition.descendant(enter-from, exit-from) {
-    transition: transform time.$route-transition-duration !important;
-  }
-  @include route-transition.descendant(enter) {
-    transform: translate($x, $y);
-  }
-  @include route-transition.descendant(enter-active, exit) {
+  // Exit transitions are made with CSS animation
+  // @include route-transition.descendant(enter-from, exit-from) {
+  // transition: transform time.$route-transition-duration !important;
+  // }
+  // @include route-transition.descendant(enter) {
+  // transform: translate($x, $y);
+  // }
+  @include route-transition.descendant(/* enter-active,  */ exit) {
     transform: translateY(0);
   }
   @include route-transition.descendant(exit-active) {
+    transition: transform time.$route-transition-duration !important;
     transform: translate($x, $y);
   }
 }
 @mixin up {
+  animation: anim-up time.$route-transition-duration;
   @include dir(0, -100vh);
 }
 @mixin down {
+  animation: anim-down time.$route-transition-duration;
   @include dir(0, 100vh);
 }
 @mixin right {
+  animation: anim-right time.$route-transition-duration;
   @include dir(100vw);
 }
 @mixin left {
+  animation: anim-left time.$route-transition-duration;
   @include dir(-100vw);
 }

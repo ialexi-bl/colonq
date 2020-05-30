@@ -10,17 +10,18 @@ export type ChoiceButtonProps = ButtonProps & {
 export const choiceButtonClassName = styles.ChoiceButton
 export const choiceButtonCorrectClassName = styles.Correct
 export const choiceButtonIncorrectClassName = styles.Incorrect
-export const ChoiceButton = forwardRef<HTMLButtonElement, ChoiceButtonProps>(
-  ({ correct, className, ...props }, ref) => {
-    return (
-      <button
-        className={cn(cleanButton, styles.ChoiceButton, className, {
-          [styles.Correct]: correct === true,
-          [styles.Incorrect]: correct === false,
-        })}
-        ref={ref}
-        {...props}
-      />
-    )
-  },
-)
+export const ChoiceButton = ({
+  correct,
+  className,
+  ...props
+}: ChoiceButtonProps) => {
+  return (
+    <button
+      className={cn(cleanButton, styles.ChoiceButton, className, {
+        [styles.Correct]: correct === true,
+        [styles.Incorrect]: correct === false,
+      })}
+      {...props}
+    />
+  )
+}

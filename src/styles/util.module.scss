@@ -3,36 +3,23 @@
 @use './mixins/center-content';
 @use 'styles/variables/time';
 
-@include transition-translate.dir-anim('up', 0, -100vh);
-@include transition-translate.dir-anim('down', 0, 100vh);
-@include transition-translate.dir-anim('left', -100vw);
-@include transition-translate.dir-anim('right', 100vw);
-@include transition-opacity.opacity-anim('opacity');
-@include transition-opacity.bg-opacity-anim('bg-opacity');
-
 .routeTransitionBgOpacity {
   @include transition-opacity.bg;
-  animation: anim-bg-opacity time.$route-transition-duration;
 }
 .routeTransitionOpacity {
   @include transition-opacity.opacity;
-  animation: anim-opacity time.$route-transition-duration;
 }
 .routeTransitionDown {
   @include transition-translate.down;
-  animation: anim-down time.$route-transition-duration;
 }
 .routeTransitionUp {
   @include transition-translate.up;
-  animation: anim-up time.$route-transition-duration;
 }
 .routeTransitionRight {
   @include transition-translate.right;
-  animation: anim-right time.$route-transition-duration;
 }
 .routeTransitionLeft {
   @include transition-translate.left;
-  animation: anim-left time.$route-transition-duration;
 }
 .centered {
   @include center-content.center;

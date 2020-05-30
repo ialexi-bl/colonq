@@ -1,7 +1,6 @@
 import { InlineChoice } from 'components/applets/InlineChoice'
 import { TwoLatestDisplayViewProps } from 'components/applets/TwoLatestDisplay'
 import { Word } from 'services/app-data/WordsManager.types'
-import { reduceFont } from 'components/applets/WordsApplet/reduce-font'
 import React, { memo, useState } from 'react'
 import cn from 'clsx'
 import styles from './ChoiceWord.module.scss'
@@ -41,7 +40,7 @@ export default function getChoiceWord(
     const correctAnswer = extractAnswer(content, currentOptions)
 
     return (
-      <div className={cn(styles.Container, className)} ref={reduceFont}>
+      <div  className={cn(styles.Container, className)}>
         {start}
         <div className={styles.ActiveWord}>
           {prefix}
