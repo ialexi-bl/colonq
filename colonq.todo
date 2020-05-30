@@ -1,3 +1,4 @@
 Client:
   ☐ Get rid of ripples
   ☐ In ./src/components/applets/ChoiceWord/ChoiceWords.tsx remove misaligning when window resizes
+  ☐ Create tests
