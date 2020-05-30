@@ -8,7 +8,7 @@ const { exec } = require('child_process')
 argsParser
   .option('user', 'FTP user name', process.env.FTP_USERNAME)
   .option('host', 'FTP host', process.env.FTP_HOST)
-  .option('port', 'FTP port', process.env.FTP_PORT)
+  .option('port', 'FTP port', 22)
   .option('remoteRoot', 'Deployment directory', process.env.FTP_REMOTE_ROOT)
 const args = argsParser.parse(process.argv)
 
@@ -33,8 +33,9 @@ function deploy() {
       mask: '',
     },
   )
-  console.log('Building application...')
-  exec('ls', (err) => {
+
+  console.log('Building...')
+  exec('npm run build', (err) => {
     if (err) {
       console.error(err)
       return

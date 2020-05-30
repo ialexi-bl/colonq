@@ -40,7 +40,6 @@ export function TwoLatestDisplay<TItem>({
             } else if (!item.hiding) {
               const gone = item === prev2
 
-              console.log('prev', e.clientHeight)
               const scale = item.scale || 1
               const k = gone ? scale * 0.6 : scale * 0.65
 
