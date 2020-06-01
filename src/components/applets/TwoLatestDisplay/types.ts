@@ -19,6 +19,7 @@ export type TwoLatestDisplayProps<TData> = {
   component: React.ComponentType<TwoLatestDisplayViewProps<TData>>
   words: TwoLatestItems<TData>
   next: (hiding?: boolean) => unknown
+  className?: string
 }
 
 export type Item<TData> = TwoLatestDisplayItem<TData>

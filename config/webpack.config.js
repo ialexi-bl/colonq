@@ -658,8 +658,9 @@ module.exports = function (webpackEnv) {
           importWorkboxFrom: 'cdn',
           navigateFallback: publicUrl + '/index.html',
           navigateFallbackBlacklist: [
-            // Exclude URLs starting with /_, as they're likely an API call
+            // Exclude URLs starting with /_ and /api, as they're likely an API call
             new RegExp('^/_'),
+            new RegExp('^/api'),
             // Exclude any URLs whose last part seems to be a file extension
             // as they're likely a resource and not a SPA route.
             // URLs containing a "?" character won't be blacklisted as they're likely

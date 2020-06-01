@@ -56,7 +56,12 @@ export function createWordsApplet({
         {words.current === null ? (
           <NoWords className={cssUtil.routeTransitionDown} />
         ) : (
-          <TwoLatestDisplay component={Word} words={words} next={next} />
+          <TwoLatestDisplay
+            className={cssUtil.routeTransitionDown}
+            component={Word}
+            words={words}
+            next={next}
+          />
         )}
         <CleanButton
           title={'Не показывать'}

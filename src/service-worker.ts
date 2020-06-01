@@ -34,10 +34,7 @@ export function register(config?: Config) {
   }
 
   // The URL constructor is available in all browsers that support SW.
-  const publicUrl = new URL(
-    (process as { env: { [key: string]: string } }).env.PUBLIC_URL,
-    window.location.href,
-  )
+  const publicUrl = new URL(process.env.PUBLIC_URL, window.location.href)
   if (publicUrl.origin !== window.location.origin) {
     // Our service worker won't work if PUBLIC_URL is on a different origin
     // from what our page is served on. This might happen if a CDN is used to
@@ -55,10 +52,10 @@ export function register(config?: Config) {
       // Add some additional logging to localhost, pointing developers to the
       // service worker/PWA documentation.
       navigator.serviceWorker.ready.then(() => {
-        // console.log(
-        //   'This web app is being served cache-first by a service ' +
-        //     'worker. To learn more, visit https://bit.ly/CRA-PWA',
-        // )
+        console.log(
+          'This web app is being served cache-first by a service ' +
+            'worker. To learn more, visit https://bit.ly/CRA-PWA',
+        )
       })
     } else {
       // Is not localhost. Just register service worker

@@ -12,6 +12,7 @@ import styles from './TwoLatestDisplay.module.scss'
  */
 export function TwoLatestDisplay<TItem>({
   next,
+  className,
   component: Component,
   words: { current, prev1, prev2 },
 }: TwoLatestDisplayProps<TItem>) {
@@ -19,7 +20,7 @@ export function TwoLatestDisplay<TItem>({
   let size = 0
 
   return (
-    <div className={styles.Container}>
+    <div className={cn(styles.Container, className)}>
       {iter.map((item) => (
         <div
           key={item.id}
