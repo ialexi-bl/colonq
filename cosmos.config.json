@@ -1,0 +1,5 @@
+{
+  "webpack": {
+    "overridePath": "./cosmos.webpack.js"
+  }
+}

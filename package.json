@@ -6,7 +6,9 @@
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "test": "node scripts/test.js",
+    "cosmos": "cosmos",
+    "cosmos:export": "cosmos-export"
   },
   "browserslist": {
     "production": [
@@ -190,6 +192,7 @@
     "postcss-safe-parser": "4.0.1",
     "postcss-scss": "^2.0.0",
     "postcss-short": "^5.0.0",
+    "react-cosmos": "^5.3.0",
     "react-hot-loader": "^4.12.21",
     "react-styleguidist": "^11.0.8",
     "readline-sync": "^1.4.10",
