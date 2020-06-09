@@ -13,6 +13,12 @@ declare namespace NodeJS {
   }
 }
 
+declare namespace HTMLProps {
+  type button = React.ButtonHTMLAttributes<HTMLButtonElement>
+  type div = React.HTMLAttributes<HTMLDivElement>
+  type a = React.AnchorHTMLAttributes<HTMLAnchorElement>
+}
+
 interface Response {
   _req: Request
   _opts: import('ky').Options
@@ -89,6 +95,3 @@ declare module '*.module.sass' {
   const classes: { readonly [key: string]: string }
   export default classes
 }
-
-declare type DivProps = React.HTMLAttributes<HTMLDivElement>
-declare type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>

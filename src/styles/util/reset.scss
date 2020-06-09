@@ -1,5 +1,6 @@
 .reset-button,
-.reset-input {
+.reset-input,
+.reset-link {
   background: unset;
   border: none;
   color: inherit;
@@ -18,4 +19,7 @@
   &::-moz-focus-inner {
     border: 0;
   }
+}
+.reset-link {
+  text-decoration: none;
 }

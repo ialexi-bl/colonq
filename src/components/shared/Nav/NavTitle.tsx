@@ -5,7 +5,10 @@ import React, { useCallback } from 'react'
 import cn from 'clsx'
 import styles from './Nav.module.scss'
 
-export type NavTitleProps = Omit<ButtonProps, 'onClick' | 'placeholder'> & {
+export type NavTitleProps = Omit<
+  HTMLProps.button,
+  'onClick' | 'placeholder'
+> & {
   section: Section
   placeholder?: boolean
   ripples?: React.ReactNode

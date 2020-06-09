@@ -1,15 +1,17 @@
 const { resolve } = require('path')
-const getWebpackConfig = require('./config/webpack.config')
+const getWebpackConfig = require('../config/webpack.config')
 
 const styleLoader = require.resolve('style-loader')
 function isCss(regex) {
   return regex.test('abc.module.scss') || regex.test('abc.module.css')
 }
 
+const rules = getWebpackConfig('development').module.rules
+
 module.exports = (webpack) => {
   webpack.module.rules.push(
-    ...getWebpackConfig('development')
-      .module.rules.find((rule) => {
+    ...rules
+      .find((rule) => {
         return rule.oneOf
       })
       .oneOf.filter(({ test }) => {
@@ -20,7 +22,6 @@ module.exports = (webpack) => {
         }
       })
       .map((rule) => {
-        console.log(require.resolve('style-loader'))
         return {
           ...rule,
           use: rule.use.map((use) => {
@@ -28,6 +29,7 @@ module.exports = (webpack) => {
               if (use !== styleLoader) {
                 return use
               }
+
               return {
                 loader: use,
                 options: { hmr: false },
@@ -36,7 +38,7 @@ module.exports = (webpack) => {
             if (!use.loader || use.loader !== styleLoader) {
               return use
             }
-            console.log(use)
+
             return {
               ...use,
               options: {
@@ -47,39 +49,28 @@ module.exports = (webpack) => {
           }),
         }
       }),
+    {
+      test: /\.svg$/,
+      use: [
+        {
+          loader: '@svgr/webpack',
+          options: {
+            template: (
+              { template },
+              opts,
+              { imports, props, jsx },
+            ) => template.ast`
+                ${imports}
+                export const ReactComponent = (${props}) => (${jsx});
+              `,
+          },
+        },
+      ],
+    },
   )
-  // webpack.module.rules.push({
-  //   test: /\.module\.scss$/,
-  //   use: [
-  //     {
-  //       loader: require.resolve('style-loader'),
-  //       options: {
-  //         hmr: false,
-  //       },
-  //     },
-  //     {
-  //       loader: require.resolve('css-loader'),
-  //       options: {
-  //         importLoaders: 1,
-  //         modules: {
-  //           mode: 'local',
-  //         },
-  //       },
-  //     },
-  //     {
-  //       loader: require.resolve('sass-loader'),
-  //       options: {
-  //         implementation: require('sass'),
-  //         sassOptions: {
-  //           includePaths: [resolve(__dirname, './src')],
-  //         },
-  //       },
-  //     },
-  //   ],
-  // })
   webpack.resolve.modules = (
     webpack.resolve.modules || ['node_modules']
-  ).concat(resolve(__dirname, 'src'))
+  ).concat(resolve(__dirname, '../src'))
 
   return webpack
 }

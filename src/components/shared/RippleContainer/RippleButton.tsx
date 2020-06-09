@@ -4,7 +4,7 @@ import React, { useCallback } from 'react'
 import cn from 'clsx'
 import styles from './RippleContainer.module.scss'
 
-export interface RippleButtonProps extends ButtonProps {
+export interface RippleButtonProps extends HTMLProps.button {
   color?: string
   duration?: number
 }

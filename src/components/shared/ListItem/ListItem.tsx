@@ -19,7 +19,7 @@ export const ListItemNew = ({
   onClick,
   className,
   ...props
-}: Omit<ButtonProps, 'clidren'>) => {
+}: Omit<HTMLProps.button, 'clidren'>) => {
   const [makeRipple, ripples] = useRipples()
   const click = useCallback(
     (e) => {

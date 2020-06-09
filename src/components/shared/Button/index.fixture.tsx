@@ -5,29 +5,26 @@ import React from 'react'
 const onClick = () => alert("I'm working")
 export default {
   'Clean Button': <CleanButton onClick={onClick}>Hello</CleanButton>,
-  'Button Error': (
-    <Button onClick={onClick} color={'error'}>
-      Hello
-    </Button>
-  ),
-  'Button Primary': (
-    <Button onClick={onClick} color={'primary'}>
-      Hello
-    </Button>
-  ),
-  'Button Neutral': (
-    <Button onClick={onClick} color={'neutral'}>
-      Hello
-    </Button>
-  ),
-  'Button Incorrect': (
-    <Button onClick={onClick} color={'error'}>
-      Hello
-    </Button>
-  ),
-  'Button Disabled': (
-    <Button onClick={onClick} disabled>
-      Hello
-    </Button>
+  Button: (
+    <div
+      style={{
+        display: 'grid',
+        grid: 'repeat(6, auto) / 200px',
+        gridGap: '10px',
+      }}
+    >
+      <Button onClick={onClick} color={'primary'}>
+        Primary
+      </Button>
+      <Button onClick={onClick} color={'neutral'}>
+        Neutral
+      </Button>
+      <Button onClick={onClick} color={'error'}>
+        Error
+      </Button>
+      <Button onClick={onClick} disabled>
+        Disabled
+      </Button>
+    </div>
   ),
 }

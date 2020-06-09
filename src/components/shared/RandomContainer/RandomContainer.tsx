@@ -8,7 +8,7 @@ const classNames = [
   cssUtil.routeTransitionUp,
   cssUtil.routeTransitionDown,
 ]
-export default ({ className, ...props }: DivProps) => {
+export default ({ className, ...props }: HTMLProps.div) => {
   const animation = useMemo(() => Math.floor(Math.random() * 4), [])
   return <div className={cn(classNames[animation], className)} {...props} />
 }

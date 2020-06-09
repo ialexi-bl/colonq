@@ -8,7 +8,7 @@ import cn from 'clsx'
 import styles from './AppletOverlay.module.scss'
 
 const transitionDuration = parseInt(styles.settingsTransitionDuration)
-export type OverlayButtonProps = ButtonProps & {
+export type OverlayButtonProps = HTMLProps.button & {
   setOpen: (open: boolean) => unknown
 }
 export type OverlayCloseButtonProps = {

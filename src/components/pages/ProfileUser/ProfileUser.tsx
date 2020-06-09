@@ -1,8 +1,8 @@
 import { AppState } from 'store/types'
 import { Button } from 'components/shared/Button'
 import { Endpoints } from 'config/endpoints'
-import { LoginLink } from 'components/form/LoginLink'
 import { PageContainer } from 'components/shared/Page'
+import { SocialLoginButton } from 'components/form/SocialLoginButton'
 import { Title } from 'components/shared/Title'
 import { cssUtil } from 'styles'
 import { notifyInfo } from 'store/view'
@@ -78,7 +78,7 @@ export default function ProfileUser() {
         )}
       >
         <div className={cssUtil.routeTransitionLeft}>
-          <LoginLink
+          <SocialLoginButton
             href={'#'}
             onClick={() =>
               (window.location.href = Endpoints.OAuth.link.google(
@@ -89,7 +89,7 @@ export default function ProfileUser() {
             provider={'google'}
             className={styles.LinkAccount}
           />
-          <LoginLink
+          <SocialLoginButton
             href={Endpoints.OAuth.link.vk(ApiClient.getToken()!)}
             disabled={providers.includes('vk')}
             provider={'vk'}

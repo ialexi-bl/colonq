@@ -3,7 +3,7 @@ import React from 'react'
 import cn from 'clsx'
 import styles from './ChoiceButton.module.scss'
 
-export type ChoiceButtonProps = ButtonProps & {
+export type ChoiceButtonProps = HTMLProps.button & {
   correct?: undefined | null | boolean
 }
 

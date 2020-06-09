@@ -1,20 +1,20 @@
 import { cleanButton } from './CleanButton'
+import { noop } from 'util/noop'
 import React from 'react'
 import cn from 'clsx'
 import styles from './Button.module.scss'
 
-export type StyledButtonProps = ButtonProps & {
-  color?: 'primary' | 'incorrect' | 'error' | 'neutral'
+export type ButtonProps = HTMLProps.button & {
+  color?: 'primary' | 'error' | 'neutral'
 }
 
-const noop = () => {}
 export function Button({
   color = 'primary',
   className,
   disabled,
   onClick,
   ...props
-}: StyledButtonProps) {
+}: ButtonProps) {
   return (
     <button
       className={cn(

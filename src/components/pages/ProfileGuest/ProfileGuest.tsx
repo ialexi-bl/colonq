@@ -1,7 +1,7 @@
 import { AppState } from 'store/types'
 import { Endpoints } from 'config/endpoints'
-import { LoginLink } from 'components/form/LoginLink'
 import { PageContainer } from 'components/shared/Page'
+import { SocialLoginButton } from 'components/form/SocialLoginButton'
 import { Title } from 'components/shared/Title'
 import { cssUtil } from 'styles'
 import { profile } from 'config/routes'
@@ -34,12 +34,12 @@ export default function ProfileGuest() {
         <p>
           Войди, чтобы настройки синхронизировались на нескольких устройствах
         </p>
-        <LoginLink
+        <SocialLoginButton
           href={Endpoints.OAuth.google}
           className={styles.AuthButton}
           provider={'google'}
         />
-        <LoginLink
+        <SocialLoginButton
           href={Endpoints.OAuth.vk}
           className={styles.AuthButton}
           provider={'vk'}

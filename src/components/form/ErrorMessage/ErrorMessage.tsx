@@ -3,7 +3,9 @@ import React from 'react'
 import cn from 'clsx'
 import styles from './ErrorMessage.module.scss'
 
-export type ErrorMessageProps = DivProps & { message?: string | null }
+export type ErrorMessageProps = HTMLProps.div & {
+  message?: string | null
+}
 
 export const ErrorMessage = ({
   message = null,

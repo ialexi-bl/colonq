@@ -8,7 +8,7 @@ export const cleanButton = styles.CleanButton
  * Button without native browser styles
  * @param props
  */
-export const CleanButton = forwardRef<HTMLButtonElement, ButtonProps>(
+export const CleanButton = forwardRef<HTMLButtonElement, HTMLProps.button>(
   ({ className, ...props }, ref) => (
     <button
       className={cn(styles.CleanButton, className)}
