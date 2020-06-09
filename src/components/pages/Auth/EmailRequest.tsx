@@ -1,6 +1,6 @@
 import { Button } from 'components/shared/Button'
-import { ErrorMessage } from 'components/shared/ErrorMessage'
-import { Input } from 'components/shared/Input'
+import { ErrorMessage } from 'components/form/ErrorMessage'
+import { Input } from 'components/form/Input'
 import { Title } from 'components/shared/Title'
 import { emailRegex } from 'config/regex'
 import React, { useState } from 'react'

@@ -1,5 +1,5 @@
 import { cleanButton } from 'components/shared/Button'
-import React, { forwardRef } from 'react'
+import React from 'react'
 import cn from 'clsx'
 import styles from './ChoiceButton.module.scss'
 

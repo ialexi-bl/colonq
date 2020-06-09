@@ -1,6 +1,6 @@
 import { AppState } from 'store/types'
 import { Endpoints } from 'config/endpoints'
-import { LoginLink } from 'components/shared/LoginLink'
+import { LoginLink } from 'components/form/LoginLink'
 import { PageContainer } from 'components/shared/Page'
 import { Title } from 'components/shared/Title'
 import { cssUtil } from 'styles'

@@ -1,4 +1,3 @@
-@use 'styles/mixins/touch-bg';
 @use 'styles/variables/colors';
 @use 'styles/variables/dims';
 
@@ -8,32 +7,34 @@ $shadow: transparentize($color, 0.6);
 $size: 1.2rem;
 $half: $size / 2 + 0.1;
 
-.Dot {
-  @include touch-bg.disable;
-  cursor: pointer;
-  display: inline-block;
+.CheckboxInput {
+  opacity: 0;
+  size: 0;
+}
+
+.Checkbox {
+  composes: disable-touch-bg from '~styles/util/touch-bg.scss';
+  composes: rounded from '~styles/util/rounded.scss';
+
   size: $size;
-  background: transparent;
+  cursor: pointer;
   border: 2px solid $color;
-  border-radius: 0.3rem;
-  margin-right: 1rem;
   box-shadow: inset 0 0 0 0 $color, 0 0 0 0 $shadow;
   transition: box-shadow 150ms, border-color 100ms;
 
-  &:focus {
-    // border-color: colors.$focus;
+  // To retain width
+  display: inline-block;
+
+  input:focus ~ & {
     outline: none;
     box-shadow: inset 0 0 0 0 $color, 0 0 0 3px $shadow;
   }
 
-  &.Active {
+  input:checked ~ & {
     box-shadow: inset 0 0 0 $half $color;
-
-    &:focus {
-      box-shadow: inset 0 0 0 $half $color, 0 0 0 3px $shadow;
-    }
   }
-}
-.Input {
-  display: none;
+
+  input:focus:checked ~ & {
+    box-shadow: inset 0 0 0 $half $color, 0 0 0 3px $shadow;
+  }
 }

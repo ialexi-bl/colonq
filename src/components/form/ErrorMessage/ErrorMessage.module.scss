@@ -1,0 +1,42 @@
+@use 'styles/variables/colors';
+
+$transition-duration: 200ms;
+
+.Container {
+  overflow-y: hidden;
+  position: relative;
+  width: 100%;
+  height: 0;
+  transition: height $transition-duration;
+}
+.active {
+  height: 1.1em;
+}
+
+.ErrorMessage {
+  height: 1.1em;
+  color: colors.$error;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(0);
+  animation: appear $transition-duration;
+}
+
+.hidden {
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: transform $transition-duration, opacity $transition-duration;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0);
+  }
+}

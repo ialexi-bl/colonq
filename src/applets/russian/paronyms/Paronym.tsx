@@ -1,4 +1,4 @@
-import { Input } from 'components/shared/Input'
+import { Input } from 'components/form/Input'
 import { TwoLatestDisplayViewProps } from 'components/applets/TwoLatestDisplay'
 import { Word } from 'services/app-data/WordsManager.types'
 import React, { memo, useMemo, useState } from 'react'

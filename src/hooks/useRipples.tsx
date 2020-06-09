@@ -21,11 +21,7 @@ export const useRipples = ({
   duration = 850,
   color = 'rgba(0,0,0,.17)',
   maxSize = Infinity,
-}: RippleOptions = {}): [
-  React.MouseEventHandler<HTMLElement>,
-  React.ReactNode,
-  () => unknown,
-] => {
+}: RippleOptions = {}) => {
   const [ripples, setRipples] = useState<IRipple[]>([])
   const clear = useCallback(() => setRipples([]), [])
   const makeRipple = useCallback(
@@ -58,5 +54,5 @@ export const useRipples = ({
     makeRipple,
     ripples.map((ripple, i) => <Ripple key={i} {...ripple} />),
     clear,
-  ]
+  ] as const
 }

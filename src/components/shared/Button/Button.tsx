@@ -4,13 +4,13 @@ import cn from 'clsx'
 import styles from './Button.module.scss'
 
 export type StyledButtonProps = ButtonProps & {
-  color?: 'primary' | 'deny' | 'disabled' | 'neutral'
+  color?: 'primary' | 'incorrect' | 'error' | 'neutral'
 }
 
-const prevent = (e: React.SyntheticEvent) => e.preventDefault()
+const noop = () => {}
 export function Button({
-  className,
   color = 'primary',
+  className,
   disabled,
   onClick,
   ...props
@@ -23,7 +23,7 @@ export function Button({
         styles.Button,
         disabled ? styles.disabled : styles[color],
       )}
-      onClick={disabled ? prevent : onClick}
+      onClick={disabled ? noop : onClick}
       {...props}
     />
   )

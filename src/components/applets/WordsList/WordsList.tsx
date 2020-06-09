@@ -1,4 +1,4 @@
-import { Input } from 'components/shared/Input'
+import { Input } from 'components/form/Input'
 import { WordsListEditor, WordsListEditorProps } from './WordsListEditor'
 import { WordsSearch } from './WordsSearch'
 import React, { useRef, useState } from 'react'

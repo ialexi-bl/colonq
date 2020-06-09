@@ -5,7 +5,7 @@ import styles from './Button.module.scss'
 export const cleanButton = styles.CleanButton
 
 /**
- * Button w/o native browser styles
+ * Button without native browser styles
  * @param props
  */
 export const CleanButton = forwardRef<HTMLButtonElement, ButtonProps>(

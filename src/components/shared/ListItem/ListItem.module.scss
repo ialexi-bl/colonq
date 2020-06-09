@@ -1,6 +1,5 @@
 @use 'styles/variables/dims';
 @use 'styles/variables/colors';
-@use 'styles/mixins/touch-bg';
 @use 'sass:math';
 
 // These units must be rem, otherwise logic in editable list breaks
@@ -22,7 +21,8 @@ $size: 3rem;
 }
 
 .ListItemNew {
-  @include touch-bg.disable;
+  composes: disable-touch-bg from '~styles/util/touch-bg.scss';
+
   width: 100%;
   cursor: pointer;
   justify-content: center;
@@ -40,7 +40,8 @@ $size: 3rem;
 }
 
 .ListCheckboxLabel {
-  @include touch-bg.disable;
+  composes: disable-touch-bg from '~styles/util/touch-bg.scss';
+
   align-items: center;
   cursor: pointer;
   display: flex;

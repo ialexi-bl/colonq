@@ -1,0 +1,56 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/dims';
+
+$correct: colors.$correct;
+$border: colors.$accent;
+$error: colors.$error;
+$placeholder-color: rgba(255, 255, 255, 0.5);
+
+.Input {
+  composes: reset-input from '~styles/util/reset.scss';
+
+  transition: box-shadow 150ms, border-radius 150ms;
+  box-shadow: 0 0 0 0 $border, inset 0 -3px $border;
+  padding: 0.5em 0.8em;
+  border-radius: 0;
+  width: 100%;
+
+  &:-ms-placeholder {
+    color: $placeholder-color;
+  }
+  &::-ms-placeholder {
+    color: $placeholder-color;
+  }
+  &:-moz-placeholder {
+    color: $placeholder-color;
+  }
+  &::-moz-placeholder {
+    color: $placeholder-color;
+  }
+  &::-webkit-placeholder {
+    color: $placeholder-color;
+  }
+  &::placeholder {
+    color: $placeholder-color;
+  }
+
+  &:focus {
+    border-radius: dims.$border-radius;
+    box-shadow: 0 0 0 3px $border, inset 0 0 $border;
+  }
+}
+
+.invalid {
+  box-shadow: 0 0 0 0 $error, inset 0 -3px $error;
+
+  &:focus {
+    box-shadow: 0 0 0 3px $error, inset 0 0 $error;
+  }
+}
+.valid {
+  box-shadow: 0 0 0 0 $correct, inset 0 -3px $correct;
+
+  &:focus {
+    box-shadow: 0 0 0 3px $correct, inset 0 0 $correct;
+  }
+}

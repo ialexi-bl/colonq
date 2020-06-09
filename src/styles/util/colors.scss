@@ -1,0 +1,35 @@
+@use 'styles/variables/colors';
+
+.text-primary {
+  color: colors.$text;
+}
+.bg-primary {
+  background: colors.$primary;
+}
+.bg-primary-lighter {
+  background: colors.$primary-lighter;
+}
+.bg-primary-darker {
+  background: colors.$primary-darker;
+}
+.bg-primary {
+  background: colors.$primary;
+}
+.bg-accent {
+  background: colors.$accent;
+}
+.bg-accent-darker {
+  background: colors.$accent-darker;
+}
+.bg-disabled {
+  background: colors.$disabled;
+}
+.bg-incorrect {
+  background: colors.$incorrect;
+}
+.bg-correct {
+  background: colors.$correct;
+}
+.bg-error-darker {
+  background: colors.$error-darker;
+}

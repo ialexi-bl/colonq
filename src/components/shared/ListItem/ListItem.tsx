@@ -1,5 +1,5 @@
 import { Add } from 'components/icons/Add'
-import { Checkbox, CheckboxProps } from 'components/shared/Checkbox'
+import { Checkbox, CheckboxProps } from 'components/form/Checkbox'
 import { CleanButton } from 'components/shared/Button'
 import { Unfold } from 'components/icons/Unfold'
 import { useRipples } from 'hooks/useRipples'

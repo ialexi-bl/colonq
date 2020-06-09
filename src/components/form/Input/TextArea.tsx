@@ -1,4 +1,4 @@
-import React, { TextareaHTMLAttributes, useCallback } from 'react'
+import React, { TextareaHTMLAttributes } from 'react'
 import cn from 'clsx'
 import styles from './Input.module.scss'
 
@@ -7,7 +7,7 @@ export type InputProps = Omit<
   'onChange'
 > & {
   invalid?: boolean
-  onChange?: (value: string, e: React.KeyboardEvent) => unknown
+  onChange?: (value: string, e: React.ChangeEvent) => unknown
 }
 
 /**
@@ -22,10 +22,10 @@ export const TextArea = ({
   ...props
 }: InputProps) => (
   <textarea
-    tabIndex={0}
     rows={5}
-    className={cn(className, styles.Input, invalid && styles.Invalid)}
-    onChange={useCallback((e) => onChange?.(e.target.value, e), [onChange])}
+    tabIndex={0}
+    className={cn(className, styles.Input, invalid && styles.invalid)}
+    onChange={onChange && ((e) => onChange(e.target.value, e))}
     {...props}
   />
 )

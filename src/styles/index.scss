@@ -1,4 +1,3 @@
-@use './mixins/touch-bg';
 @use './mixins/center-content';
 @use './mixins/media';
 @use './variables/colors';
@@ -52,7 +51,7 @@ input,
 select,
 svg,
 a {
-  @include touch-bg.disable;
+  -webkit-tap-highlight-color: transparent;
 }
 
 p {

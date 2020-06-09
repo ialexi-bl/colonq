@@ -1,0 +1,21 @@
+.reset-button,
+.reset-input {
+  background: unset;
+  border: none;
+  color: inherit;
+  font: inherit;
+
+  &:focus {
+    outline: none;
+  }
+  &:active {
+    outline: none;
+  }
+}
+.reset-button {
+  cursor: pointer;
+
+  &::-moz-focus-inner {
+    border: 0;
+  }
+}

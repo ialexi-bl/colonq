@@ -2,7 +2,6 @@
 @use 'styles/variables/colors';
 
 @mixin active-button($color) {
-  background: $color !important;
   box-shadow: 0 0 $color;
 
   &:hover {
@@ -16,41 +15,31 @@
 }
 
 .CleanButton {
-  background: none;
-  color: inherit;
-  border: none;
-  font: inherit;
-  cursor: pointer;
-
-  &::-moz-focus-inner {
-    border: 0;
-  }
-  &:focus {
-    outline: none;
-  }
-  &:active {
-    outline: none;
-  }
+  composes: reset-button from '~styles/util/reset.scss';
 }
 
 .Button {
-  border-radius: dims.$border-radius;
+  composes: text-primary from '~styles/util/colors.scss';
+  composes: rounded from '~styles/util/rounded.scss';
   padding: 0.6rem 1rem;
-  transition: 150ms;
-  font-size: 1.2rem;
+  font-size: 1.2em;
   transition: 200ms;
+}
 
-  &.primary {
-    @include active-button(colors.$accent-darker);
-  }
-  &.neutral {
-    @include active-button(colors.$primary-lighter);
-  }
-  &.deny {
-    @include active-button(colors.$deny);
-  }
-  &.disabled {
-    $color: #787181;
-    background: $color;
-  }
+/* Variants */
+.primary {
+  composes: bg-accent-darker from '~styles/util/colors.scss';
+  @include active-button(colors.$accent-darker);
+}
+.neutral {
+  composes: bg-primary-lighter from '~styles/util/colors.scss';
+  @include active-button(colors.$primary-lighter);
+}
+.error {
+  composes: bg-error-darker from '~styles/util/colors.scss';
+  @include active-button(colors.$error-darker);
+}
+.disabled {
+  composes: bg-disabled from '~styles/util/colors.scss';
+  cursor: default;
 }
