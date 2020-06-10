@@ -2,9 +2,9 @@ import {
   CookiesNotification,
   NotificationToaster,
 } from './shared/NotificationToaster'
-import { RouteLoading } from './shared/Loading'
+import { Menu } from './shared/Menu'
+import { RouteLoading } from './shared/RouteLoading'
 import { Router } from './Router'
-import { Sidebar } from './shared/Sidebar'
 import { auth, verifyEmail } from 'config/routes'
 import { authenticate, unauthenticate } from 'store/auth'
 import { hideLoading, notifyError } from 'store/view'
@@ -78,7 +78,7 @@ export function App({ maintenance }: { maintenance?: boolean }) {
 
   return (
     <div id={'app'}>
-      <Sidebar />
+      <Menu />
       <Router />
       <RouteLoading />
       <CookiesNotification />

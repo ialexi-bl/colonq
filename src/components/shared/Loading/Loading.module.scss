@@ -1,13 +1,8 @@
 .Logo {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: opacity 300ms;
-  opacity: 1;
+  max-height: 8rem;
+  max-width: 8rem;
 
   svg {
     size: 100%;
-    max-height: 8rem;
-    max-width: 8rem;
   }
 }

@@ -1,6 +1,5 @@
 import { CSSTransition } from 'react-transition-group'
 import { Notification } from './Notification'
-import { NotificationDescription } from 'store/view'
 import React, { useState } from 'react'
 
 export function CookiesNotification() {
@@ -22,8 +21,10 @@ export function CookiesNotification() {
       appear
     >
       <Notification
-        notification={notification}
+        type={type}
+        text={text}
         close={() => {
+          // If localStorage is unavailable the notification is not shown
           localStorage.setItem(COOKIES_ACCEPTED, '1')
           setShown(false)
         }}
@@ -33,9 +34,7 @@ export function CookiesNotification() {
 }
 
 const COOKIES_ACCEPTED = 'cookies-accepted'
-const notification: NotificationDescription = {
-  type: 'info',
-  hash: 0,
-  text:
-    'ColonQ использует файлы cookie для хранения данных. Продолжая использование, ты даёшь согласие на работу с ними',
-}
+const type = 'info'
+const text =
+  'ColonQ использует файлы cookie для хранения данных. ' +
+  'Продолжая использование, ты даёшь согласие на работу с ними'

@@ -1,3 +1,2 @@
-export * from './NotificationToaster'
-export * from './Notification'
+export * from './Toaster'
 export * from './CookiesNotification'

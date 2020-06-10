@@ -3,16 +3,21 @@
 @use 'styles/variables/colors';
 @use 'styles/variables/elevation';
 
-.Container {
+.Notification {
+  composes: text-primary from '~styles/util/colors.scss';
+
   z-index: elevation.$notification;
-  display: flex;
-  padding: 0.5rem 2rem 1rem;
+  padding: 1.5em 2em;
   font-size: 1.2rem;
-  min-height: 6rem;
   box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.4);
   background: colors.$accent-darker;
-  align-items: center;
+  transition: transform 300ms;
   line-height: 120%;
+
+  position: fixed;
+  right: 0;
+  left: 0;
+  top: 0;
 
   @include transition.self(notification, (exit, enter-to, appear-to)) {
     transform: translate(0, 0);
@@ -20,30 +25,27 @@
   @include transition.self(notification, (exit-to, from)) {
     transform: translate(0, -100%);
   }
+
   @include media.md {
+    top: auto;
+    bottom: 0;
     @include transition.self(notification, (exit-to, from)) {
       transform: translate(0, 100%);
     }
   }
-  @include transition.self(notification, (to, exit-to)) {
-    transition: transform 300ms;
-  }
-
-  position: fixed 0 0 *;
-  @include media.md {
-    top: auto;
-    bottom: 0;
-  }
 }
-.Error {
+.error {
   background: colors.$error-darker;
 }
-.Close {
+
+.DismissButton {
   size: 3rem;
   color: colors.$action;
   padding: 0.8rem;
   transition: color 100ms;
-  position: absolute 0 0 * *;
+  position: absolute;
+  right: 0;
+  top: 0;
 
   &:hover {
     color: colors.$hover;

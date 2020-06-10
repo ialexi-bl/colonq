@@ -1,2 +1,2 @@
 export * from './Page'
-export { default as PageContainer } from './PageContainer'
+export * from './PageContainer'

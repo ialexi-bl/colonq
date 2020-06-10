@@ -16,6 +16,7 @@ declare namespace NodeJS {
 declare namespace HTMLProps {
   type button = React.ButtonHTMLAttributes<HTMLButtonElement>
   type div = React.HTMLAttributes<HTMLDivElement>
+  type svg = React.SVGAttributes<SVGSVGElement>
   type a = React.AnchorHTMLAttributes<HTMLAnchorElement>
 }
 

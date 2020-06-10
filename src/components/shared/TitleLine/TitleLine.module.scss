@@ -1,24 +1,19 @@
-@use 'styles/mixins/media';
 @use 'styles/variables/colors';
 @use 'styles/variables/time';
 
-.Page {
-  size: 100%;
+.Container {
+  size: 100% 95vh;
+  display: flex;
+  align-items: center;
   padding-bottom: 3%;
 }
-.Line {
-  box-shadow: 0 0 15px colors.$shadow;
-  background: colors.$primary-lighter;
-  padding: 3rem 2rem;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  transition: background time.$route-transition-duration;
 
-  min-height: 20rem;
-  @include media.md {
-    min-height: 25rem;
-  }
+.Line {
+  composes: bg-primary-lighter from '~styles/util/colors.scss';
+
+  box-shadow: 0 0 15px colors.$shadow;
+  padding: 3rem 2rem;
+  width: 100%;
+
+  min-height: 10rem;
 }

@@ -22,10 +22,13 @@ export const NotificationToaster = () => {
 
   useEffect(() => {
     if (notification) {
-      const hash = notification.hash
+      const { text } = notification
       const timeout = setTimeout(() => {
-        current.current?.hash === hash && dispatch(closeNotification())
+        if (current.current?.text === text) {
+          dispatch(closeNotification())
+        }
       }, 8000)
+
       return () => clearTimeout(timeout)
     }
   }, [dispatch, notification])
@@ -36,10 +39,14 @@ export const NotificationToaster = () => {
         <CSSTransition
           timeout={300}
           classNames={'notification'}
-          key={notification.hash}
+          key={notification.text}
           appear
         >
-          <Notification notification={notification} close={close} />
+          <Notification
+            text={notification.text}
+            type={notification.type}
+            close={close}
+          />
         </CSSTransition>
       )}
     </TransitionGroup>

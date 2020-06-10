@@ -24,6 +24,7 @@ export const WordEditor = memo(
     ref,
   ) {
     return (
+      // TODO: change to Box
       <ListItem
         ref={ref}
         style={style}

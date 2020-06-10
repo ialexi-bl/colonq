@@ -1,3 +1,5 @@
+@use 'styles/variables/colors';
+
 @keyframes ellipse {
   from {
     stroke-dashoffset: 40;
@@ -46,4 +48,13 @@
 .logoQTail {
   stroke-dasharray: 456;
   animation: path 2s ease-in-out infinite;
+}
+
+.logoQBody,
+.logoDot1,
+.logoDot2,
+.logoQTail {
+  /* Allow stopping animation from wrapper component */
+  animation-play-state: inherit;
+  color: colors.$text;
 }

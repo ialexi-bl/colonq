@@ -1,9 +1,9 @@
 import {
-  ActiveTitleLetter,
-  RedTitleLetter,
-  StyledTitle,
-  TitleLetter,
-} from 'components/shared/StyledTitle'
+  ActiveLetter,
+  Letter,
+  LetterTitle,
+  WrongLetter,
+} from 'components/shared/LetterTitle'
 import { PageContainer } from 'components/shared/Page'
 import { Subtitle } from 'components/shared/Subtitle'
 import { TitleLine } from 'components/shared/TitleLine'
@@ -12,14 +12,14 @@ import React from 'react'
 export default () => (
   <PageContainer>
     <TitleLine>
-      <StyledTitle>
-        <TitleLetter>C</TitleLetter>
-        <ActiveTitleLetter>O</ActiveTitleLetter>
-        <TitleLetter>L</TitleLetter>
-        <ActiveTitleLetter>O</ActiveTitleLetter>
-        <TitleLetter>N</TitleLetter>
-        <RedTitleLetter>Q</RedTitleLetter>
-      </StyledTitle>
+      <LetterTitle>
+        <Letter>C</Letter>
+        <ActiveLetter>O</ActiveLetter>
+        <Letter>L</Letter>
+        <ActiveLetter>O</ActiveLetter>
+        <Letter>N</Letter>
+        <WrongLetter>Q</WrongLetter>
+      </LetterTitle>
       <Subtitle>Сайт на техобслуживании</Subtitle>
     </TitleLine>
   </PageContainer>

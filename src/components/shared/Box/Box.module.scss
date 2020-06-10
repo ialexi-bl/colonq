@@ -1,0 +1,8 @@
+@use 'styles/variables/colors';
+
+.Box {
+  composes: rounded from '~styles/util/rounded.scss';
+
+  padding: 1em;
+  background: colors.$primary-lighter;
+}

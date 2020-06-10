@@ -1,9 +1,9 @@
 import {
-  ActiveTitleLetter,
-  RedTitleLetter,
-  StyledTitle,
-  TitleLetter,
-} from 'components/shared/StyledTitle'
+  ActiveLetter,
+  Letter,
+  LetterTitle,
+  WrongLetter,
+} from 'components/shared/LetterTitle'
 import { CUTE_FACE } from 'config/view'
 import { Endpoints } from 'config/endpoints'
 import { PageContainer } from 'components/shared/Page'
@@ -71,15 +71,15 @@ export class Boundary extends React.Component<
     return (
       <PageContainer className={styles.Boundary}>
         <TitleLine className={cssUtil.routeTransitionBgOpacity}>
-          <StyledTitle
+          <LetterTitle
             className={cn(cssUtil.routeTransitionDown, styles.Title)}
           >
-            <ActiveTitleLetter>E</ActiveTitleLetter>
-            <TitleLetter>R</TitleLetter>
-            <TitleLetter>R</TitleLetter>
-            <RedTitleLetter>O</RedTitleLetter>
-            <TitleLetter>R</TitleLetter>
-          </StyledTitle>
+            <ActiveLetter>E</ActiveLetter>
+            <Letter>R</Letter>
+            <Letter>R</Letter>
+            <WrongLetter>O</WrongLetter>
+            <Letter>R</Letter>
+          </LetterTitle>
           <Subtitle
             className={cn(cssUtil.routeTransitionDown, styles.Subtitle)}
           >

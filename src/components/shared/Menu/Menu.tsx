@@ -12,13 +12,13 @@ import { toggleNav } from 'store/view'
 import { useDispatch, useSelector } from 'react-redux'
 import React, { useCallback, useEffect, useRef } from 'react'
 import cn from 'clsx'
-import styles from './Sidebar.module.scss'
+import styles from './Menu.module.scss'
 
 /**
  * Main sidebar, provides access to navigation menu,
  * manages browser location when switching navigation
  */
-export default () => {
+export function Menu() {
   const dispatch = useDispatch()
   const location = useLocation()
   const [open, { authenticated, loading }] = useSelector((state: AppState) => [

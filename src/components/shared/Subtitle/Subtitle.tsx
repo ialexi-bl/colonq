@@ -3,6 +3,8 @@ import React from 'react'
 import cn from 'clsx'
 import styles from './Subtitle.module.scss'
 
+// TODO: maybe delete subtitle cause the only thing it does
+// is aligns text in the center
 export default ({
   children,
   className,

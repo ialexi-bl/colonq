@@ -10,7 +10,7 @@
   &:focus,
   &:active {
     background: darken($color, 4%);
-    box-shadow: 0 0 0 3px transparentize($color, 0.3);
+    box-shadow: 0 0 0 3px transparentize($color, 0.6);
   }
 }
 

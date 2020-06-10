@@ -1,9 +1,9 @@
 import {
-  ActiveTitleLetter,
-  GreenTitleLetter,
-  StyledTitle,
-  TitleLetter,
-} from 'components/shared/StyledTitle'
+  ActiveLetter,
+  CorrectLetter,
+  Letter,
+  LetterTitle,
+} from 'components/shared/LetterTitle'
 import { Button } from 'components/shared/Button'
 import { PageContainer } from 'components/shared/Page'
 import { Subtitle } from 'components/shared/Subtitle'
@@ -21,15 +21,15 @@ export default function Index() {
     <PageContainer className={styles.Index}>
       <div className={styles.TitleContainer}>
         <TitleLine className={cssUtil.routeTransitionBgOpacity}>
-          <StyledTitle className={cssUtil.routeTransitionLeft}>
-            <TitleLetter>C</TitleLetter>
-            <ActiveTitleLetter>O</ActiveTitleLetter>
-            <TitleLetter>L</TitleLetter>
-            <ActiveTitleLetter>O</ActiveTitleLetter>
-            <TitleLetter>N</TitleLetter>
-            <GreenTitleLetter>Q</GreenTitleLetter>
+          <LetterTitle className={cssUtil.routeTransitionLeft}>
+            <Letter>C</Letter>
+            <ActiveLetter>O</ActiveLetter>
+            <Letter>L</Letter>
+            <ActiveLetter>O</ActiveLetter>
+            <Letter>N</Letter>
+            <CorrectLetter>Q</CorrectLetter>
             <sub className={styles.Version}>α</sub>
-          </StyledTitle>
+          </LetterTitle>
           <Subtitle className={cssUtil.routeTransitionLeft}>
             Твоя лучшая подружка в усвоении знаний
           </Subtitle>

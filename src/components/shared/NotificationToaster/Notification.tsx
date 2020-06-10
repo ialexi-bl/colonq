@@ -1,27 +1,31 @@
 import { CleanButton } from 'components/shared/Button'
 import { Close } from 'components/icons/Close'
-import { NotificationDescription } from 'store/view'
+import { NotificationType } from 'store/view'
 import React from 'react'
 import cn from 'clsx'
 import styles from './Notification.module.scss'
 
-export function Notification({
-  notification,
-  close,
-}: {
-  notification: NotificationDescription
+export type NotificationProps = {
+  text: string
+  type: NotificationType
   close: () => unknown
-}) {
+}
+
+export function Notification({ text, type, close }: NotificationProps) {
   return (
     <div
-      className={cn(styles.Container, {
-        [styles.Error]: notification.type === 'error',
+      className={cn(styles.Notification, {
+        [styles.error]: type === 'error',
       })}
     >
-      <CleanButton className={styles.Close} onClick={close}>
+      <CleanButton
+        className={styles.DismissButton}
+        onClick={close}
+        title={'Закрыть'}
+      >
         <Close />
       </CleanButton>
-      {notification.text}
+      {text}
     </div>
   )
 }

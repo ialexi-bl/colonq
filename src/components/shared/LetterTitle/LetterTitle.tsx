@@ -6,9 +6,11 @@ import {
 } from 'components/applets/ChoiceButton'
 import React from 'react'
 import cn from 'clsx'
-import styles from './StyledTitle.module.scss'
+import styles from './LetterTitle.module.scss'
 
-export const StyledTitle = ({
+export type LetterProps = { children: string }
+
+export const LetterTitle = ({
   children,
   className,
 }: {
@@ -20,18 +22,17 @@ export const StyledTitle = ({
   </Title>
 )
 
-export const TitleLetter = ({ children }: { children: string }) => (
-  <div>{children}</div>
-)
-export const ActiveTitleLetter = ({ children }: { children: string }) => (
+// TODO: refactor choiceButton class names
+export const Letter = ({ children }: LetterProps) => <div>{children}</div>
+export const ActiveLetter = ({ children }: LetterProps) => (
   <div className={choiceButtonClassName}>{children}</div>
 )
-export const GreenTitleLetter = ({ children }: { children: string }) => (
+export const CorrectLetter = ({ children }: LetterProps) => (
   <div className={cn(choiceButtonClassName, choiceButtonCorrectClassName)}>
     {children}
   </div>
 )
-export const RedTitleLetter = ({ children }: { children: string }) => (
+export const WrongLetter = ({ children }: LetterProps) => (
   <div className={cn(choiceButtonClassName, choiceButtonIncorrectClassName)}>
     {children}
   </div>

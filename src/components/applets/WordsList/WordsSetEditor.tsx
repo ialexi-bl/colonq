@@ -21,6 +21,7 @@ export const WordsSetEditor = memo(
     ref,
   ) {
     return (
+      // TODO: change to Box
       <ListItem ref={ref} style={style} className={styles.Set}>
         <div className={styles.Content}>
           <ListCheckbox

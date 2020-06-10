@@ -18,12 +18,6 @@
 @mixin opacity {
   animation: anim-opacity time.$route-transition-duration;
   // Entering transitions are done with CSS animations
-  // @include route-transition.descendant(enter-from, exit-from) {
-  // transition: opacity time.$route-transition-duration !important;
-  // }
-  // @include route-transition.descendant(enter) {
-  // opacity: 0;
-  // }
   @include route-transition.descendant(/* enter-active,  */ exit) {
     opacity: 1;
   }
@@ -35,14 +29,6 @@
 @mixin bg {
   animation: anim-bg-opacity time.$route-transition-duration;
   // Entering transitions are done with CSS animations
-  // @include route-transition.descendant(enter-from, exit-from) {
-  // transition: background (time.$route-transition-duration) !important;
-  // }
-  // :global(.route-transition-enter):not(:global(.route-transition-enter-active))
-  // & {
-  // transition: background (time.$route-transition-duration) !important;
-  // background: transparent;
-  // }
   @include route-transition.descendant(exit-active) {
     transition: background (time.$route-transition-duration / 3) !important;
     background: transparent;
