@@ -1,5 +1,4 @@
 import { CSSTransition } from 'react-transition-group'
-import { useOnEscape } from 'hooks/use-on-escape'
 import React, { useEffect } from 'react'
 import styles from './Overlay.module.scss'
 
@@ -8,8 +7,8 @@ const className = styles.transitionClassName
 
 export type OverlayProps = {
   open: boolean
-  setOpen: (open: boolean) => unknown
   children: React.ReactNode
+  setOpen: (open: boolean) => unknown
 }
 
 /**

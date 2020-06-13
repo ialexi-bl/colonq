@@ -3,7 +3,6 @@
 @use 'styles/variables/colors';
 @use 'styles/variables/dims';
 @use 'styles/variables/elevation';
-@use 'sass:math';
 
 $background: colors.$primary;
 $class-name: overlay;
@@ -14,7 +13,7 @@ $duration: 300ms;
   transitionClassName: $class-name;
 }
 
-$size: (dims.$menu-size - 2 * 0.35rem);
+$size: dims.$menu-size;
 
 .OpenButton,
 .CloseButton {
@@ -24,7 +23,7 @@ $size: (dims.$menu-size - 2 * 0.35rem);
 
   border-radius: 50%;
   transition: color 150ms ease-in-out;
-  padding: 0.25rem;
+  padding: 0.5rem;
   color: colors.$action;
   size: $size;
 
@@ -37,7 +36,7 @@ $size: (dims.$menu-size - 2 * 0.35rem);
   }
 }
 .CloseButton {
-  padding: (math.round($size / 6 * 100) / 100);
+  padding: ($size / 4);
 }
 .Icon {
   size: 100%;
@@ -57,7 +56,7 @@ $size: (dims.$menu-size - 2 * 0.35rem);
   padding: 2rem;
   size: 100%;
 
-  transition-property: $duration opacity, $duration transform;
+  transition: $duration opacity, $duration transform;
   transform: translate(100%);
   opacity: 0;
 
