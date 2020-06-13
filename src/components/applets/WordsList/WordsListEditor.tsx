@@ -137,7 +137,6 @@ export const WordsListEditor = memo(function WordsListEditor({
     let current =
       wordIndex < 0 ? sets[setIndex] : sets[setIndex].words[wordIndex]
 
-    const afterAnimated = { current: 0 }
     const views: View[] = [item2view(current, setIndex, wordIndex)]
 
     const target = window.innerHeight / rem + extraItems * height
@@ -173,7 +172,6 @@ export const WordsListEditor = memo(function WordsListEditor({
               expanding: status[setIndex] in EXPANDED,
             })
           })
-          afterAnimated.current = items.length
 
           if (setIndex < sets.length - 1) {
             ++setIndex
