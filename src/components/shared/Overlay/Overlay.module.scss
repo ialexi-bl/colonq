@@ -1,0 +1,78 @@
+@use 'styles/mixins/transition';
+@use 'styles/mixins/route-transition';
+@use 'styles/variables/colors';
+@use 'styles/variables/dims';
+@use 'styles/variables/elevation';
+@use 'sass:math';
+
+$background: colors.$primary;
+$class-name: overlay;
+$duration: 300ms;
+
+:export {
+  transitionDuration: $duration;
+  transitionClassName: $class-name;
+}
+
+$size: (dims.$menu-size - 2 * 0.35rem);
+
+.OpenButton,
+.CloseButton {
+  position: fixed;
+  right: 0;
+  top: 0;
+
+  border-radius: 50%;
+  transition: color 150ms ease-in-out;
+  padding: 0.25rem;
+  color: colors.$action;
+  size: $size;
+
+  &:hover {
+    color: colors.$hover;
+  }
+  &:active,
+  &:focus {
+    color: colors.$focus;
+  }
+}
+.CloseButton {
+  padding: (math.round($size / 6 * 100) / 100);
+}
+.Icon {
+  size: 100%;
+  opacity: 0.75;
+}
+
+.Container {
+  // Overriding scrollbars position
+  position: fixed 0 !important;
+  overflow: hidden;
+}
+.Content {
+  $offset: 1rem;
+  $scale: 1.05;
+
+  background: $background;
+  padding: 2rem;
+  size: 100%;
+
+  transition-property: $duration opacity, $duration transform;
+  transform: translate(100%);
+  opacity: 0;
+
+  @include transition.descendant($class-name, (enter-to, exit)) {
+    opacity: 1;
+    transform: translate(0);
+  }
+  @include transition.descendant($class-name, (exit-active)) {
+    opacity: 0;
+    transform: translate(100%);
+  }
+
+  // Hide overlay when switching routes
+  @include route-transition.descendant(exit-active) {
+    opacity: 0;
+    transform: translate(100%);
+  }
+}

@@ -53,8 +53,8 @@ $background: colors.$primary;
 
 /* === Layout === */
 .Nav {
-  // position: fixed dims.$sidebar-size 0 0;
-  position: fixed 0 0 dims.$sidebar-size;
+  // position: fixed dims.$menu-size 0 0;
+  position: fixed 0 0 dims.$menu-size;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -65,7 +65,7 @@ $background: colors.$primary;
 
   @include media.md {
     right: auto;
-    top: dims.$sidebar-size;
+    top: dims.$menu-size;
     bottom: 0;
     width: 50%;
     min-width: 25rem;
@@ -141,7 +141,7 @@ $background: colors.$primary;
   }
   .Button {
     padding: 0.8rem;
-    size: dims.$sidebar-size;
+    size: dims.$menu-size;
   }
   .Icon {
     color: colors.$action;

@@ -3,5 +3,5 @@
   "webpack": {
     "overridePath": "cosmos/cosmos.webpack.js"
   },
-  "globalImports": ["cosmos/styles.js"]
+  "globalImports": ["cosmos/cosmos.styles.js"]
 }

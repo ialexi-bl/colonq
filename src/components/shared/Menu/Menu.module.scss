@@ -4,32 +4,15 @@
 @use 'styles/variables/dims';
 @use 'styles/variables/elevation';
 
-/* Design */
-.Sidebar {
-  background: colors.$sidebar;
-  padding: 0 10px;
-  // background: var(--color-3);
-
-  a,
-  button {
-    color: inherit;
-    border: none;
-    background: initial;
-    text-decoration: none;
-  }
-}
-.Backdrop {
-  background: rgba(0, 0, 0, 0.6);
-}
-
-/* Layout */
 .Sidebar {
   // position: fixed 0 0 * 0;
   position: fixed * 0 0 0;
   display: flex;
   z-index: elevation.$sidebar;
-  size: 100% dims.$sidebar-size;
+  size: 100% dims.$menu-size;
   border-top: 1px solid #444;
+  background: colors.$sidebar;
+  padding: 0 10px;
 
   @include media.md {
     top: 0;
@@ -39,48 +22,6 @@
     // box-shadow: 0 -10px 15px white;
   }
 
-  .Button {
-    size: dims.$sidebar-size;
-    font-size: 1.5rem;
-    transition: color 150ms;
-    color: colors.$action;
-
-    &:hover {
-      color: colors.$hover;
-    }
-    &:focus,
-    &:active {
-      outline: none;
-      color: colors.$focus;
-    }
-
-    &.ButtonLogo {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      &:hover {
-        background: none;
-      }
-    }
-    &.ButtonNav {
-      order: 3;
-      @include media.md {
-        order: unset;
-      }
-    }
-
-    &.ButtonUser {
-      margin-left: auto;
-      margin-top: auto;
-      opacity: 0;
-      transition: opacity 150ms;
-
-      &.Active {
-        opacity: 1;
-      }
-    }
-  }
   .Icon {
     size: 100%;
     padding: 0.8rem;
@@ -90,11 +31,55 @@
     padding: 2px;
   }
 }
+
+.Button {
+  size: dims.$menu-size;
+  font-size: 1.5rem;
+  transition: color 150ms;
+  color: colors.$action;
+
+  &:hover {
+    color: colors.$hover;
+  }
+  &:focus,
+  &:active {
+    outline: none;
+    color: colors.$focus;
+  }
+}
+
+.ButtonLogo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    background: none;
+  }
+}
+.ButtonNav {
+  order: 3;
+  @include media.md {
+    order: unset;
+  }
+}
+.ButtonUser {
+  margin-left: auto;
+  margin-top: auto;
+  opacity: 0;
+  transition: opacity 150ms;
+
+  &.Active {
+    opacity: 1;
+  }
+}
+
 .Backdrop {
   position: fixed 0;
   opacity: 0;
   display: none;
   z-index: elevation.$nav-backdrop;
+  background: rgba(0, 0, 0, 0.6);
 
   @include transition.self(backdrop, (enter)) {
     display: block;

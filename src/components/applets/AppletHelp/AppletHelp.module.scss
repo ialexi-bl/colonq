@@ -4,11 +4,11 @@
 .OpenButton {
   // Moving it to the left of settings button
   transform: translate(-100%);
-  bottom: dims.$sidebar-size;
+  bottom: dims.$menu-size;
 
   @include media.md {
     bottom: auto;
-    top: dims.$sidebar-size;
+    top: dims.$menu-size;
   }
 }
 

@@ -2,11 +2,11 @@
 @use 'styles/variables/dims';
 
 .OpenButton {
-  bottom: dims.$sidebar-size;
+  bottom: dims.$menu-size;
 
   @include media.md {
     bottom: auto;
-    top: dims.$sidebar-size;
+    top: dims.$menu-size;
   }
 }
 

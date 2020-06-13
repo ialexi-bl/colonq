@@ -8,11 +8,11 @@
   position: relative;
   size: 100%;
 
-  padding-bottom: dims.$sidebar-size;
+  padding-bottom: dims.$menu-size;
 
   @include media.md {
     padding-bottom: 0;
-    padding-top: dims.$sidebar-size;
+    padding-top: dims.$menu-size;
   }
 
   &.no-padding {
