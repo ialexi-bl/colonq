@@ -5,16 +5,17 @@ import {
   ViewType,
   VirtualizedListOptions,
   VirtualizedView,
-} from './types'
+} from './internal-types'
+import { Ref } from 'react'
 
 export function toggleStatus(status: ItemAnimationStatus[], i: number) {
   const newStatus = [...status]
   const s = status[i]
 
   if (s in EXPANDED) {
-    newStatus[i] = ItemAnimationStatus.FOLDING
+    newStatus[i] = ItemAnimationStatus.COLLAPSING
   } else if (s in COLLAPSED) {
-    newStatus[i] = ItemAnimationStatus.UNFOLDING
+    newStatus[i] = ItemAnimationStatus.EXPANDING
   } else {
     return status
   }
@@ -63,6 +64,8 @@ export function findNestedItem<TData, TItem>(
 export const getView = (
   groupIndex: number,
   itemIndex: number,
+  top: number,
+  ref?: Ref<HTMLElement>,
   animating?: boolean,
 ): VirtualizedView => ({
   type:
@@ -73,4 +76,32 @@ export const getView = (
       : ViewType.ITEM,
   groupIndex,
   itemIndex,
+  ref,
+  top,
 })
+
+export function getRefFactory(itemsHeight: number) {
+  const controller = {
+    items: [] as [number, HTMLElement][],
+    started: false,
+    addElement(i: number, e: HTMLElement) {
+      this.items.push([i, e])
+      if (this.started) return
+
+      this.started = true
+      this.countdown()
+    },
+    countdown() {
+      setTimeout(() => {
+        for (const [i, e] of this.items) {
+          e.style.transform = `translateY(${i * itemsHeight}px)`
+        }
+      }, 10)
+    },
+  }
+
+  return (i: number) => (e: HTMLElement | null) => {
+    if (!e) return
+    controller.addElement(i, e)
+  }
+}

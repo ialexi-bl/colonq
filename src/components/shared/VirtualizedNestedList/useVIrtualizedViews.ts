@@ -1,15 +1,21 @@
 import {
   ANIMATING,
-  COLLAPSED,
   EXPANDED,
   ItemAnimationStatus,
   ViewType,
   VirtualizedListOptions,
   VirtualizedView,
-} from './types'
+} from './internal-types'
+import {
+  Ref,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import { ScrollContext, ScrollHandler } from '../ControllableScrollbars'
-import { findNestedItem, getView, toggleStatus } from './util'
-import { useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { findNestedItem, getRefFactory, getView, toggleStatus } from './util'
 import { useContainerHeight } from './useContainerHeight'
 
 // "Padding" items on top and bottom
@@ -17,8 +23,8 @@ const extraItems = 5
 // TODO: move to css
 const duration = 500
 
-export function useVirtualizedViews<TData, TItem>(
-  options: VirtualizedListOptions<TData, TItem>,
+export function useVirtualizedViews<TData>(
+  options: VirtualizedListOptions<TData>,
 ) {
   const { data, getCount, itemsHeight } = options
   const scrollApi = useContext(ScrollContext)
@@ -72,39 +78,99 @@ export function useVirtualizedViews<TData, TItem>(
       // Pointer to currently processed item
       // let current = getItem(data, groupIndex, itemIndex)
 
-      const views: VirtualizedView[] = [getView(groupIndex, itemIndex)]
+      const views: VirtualizedView[] = [
+        getView(groupIndex, itemIndex, start * itemsHeight),
+      ]
 
+      const lastGroup = getCount(data, -1) - 1
       // Last element that should be seen
       const target = window.innerHeight + extraItems * itemsHeight
       // Height that has already been taken by existing items
       let currHeight = 0
+      // Index of currently processed item
+      let current = start
 
-      const lastGroup = getCount(data, -1) - 1
+      // Contains a ref factory. It is assigned a value if a collapsing
+      // group is met, it then generates refs that move items after collapsing
+      // group to top
+      let getRef: (i: number) => undefined | Ref<HTMLElement> = () => undefined
+
+      // Filling views
       while (currHeight < target) {
-        // If there are more items left in current group
-        if (itemIndex >= 0 && itemIndex < getCount(data, groupIndex) - 1) {
-          itemIndex++
+        // If processing an item
+        if (itemIndex >= 0) {
+          // If there are more items in current group
+          if (itemIndex < getCount(data, groupIndex) - 1) {
+            itemIndex++
+          }
+          // If there are more groups left
+          else if (groupIndex < lastGroup) {
+            ++groupIndex
+            itemIndex = -1
+          } else break
         }
-        // If processing a group that is expanded and has words
-        else if (
-          itemIndex < 0 &&
-          status[groupIndex] in EXPANDED &&
-          getCount(data, groupIndex) > 0
-        ) {
-          itemIndex = 0
+        // If processing a group
+        else {
+          // If group is being animated
+          if (status[groupIndex] in ANIMATING) {
+            // Count of items that fit into screen
+            const count = Math.min(
+              getCount(data, groupIndex),
+              Math.floor((window.innerHeight * 1.2) / itemsHeight),
+            )
+
+            // If collapsing, initialize ref factory that produces refs that
+            // will move elements after collapsing group bach to the top
+            if (status[groupIndex] === ItemAnimationStatus.COLLAPSING) {
+              getRef = getRefFactory(itemsHeight)
+            }
+
+            // Add items
+            for (let i = 0; i < count; i++) {
+              views.push({
+                type: ViewType.ITEM,
+                itemIndex: i,
+                groupIndex,
+                top: (current + i) * itemsHeight,
+              })
+            }
+
+            // Current index is changed only if group is expanding, because
+            // otherwise items from the top should transition to bottom
+            if (status[groupIndex] === ItemAnimationStatus.EXPANDING) {
+              current += count
+            }
+
+            if (groupIndex < lastGroup) {
+              ++groupIndex
+              itemIndex = -1
+            } else break
+          }
+          // If group is expanded and has items
+          else if (
+            status[groupIndex] in EXPANDED &&
+            getCount(data, groupIndex) > 0
+          ) {
+            itemIndex = 0
+          }
+          // If there are more groups left
+          else if (groupIndex < lastGroup) {
+            ++groupIndex
+            itemIndex = -1
+          } else break
         }
-        // If there are more groups left
-        else if (groupIndex < lastGroup) {
-          ++groupIndex
-          itemIndex = -1
-        }
-        // If no more groups are left
-        else break
 
         views.push(
-          getView(groupIndex, itemIndex, status[groupIndex] in ANIMATING),
+          getView(
+            groupIndex,
+            itemIndex,
+            current * itemsHeight,
+            getRef(current),
+            status[groupIndex] in ANIMATING,
+          ),
         )
         currHeight += itemsHeight
+        current++
       }
 
       setStart(start)

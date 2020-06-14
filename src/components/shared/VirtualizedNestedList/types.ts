@@ -1,45 +1,26 @@
-export type VirtualizedListOptions<TData, TItem> = {
-  data: TData
-  getItem: GetItem<TData, TItem>
-  getCount: GetItemsCount<TData>
-  itemsHeight: number
-}
+import { CSSProperties, ComponentType, Ref } from 'react'
 
 export type GetItemsCount<TData> = (data: TData, group: number) => number
-export type GetItem<TData, TItem> = (
-  data: TData,
-  group: number,
-  item: number,
-) => TItem
+export type VirutalizedListProps<TData> = {
+  data: TData
+  getCount: GetItemsCount<TData>
+  itemsHeight: number
+  group: ComponentType<VirtualizedGroupProps<TData>>
+  item: ComponentType<VirutualizedItemProps<TData>>
+}
 
-export type VirtualizedView = {
-  type: ViewType
-  itemIndex: number
+export type VirtualizedGroupProps<TData> = {
+  data: TData
   groupIndex: number
+  toggleFold: (groupIndex: number) => void
+  style: CSSProperties
+  ref?: Ref<any>
 }
 
-export enum ItemAnimationStatus {
-  FOLDING,
-  EXPANDED,
-  UNFOLDING,
-  COLLAPSED,
-}
-export enum ViewType {
-  ANIMATING_ITEM,
-  GROUP,
-  ITEM,
-}
-
-// Helper constants to quickly check state
-export const EXPANDED = {
-  [ItemAnimationStatus.UNFOLDING]: 1,
-  [ItemAnimationStatus.EXPANDED]: 1,
-}
-export const COLLAPSED = {
-  [ItemAnimationStatus.COLLAPSED]: 1,
-  [ItemAnimationStatus.FOLDING]: 1,
-}
-export const ANIMATING = {
-  [ItemAnimationStatus.UNFOLDING]: 1,
-  [ItemAnimationStatus.FOLDING]: 1,
+export type VirutualizedItemProps<TData> = {
+  data: TData
+  groupIndex: number
+  itemIndex: number
+  style: CSSProperties
+  ref?: Ref<any>
 }

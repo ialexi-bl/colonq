@@ -3,7 +3,7 @@ import {
   GetItemsCount,
   ItemAnimationStatus,
   VirtualizedListOptions,
-} from './types'
+} from './internal-types'
 
 export function useContainerHeight<TData, TItem>(
   { itemsHeight, getCount, data }: VirtualizedListOptions<TData, TItem>,
