@@ -1,8 +1,6 @@
 import { Help } from 'components/icons/Help'
 import { More } from 'components/icons/More'
-import { Overlay } from './Overlay'
-import { OverlayCloseButton } from './OverlayCloseButton'
-import { OverlayOpenButton } from './OverlayOpenButton'
+import { Overlay, OverlayCloseButton, OverlayOpenButton } from '.'
 import { useValue } from 'react-cosmos/fixture'
 import React from 'react'
 

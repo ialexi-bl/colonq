@@ -2,8 +2,11 @@ import { VirutalizedListProps } from './types'
 
 export type VirtualizedListOptions<TData> = VirutalizedListProps<TData>
 export type VirtualizedView = {
+  collapsing?: boolean
+  expanding?: boolean
   groupIndex: number
   itemIndex: number
+  expanded?: boolean
   type: ViewType
   top: number
   ref?: React.Ref<HTMLElement>

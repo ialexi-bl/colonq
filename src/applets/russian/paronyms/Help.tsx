@@ -1,4 +1,4 @@
-import { AppletHelp } from 'components/applets/AppletHelp'
+import { AppletHelp } from 'components/applets/AppletOverlay'
 import { Button } from 'components/shared/Button'
 import { Title } from 'components/shared/Title'
 import React, { useState } from 'react'

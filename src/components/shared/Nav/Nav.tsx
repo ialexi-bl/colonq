@@ -3,14 +3,13 @@ import { NavContainer } from './NavContainer'
 import { NavList } from './NavList'
 import { NavListContainer } from './NavListContainer'
 import { NavTitle } from './NavTitle'
-import { ParentSection, Section, siteMap } from 'config/site-map'
+import { ParentSection, Section, appsMap } from 'config/apps-map'
 import { Report } from 'components/icons/Report'
 import { feedback } from 'config/routes'
 import { toggleNav } from 'store/view'
 import { useCurrentLocation } from 'hooks/util/use-current-location'
 import { useDispatch } from 'react-redux'
 import { usePrevious } from 'hooks/util/use-previous'
-import { useRipples } from 'hooks/useRipples'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import styles from './Nav.module.scss'
 
@@ -26,9 +25,9 @@ export enum State {
 export const TIMEOUT = parseInt(styles.transitionDuration)
 
 const getLocationFromBrowser = (browserLocation: string): string =>
-  siteMap[browserLocation]
-    ? siteMap[browserLocation].leaf
-      ? siteMap[browserLocation].parent!
+  appsMap[browserLocation]
+    ? appsMap[browserLocation].leaf
+      ? appsMap[browserLocation].parent!
       : browserLocation
     : '/'
 
@@ -43,7 +42,6 @@ const getTop = (title: HTMLElement | null, Nav: HTMLElement | null) => {
 
 export default React.memo(({ open }: NavProps) => {
   const dispatch = useDispatch()
-  const [makeRipple, ripples, clearRipples] = useRipples()
 
   const browserLocation = useCurrentLocation()
   const [currentLocation, setCurrentLocation] = useState(() =>
@@ -59,20 +57,19 @@ export default React.memo(({ open }: NavProps) => {
   const listRef = useRef<null | HTMLUListElement>(null)
   const scrollerRef = useRef<null | HTMLDivElement>(null)
 
-  const out = nextLocation === siteMap[currentLocation]?.parent
-  const currentSection = siteMap[currentLocation] as ParentSection
-  const nextSection = siteMap[nextLocation] as ParentSection
+  const out = nextLocation === appsMap[currentLocation]?.parent
+  const currentSection = appsMap[currentLocation] as ParentSection
+  const nextSection = appsMap[nextLocation] as ParentSection
 
   const startTransition = useCallback(
     (e: React.MouseEvent<HTMLElement>, section: Section, title?: boolean) => {
       if (section.leaf || (title && !section.parent)) {
         dispatch(toggleNav(false))
       } else if (!section.leaf) {
-        makeRipple(e)
         setNextLocation((title && section.parent) || section.location)
       }
     },
-    [makeRipple, dispatch],
+    [dispatch],
   )
 
   useEffect(() => {
@@ -82,7 +79,7 @@ export default React.memo(({ open }: NavProps) => {
   }, [open])
   useEffect(() => {
     //  Handling new location
-    if (!siteMap[currentLocation] || !siteMap[nextLocation]) {
+    if (!appsMap[currentLocation] || !appsMap[nextLocation]) {
       setCurrentLocation('/')
       setNextLocation('/')
     } else if (currentLocation !== nextLocation) {

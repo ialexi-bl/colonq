@@ -1,4 +1,8 @@
 import { ScrollTarget } from './ScrollTarget'
+import {
+  renderScrollThumb,
+  renderScrollTrack,
+} from 'components/shared/render-scroll'
 import React, { createContext, useState } from 'react'
 import Scrollbars, { ScrollbarProps } from 'react-custom-scrollbars'
 
@@ -13,8 +17,10 @@ export function ControllableScrolbars({
 
   return (
     <Scrollbars
-      ref={(api) => api && (context.scrollApi = api)}
+      renderTrackVertical={renderScrollTrack}
+      renderThumbVertical={renderScrollThumb}
       onScrollFrame={context.onScrollFrame}
+      ref={(api) => api && (context.scrollApi = api)}
       {...props}
     >
       <ScrollContext.Provider value={context}>

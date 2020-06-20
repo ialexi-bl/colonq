@@ -1,5 +1,4 @@
 import {
-  COLLAPSED,
   EXPANDED,
   ItemAnimationStatus,
   ViewType,
@@ -8,16 +7,23 @@ import {
 } from './internal-types'
 import { Ref } from 'react'
 
-export function toggleStatus(status: ItemAnimationStatus[], i: number) {
+export function toggleStatus(
+  status: ItemAnimationStatus[],
+  i: number,
+  exit?: boolean,
+) {
   const newStatus = [...status]
-  const s = status[i]
 
-  if (s in EXPANDED) {
-    newStatus[i] = ItemAnimationStatus.COLLAPSING
-  } else if (s in COLLAPSED) {
-    newStatus[i] = ItemAnimationStatus.EXPANDING
+  if (!exit) {
+    newStatus[i] =
+      status[i] in EXPANDED
+        ? ItemAnimationStatus.COLLAPSING
+        : ItemAnimationStatus.EXPANDING
   } else {
-    return status
+    newStatus[i] =
+      status[i] in EXPANDED
+        ? ItemAnimationStatus.EXPANDED
+        : ItemAnimationStatus.COLLAPSED
   }
 
   return newStatus
@@ -30,8 +36,8 @@ export function toggleStatus(status: ItemAnimationStatus[], i: number) {
  * @param status - List of group status
  * @param index - Item index to look for
  */
-export function findNestedItem<TData, TItem>(
-  { data, getCount }: VirtualizedListOptions<TData, TItem>,
+export function findNestedItem<TData>(
+  { data, getCount }: VirtualizedListOptions<TData>,
   status: ItemAnimationStatus[],
   index: number,
 ) {
@@ -61,29 +67,32 @@ export function findNestedItem<TData, TItem>(
   throw new Error('handle later')
 }
 
-export const getView = (
-  groupIndex: number,
-  itemIndex: number,
-  top: number,
-  ref?: Ref<HTMLElement>,
-  animating?: boolean,
-): VirtualizedView => ({
-  type:
-    itemIndex < 0
-      ? ViewType.GROUP
-      : animating
-      ? ViewType.ANIMATING_ITEM
-      : ViewType.ITEM,
+export const getView = ({
   groupIndex,
   itemIndex,
+  expanded,
+  top,
+  ref,
+}: {
+  groupIndex: number
+  itemIndex: number
+  top: number
+  expanded?: boolean
+  ref?: Ref<HTMLElement>
+}): VirtualizedView => ({
+  type: itemIndex < 0 ? ViewType.GROUP : ViewType.ITEM,
+  groupIndex,
+  itemIndex,
+  expanded,
   ref,
   top,
 })
 
-export function getRefFactory(itemsHeight: number) {
+export function getRefFactory(itemsHeight: number, offset: number) {
   const controller = {
     items: [] as [number, HTMLElement][],
     started: false,
+    timeout: -1,
     addElement(i: number, e: HTMLElement) {
       this.items.push([i, e])
       if (this.started) return
@@ -92,7 +101,7 @@ export function getRefFactory(itemsHeight: number) {
       this.countdown()
     },
     countdown() {
-      setTimeout(() => {
+      this.timeout = window.setTimeout(() => {
         for (const [i, e] of this.items) {
           e.style.transform = `translateY(${i * itemsHeight}px)`
         }
@@ -100,8 +109,16 @@ export function getRefFactory(itemsHeight: number) {
     },
   }
 
-  return (i: number) => (e: HTMLElement | null) => {
-    if (!e) return
-    controller.addElement(i, e)
+  return {
+    factory: (i: number) => (e: HTMLElement | null) => {
+      if (!e) return
+      controller.addElement(i - offset, e)
+    },
+    cancel: () => {
+      clearTimeout(controller.timeout)
+      for (const [i, e] of controller.items) {
+        e.style.transform = `translateY(${(i + offset) * itemsHeight}px)`
+      }
+    },
   }
 }

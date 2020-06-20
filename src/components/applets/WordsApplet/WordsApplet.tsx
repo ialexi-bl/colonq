@@ -13,7 +13,7 @@ import { cssUtil } from 'styles'
 import { getWordSettings } from './WordsSettings'
 import { hideLoading } from 'store/view'
 import { useDispatch } from 'react-redux'
-import { useUpdateAppData } from 'hooks/use-app-data'
+import { useUpdateAppData } from 'hooks/app-data'
 import { useWords } from './use-words'
 import React, { ComponentType } from 'react'
 import cn from 'clsx'
@@ -75,7 +75,7 @@ export function createWordsApplet({
             dispatch({
               type: 'toggle-item',
               payload: {
-                setIndex: word.setIndex,
+                groupIndex: word.groupIndex,
                 index: word.id,
               },
             })

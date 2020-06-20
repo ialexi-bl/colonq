@@ -49,7 +49,7 @@ $size: dims.$menu-size;
   overflow: hidden;
 }
 .Content {
-  $offset: 1rem;
+  $offset: 5rem;
   $scale: 1.05;
 
   background: $background;
@@ -66,12 +66,12 @@ $size: dims.$menu-size;
   }
   @include transition.descendant($class-name, (exit-active)) {
     opacity: 0;
-    transform: translate(100%);
+    transform: translate($offset);
   }
 
   // Hide overlay when switching routes
   @include route-transition.descendant(exit-active) {
     opacity: 0;
-    transform: translate(100%);
+    transform: translate($offset);
   }
 }

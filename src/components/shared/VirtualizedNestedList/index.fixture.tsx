@@ -1,7 +1,9 @@
 import { ControllableScrolbars } from '../ControllableScrollbars'
-import { VirtualizedGroupProps, VirutualizedItemProps } from './types'
+import { VirtualizedGroupProps, VirtualizedItemProps } from './types'
 import { VirtualizedList } from './VirtualizedNestedList'
-import React, { forwardRef } from 'react'
+import React from 'react'
+import UnfoldButton from '../UnfoldButton/UnfoldButton'
+import cn from 'clsx'
 
 const data = [...new Array(20)].map((_, i) => {
   return {
@@ -11,45 +13,135 @@ const data = [...new Array(20)].map((_, i) => {
 })
 type Data = typeof data
 
-const getCount = (data: Data, groupIndex: number) =>
-  groupIndex < 0 ? data.length : data[groupIndex].items.length
+const getCount = (data: Data, groupIndex: number) => {
+  return groupIndex < 0 ? data.length : data[groupIndex].items.length
+}
 
 export default () => {
   return (
     <ControllableScrolbars>
-      <VirtualizedList
-        getCount={getCount}
-        itemsHeight={20}
-        group={Group}
-        item={Item}
-        data={data}
-      />
+      <Styles />
+      <div style={{ padding: '2rem', width: '100%', height: '100%' }}>
+        <VirtualizedList
+          getCount={getCount}
+          itemsHeight={60}
+          group={Group}
+          item={Item}
+          data={data}
+        />
+      </div>
     </ControllableScrolbars>
   )
 }
 
-const styles = { height: 25, marginBottom: 5 }
+function Group({
+  elementRef,
+  toggleFold,
+  groupIndex,
+  transform,
+  className,
+  expanded,
+  data,
+}: VirtualizedGroupProps<Data>) {
+  const group = data[groupIndex]
 
-const Group = forwardRef<HTMLDivElement, VirtualizedGroupProps<Data>>(
-  function Group({ data, groupIndex, style, toggleFold }, ref) {
-    const group = data[groupIndex]
+  return (
+    <div
+      className={cn('Group', className)}
+      style={{ transform }}
+      ref={elementRef}
+    >
+      {group.label}
+      <UnfoldButton
+        className={'UnfoldButton'}
+        folded={!expanded}
+        onClick={() => toggleFold(groupIndex)}
+      />
+    </div>
+  )
+}
 
-    return (
-      <div style={{ ...styles, ...style }} ref={ref}>
-        {group.label}
-      </div>
-    )
-  },
-)
+function Item({
+  elementRef,
+  groupIndex,
+  collapsing,
+  className,
+  itemIndex,
+  transform,
+  expanding,
+  data,
+}: VirtualizedItemProps<Data>) {
+  const item = data[groupIndex].items[itemIndex]
 
-const Item = forwardRef<HTMLDivElement, VirutualizedItemProps<Data>>(
-  function Item({ data, groupIndex, style, itemIndex }, ref) {
-    const item = data[groupIndex].items[itemIndex]
-
-    return (
-      <div style={{ ...styles, ...style }} ref={ref}>
+  return (
+    <div
+      className={cn('View', className)}
+      style={{ transform }}
+      ref={elementRef}
+    >
+      <div
+        style={{
+          animationDuration: collapsing
+            ? `${Math.max(400 - 30 * itemIndex, 0)}ms`
+            : `${300 + 50 * itemIndex}ms`,
+        }}
+        className={cn('Item', {
+          collapsing,
+          expanding,
+        })}
+      >
         {item.label}
       </div>
-    )
-  },
+    </div>
+  )
+}
+
+const Styles = () => (
+  <style>{`
+    @keyframes view-appear {
+      from {
+        opacity: 0;
+        transform: translate(5rem);
+      }
+      to {
+        opacity: 1;
+        transform: translate(0rem);
+      }
+    }
+    @keyframes view-disappear {
+      from {
+        opacity: 1;
+        transform: translate(0rem);
+      }
+      to {
+        opacity: 0;
+        transform: translate(5rem);
+      }
+    }
+
+    .Group, .View {
+      color: #ddd;
+      width: 100%;
+      height: 50px;
+      margin-bottom: 10px;
+      transition: 500ms transform;
+    }
+    .Group, .Item {
+      border-radius: .5rem;
+      background: indigo;
+    }
+    .Item {
+      width: 100%;
+      height: 100%;
+    }
+    .collapsing {
+      animation: view-disappear 300ms ease-in-out forwards;
+    }
+    .expanding {
+      animation: view-appear 500ms ease-in-out;
+    }
+    .UnfoldButton {
+      marginLeft: auto;
+    }
+  `}</style>
 )

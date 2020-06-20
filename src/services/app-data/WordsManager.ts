@@ -1,6 +1,6 @@
 import { AppDataManager } from './AppDataManager'
 import {
-  WordSets,
+  WordsData,
   WordsAppDataAction,
   WordsChanges,
   WordsPresentation,
@@ -9,7 +9,7 @@ import {
 import update from 'immutability-helper'
 
 export class WordsManager extends AppDataManager<
-  WordSets,
+  WordsData,
   WordsUserData,
   WordsAppDataAction
 > {
@@ -23,19 +23,19 @@ export class WordsManager extends AppDataManager<
     super(applet)
   }
 
-  public cleanup(data: WordSets): WordSets {
+  public cleanup(data: WordsData): WordsData {
     // NOTE: here data is mutated, might cause side effects
     data.forEach((set) => {
       delete set.modified
       set.words.forEach((word) => {
-        word.original = word.enabled
+        word.unchanged = word.enabled
       })
     })
     return { ...data }
   }
 
   public getUploadData(
-    sets: WordSets,
+    sets: WordsData,
     force?: boolean,
   ): Record<string, any> | null {
     const changes: WordsChanges = {}
@@ -46,7 +46,7 @@ export class WordsManager extends AppDataManager<
 
       changes[set.id] = []
       set.words.forEach((word) => {
-        if (word.enabled === word.original && !force) return
+        if (word.enabled === word.unchanged && !force) return
 
         ++count
         changes[set.id].push([word.id, +word.enabled as 0 | 1])
@@ -68,7 +68,7 @@ export class WordsManager extends AppDataManager<
     )
   }
 
-  public formatToStore(sets: WordSets): WordsUserData {
+  public formatToStore(sets: WordsData): WordsUserData {
     const serverData: WordsUserData = {}
 
     sets.forEach((set) => {
@@ -77,7 +77,7 @@ export class WordsManager extends AppDataManager<
     return serverData
   }
 
-  public formatForClient(data: WordsUserData): WordSets {
+  public formatForClient(data: WordsUserData): WordsData {
     return this.presentation.map((set, i) => {
       const enabled = data[i] || []
 
@@ -99,7 +99,7 @@ export class WordsManager extends AppDataManager<
     })
   }
 
-  public reduce(sets: WordSets, action: WordsAppDataAction): WordSets {
+  public reduce(sets: WordsData, action: WordsAppDataAction): WordsData {
     switch (action.type) {
       case 'toggle-set': {
         const { index: setIndex } = action.payload
@@ -120,7 +120,7 @@ export class WordsManager extends AppDataManager<
         })
       }
       case 'toggle-item': {
-        const { setIndex, index } = action.payload
+        const { groupIndex: setIndex, index } = action.payload
         const { words } = sets[setIndex]
         const enabled = !words[index].enabled
 

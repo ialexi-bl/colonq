@@ -1,12 +1,7 @@
-import {
-  EXPANDED,
-  GetItemsCount,
-  ItemAnimationStatus,
-  VirtualizedListOptions,
-} from './internal-types'
+import { ItemAnimationStatus, VirtualizedListOptions } from './internal-types'
 
-export function useContainerHeight<TData, TItem>(
-  { itemsHeight, getCount, data }: VirtualizedListOptions<TData, TItem>,
+export function useContainerHeight<TData>(
+  { itemsHeight, getCount, data }: VirtualizedListOptions<TData>,
   status: ItemAnimationStatus[],
 ) {
   let count = 0

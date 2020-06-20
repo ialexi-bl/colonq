@@ -1,13 +1,13 @@
 import { ListCheckbox, ListItem, ListUnfold } from 'components/shared/ListItem'
 import {
   WordsAppDataAction,
-  WordsSet,
+  WordsGroup,
 } from 'services/app-data/WordsManager.types'
 import React, { CSSProperties, forwardRef, memo } from 'react'
 import styles from './WordsListEditor.module.scss'
 
 export type WordsSetEditorProps = {
-  set: WordsSet
+  set: WordsGroup
   index: number
   style?: CSSProperties
   expanded: boolean

@@ -16,12 +16,13 @@ import {
 } from 'react'
 import { ScrollContext, ScrollHandler } from '../ControllableScrollbars'
 import { findNestedItem, getRefFactory, getView, toggleStatus } from './util'
+import { noop } from 'util/noop'
 import { useContainerHeight } from './useContainerHeight'
+import styles from './VirtualizedNestedList.module.scss'
 
 // "Padding" items on top and bottom
 const extraItems = 5
-// TODO: move to css
-const duration = 500
+const duration = parseInt(styles.duration)
 
 export function useVirtualizedViews<TData>(
   options: VirtualizedListOptions<TData>,
@@ -35,11 +36,12 @@ export function useVirtualizedViews<TData>(
   })
   const containerHeight = useContainerHeight(options, status)
 
-  const [start, setStart] = useState(0)
   const [views, setViews] = useState<VirtualizedView[]>([])
 
   const lastUpdate = useRef(0)
   const timeouts = useRef<number[]>([])
+  const currentScroll = useRef(0)
+  const cancelLastRefCountdown = useRef<() => void>(noop)
 
   // componentDidMount
   useEffect(() => {
@@ -55,7 +57,7 @@ export function useVirtualizedViews<TData>(
       clearTimeout(timeouts.current[i])
       timeouts.current[i] = window.setTimeout(() => {
         setStatus((status) => {
-          return toggleStatus(status, i)
+          return toggleStatus(status, i, true)
         })
       }, duration)
 
@@ -65,10 +67,16 @@ export function useVirtualizedViews<TData>(
 
   const updateViews = useCallback(
     (scroll) => {
+      // Saving current scroll state to update views when status change
+      currentScroll.current = scroll
+
       // Prevent updating more often than once every 100ms
       const now = performance.now()
       if (now - lastUpdate.current < 100) return
       lastUpdate.current = now
+
+      cancelLastRefCountdown.current()
+      cancelLastRefCountdown.current = noop
 
       // First item if the list is flat
       const start = Math.max(Math.floor(scroll / itemsHeight) - extraItems, 0)
@@ -79,7 +87,12 @@ export function useVirtualizedViews<TData>(
       // let current = getItem(data, groupIndex, itemIndex)
 
       const views: VirtualizedView[] = [
-        getView(groupIndex, itemIndex, start * itemsHeight),
+        getView({
+          groupIndex,
+          itemIndex,
+          top: start * itemsHeight,
+          expanded: status[groupIndex] in EXPANDED,
+        }),
       ]
 
       const lastGroup = getCount(data, -1) - 1
@@ -88,7 +101,8 @@ export function useVirtualizedViews<TData>(
       // Height that has already been taken by existing items
       let currHeight = 0
       // Index of currently processed item
-      let current = start
+      // +1 because first item is added directly into the array above
+      let current = start + 1
 
       // Contains a ref factory. It is assigned a value if a collapsing
       // group is met, it then generates refs that move items after collapsing
@@ -119,27 +133,35 @@ export function useVirtualizedViews<TData>(
               Math.floor((window.innerHeight * 1.2) / itemsHeight),
             )
 
+            const collapsing =
+              status[groupIndex] === ItemAnimationStatus.COLLAPSING
+            const expanding = !collapsing
+
             // If collapsing, initialize ref factory that produces refs that
             // will move elements after collapsing group bach to the top
-            if (status[groupIndex] === ItemAnimationStatus.COLLAPSING) {
-              getRef = getRefFactory(itemsHeight)
+            // Count is subtracted from number of element to get real
+            // top value, not counting "ghost" children
+            if (collapsing) {
+              ;({
+                factory: getRef,
+                cancel: cancelLastRefCountdown.current,
+              } = getRefFactory(itemsHeight, count))
             }
 
             // Add items
             for (let i = 0; i < count; i++) {
               views.push({
-                type: ViewType.ITEM,
                 itemIndex: i,
-                groupIndex,
+                type: ViewType.ITEM,
                 top: (current + i) * itemsHeight,
+                groupIndex,
+                collapsing,
+                expanding,
               })
             }
-
-            // Current index is changed only if group is expanding, because
-            // otherwise items from the top should transition to bottom
-            if (status[groupIndex] === ItemAnimationStatus.EXPANDING) {
-              current += count
-            }
+            // Account for implicitly added elements when calculating
+            // top offset, but not how much window is filled
+            current += count
 
             if (groupIndex < lastGroup) {
               ++groupIndex
@@ -161,29 +183,28 @@ export function useVirtualizedViews<TData>(
         }
 
         views.push(
-          getView(
+          getView({
             groupIndex,
             itemIndex,
-            current * itemsHeight,
-            getRef(current),
-            status[groupIndex] in ANIMATING,
-          ),
+            expanded: status[groupIndex] in EXPANDED,
+            top: current * itemsHeight,
+            ref: getRef(current),
+          }),
         )
         currHeight += itemsHeight
         current++
       }
 
-      setStart(start)
       setViews(views)
     },
     [data, getCount, itemsHeight, options, status],
   )
 
-  // TODO: this should probably be called with last value of scrollTop, don't remember why
-  // useEffect(() => {
-  // updateViews(0)
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [data])
+  // Update views when state, heihgt or data change
+  useEffect(() => {
+    updateViews(currentScroll.current)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, status, itemsHeight])
 
   useEffect(() => {
     const onScroll: ScrollHandler = ({ detail: values }) => {
@@ -200,6 +221,5 @@ export function useVirtualizedViews<TData>(
     containerHeight,
     toggleFold,
     views,
-    start,
   }
 }

@@ -22,7 +22,7 @@ const errors = [
   'Нужно указать e-mail',
   'Неверный e-mail',
 ]
-export function Feedback() {
+export default function Feedback() {
   const dispatch = useDispatch<MixedDispatch>()
   const { authenticated, email: _email } = useSelector(
     (state: AppState) => state.auth,

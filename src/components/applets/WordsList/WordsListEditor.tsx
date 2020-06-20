@@ -2,9 +2,9 @@ import { AppletSettingsContext } from '../AppletSettings'
 import { GetSettingsLabel, WordEditor } from './WordEditor'
 import {
   Word,
-  WordSets,
+  WordsData,
   WordsAppDataDispatch,
-  WordsSet,
+  WordsGroup,
 } from 'services/app-data/WordsManager.types'
 import { WordsSetEditor } from './WordsSetEditor'
 import { listItemHeight } from 'components/shared/ListItem'
@@ -50,7 +50,7 @@ const ANIMATING = {
 }
 
 export type WordsListEditorProps = {
-  sets: WordSets
+  sets: WordsData
   hidden?: boolean
   dispatch: WordsAppDataDispatch
   getLabel: GetSettingsLabel
@@ -316,7 +316,7 @@ type View =
   | {
       type: ViewType.SET
       index: number
-      set: WordsSet
+      set: WordsGroup
     }
   | {
       type: ViewType.ANIMATING_WORD
@@ -328,7 +328,7 @@ type View =
     }
 // #endregion
 
-function calculateHeight(sets: WordSets, status: ItemStatus[]) {
+function calculateHeight(sets: WordsData, status: ItemStatus[]) {
   const rem = parseFloat(getComputedStyle(document.documentElement).fontSize)
   let count = 0
   for (let i = 0, l = sets.length; i < l; i++) {
@@ -341,7 +341,7 @@ function calculateHeight(sets: WordSets, status: ItemStatus[]) {
 }
 
 function item2view(
-  item: WordsSet | Word,
+  item: WordsGroup | Word,
   setIndex: number,
   wordIndex: number,
 ): View {

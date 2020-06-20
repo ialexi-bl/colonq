@@ -1,5 +1,5 @@
 import { NavItem } from './NavItem'
-import { ParentSection, Section, siteMap } from 'config/site-map'
+import { ParentSection, Section, appsMap } from 'config/apps-map'
 import { useCurrentLocation } from 'hooks/util/use-current-location'
 import React, { CSSProperties } from 'react'
 import cn from 'clsx'
@@ -43,7 +43,7 @@ const NavList = (
       ref={ref}
     >
       {section.items.map((child, i) => {
-        const item = siteMap[child]
+        const item = appsMap[child]
         const isNewTitle = item.location === newTitleLocation
 
         return (

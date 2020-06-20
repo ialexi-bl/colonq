@@ -9,20 +9,20 @@ export type WordsChanges = {
   [key: number]: [number, 0 | 1][]
 }
 
-export type WordSets = WordsSet[]
-export type WordsSet = {
-  id: number
-  label: string
-  words: Word[]
-  enabled: boolean
+export type WordsData = WordsGroup[]
+export type WordsGroup = {
   modified?: boolean
+  enabled: boolean
+  words: Word[]
+  label: string
+  id: number
 }
 export type Word = {
-  id: number
-  label: string
+  groupIndex: number
+  unchanged: boolean
   enabled: boolean
-  original: boolean
-  setIndex: number
+  label: string
+  id: number
 }
 
 export type WordsAppDataDispatch = (action: WordsAppDataAction) => unknown
@@ -36,7 +36,7 @@ export type WordsAppDataAction =
   | {
       type: 'toggle-item'
       payload: {
+        groupIndex: number
         index: number
-        setIndex: number
       }
     }

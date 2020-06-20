@@ -1,6 +1,6 @@
 import { CleanButton } from 'components/shared/Button'
 import { Link } from 'react-router-dom'
-import { Section } from 'config/site-map'
+import { Section } from 'config/apps-map'
 import { app } from 'config/routes'
 import React, { CSSProperties, useCallback } from 'react'
 import cn from 'clsx'

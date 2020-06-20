@@ -1,6 +1,6 @@
 import { NotFound } from '../NotFound'
 import { PageContainer } from 'components/shared/Page'
-import { Section, siteMap } from 'config/site-map'
+import { Section, appsMap } from 'config/apps-map'
 import { showLoading } from 'store/view'
 import { useDispatch } from 'react-redux'
 import { useRouteMatch } from 'react-router'
@@ -13,7 +13,7 @@ export default function Applet() {
   const location = '/' + (match.params.path || '')
 
   const dispatch = useDispatch()
-  const section: Section | undefined = siteMap[location]
+  const section: Section | undefined = appsMap[location]
   const [Component, setComponent] = useState<React.ComponentType | null>(() =>
     section?.leaf ? section.component : null,
   )

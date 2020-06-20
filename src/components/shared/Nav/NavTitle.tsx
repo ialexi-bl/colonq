@@ -1,6 +1,6 @@
 import { Back } from 'components/icons/Back'
 import { CleanButton } from 'components/shared/Button'
-import { Section } from 'config/site-map'
+import { Section } from 'config/apps-map'
 import React, { useCallback } from 'react'
 import cn from 'clsx'
 import styles from './Nav.module.scss'

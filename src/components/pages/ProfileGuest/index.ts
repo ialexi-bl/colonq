@@ -1,1 +1,1 @@
-export { default as ProfileGuest } from './ProfileGuest'
+export { default } from './ProfileGuest'

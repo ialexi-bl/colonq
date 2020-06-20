@@ -1,8 +1,11 @@
 @use 'styles/variables/colors';
 
-.Box {
+.pure-box {
   composes: rounded from '~styles/util/rounded.scss';
 
-  padding: 1em;
   background: colors.$primary-lighter;
+}
+.box {
+  composes: pure-box;
+  padding: 1em;
 }

@@ -33,7 +33,7 @@ export const WordEditor = memo(
         <ListCheckbox
           checked={word.enabled}
           onChange={() => {
-            dispatch({ type: 'toggle-item', payload: { index, setIndex } })
+            dispatch({ type: 'toggle-item', payload: { index, groupIndex: setIndex } })
           }}
         />
         <span className={styles.Label}>{getLabel(word)}</span>

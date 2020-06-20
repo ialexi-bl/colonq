@@ -1,7 +1,7 @@
 import { TwoLatestDisplayItem, TwoLatestItems } from '../TwoLatestDisplay'
-import { Word, WordSets } from 'services/app-data/WordsManager.types'
+import { Word, WordsData } from 'services/app-data/WordsManager.types'
 import { WordsManager } from 'services/app-data/WordsManager'
-import { useAppData } from 'hooks/use-app-data'
+import { useAppData } from 'hooks/app-data'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 const random = (max: number) => Math.floor(Math.random() * max)
@@ -14,7 +14,7 @@ const noPreviousWords = {
   order: [] as string[],
   hash: {} as Record<string, true>,
 }
-const filterWords = (sets: WordSets, manager: WordsManager) =>
+const filterWords = (sets: WordsData, manager: WordsManager) =>
   sets.reduce<Word[]>(
     (acc, set) =>
       acc.concat(
@@ -54,7 +54,7 @@ export function useWords(manager: WordsManager, onLoad?: () => unknown) {
             const word = cleanData![random(count)]
 
             item = {
-              id: `${word.setIndex}-${word.id}`,
+              id: `${word.groupIndex}-${word.id}`,
               data: word,
             }
           } while (item.id in hash)
@@ -94,7 +94,7 @@ export function useWords(manager: WordsManager, onLoad?: () => unknown) {
         setWords({
           current: word
             ? {
-                id: `${word.setIndex}-${word.id}-${Math.random()}`,
+                id: `${word.groupIndex}-${word.id}-${Math.random()}`,
                 data: word,
               }
             : null,

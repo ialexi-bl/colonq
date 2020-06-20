@@ -9,8 +9,8 @@ import {
   ROUTE_TRANSITION_DURATION,
 } from 'config/view'
 import { Route, Switch, useLocation } from 'react-router-dom'
-import { getRouteKey, routes } from 'config/routes'
 import { hideLoading, hideNonRouterLoading, showLoading } from 'store/view'
+import { routesArray } from 'config/routes'
 import { useDispatch, useSelector } from 'react-redux'
 import React, { Suspense, useEffect, useLayoutEffect, useState } from 'react'
 
@@ -20,9 +20,7 @@ export function Router() {
   const location = useLocation()
   const dispatch = useDispatch()
   const [initialized, setInitialized] = useState(false)
-  const { authenticated, loading } = useSelector(
-    (state: AppState) => state.auth,
-  )
+  const { loading } = useSelector((state: AppState) => state.auth)
 
   useEffect(() => {
     if (!loading) setInitialized(true)
@@ -39,7 +37,7 @@ export function Router() {
   return (
     <TransitionGroup component={null}>
       <CSSTransition
-        key={getRouteKey(location.pathname, authenticated)}
+        key={location.pathname}
         timeout={ROUTE_TRANSITION_DURATION}
         classNames={ROUTE_TRANSITION_CLASSNAME}
         enter={initialized}
@@ -49,13 +47,21 @@ export function Router() {
           <Boundary>
             <Suspense fallback={<Fallback />}>
               <Switch location={location}>
-                <Route {...routes.app} />
-                <Route {...routes.auth} />
-                <Route {...routes.index} />
-                <Route {...routes.feedback} />
-                <Route {...routes.verifyEmail} />
-                <Route {...routes.user} />
-                <Route {...routes.signin} />
+                {routesArray.map((route) => {
+                  const props: any =
+                    'component' in route
+                      ? { component: route.component }
+                      : { render: route.render }
+
+                  return (
+                    <Route
+                      path={route.path}
+                      key={route.name}
+                      exact
+                      {...props}
+                    />
+                  )
+                })}
                 <Route component={NotFound} />
               </Switch>
             </Suspense>

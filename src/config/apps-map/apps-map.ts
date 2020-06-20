@@ -1,28 +1,13 @@
+import { AppsMap, LeafSection, Section } from './types'
 import React from 'react'
 
-export type Map = {
-  readonly [key: string]: Section
-}
-export type ISection = {
-  readonly location: string
-  readonly title: string
-  readonly parent: null | string
-}
-export type ParentSection = ISection & {
-  readonly leaf: false
-  readonly items: string[]
-}
-export type LeafSection = ISection & {
-  readonly leaf: true
-  readonly parent: string
-  readonly component: null | React.ComponentType
-  readonly loadComponent: () => Promise<React.ComponentType>
-}
-export type Section = ParentSection | LeafSection
-
 const cache: { [key: string]: React.ComponentType } = {}
-const applet = (name: string): LeafSection['loadComponent'] => async () =>
-  cache[name] || (cache[name] = (await import(`applets/${name}/index`)).default)
+const applet = (name: string): LeafSection['loadComponent'] => async () => {
+  return (
+    cache[name] ||
+    (cache[name] = (await import(`applets/${name}/index`)).default)
+  )
+}
 
 const getLeaf = (section: string, leaf: string, title: string): LeafSection => {
   const path = section === '/' ? leaf : `${section.slice(1)}/${leaf}`
@@ -36,7 +21,7 @@ const getLeaf = (section: string, leaf: string, title: string): LeafSection => {
   }
 }
 
-export const siteMap: Map = {
+export const appsMap: AppsMap = {
   '/': {
     title: 'Назад',
     location: '/',
@@ -44,13 +29,11 @@ export const siteMap: Map = {
     leaf: false,
     items: [
       '/russian/accents',
-      // '/russian/n-or-nn',
       '/russian/verb-endings',
       '/russian/prefixes',
       '/russian/orthography',
       '/russian/paronyms',
     ],
-    // items: ['/maths/', '/russian/', '/physics/'],
   },
 
   // Russian

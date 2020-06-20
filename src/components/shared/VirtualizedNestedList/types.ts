@@ -6,21 +6,26 @@ export type VirutalizedListProps<TData> = {
   getCount: GetItemsCount<TData>
   itemsHeight: number
   group: ComponentType<VirtualizedGroupProps<TData>>
-  item: ComponentType<VirutualizedItemProps<TData>>
+  item: ComponentType<VirtualizedItemProps<TData>>
 }
 
 export type VirtualizedGroupProps<TData> = {
-  data: TData
+  elementRef?: Ref<any>
   groupIndex: number
   toggleFold: (groupIndex: number) => void
-  style: CSSProperties
-  ref?: Ref<any>
+  className: string
+  transform: string
+  expanded: boolean
+  data: TData
 }
 
-export type VirutualizedItemProps<TData> = {
-  data: TData
+export type VirtualizedItemProps<TData> = {
+  elementRef?: Ref<any>
   groupIndex: number
+  collapsing: boolean
+  expanding: boolean
   itemIndex: number
-  style: CSSProperties
-  ref?: Ref<any>
+  className: string
+  transform: string
+  data: TData
 }

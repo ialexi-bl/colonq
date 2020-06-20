@@ -1,0 +1,72 @@
+$offset: 10rem;
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translate($offset);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0);
+  }
+}
+@keyframes disappear {
+  from {
+    opacity: 1;
+    transform: translate(0);
+  }
+  to {
+    opacity: 0;
+    transform: translate($offset);
+  }
+}
+
+.VirtualizedItemContainer {
+  padding-left: 2em;
+  width: 100%;
+}
+
+.VirtualizedGroup,
+.VirtualizedItem {
+  composes: pure-box from '~styles/util/layout.scss';
+
+  list-style: none;
+  display: flex;
+  width: 100%;
+}
+
+.VirtualizedGroup {
+  z-index: 1;
+}
+.VirtualizedItem {
+  width: 100%;
+  height: 100%;
+  padding-right: 0.5em;
+}
+
+$duration: 400ms;
+.expanding {
+  animation: appear $duration ease-out;
+}
+.collapsing {
+  animation: disappear $duration ease-out forwards;
+}
+
+.Checkbox,
+.UnfoldButton {
+  composes: centered from '~styles/util/centered.scss';
+
+  display: inline-flex;
+  height: 100%;
+}
+.Checkbox {
+  margin: 0 0.5em;
+  width: 1.5em;
+}
+
+.Label {
+  composes: text-primary from '~styles/util/colors.scss';
+
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+}

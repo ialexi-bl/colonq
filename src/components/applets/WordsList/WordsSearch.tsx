@@ -1,6 +1,6 @@
 import {
   Word,
-  WordSets,
+  WordsData,
   WordsAppDataDispatch,
 } from 'services/app-data/WordsManager.types'
 import { WordEditor } from './WordEditor'
@@ -20,7 +20,7 @@ export type SearchWord = {
   setIndex: number
 }
 export type WordsSearchProps = {
-  sets: WordSets
+  sets: WordsData
   value: string
   hidden?: boolean
   persist: React.RefObject<any>
@@ -83,7 +83,7 @@ export function WordsSearch({
   return <div style={{ display: hidden ? 'none' : 'block' }}>{results}</div>
 }
 
-function getIndexes(sets: WordSets, index: number) {
+function getIndexes(sets: WordsData, index: number) {
   for (let i = 0; i < sets.length; ++i) {
     const set = sets[i]
     const count = set.words.length
