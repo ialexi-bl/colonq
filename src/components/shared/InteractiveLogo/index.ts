@@ -1,1 +1,2 @@
-export { default as InteractiveLogo } from './InteractiveLogo'
+export { default } from './InteractiveLogo'
+export * from './InteractiveLogo'

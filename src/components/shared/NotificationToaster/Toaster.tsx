@@ -11,7 +11,7 @@ const selector = (state: AppState) => state.view.notification
  * Toaster used by the entire application to display information
  * and errors
  */
-export const NotificationToaster = () => {
+export default function NotificationToaster() {
   const dispatch = useDispatch()
   const current = useRef<AppState['view']['notification']>(null)
   const notification = (current.current = useSelector(selector))

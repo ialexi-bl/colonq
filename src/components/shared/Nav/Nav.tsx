@@ -100,10 +100,9 @@ export default React.memo(({ open }: NavProps) => {
       setTimeout(() => {
         setAnimating(State.STATIC)
         setCurrentLocation(nextLocation)
-        clearRipples()
       }, TIMEOUT)
     }
-  }, [animating, clearRipples, nextLocation])
+  }, [animating, nextLocation])
 
   useEffect(() => {
     const { current: elem } = scrollerRef
@@ -114,7 +113,6 @@ export default React.memo(({ open }: NavProps) => {
   const placeholderProps = animating !== State.STATIC && {
     style: { top: getTop(newTitleRef.current, navRef.current) },
     placeholder: true,
-    ripples,
   }
   return (
     <NavContainer ref={navRef} animating={animating} out={out} open={open}>

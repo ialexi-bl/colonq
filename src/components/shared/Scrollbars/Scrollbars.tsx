@@ -5,12 +5,11 @@ import {
 import React from 'react'
 import UglyScrollbars, { ScrollbarProps } from 'react-custom-scrollbars'
 
-export function Scrollbars(props: ScrollbarProps) {
-  return (
-    <UglyScrollbars
-      renderTrackVertical={renderScrollTrack}
-      renderThumbVertical={renderScrollThumb}
-      {...props}
-    />
-  )
-}
+const Scrollbars = (props: ScrollbarProps) => (
+  <UglyScrollbars
+    renderTrackVertical={renderScrollTrack}
+    renderThumbVertical={renderScrollThumb}
+    {...props}
+  />
+)
+export default Scrollbars

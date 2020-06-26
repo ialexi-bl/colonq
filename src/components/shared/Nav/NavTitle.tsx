@@ -11,7 +11,6 @@ export type NavTitleProps = Omit<
 > & {
   section: Section
   placeholder?: boolean
-  ripples?: React.ReactNode
   startTransition?: (
     e: React.MouseEvent<HTMLElement>,
     section: Section,
@@ -23,7 +22,6 @@ const NavTitle = ({
   className,
   startTransition,
   section,
-  ripples,
   placeholder,
   ...props
 }: NavTitleProps) => {
@@ -42,7 +40,6 @@ const NavTitle = ({
     >
       <Back className={styles.BackButton} />
       <span className={styles.ItemButton}>{section.title || 'Sections'}</span>
-      {ripples}
     </CleanButton>
   )
 }

@@ -6,7 +6,7 @@ export type InputProps = Omit<
   InputHTMLAttributes<HTMLInputElement>,
   'onChange'
 > & {
-  state?: 'valid' | 'invalid'
+  state?: null | 'valid' | 'invalid'
   onChange?: (value: string, e: React.ChangeEvent) => unknown
 }
 

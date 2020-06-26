@@ -2,7 +2,7 @@ import React from 'react'
 import cn from 'clsx'
 import styles from './TitleLine.module.scss'
 
-export default ({
+const TitleLine = ({
   children,
   className,
 }: {
@@ -13,3 +13,4 @@ export default ({
     <div className={cn(className, styles.Line)}>{children}</div>
   </div>
 )
+export default TitleLine

@@ -4,13 +4,13 @@ import {
   Letter,
   LetterTitle,
 } from 'components/shared/LetterTitle'
-import { Button } from 'components/shared/Button'
 import { PageContainer } from 'components/shared/Page'
 import { Subtitle } from 'components/shared/Subtitle'
 import { TitleLine } from 'components/shared/TitleLine'
 import { cssUtil } from 'styles'
 import { toggleNav } from 'store/view'
 import { useDispatch } from 'react-redux'
+import Button from 'components/shared/Button'
 import React from 'react'
 import styles from './Index.module.scss'
 

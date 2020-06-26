@@ -1,1 +1,2 @@
-export { default as TitleLine } from './TitleLine'
+export { default } from './TitleLine'
+export * from './TitleLine'

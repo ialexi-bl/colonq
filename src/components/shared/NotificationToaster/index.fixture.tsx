@@ -1,14 +1,12 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Button } from '../Button'
 import { CookiesNotification } from './CookiesNotification'
 import { Notification } from './Notification'
 import { NotificationToaster } from './Toaster'
 import { Provider } from 'react-redux'
 import { useValue } from 'react-cosmos/fixture'
+import Button from '../Button'
 import React from 'react'
 import configureStore from 'redux-mock-store'
-
-const getStore = configureStore()
 
 const notification = (type: 'info' | 'error') => () => {
   const [open, setOpen] = useValue('open', { defaultValue: true as boolean })

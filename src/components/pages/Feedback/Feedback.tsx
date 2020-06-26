@@ -1,5 +1,4 @@
 import { AppState, MixedDispatch, ThunkAction } from 'store/types'
-import { Button } from 'components/shared/Button'
 import { Endpoints } from 'config/endpoints'
 import { ErrorMessage } from 'components/form/ErrorMessage'
 import { Input } from 'components/form/Input'
@@ -12,6 +11,7 @@ import { handleRequestError } from 'services/errors/handle-request-error'
 import { hideLoading, showLoading, toggleNav } from 'store/view'
 import { useDispatch, useSelector } from 'react-redux'
 import ApiClient from 'services/client'
+import Button from 'components/shared/Button'
 import React, { useState } from 'react'
 import cn from 'clsx'
 import styles from './Feedback.module.scss'
@@ -91,7 +91,7 @@ export default function Feedback() {
         </p>
         {!authenticated && (
           <Input
-            invalid={!!error && error >= 2}
+            state={!!error && error >= 2 ? 'invalid' : undefined}
             onChange={setEmail}
             value={email}
             onBlur={validateEmail}

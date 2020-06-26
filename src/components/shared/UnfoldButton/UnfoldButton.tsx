@@ -10,17 +10,13 @@ export type UnfoldButtonProps = HTMLProps.button & {
   className?: string
 }
 
-export default function UnfoldButton({
-  folded,
-  className,
-  ...props
-}: UnfoldButtonProps) {
-  return (
-    <CleanButton
-      className={cn(styles.UnfoldButton, className, folded && styles.folded)}
-      {...props}
-    >
-      <Unfold className={styles.Icon} />
-    </CleanButton>
-  )
-}
+const UnfoldButton = ({ folded, className, ...props }: UnfoldButtonProps) => (
+  <CleanButton
+    className={cn(styles.UnfoldButton, className, folded && styles.folded)}
+    {...props}
+  >
+    <Unfold className={styles.Icon} />
+  </CleanButton>
+)
+
+export default UnfoldButton

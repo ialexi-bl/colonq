@@ -1,2 +1,2 @@
-export { default as Nav, TIMEOUT } from './Nav'
-export type { NavProps } from './Nav'
+export { default } from './Nav'
+export * from './Nav'

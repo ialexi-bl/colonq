@@ -1,8 +1,8 @@
-import { Button } from 'components/shared/Button'
 import { ErrorMessage } from 'components/form/ErrorMessage'
 import { Input } from 'components/form/Input'
 import { Title } from 'components/shared/Title'
 import { emailRegex } from 'config/regex'
+import Button from 'components/shared/Button'
 import React, { useState } from 'react'
 import styles from './Auth.module.scss'
 
@@ -40,18 +40,14 @@ export function EmailRequest({
       <Input
         type={'email'}
         value={email}
+        state={error ? 'invalid' : null}
         onBlur={validate}
-        invalid={!!error}
         onChange={change}
         placeholder={'Email'}
         className={styles.Input}
       />
       <ErrorMessage message={error} className={styles.Error} />
-      <Button
-        color={error || !email.trim() ? 'disabled' : 'primary'}
-        disabled={!!error || !email.trim()}
-        type={'submit'}
-      >
+      <Button disabled={!!error || !email.trim()} type={'submit'}>
         Подтвердить
       </Button>
     </form>

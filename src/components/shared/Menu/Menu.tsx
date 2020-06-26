@@ -12,7 +12,7 @@ import styles from './Menu.module.scss'
  * Main sidebar, provides access to navigation menu,
  * manages browser location when switching navigation
  */
-export function Menu() {
+export default function Menu() {
   const dispatch = useDispatch()
   const location = useLocation()
   const [open, { authenticated, loading }] = useSelector((state: AppState) => [
@@ -20,8 +20,11 @@ export function Menu() {
     state.auth,
   ])
 
+  // Hiding menu on backdrop click
   const backdropClick = useCallback(
     (e) => {
+      // Check that click was exactly on backdrop element and
+      // not on menu or nav panel
       if (e.target === e.currentTarget) {
         dispatch(toggleNav(false))
       }

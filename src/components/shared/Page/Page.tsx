@@ -8,9 +8,10 @@ import styles from './Page.module.scss'
  * Provides default styles for page layout, route changing transitions
  * and custom scrollbars
  */
-export const Page = ({ className, ...props }: HTMLProps.div) => (
+const Page = ({ className, ...props }: HTMLProps.div) => (
   <div className={cn(styles.Page, className)} {...props} />
 )
+export default Page
 
 export const ScrollablePage = ({
   className,

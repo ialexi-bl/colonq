@@ -1,24 +1,26 @@
 import { AppState } from 'store/types'
-import { Button } from 'components/shared/Button'
 import { Endpoints } from 'config/endpoints'
 import { PageContainer } from 'components/shared/Page'
 import { SocialLoginButton } from 'components/form/SocialLoginButton'
 import { Title } from 'components/shared/Title'
 import { cssUtil } from 'styles'
 import { notifyInfo } from 'store/view'
-import { replace } from 'connected-react-router'
 import { signin } from 'config/routes'
 import { unauthenticate } from 'store/auth'
+import { useAuthenticatedRoute } from 'hooks/use-authenticated-route'
 import { useDispatch, useSelector } from 'react-redux'
 import ApiClient from 'services/client'
+import Button from 'components/shared/Button'
 import LangNotifications from 'lang/notifications.json'
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback } from 'react'
 import cn from 'clsx'
 import styles from './ProfileUser.module.scss'
 
 export default function ProfileUser() {
+  const shouldDisplay = useAuthenticatedRoute(signin())
+
   const dispatch = useDispatch()
-  const { name, email, authenticated, loading, providers } = useSelector(
+  const { name, email, providers } = useSelector(
     (state: AppState) => state.auth,
   )
   const logout = useCallback(() => {
@@ -36,13 +38,9 @@ export default function ProfileUser() {
     })
   }, [dispatch])
 
-  useEffect(() => {
-    if (!loading && !authenticated) {
-      dispatch(replace(signin()))
-    }
-  }, [authenticated, dispatch, loading])
-
-  if (loading || !authenticated) return null
+  if (!shouldDisplay) {
+    return null
+  }
 
   return (
     <PageContainer className={styles.Container}>

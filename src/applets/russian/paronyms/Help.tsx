@@ -1,6 +1,5 @@
-import { AppletHelp } from 'components/applets/AppletOverlay'
-import { Button } from 'components/shared/Button'
 import { Title } from 'components/shared/Title'
+import Button from 'components/shared/Button'
 import React, { useState } from 'react'
 import styles from './Paronym.module.scss'
 

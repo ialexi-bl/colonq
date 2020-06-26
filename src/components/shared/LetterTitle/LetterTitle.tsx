@@ -10,7 +10,7 @@ import styles from './LetterTitle.module.scss'
 
 export type LetterProps = { children: string }
 
-export const LetterTitle = ({
+const LetterTitle = ({
   children,
   className,
 }: {
@@ -21,6 +21,7 @@ export const LetterTitle = ({
     {children}
   </Title>
 )
+export default LetterTitle
 
 // TODO: refactor choiceButton class names
 export const Letter = ({ children }: LetterProps) => <div>{children}</div>

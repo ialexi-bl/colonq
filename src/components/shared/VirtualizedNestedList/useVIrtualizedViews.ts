@@ -20,14 +20,22 @@ import { noop } from 'util/noop'
 import { useContainerHeight } from './useContainerHeight'
 import styles from './VirtualizedNestedList.module.scss'
 
-// "Padding" items on top and bottom
-const extraItems = 5
-const duration = parseInt(styles.duration)
+export type VirtualizedViewsControls = {
+  containerHeight: number
+  views: VirtualizedView[]
 
+  toggleFold(i: number): void
+}
+
+/**
+ * Manages virtualized list's state: controls container height,
+ * animation states, offsets, transforms and fold status
+ * @param options
+ */
 export function useVirtualizedViews<TData>(
   options: VirtualizedListOptions<TData>,
-) {
-  const { data, getCount, itemsHeight } = options
+): VirtualizedViewsControls {
+  const { data, itemsHeight, getCount } = options
   const scrollApi = useContext(ScrollContext)
 
   const [status, setStatus] = useState<ItemAnimationStatus[]>(() => {
@@ -223,3 +231,7 @@ export function useVirtualizedViews<TData>(
     views,
   }
 }
+
+// "Padding" items on top and bottom
+const extraItems = 7
+const duration = parseInt(styles.duration)

@@ -9,7 +9,7 @@ import Scrollbars, { ScrollbarProps } from 'react-custom-scrollbars'
 export type ControllableScrolbarsProps = Omit<ScrollbarProps, 'onScrollFrame'>
 export const ScrollContext = createContext({} as ScrollTarget)
 
-export function ControllableScrolbars({
+export default function ControllableScrolbars({
   children,
   ...props
 }: ControllableScrolbarsProps) {

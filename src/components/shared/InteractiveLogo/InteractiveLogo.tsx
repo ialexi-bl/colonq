@@ -7,7 +7,7 @@ import React, { useRef, useState } from 'react'
  * the cursor leaves it
  * @param props
  */
-export default ({ className }: { className?: string }) => {
+export default function InteractiveLogo({ className }: { className?: string }) {
   const [animating, setAnimating] = useState(false)
 
   // Using ref instead of state, because has to be

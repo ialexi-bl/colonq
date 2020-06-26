@@ -8,7 +8,7 @@ export type ButtonProps = HTMLProps.button & {
   color?: 'primary' | 'error' | 'neutral'
 }
 
-export function Button({
+export default function Button({
   color = 'primary',
   className,
   disabled,

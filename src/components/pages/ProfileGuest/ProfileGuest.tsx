@@ -1,29 +1,20 @@
-import { AppState } from 'store/types'
 import { Endpoints } from 'config/endpoints'
 import { PageContainer } from 'components/shared/Page'
 import { SocialLoginButton } from 'components/form/SocialLoginButton'
 import { Title } from 'components/shared/Title'
 import { cssUtil } from 'styles'
 import { profile } from 'config/routes'
-import { replace } from 'connected-react-router'
-import { useDispatch, useSelector } from 'react-redux'
-import React, { useEffect } from 'react'
+import { useGuestRoute } from 'hooks/use-guest-route'
+import React from 'react'
 import cn from 'clsx'
 import styles from './ProfileGuest.module.scss'
 
 export default function ProfileGuest() {
-  const dispatch = useDispatch()
-  const { authenticated, loading } = useSelector(
-    (state: AppState) => state.auth,
-  )
+  const shouldDisplay = useGuestRoute(profile())
 
-  useEffect(() => {
-    if (!loading && authenticated) {
-      dispatch(replace(profile()))
-    }
-  }, [loading, authenticated, dispatch])
-
-  if (loading || authenticated) return null
+  if (!shouldDisplay) {
+    return null
+  }
 
   return (
     <PageContainer className={cn(cssUtil.centered, styles.Container)}>

@@ -11,7 +11,9 @@ import styles from './VirtualizedNestedList.module.scss'
  * transition for `transform` property that moves items
  * @param props
  */
-export function VirtualizedList<TData>(options: VirtualizedListOptions<TData>) {
+export default function VirtualizedList<TData>(
+  options: VirtualizedListOptions<TData>,
+) {
   const { data, group: Group, item: Item } = options
   const { containerHeight, toggleFold, views } = useVirtualizedViews(options)
 

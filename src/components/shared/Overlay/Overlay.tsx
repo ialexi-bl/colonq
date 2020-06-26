@@ -15,7 +15,7 @@ export type OverlayProps = {
  * Overlay that appears above page content
  * @param {OverlayProps} props
  */
-export function Overlay({ open, children, setOpen }: OverlayProps) {
+export default function Overlay({ open, children, setOpen }: OverlayProps) {
   // Close overlay on escape press
   useEffect(() => {
     const keyDown = (e: KeyboardEvent) => {

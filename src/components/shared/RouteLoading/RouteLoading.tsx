@@ -13,7 +13,7 @@ const CLASS_NAME = styles.transitionClassName
  * Keeps track of the IDs of components that initiated loading
  * and hides only when all of them finished loading
  */
-export const RouteLoading = () => {
+export default function RouteLoading() {
   const visible = useSelector(
     (state: AppState) => state.view.loading.length > 0,
   )
