@@ -1,14 +1,14 @@
-import { AppDataManager } from './AppDataManager'
 import {
-  WordsData,
   WordsAppDataAction,
   WordsChanges,
+  WordsData,
   WordsPresentation,
   WordsUserData,
-} from './WordsManager.types'
+} from './types'
+import AppletManager from '../AppletManager'
 import update from 'immutability-helper'
 
-export class WordsManager extends AppDataManager<
+export default class WordsAppletManager extends AppletManager<
   WordsData,
   WordsUserData,
   WordsAppDataAction
@@ -90,9 +90,10 @@ export class WordsManager extends AppDataManager<
           return {
             id: j,
             label: word,
-            setIndex: i,
-            enabled: !!(enabled[j] ?? true),
-            original: !!(enabled[j] ?? true),
+            groupIndex: i,
+            // enabled and unchanged may be undefined so checking if not 0
+            unchanged: enabled[j] !== 0,
+            enabled: enabled[j] !== 0,
           }
         }),
       }

@@ -2,13 +2,13 @@ import { APPLET_LOADING } from 'components/pages/Applet'
 import { CleanButton } from 'components/shared/Button'
 import { GetSettingsLabel } from '../WordsList/WordEditor'
 import { Hide } from 'components/icons/Hide'
-import { NoWords } from 'components/applets/NoWords'
+import { NoWords } from 'components/applets/NoProblems'
 import {
   TwoLatestDisplay,
   TwoLatestDisplayViewProps,
 } from 'components/applets/TwoLatestDisplay'
-import { Word } from 'services/app-data/WordsManager.types'
-import { WordsManager } from 'services/app-data/WordsManager'
+import { Word } from 'services/applets/WordsAppletManager/types'
+import { WordsAppletManager } from 'services/applets/WordsAppletManager/WordsAppletManager'
 import { cssUtil } from 'styles'
 import { getWordSettings } from './WordsSettings'
 import { hideLoading } from 'store/view'
@@ -22,7 +22,7 @@ import styles from './WordsApplet.module.scss'
 export type WordComponent = React.ComponentType<TwoLatestDisplayViewProps<Word>>
 export type LetterChoiceAppletOptions = {
   word: WordComponent
-  manager: WordsManager
+  manager: WordsAppletManager
   className?: string
   help?: ComponentType
   getSettingsLabel: GetSettingsLabel

@@ -11,8 +11,9 @@ $option-height: 1.3em;
 }
 
 .Container {
-  margin: 0 0.2em;
   min-width: 2em;
+  display: inline-block;
+  margin: 0 0.2emx;
 }
 .Option {
   width: 100%;

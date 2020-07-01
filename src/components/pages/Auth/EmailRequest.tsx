@@ -1,9 +1,9 @@
-import { ErrorMessage } from 'components/form/ErrorMessage'
-import { Input } from 'components/form/Input'
-import { Title } from 'components/shared/Title'
 import { emailRegex } from 'config/regex'
 import Button from 'components/shared/Button'
+import ErrorMessage from 'components/form/ErrorMessage'
+import Input from 'components/form/Input'
 import React, { useState } from 'react'
+import Title from 'components/shared/Title'
 import styles from './Auth.module.scss'
 
 export function EmailRequest({

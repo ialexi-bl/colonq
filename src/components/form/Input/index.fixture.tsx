@@ -1,5 +1,5 @@
-import { Input } from '.'
 import { TextArea } from './TextArea'
+import Input from './Input'
 import React from 'react'
 
 const wrap = (e: any) => <div style={{ width: '20rem' }}>{e}</div>

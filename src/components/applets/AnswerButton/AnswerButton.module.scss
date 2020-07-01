@@ -2,7 +2,7 @@
 @use 'styles/variables/colors';
 @use 'styles/variables/dims';
 
-.ChoiceButton {
+.AnswerButton {
   composes: disable-touch-bg from '~styles/util/touch-bg.scss';
 
   background: colors.$accent-darker;
@@ -16,10 +16,10 @@
     background: darken(colors.$accent, 10%);
   }
 
-  &.Correct {
-    background: colors.$correct !important;
+  &.correct {
+    background: colors.$correct;
   }
-  &.Incorrect {
-    background: colors.$incorrect !important;
+  &.incorrect {
+    background: colors.$incorrect;
   }
 }

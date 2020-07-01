@@ -1,17 +1,15 @@
-import {
-  ActiveLetter,
-  Letter,
-  LetterTitle,
-  WrongLetter,
-} from 'components/shared/LetterTitle'
 import { CUTE_FACE } from 'config/view'
 import { Endpoints } from 'config/endpoints'
 import { PageContainer } from 'components/shared/Page'
-import { Subtitle } from 'components/shared/Subtitle'
-import { TitleLine } from 'components/shared/TitleLine'
 import { cssUtil } from 'styles'
 import ApiClient from 'services/client'
+import LetterTitle, {
+  ActiveLetter,
+  Letter,
+  WrongLetter,
+} from 'components/shared/LetterTitle'
 import React, { ErrorInfo } from 'react'
+import TitleLine from 'components/shared/TitleLine'
 import cn from 'clsx'
 import styles from './Boundary.module.scss'
 
@@ -80,12 +78,10 @@ export class Boundary extends React.Component<
             <WrongLetter>O</WrongLetter>
             <Letter>R</Letter>
           </LetterTitle>
-          <Subtitle
-            className={cn(cssUtil.routeTransitionDown, styles.Subtitle)}
-          >
+          <p className={cn(cssUtil.routeTransitionDown, styles.Subtitle)}>
             Что-то сломалось {CUTE_FACE}. Попробуй обновить страницу, если не
             получится - вернись позже. Всё обязательно заработает
-          </Subtitle>
+          </p>
         </TitleLine>
       </PageContainer>
     )

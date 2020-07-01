@@ -2,7 +2,7 @@ import {
   Word,
   WordsData,
   WordsAppDataDispatch,
-} from 'services/app-data/WordsManager.types'
+} from 'services/applets/WordsAppletManager/types'
 import { WordEditor } from './WordEditor'
 import Fuse from 'fuse.js'
 import React, {

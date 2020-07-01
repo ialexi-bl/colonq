@@ -1,11 +1,11 @@
-import { Checkbox } from 'components/form/Checkbox'
 import { VirtualizedItemProps } from 'components/shared/VirtualizedNestedList'
-import { WordsData } from 'services/app-data/WordsManager.types'
+import { WordsData } from 'services/applets/WordsAppletManager/types'
+import Checkbox from 'components/form/Checkbox'
 import React from 'react'
 import cn from 'clsx'
 import styles from './VirtualizedWord.module.scss'
 
-export function VirtualizedWordItem({
+export default function VirtualizedWordItem({
   elementRef,
   groupIndex,
   collapsing,

@@ -2,7 +2,6 @@ import { AppState } from 'store/types'
 import { Boundary } from './pages/Boundary'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import { NotFound } from './pages/NotFound'
-import { Page } from './shared/Page'
 import { REACT_APP_GA_ID } from 'config'
 import {
   ROUTE_TRANSITION_CLASSNAME,
@@ -12,6 +11,7 @@ import { Route, Switch, useLocation } from 'react-router-dom'
 import { hideLoading, hideNonRouterLoading, showLoading } from 'store/view'
 import { routesArray } from 'config/routes'
 import { useDispatch, useSelector } from 'react-redux'
+import Page from './shared/Page'
 import React, { Suspense, useEffect, useLayoutEffect, useState } from 'react'
 
 declare var gtag: Gtag.Gtag

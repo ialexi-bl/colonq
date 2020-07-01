@@ -1,15 +1,14 @@
-import {
+import LetterTitle, {
   ActiveLetter,
   CorrectLetter,
   Letter,
-  LetterTitle,
   WrongLetter,
 } from './LetterTitle'
 import React from 'react'
 
 export default () => {
   return (
-    <div style={{ padding: 10, color: '#ddd' }}>
+    <div style={{ padding: 10 }}>
       <LetterTitle>
         <Letter>C</Letter>
         <ActiveLetter>O</ActiveLetter>

@@ -1,4 +1,4 @@
-import { Word } from 'services/app-data/WordsManager.types'
+import { Word } from 'services/applets/WordsAppletManager/types'
 import React from 'react'
 import styles from './CorrectLetter.module.scss'
 

@@ -1,9 +1,3 @@
-import {
-  CookiesNotification,
-  NotificationToaster,
-} from './shared/NotificationToaster'
-import { Menu } from './shared/Menu'
-import { RouteLoading } from './shared/RouteLoading'
 import { Router } from './Router'
 import { auth, verifyEmail } from 'config/routes'
 import { authenticate, unauthenticate } from 'store/auth'
@@ -12,7 +6,12 @@ import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router'
 import ApiClient, { AuthEvent } from 'services/client'
 import LangErrors from 'lang/errors.json'
+import Menu from './shared/Menu'
+import NotificationToaster, {
+  CookiesNotification,
+} from './shared/NotificationToaster'
 import React, { useEffect, useState } from 'react'
+import RouteLoading from './shared/RouteLoading'
 
 const getMaintenanceComponent = () =>
   import('components/pages/Maintenance').then((x) => x.Maintenance)

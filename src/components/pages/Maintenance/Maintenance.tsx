@@ -1,13 +1,11 @@
-import {
+import { PageContainer } from 'components/shared/Page'
+import LetterTitle, {
   ActiveLetter,
   Letter,
-  LetterTitle,
   WrongLetter,
 } from 'components/shared/LetterTitle'
-import { PageContainer } from 'components/shared/Page'
-import { Subtitle } from 'components/shared/Subtitle'
-import { TitleLine } from 'components/shared/TitleLine'
 import React from 'react'
+import TitleLine from 'components/shared/TitleLine'
 
 export default () => (
   <PageContainer>
@@ -20,7 +18,7 @@ export default () => (
         <Letter>N</Letter>
         <WrongLetter>Q</WrongLetter>
       </LetterTitle>
-      <Subtitle>Сайт на техобслуживании</Subtitle>
+      <p>Сайт на техобслуживании</p>
     </TitleLine>
   </PageContainer>
 )

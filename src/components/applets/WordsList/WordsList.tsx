@@ -1,6 +1,6 @@
-import { Input } from 'components/form/Input'
 import { WordsListEditor, WordsListEditorProps } from './WordsListEditor'
 import { WordsSearch } from './WordsSearch'
+import Input from 'components/form/Input'
 import React, { useRef, useState } from 'react'
 import styles from './WordsListEditor.module.scss'
 

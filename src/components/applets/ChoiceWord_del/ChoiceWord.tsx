@@ -1,6 +1,6 @@
 import { InlineChoice } from 'components/applets/InlineChoice'
 import { TwoLatestDisplayViewProps } from 'components/applets/TwoLatestDisplay'
-import { Word } from 'services/app-data/WordsManager.types'
+import { Word } from 'services/applets/WordsAppletManager/types'
 import React, { memo, useState } from 'react'
 import cn from 'clsx'
 import styles from './ChoiceWord.module.scss'

@@ -2,15 +2,17 @@ import {
   VirtualizedGroupProps,
   VirtualizedItemProps,
 } from 'components/shared/VirtualizedNestedList'
-import { VirtualizedWordGroup } from './VirtualizedWordGroup'
-import { VirtualizedWordItem } from './VirtualizedWordItem'
-import { WordsData } from 'services/app-data/WordsManager.types'
+import { WordsData } from 'services/applets/WordsAppletManager/types'
 import React from 'react'
+import VirtualizedWordGroup from './VirtualizedWordGroup'
+import VirtualizedWordItem from './VirtualizedWordItem'
 
+export { default as VirtualizedWordGroup } from './VirtualizedWordGroup'
+export { default as VirtualizedWordItem } from './VirtualizedWordItem'
 export * from './VirtualizedWordGroup'
 export * from './VirtualizedWordItem'
 
-export function getVirtualizedWordViews({
+export default function getVirtualizedWordViews({
   height = 48,
 }: {
   height?: number

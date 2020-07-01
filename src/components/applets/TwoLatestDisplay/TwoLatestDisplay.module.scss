@@ -28,6 +28,8 @@ $transition-class-name: two-latest-display;
   }
 }
 .Transition {
+  composes: centered from '~styles/util/centered.scss';
+
   position: absolute;
   animation: item-appear $transition-duration ease-out;
   transition: $transition-duration * 0.75 ease-out;

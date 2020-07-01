@@ -1,6 +1,6 @@
-import { ChoiceButton } from 'components/applets/ChoiceButton'
 import { TwoLatestDisplayViewProps } from 'components/applets/TwoLatestDisplay'
-import { Word } from 'services/app-data/WordsManager.types'
+import { Word } from 'services/applets/WordsAppletManager/types'
+import ChoiceButton from 'components/applets/AnswerButton'
 import React, { memo, useState } from 'react'
 import cn from 'clsx'
 import styles from './Accents.module.scss'
@@ -47,8 +47,6 @@ export const AccentWord = memo(function AccentWord({
 
         const isCorrect =
           word.label[i] !== word.label[i].toLowerCase() || letter === 'ё'
-        const involved = answered && (i === answer || isCorrect)
-        const correct = involved ? isCorrect : null
 
         return (
           <ChoiceButton
@@ -59,7 +57,8 @@ export const AccentWord = memo(function AccentWord({
             }}
             tabIndex={active ? 0 : -1}
             className={styles.Letter}
-            correct={correct}
+            incorrect={answered && isCorrect}
+            correct={answered && !isCorrect && i === answer}
           >
             {lower === 'ё' && !answered ? 'е' : lower}
           </ChoiceButton>

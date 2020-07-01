@@ -15,7 +15,7 @@ export type InputProps = Omit<
  * parameter to onChange
  * @param {InputProps} props
  */
-export const Input = forwardRef<HTMLInputElement, InputProps>(
+const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ className, onChange, state, formNoValidate, ...props }, ref) => (
     <input
       ref={ref}
@@ -27,3 +27,4 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     />
   ),
 )
+export default Input

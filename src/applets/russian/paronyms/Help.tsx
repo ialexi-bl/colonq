@@ -1,6 +1,6 @@
-import { Title } from 'components/shared/Title'
 import Button from 'components/shared/Button'
 import React, { useState } from 'react'
+import Title from 'components/shared/Title'
 import styles from './Paronym.module.scss'
 
 export function ParonymsHelp() {

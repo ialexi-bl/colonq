@@ -1,5 +1,5 @@
 import { APPDATA_STORAGE, getDb } from 'services/database'
-import { AppDataManager } from 'services/app-data/AppDataManager'
+import { AppDataManager } from 'services/applets/AppletManager'
 
 export type LocalAppData<TData> = {
   version: number

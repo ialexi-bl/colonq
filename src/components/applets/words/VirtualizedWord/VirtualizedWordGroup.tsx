@@ -1,12 +1,12 @@
-import { Checkbox } from 'components/form/Checkbox'
 import { VirtualizedGroupProps } from 'components/shared/VirtualizedNestedList'
-import { WordsData } from 'services/app-data/WordsManager.types'
+import { WordsData } from 'services/applets/WordsAppletManager/types'
+import Checkbox from 'components/form/Checkbox'
 import React from 'react'
-import UnfoldButton from 'components/shared/UnfoldButton/UnfoldButton'
+import UnfoldButton from 'components/shared/UnfoldButton'
 import cn from 'clsx'
 import styles from './VirtualizedWord.module.scss'
 
-export function VirtualizedWordGroup({
+export default function VirtualizedWordGroup({
   elementRef,
   toggleFold,
   groupIndex,

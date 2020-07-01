@@ -4,6 +4,7 @@
   body { 
     font-family: Ubuntu, Helvetica, sans-serif; 
     background: #151529;
+    color: #ddd;
   }
   html, body, #root {
     margin: 0;

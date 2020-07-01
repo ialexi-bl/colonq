@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { ControllableScrolbars } from 'components/shared/ControllableScrollbars'
-import { VirtualizedList } from 'components/shared/VirtualizedNestedList'
-import { VirtualizedWordGroup } from './VirtualizedWordGroup'
-import { VirtualizedWordItem } from './VirtualizedWordItem'
-import { WordsData } from 'services/app-data/WordsManager.types'
-import { getVirtualizedWordViews } from '.'
+import { WordsData } from 'services/applets/WordsAppletManager/types'
 import { useValue } from 'react-cosmos/fixture'
+import ControllableScrolbars from 'components/shared/ControllableScrollbars'
 import React from 'react'
+import VirtualizedList from 'components/shared/VirtualizedNestedList'
+import VirtualizedWordGroup from './VirtualizedWordGroup'
+import VirtualizedWordItem from './VirtualizedWordItem'
+import getVirtualizedWordViews from '.'
 
 const data: WordsData = [...new Array(20)].map((_, i) => ({
   id: i,

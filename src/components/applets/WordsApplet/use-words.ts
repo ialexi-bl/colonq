@@ -1,6 +1,6 @@
 import { TwoLatestDisplayItem, TwoLatestItems } from '../TwoLatestDisplay'
-import { Word, WordsData } from 'services/app-data/WordsManager.types'
-import { WordsManager } from 'services/app-data/WordsManager'
+import { Word, WordsData } from 'services/applets/WordsAppletManager/types'
+import { WordsAppletManager } from 'services/applets/WordsAppletManager/WordsAppletManager'
 import { useAppData } from 'hooks/app-data'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
@@ -14,7 +14,7 @@ const noPreviousWords = {
   order: [] as string[],
   hash: {} as Record<string, true>,
 }
-const filterWords = (sets: WordsData, manager: WordsManager) =>
+const filterWords = (sets: WordsData, manager: WordsAppletManager) =>
   sets.reduce<Word[]>(
     (acc, set) =>
       acc.concat(
@@ -25,7 +25,7 @@ const filterWords = (sets: WordsData, manager: WordsManager) =>
     [],
   )
 
-export function useWords(manager: WordsManager, onLoad?: () => unknown) {
+export function useWords(manager: WordsAppletManager, onLoad?: () => unknown) {
   const { loading, data: sets } = useAppData(manager, onLoad)
   const [words, setWords] = useState<TwoLatestItems<Word>>(noWords)
   // * REVIEW: maybe change to FastList one day (https://github.com/isaacs/fast-list)

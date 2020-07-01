@@ -1,5 +1,5 @@
 import { AppData, setAppData } from 'store/app-data'
-import { AppDataManager } from 'services/app-data/AppDataManager'
+import { AppDataManager } from 'services/applets/AppletManager'
 import { Endpoints } from 'config/endpoints'
 import { GetAppDataResponse, SetAppDataResponse } from 'response-types/app-data'
 import { MixedDispatch, ThunkAction } from 'store/types'

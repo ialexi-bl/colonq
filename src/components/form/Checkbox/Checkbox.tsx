@@ -19,7 +19,7 @@ export type CheckboxProps = Omit<
  * Simple checkbox
  * @param {CheckboxProps} props
  */
-export const Checkbox = ({
+const Checkbox = ({
   checked,
   className,
   onChange,
@@ -37,3 +37,4 @@ export const Checkbox = ({
     <span className={cn(styles.Checkbox, checked && styles.checked)} />
   </label>
 )
+export default Checkbox

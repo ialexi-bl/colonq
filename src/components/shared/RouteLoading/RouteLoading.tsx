@@ -1,7 +1,7 @@
 import { AppState } from 'store/types'
 import { CSSTransition } from 'react-transition-group'
-import { Loading } from '../Loading/Loading'
 import { useSelector } from 'react-redux'
+import Loading from '../Loading'
 import React from 'react'
 import styles from './RouteLoading.module.scss'
 

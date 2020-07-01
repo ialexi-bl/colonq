@@ -1,5 +1,5 @@
 import { AppData, defaultData, setAppData } from 'store/app-data'
-import { AppDataManager } from 'services/app-data/AppDataManager'
+import { AppDataManager } from 'services/applets/AppletManager'
 import { AppState, MixedDispatch } from 'store/types'
 import { UnknownError } from 'services/errors'
 import { fetchAppData, uploadAppData } from './use-remote-app-data'

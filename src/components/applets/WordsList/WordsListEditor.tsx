@@ -3,9 +3,8 @@ import { GetSettingsLabel, WordEditor } from './WordEditor'
 import {
   Word,
   WordsData,
-  WordsAppDataDispatch,
   WordsGroup,
-} from 'services/app-data/WordsManager.types'
+} from 'services/applets/WordsAppletManager/types'
 import { WordsSetEditor } from './WordsSetEditor'
 import { listItemHeight } from 'components/shared/ListItem'
 import React, {

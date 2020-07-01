@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { ErrorMessage } from '.'
-import { Input } from '../Input'
 import { useValue } from 'react-cosmos/fixture'
+import ErrorMessage from './ErrorMessage'
+import Input from '../Input'
 import React, { useEffect } from 'react'
 
 const messages = [

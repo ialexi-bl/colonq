@@ -1,8 +1,7 @@
 import { Item, TwoLatestDisplayProps } from '.'
-import { cssUtil } from 'styles'
-import { reduceSize } from './reduce-font'
 import React from 'react'
 import cn from 'clsx'
+import reduceFont from './reduce-font'
 import styles from './TwoLatestDisplay.module.scss'
 
 /**
@@ -24,10 +23,15 @@ export function TwoLatestDisplay<TItem>({
       {iter.map((item) => (
         <div
           key={item.id}
+          className={cn(styles.Transition, {
+            [styles.TransitionPrev1]: item === prev1,
+            [styles.TransitionPrev2]: item === prev2,
+            [styles.TransitionHiding]: item.hiding,
+          })}
           // NOTE: this ref may be called multiple times on component updates
           // and it may cause scaling component more than once.
           // This should not happend under normal circumstances, but it does,
-          // for example, during hot
+          // for example, during hot reload
           ref={(e) => {
             if (!e) return
 
@@ -35,7 +39,7 @@ export function TwoLatestDisplay<TItem>({
               if (item.scale) return
 
               setTimeout(() => {
-                item.scale = reduceSize(e)
+                item.scale = reduceFont(e)
                 size = e.clientHeight * item.scale
               }, 0)
             } else if (!item.hiding) {
@@ -52,11 +56,6 @@ export function TwoLatestDisplay<TItem>({
               }, 0)
             }
           }}
-          className={cn(styles.Transition, cssUtil.centered, {
-            [styles.TransitionPrev1]: item === prev1,
-            [styles.TransitionPrev2]: item === prev2,
-            [styles.TransitionHiding]: item.hiding,
-          })}
         >
           <Component active={item === current} item={item.data} next={next} />
         </div>

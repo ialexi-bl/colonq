@@ -5,21 +5,21 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 
 /**
- * Redirects to specified page (default - index) if user is authenticated
+ * Redirects to specified page (default - index) if user is not authenticated
  * @param redirect - Redirect path
- * @returns Whether the page should be displayed or not
+ * @returns - Whether the page should be displayed
  */
-export function useGuestRoute(redirect = index()) {
+export default function useAuthenticatedRoute(redirect = index()) {
   const dispatch = useDispatch()
   const { authenticated, loading } = useSelector(
     (state: AppState) => state.auth,
   )
 
   useEffect(() => {
-    if (!loading && authenticated) {
+    if (!loading && !authenticated) {
       dispatch(replace(redirect))
     }
   }, [authenticated, dispatch, loading, redirect])
 
-  return !loading && !authenticated
+  return !loading && authenticated
 }

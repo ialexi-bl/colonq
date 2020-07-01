@@ -1,6 +1,5 @@
-import { ListCheckbox, ListItem } from 'components/shared/ListItem'
 import { TransitionStatus } from 'react-transition-group/Transition'
-import { Word, WordsAppDataAction } from 'services/app-data/WordsManager.types'
+import { Word, WordsAppDataAction } from 'services/applets/WordsAppletManager/types'
 import React, { CSSProperties, ReactNode, forwardRef, memo } from 'react'
 import cn from 'clsx'
 import styles from './WordsListEditor.module.scss'
@@ -33,7 +32,10 @@ export const WordEditor = memo(
         <ListCheckbox
           checked={word.enabled}
           onChange={() => {
-            dispatch({ type: 'toggle-item', payload: { index, groupIndex: setIndex } })
+            dispatch({
+              type: 'toggle-item',
+              payload: { index, groupIndex: setIndex },
+            })
           }}
         />
         <span className={styles.Label}>{getLabel(word)}</span>

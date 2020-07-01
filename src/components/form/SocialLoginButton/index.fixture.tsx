@@ -1,5 +1,5 @@
-import { SocialLoginButton } from '.'
 import React from 'react'
+import SocialLoginButton from './SocialLoginButton'
 
 export default () => {
   return (

@@ -1,5 +1,5 @@
 import { AppData, defaultData, setAppData } from 'store/app-data'
-import { AppDataManager } from 'services/app-data/AppDataManager'
+import { AppDataManager } from 'services/applets/AppletManager'
 import { AppState } from 'store/types'
 import { useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'

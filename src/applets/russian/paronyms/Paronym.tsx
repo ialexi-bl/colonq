@@ -1,6 +1,6 @@
-import { Input } from 'components/form/Input'
 import { TwoLatestDisplayViewProps } from 'components/applets/TwoLatestDisplay'
-import { Word } from 'services/app-data/WordsManager.types'
+import { Word } from 'services/applets/WordsAppletManager/types'
+import Input from 'components/form/Input'
 import React, { memo, useMemo, useState } from 'react'
 import styles from './Paronym.module.scss'
 
@@ -25,15 +25,15 @@ export const Paronym = memo(function Paronym({
     return [start, placeholder, end, correct]
   }, [word.label])
 
-  const valid = (value.trim() || helper).toLowerCase() === correct.toLowerCase()
+  const isCorrect =
+    (value.trim() || helper).toLowerCase() === correct.toLowerCase()
   return (
     <div className={styles.Word}>
       {start}
       <Input
         size={Math.max(helper.length, correct.length) + 4}
         value={active ? value : correct}
-        valid={!active && valid}
-        invalid={!active && !valid}
+        state={active ? undefined : isCorrect ? 'valid' : 'invalid'}
         tabIndex={active ? 0 : -1}
         onChange={setValue}
         placeholder={helper}

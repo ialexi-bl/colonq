@@ -1,4 +1,4 @@
-import { usePrevious } from 'hooks/util/use-previous'
+import { usePrevious } from 'hooks/shared/use-previous'
 import React from 'react'
 import cn from 'clsx'
 import styles from './ErrorMessage.module.scss'
@@ -7,10 +7,10 @@ export type ErrorMessageProps = HTMLProps.div & {
   message?: string | null
 }
 
-export const ErrorMessage = ({
+export default function ErrorMessage({
   message = null,
   className,
-}: ErrorMessageProps) => {
+}: ErrorMessageProps) {
   const previous = usePrevious(message)
 
   return (

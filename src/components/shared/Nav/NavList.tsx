@@ -1,6 +1,6 @@
 import { NavItem } from './NavItem'
 import { ParentSection, Section, appsMap } from 'config/apps-map'
-import { useCurrentLocation } from 'hooks/util/use-current-location'
+import { useCurrentLocation } from 'hooks/shared/use-current-location'
 import React, { CSSProperties } from 'react'
 import cn from 'clsx'
 import styles from './Nav.module.scss'

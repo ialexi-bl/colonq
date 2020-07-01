@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { CookiesNotification } from './CookiesNotification'
 import { Notification } from './Notification'
-import { NotificationToaster } from './Toaster'
 import { Provider } from 'react-redux'
 import { useValue } from 'react-cosmos/fixture'
 import Button from '../Button'
+import NotificationToaster from './Toaster'
 import React from 'react'
 import configureStore from 'redux-mock-store'
 

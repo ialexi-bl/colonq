@@ -1,12 +1,12 @@
-export const reduceSize = (e: HTMLElement) => {
-  const h = window.innerHeight
+export default function reduceSize(e: HTMLElement) {
+  const windowHeight = window.innerHeight
 
   let width = e.clientWidth
   let i = 0
 
-  while (i++ < 50 && e.clientHeight / h > 0.4) {
+  while (i++ < 50 && e.clientHeight / windowHeight > 0.4) {
     width += 100
-    // For some reason just width doesn't work, min-width is also necessary
+    // For some reason just width doesn't always work, min-width is also necessary
     e.style.width = e.style.minWidth = `${width}px`
   }
 

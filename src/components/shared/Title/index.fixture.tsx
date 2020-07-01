@@ -1,6 +1,6 @@
-import { Title } from './Title'
 import { useValue } from 'react-cosmos/fixture'
 import React from 'react'
+import Title from './Title'
 
 export default () => {
   const [border] = useValue('margin border', { defaultValue: false })
@@ -14,7 +14,7 @@ export default () => {
       }
 
   return (
-    <div style={{ padding: 10, color: '#ddd' }}>
+    <div style={{ padding: 10 }}>
       <div style={style}>
         <Title level={1}>I'm title level 1</Title>
       </div>

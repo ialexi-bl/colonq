@@ -1,7 +1,7 @@
 import { Help } from 'components/icons/Help'
 import { More } from 'components/icons/More'
-import { Overlay, OverlayCloseButton, OverlayOpenButton } from '.'
 import { useValue } from 'react-cosmos/fixture'
+import Overlay, { OverlayCloseButton, OverlayOpenButton } from '.'
 import React from 'react'
 
 export default {
@@ -17,7 +17,7 @@ export default {
   Overlay: () => {
     const [open, setOpen] = useValue<boolean>('open', { defaultValue: false })
     return (
-      <div style={{ color: '#ddd' }}>
+      <div>
         <OverlayOpenButton onClick={() => setOpen(true)} />
 
         <Overlay setOpen={setOpen} open={open}>

@@ -1,10 +1,9 @@
-import { Box } from './Box'
+import Box from './Box'
 import React from 'react'
 
 export default (
   <div
     style={{
-      color: 'white',
       padding: '10px',
       display: 'grid',
       gridGap: '10px',

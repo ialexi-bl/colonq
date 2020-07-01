@@ -1,5 +1,5 @@
-import { Checkbox } from '.'
 import { useValue } from 'react-cosmos/fixture'
+import Checkbox from './Checkbox'
 import React from 'react'
 
 export default {

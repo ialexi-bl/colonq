@@ -1,5 +1,5 @@
 .CenteredBox {
-  composes: centered from '~styles/util/centered';
+  composes: centered from '~styles/util/centered.scss';
 
   size: 100%;
 }

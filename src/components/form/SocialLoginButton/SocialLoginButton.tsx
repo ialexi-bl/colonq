@@ -15,13 +15,13 @@ export type SocialLoginButtonProps = HTMLProps.a & {
  * Button with social network symbols and labels
  * @param {SocialLoginButtonProps} props
  */
-export const SocialLoginButton = ({
+export default function SocialLoginButton({
   provider,
   className,
   disabled,
   onClick,
   ...props
-}: SocialLoginButtonProps) => {
+}: SocialLoginButtonProps) {
   const Icon = icons[provider]
 
   return (

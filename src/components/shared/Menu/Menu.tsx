@@ -1,10 +1,10 @@
 import { AppState } from 'store/types'
 import { CSSTransition } from 'react-transition-group'
 import { LogoLink, NavButton, ProfileButton } from './buttons'
-import { Nav, TIMEOUT } from 'components/shared/Nav'
 import { toggleNav } from 'store/view'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router'
+import Nav, { TIMEOUT } from 'components/shared/Nav'
 import React, { useCallback, useEffect, useRef } from 'react'
 import styles from './Menu.module.scss'
 
