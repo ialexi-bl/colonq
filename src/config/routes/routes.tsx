@@ -11,6 +11,16 @@ export const routesArray: RouteOptions[] = [
     component: lazy(() => import('components/pages/Index')),
   },
   {
+    path: '/list',
+    name: 'list',
+    component: lazy(() => import('components/pages/Index')),
+  },
+  {
+    path: '/settings',
+    name: 'settings',
+    component: lazy(() => import('components/pages/Index')),
+  },
+  {
     path: '/auth',
     name: 'auth',
     component: lazy(() => import('components/pages/Auth')),
@@ -45,7 +55,7 @@ export const routesArray: RouteOptions[] = [
     }: RouteComponentProps<{
       path: string
     }>) => {
-      const app = `/${match.path}`
+      const app = `/${match.params.path}`
       const info = appsMap[app]
 
       if (!info?.leaf) {
@@ -54,7 +64,7 @@ export const routesArray: RouteOptions[] = [
 
       let Component = cache[app]
       if (!Component) {
-        Component = cache[app] = lazy(() => import(appsMap[app].location))
+        Component = cache[app] = lazy(info.loadComponent)
       }
 
       return <Component />
@@ -73,9 +83,11 @@ const cache: {
 
 export const verifyEmail = () => routes.verifyEmail.path
 export const feedback = () => routes.feedback.path
+export const settings = () => routes.settings.path
 export const profile = () => routes.profile.path
 export const signin = () => routes.signin.path
 export const index = () => routes.index.path
+export const list = () => routes.list.path
 export const auth = () => routes.auth.path
 export const app = (location: string) =>
   `/app${location[0] === '/' ? location : `/${location}`}`

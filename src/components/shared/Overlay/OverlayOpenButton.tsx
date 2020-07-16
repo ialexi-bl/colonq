@@ -1,5 +1,5 @@
 import { CleanButton } from '../Button'
-import { More } from 'components/icons/More'
+import More from 'components/icons/More'
 import { cssUtil } from 'styles'
 import React from 'react'
 import cn from 'clsx'

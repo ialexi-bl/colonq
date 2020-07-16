@@ -3,47 +3,49 @@
 
 .SocialLoginButton {
   composes: reset-link from '~styles/util/reset.scss';
-  composes: text-primary from '~styles/util/colors.scss';
 
   border-radius: dims.$border-radius;
   align-items: center;
   transition: background 100ms;
-  padding: 0.5rem 1rem;
-  display: flex;
   font-size: 1.2rem;
-  size: 100% 2.5rem;
+  padding: 0.5em;
+  display: flex;
+  cursor: pointer;
+  width: 100%;
 
   &:focus {
     outline: none;
   }
 }
 .Icon {
-  height: 100%;
-  margin-right: 1rem;
+  size: 1.5em;
+  margin-right: 0.5em;
 }
 
 .disabled {
+  background: colors.$disabled;
   cursor: default;
-  background: #555;
-  color: #bbb;
+  color: colors.$text-disabled;
 }
 .vk {
-  background: #4f7db3;
+  background: #4680c2;
 
   &:hover {
-    background: #4775aa;
+    background: #4b86ca;
   }
-  &:active {
-    background: #275e9e;
+  &:active,
+  &:focus {
+    background: #4375af;
   }
 }
 .google {
-  background: #cb4023;
+  background: #4285f4;
 
   &:hover {
-    background: #c23519;
-  }
-  &:active {
-    background: #af280d;
+    background: #4a8fff;
+  } 
+  &:active,
+  &:focus {
+    background: #3d7ee7;
   }
 }

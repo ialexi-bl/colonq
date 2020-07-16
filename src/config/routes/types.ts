@@ -1,4 +1,3 @@
-import { Location } from 'history'
 import { RouteComponentProps } from 'react-router'
 
 export type Routes = {

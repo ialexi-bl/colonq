@@ -1,8 +1,8 @@
 import { AuthProvider } from 'config/endpoints'
-import { Google } from 'components/icons/Google'
-import { Vk } from 'components/icons/Vk'
 import { noop } from 'lodash'
+import Google from 'components/icons/Google'
 import React from 'react'
+import Vk from 'components/icons/Vk'
 import cn from 'clsx'
 import styles from './SocialLoginButton.module.scss'
 
@@ -35,7 +35,7 @@ export default function SocialLoginButton({
       {...props}
     >
       <Icon className={styles.Icon} />
-      {labels[provider]}
+      Войти через {labels[provider]}
     </a>
   )
 }

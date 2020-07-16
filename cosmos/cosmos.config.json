@@ -2,6 +2,5 @@
   "rootDir": "..",
   "webpack": {
     "overridePath": "cosmos/cosmos.webpack.js"
-  },
-  "globalImports": ["cosmos/cosmos.styles.js"]
+  }
 }

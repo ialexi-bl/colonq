@@ -1,11 +1,9 @@
 @use 'styles/variables/colors';
 @use 'styles/variables/dims';
 
-$color: colors.$accent;
-$shadow: transparentize($color, 0.6);
-
-$size: 1.2rem;
-$half: $size / 2 + 0.1;
+$size: 1.5em;
+$color: colors.$accent-lighter;
+$focus-color: transparentize($color, 0.5);
 
 .CheckboxInput {
   opacity: 0;
@@ -13,29 +11,44 @@ $half: $size / 2 + 0.1;
   size: 0;
 }
 
+.Container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  size: $size;
+}
+
 .Checkbox {
   composes: disable-touch-bg from '~styles/util/touch-bg.scss';
-  composes: rounded from '~styles/util/rounded.scss';
 
-  size: $size;
-  cursor: pointer;
-  border: 2px solid $color;
-  box-shadow: inset 0 0 0 0 $color, 0 0 0 0 $shadow;
-  transition: box-shadow 150ms, border-color 100ms;
-
-  // To retain width
+  size: 100%;
+  border: 3px solid $color;
   display: inline-block;
+  box-shadow: 0 0 0 0 $focus-color;
+  border-radius: (dims.$border-radius / 2);
+  transition: box-shadow 100ms;
 
-  input:focus ~ & {
-    outline: none;
-    box-shadow: inset 0 0 0 0 $color, 0 0 0 3px $shadow;
+  .CheckboxInput:active ~ &,
+  .CheckboxInput:focus ~ & {
+    box-shadow: 0 0 0 3px $focus-color;
   }
+}
 
-  input:checked ~ & {
-    box-shadow: inset 0 0 0 $half $color;
-  }
+.Tick {
+  position: absolute 0;
 
-  input:focus:checked ~ & {
-    box-shadow: inset 0 0 0 $half $color, 0 0 0 3px $shadow;
+  path {
+    stroke: $color;
+    stroke-width: 3;
+    stroke-dasharray: 15;
+    stroke-dashoffset: 15;
+    opacity: 0;
+    transition-duration: 200ms;
+    transition-property: stroke-dashoffset, opacity;
+
+    .CheckboxInput:checked ~ & {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
   }
 }

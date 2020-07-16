@@ -1,5 +1,4 @@
 import { AppData, setAppData } from 'store/app-data'
-import { AppDataManager } from 'services/applets/AppletManager'
 import { Endpoints } from 'config/endpoints'
 import { GetAppDataResponse, SetAppDataResponse } from 'response-types/app-data'
 import { MixedDispatch, ThunkAction } from 'store/types'
@@ -9,9 +8,10 @@ import { setLocalData } from './local-data'
 import { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import ApiClient from 'services/client'
+import AppletManager from 'services/applets/AppletManager'
 
 export function useUploadAppData<TData, TStored>(
-  manager: AppDataManager<TData, TStored, any>,
+  manager: AppletManager<TData, TStored, any>,
 ) {
   const dispatch = useDispatch<MixedDispatch>()
 
@@ -25,7 +25,7 @@ export function useUploadAppData<TData, TStored>(
 
 export function fetchAppData<TData, TStored>(
   currentVersion: number | null,
-  manager: AppDataManager<TData, TStored, any>,
+  manager: AppletManager<TData, TStored, any>,
 ): ThunkAction<Promise<AppData<TData> | 'not-modified' | 'outdated' | void>> {
   return async (dispatch) => {
     try {
@@ -70,7 +70,7 @@ export function fetchAppData<TData, TStored>(
 }
 
 export function uploadAppData<TData, TStored>(
-  manager: AppDataManager<TData, TStored, any>,
+  manager: AppletManager<TData, TStored, any>,
   newData: TData,
   version: number,
   _data?: TData,

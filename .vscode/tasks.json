@@ -15,6 +15,17 @@
         "panel": "dedicated",
         "revealProblems": "never"
       }
+    },
+    {
+      "label": "Run react-cosmos",
+      "type": "shell",
+      "command": "npm run cosmos",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "never",
+        "panel": "dedicated",
+        "revealProblems": "never"
+      }
     }
   ]
 }

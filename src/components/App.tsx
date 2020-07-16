@@ -7,6 +7,7 @@ import { useLocation } from 'react-router'
 import ApiClient, { AuthEvent } from 'services/client'
 import LangErrors from 'lang/errors.json'
 import Menu from './shared/Menu'
+import Navigation from './shared/Navigation'
 import NotificationToaster, {
   CookiesNotification,
 } from './shared/NotificationToaster'
@@ -77,8 +78,8 @@ export function App({ maintenance }: { maintenance?: boolean }) {
 
   return (
     <div id={'app'}>
-      <Menu />
       <Router />
+      <Navigation />
       <RouteLoading />
       <CookiesNotification />
       <NotificationToaster />

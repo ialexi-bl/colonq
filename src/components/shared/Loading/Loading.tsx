@@ -1,4 +1,4 @@
-import { Logo } from 'components/icons/Logo'
+import Logo from 'components/icons/Logo'
 import React from 'react'
 import cn from 'clsx'
 import styles from './Loading.module.scss'

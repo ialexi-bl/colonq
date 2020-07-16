@@ -44,6 +44,7 @@
 
     <link rel="stylesheet" href="%PUBLIC_URL%/index.css" />
     <!-- Global site tag (gtag.js) - Google Analytics -->
+    %REACT_APP_PROD_ONLY_START%
     <script
       async
       src="https://www.googletagmanager.com/gtag/js?id=UA-166092289-1"
@@ -56,8 +57,10 @@
       gtag('js', new Date())
       gtag('config', '%REACT_APP_GA_ID%')
     </script>
+    %REACT_APP_PROD_ONLY_END%
 
     <!-- Yandex.Metrika counter -->
+    %REACT_APP_PROD_ONLY_START%
     <script type="text/javascript">
       ;(function (m, e, t, r, i, k, a) {
         m[i] =
@@ -96,7 +99,7 @@
           alt=""
         /></div
     ></noscript>
-
+    %REACT_APP_PROD_ONLY_END% %REACT_APP_PROD_ONLY_START%
     <script>
       window.onerror = function (str, url, line, col, e) {
         try {
@@ -150,6 +153,7 @@
         } catch (e) {}
       }
     </script>
+    %REACT_APP_PROD_ONLY_END%
     <!-- Polyfills -->
     <script src="https://unpkg.com/@ungap/event-target"></script>
   </head>

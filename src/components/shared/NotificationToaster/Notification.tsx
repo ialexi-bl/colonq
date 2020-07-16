@@ -1,5 +1,5 @@
 import { CleanButton } from 'components/shared/Button'
-import { Close } from 'components/icons/Close'
+import Close from 'components/icons/Close'
 import { NotificationType } from 'store/view'
 import React from 'react'
 import cn from 'clsx'

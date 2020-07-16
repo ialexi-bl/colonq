@@ -5,16 +5,19 @@ const styleLoader = require.resolve('style-loader')
 function isCss(regex) {
   return regex.test('abc.module.scss') || regex.test('abc.module.css')
 }
+function isPng(regex) {
+  return regex.test('abc.png')
+}
 
 const rules = getWebpackConfig('development').module.rules
+const oneOf = rules.find((rule) => {
+  return rule.oneOf
+}).oneOf
 
 module.exports = (webpack) => {
   webpack.module.rules.push(
-    ...rules
-      .find((rule) => {
-        return rule.oneOf
-      })
-      .oneOf.filter(({ test }) => {
+    ...oneOf
+      .filter(({ test }) => {
         if (Array.isArray(test)) {
           return test.some(isCss)
         } else if (test) {
@@ -49,6 +52,13 @@ module.exports = (webpack) => {
           }),
         }
       }),
+    ...oneOf.filter(({ test, ...t }) => {
+      if (Array.isArray(test)) {
+        return test.some(isPng)
+      } else if (test) {
+        return isPng(test)
+      }
+    }),
     {
       test: /\.svg$/,
       use: [
@@ -57,7 +67,7 @@ module.exports = (webpack) => {
           options: {
             template: (
               { template },
-              opts,
+              _,
               { imports, props, jsx },
             ) => template.ast`
                 ${imports}

@@ -1,21 +1,47 @@
-$text: #ecebf7;
+$text: #eee;
+$text-disabled: #aaa;
+
 $shadow: rgba(0, 0, 0, 0.2);
+$error: #ab1d1d;
+$error-hover: #bb2424;
+$error-active: #991616;
+$correct: #19963c;
+$correct-hover: #20aa47;
+$correct-active: #158133;
+$error-lighter: #f44336;
+
+$navigation: #181830;
+$background: #0f0f1e;
+$background-lighter: rgba(51, 51, 100, 0.15);
+
+$accent: #4b0082;
+$accent-hover: #560096;
+$accent-active: #3a0065;
+$accent-darker: #330058;
+$accent-lighter: #6b00b9;
+
+$secondary-hover: rgba(255, 255, 255, 0.03);
+$secondary-active: rgba(0, 0, 0, 0.1);
+
+$disabled: #707070;
+
+// $text: #ecebf7;
 $hover: rgba(0, 0, 0, 0.1);
 $focus-overflow: rgba(0, 0, 0, 0.17);
-$incorrect: #e25141;
-$correct: #2fc05f;
-$error: #f44336;
-$error-darker: #b71c1c;
+// $incorrect: #e25141;
+// $correct: #2fc05f;
+// $error: #f44336;
+// $error-darker: #b71c1c;
 
 $primary: #151529;
 $primary-darker: darken($primary, 1%);
 $primary-lighter: lighten($primary, 5%);
-$accent: #8f5bb8;
-$accent-darker: indigo;
+// $accent: #8f5bb8;
+// $accent-darker: indigo;
 
 $background: $primary;
 $sidebar: $primary-darker;
 $action: #d0d0d0;
 $hover: #eaeaea;
-$disabled: #777;
+// $disabled: #777;
 $focus: #999;

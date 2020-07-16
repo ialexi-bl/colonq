@@ -1,4 +1,4 @@
-import { cleanButton } from 'components/shared/Button'
+import { CleanButton } from 'components/shared/Button'
 import React from 'react'
 import cn from 'clsx'
 import styles from './AnswerButton.module.scss'
@@ -14,8 +14,8 @@ const AnswerButton = ({
   correct,
   ...props
 }: AnswerButtonProps) => (
-  <button
-    className={cn(cleanButton, styles.AnswerButton, className, {
+  <CleanButton
+    className={cn(styles.AnswerButton, className, {
       [styles.correct]: correct,
       [styles.incorrect]: incorrect,
     })}

@@ -1,12 +1,9 @@
 import { AppsMap, LeafSection, Section } from './types'
 import React from 'react'
 
-const cache: { [key: string]: React.ComponentType } = {}
+const cache: { [key: string]: { default: React.ComponentType } } = {}
 const applet = (name: string): LeafSection['loadComponent'] => async () => {
-  return (
-    cache[name] ||
-    (cache[name] = (await import(`applets/${name}/index`)).default)
-  )
+  return cache[name] || (cache[name] = await import(`applets/${name}/index`))
 }
 
 const getLeaf = (section: string, leaf: string, title: string): LeafSection => {

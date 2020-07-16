@@ -19,27 +19,37 @@
 }
 
 .Button {
+  composes: reset-button from '~styles/util/reset.scss';
   composes: text-primary from '~styles/util/colors.scss';
   composes: rounded from '~styles/util/rounded.scss';
-  padding: 0.6rem 1rem;
-  font-size: 1.2em;
-  transition: 200ms;
+
+  padding: 0.5em 1em;
+  transition: background 200ms;
 }
 
-/* Variants */
 .primary {
-  composes: bg-accent-darker from '~styles/util/colors.scss';
-  @include active-button(colors.$accent-darker);
+  background: colors.$accent;
+
+  &:hover {
+    background: colors.$accent-hover;
+  }
+  &:active,
+  &:focus {
+    background: colors.$accent-active;
+  }
 }
-.neutral {
-  composes: bg-primary-lighter from '~styles/util/colors.scss';
-  @include active-button(colors.$primary-lighter);
-}
-.error {
-  composes: bg-error-darker from '~styles/util/colors.scss';
-  @include active-button(colors.$error-darker);
+.secondary {
+  background: transparent;
+  border: 4px solid colors.$accent;
+
+  &:hover {
+    background: colors.$secondary-hover;
+  }
+  &:active,
+  &:focus {
+    background: colors.$secondary-active;
+  }
 }
 .disabled {
-  composes: bg-disabled from '~styles/util/colors.scss';
-  cursor: default;
+  background: colors.$disabled;
 }

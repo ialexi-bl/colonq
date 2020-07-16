@@ -1,4 +1,4 @@
-import { Logo } from 'components/icons/Logo'
+import Logo from 'components/icons/Logo'
 import React, { useRef, useState } from 'react'
 
 /**
@@ -38,8 +38,6 @@ export default function InteractiveLogo({ className }: { className?: string }) {
       // 2000 is animation duration in ms
     }, 2000 - ((performance.now() - started.current) % 2000))
   }
-
-  console.log(animating)
 
   return (
     <Logo

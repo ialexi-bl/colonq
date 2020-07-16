@@ -1,1 +1,2 @@
-export { ReactComponent as Back } from './Back.svg'
+import { ReactComponent as Back } from './Back.svg'
+export default Back

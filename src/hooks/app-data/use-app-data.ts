@@ -1,14 +1,14 @@
 import { AppData, defaultData, setAppData } from 'store/app-data'
-import { AppDataManager } from 'services/applets/AppletManager'
 import { AppState, MixedDispatch } from 'store/types'
 import { UnknownError } from 'services/errors'
 import { fetchAppData, uploadAppData } from './use-remote-app-data'
 import { getLocalData } from './local-data'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
+import AppletManager from 'services/applets/AppletManager'
 
-export function useAppData<TData, TStored, TAction>(
-  manager: AppDataManager<TData, TStored, TAction>,
+export default function useAppData<TData, TStored, TAction>(
+  manager: AppletManager<TData, TStored, TAction>,
   onLoad?: () => unknown,
 ) {
   const dispatch = useDispatch<MixedDispatch>()
@@ -85,6 +85,7 @@ export function useAppData<TData, TStored, TAction>(
 
   return {
     loading,
+    version,
     data,
   }
 }

@@ -1,5 +1,8 @@
-import { VirtualizedItemProps } from 'components/shared/VirtualizedNestedList'
-import { WordsData } from 'services/applets/WordsAppletManager/types'
+import { VirtualizedItemProps } from 'components/shared/VirtualizedList'
+import {
+  WordsData,
+  WordsEditAction,
+} from 'services/applets/WordsAppletManager/types'
 import Checkbox from 'components/form/Checkbox'
 import React from 'react'
 import cn from 'clsx'
@@ -13,9 +16,10 @@ export default function VirtualizedWordItem({
   itemIndex,
   expanding,
   transform,
+  dispatch,
   data,
   height = 48,
-}: VirtualizedItemProps<WordsData> & {
+}: VirtualizedItemProps<WordsData, WordsEditAction> & {
   height?: number
 }) {
   const item = data[groupIndex].words[itemIndex]
@@ -23,7 +27,7 @@ export default function VirtualizedWordItem({
   return (
     <li
       className={cn(styles.VirtualizedItemContainer, className)}
-      style={{ transform, height }}
+      style={{ transform, height: height - 5 }}
       ref={elementRef}
     >
       <div
@@ -32,7 +36,18 @@ export default function VirtualizedWordItem({
           [styles.expanding]: expanding,
         })}
       >
-        <Checkbox checked={item.enabled} className={styles.Checkbox} />
+        <div className={styles.ElementContainer}>
+          <Checkbox
+            onClick={() =>
+              dispatch({
+                type: 'toggle-item',
+                payload: { groupIndex, itemIndex },
+              })
+            }
+            checked={item.enabled}
+            className={styles.Checkbox}
+          />
+        </div>
         <p className={styles.Label}>{item.label}</p>
       </div>
     </li>

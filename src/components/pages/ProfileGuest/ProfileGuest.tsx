@@ -2,12 +2,12 @@ import { Endpoints } from 'config/endpoints'
 import { PageContainer } from 'components/shared/Page'
 import { cssUtil } from 'styles'
 import { profile } from 'config/routes'
-import { useGuestRoute } from 'hooks/shared/use-guest-route'
 import React from 'react'
 import SocialLoginButton from 'components/form/SocialLoginButton'
 import Title from 'components/shared/Title'
 import cn from 'clsx'
 import styles from './ProfileGuest.module.scss'
+import useGuestRoute from 'hooks/shared/use-guest-route'
 
 export default function ProfileGuest() {
   const shouldDisplay = useGuestRoute(profile())

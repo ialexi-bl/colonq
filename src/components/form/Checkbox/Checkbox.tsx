@@ -2,39 +2,31 @@ import React, { InputHTMLAttributes } from 'react'
 import cn from 'clsx'
 import styles from './Checkbox.module.scss'
 
-export type CheckboxProps = Omit<
-  InputHTMLAttributes<HTMLInputElement>,
-  'onChange'
-> & {
-  checked?: boolean
-  onChange?: (
-    value: boolean,
-    e:
-      | React.ChangeEvent<HTMLInputElement>
-      | React.KeyboardEvent<HTMLSpanElement>,
-  ) => unknown
+export type CheckboxProps = Omit<HTMLProps.input, 'onChange'> & {
+  onChange?: (value: boolean, e: React.ChangeEvent<HTMLInputElement>) => unknown
 }
 
 /**
  * Simple checkbox
  * @param {CheckboxProps} props
  */
-const Checkbox = ({
-  checked,
-  className,
-  onChange,
-  tabIndex,
-  ...props
-}: CheckboxProps) => (
-  <label className={className}>
+const Checkbox = ({ className, onChange, ...props }: CheckboxProps) => (
+  <label className={cn(className, styles.Container)}>
     <input
       type={'checkbox'}
-      checked={checked}
       className={styles.CheckboxInput}
       onChange={onChange && ((e) => onChange?.(e.target.checked, e))}
       {...props}
     />
-    <span className={cn(styles.Checkbox, checked && styles.checked)} />
+    <div className={styles.Checkbox} />
+    <svg className={styles.Tick} viewBox={'0 0 20 20'}>
+      <path
+        d={'M5,11L9,14L15,6'}
+        strokeLinecap={'round'}
+        strokeLinejoin={'round'}
+        fill={'none'}
+      />
+    </svg>
   </label>
 )
 export default Checkbox

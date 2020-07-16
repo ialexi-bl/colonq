@@ -1,7 +1,7 @@
 import {
-  WordsAppDataAction,
   WordsChanges,
   WordsData,
+  WordsEditAction,
   WordsPresentation,
   WordsUserData,
 } from './types'
@@ -11,7 +11,7 @@ import update from 'immutability-helper'
 export default class WordsAppletManager extends AppletManager<
   WordsData,
   WordsUserData,
-  WordsAppDataAction
+  WordsEditAction
 > {
   defaultData: WordsUserData = {}
 
@@ -100,14 +100,14 @@ export default class WordsAppletManager extends AppletManager<
     })
   }
 
-  public reduce(sets: WordsData, action: WordsAppDataAction): WordsData {
+  public reduce(sets: WordsData, action: WordsEditAction): WordsData {
     switch (action.type) {
-      case 'toggle-set': {
-        const { index: setIndex } = action.payload
-        const state = !sets[setIndex].enabled
+      case 'toggle-group': {
+        const { groupIndex } = action.payload
+        const state = !sets[groupIndex].enabled
 
         return update(sets, {
-          [setIndex]: {
+          [groupIndex]: {
             modified: { $set: true },
             enabled: { $set: state },
             words: (words) => {
@@ -121,22 +121,22 @@ export default class WordsAppletManager extends AppletManager<
         })
       }
       case 'toggle-item': {
-        const { groupIndex: setIndex, index } = action.payload
-        const { words } = sets[setIndex]
-        const enabled = !words[index].enabled
+        const { groupIndex, itemIndex } = action.payload
+        const { words } = sets[groupIndex]
+        const enabled = !words[itemIndex].enabled
 
         return update(sets, {
-          [setIndex]: {
+          [groupIndex]: {
             modified: { $set: true },
             enabled: {
               $set:
                 enabled ||
                 words.some((word, i) => {
-                  return i !== index && word.enabled
+                  return i !== itemIndex && word.enabled
                 }),
             },
             words: {
-              [index]: {
+              [itemIndex]: {
                 enabled: {
                   $set: enabled,
                 },

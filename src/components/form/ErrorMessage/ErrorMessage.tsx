@@ -1,7 +1,7 @@
-import { usePrevious } from 'hooks/shared/use-previous'
 import React from 'react'
 import cn from 'clsx'
 import styles from './ErrorMessage.module.scss'
+import usePrevious from 'hooks/shared/use-previous'
 
 export type ErrorMessageProps = HTMLProps.div & {
   message?: string | null

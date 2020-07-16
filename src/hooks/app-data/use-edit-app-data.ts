@@ -1,18 +1,17 @@
 import { AppData, defaultData, setAppData } from 'store/app-data'
-import { AppDataManager } from 'services/applets/AppletManager'
 import { AppState } from 'store/types'
-import { useCallback, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useUpdateAppData } from './use-update-app-data'
+import { useCallback, useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import AppletManager from 'services/applets/AppletManager'
+import useAppData from './use-app-data'
+import useUpdateAppData from './use-update-app-data'
 
-export function useEditAppData<TData, TStored, TAction>(
-  manager: AppDataManager<TData, TStored, TAction>,
+export default function useEditAppData<TData, TStored, TAction>(
+  manager: AppletManager<TData, TStored, TAction>,
 ) {
   const dispatchGlobally = useDispatch()
   const { scheduleBackup } = useUpdateAppData(manager)
-  const { data, version } = useSelector<AppState, AppData<TData | null>>(
-    (state) => state.appData[manager.applet] || defaultData,
-  )
+  const { data, loading, version } = useAppData(manager)
 
   const [newData, setNewData] = useState<TData>(() =>
     JSON.parse(JSON.stringify(data)),
@@ -38,5 +37,12 @@ export function useEditAppData<TData, TStored, TAction>(
     )
   }
 
-  return { newData, dispatch, apply }
+  useEffect(() => {
+    if (loading && data) {
+      setNewData(data)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading])
+
+  return { dispatch, loading, apply, data: newData }
 }

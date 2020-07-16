@@ -126,7 +126,6 @@ module.exports = function (webpackEnv) {
         syntax: preProcessor === 'sass-loader' ? 'postcss-scss' : undefined,
         plugins: () => [
           require('postcss-flexbugs-fixes'),
-          require('colorguard'),
           require('postcss-easings'),
           require('postcss-short'),
           require('postcss-preset-env')({

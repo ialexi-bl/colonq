@@ -1,8 +1,8 @@
 import { Paronym } from './Paronym'
 import { ParonymsHelp } from './Help'
-import { WordsAppletManager } from 'services/applets/WordsAppletManager/WordsAppletManager'
-import { createWordsApplet } from 'components/applets/WordsApplet'
+import { createWordsApplet } from 'components/applets/WordsApplet_del'
 import { getParonymLabel } from './settings-label'
+import WordsAppletManager from 'services/applets/WordsAppletManager'
 import presentation from './data.json'
 
 export default createWordsApplet({

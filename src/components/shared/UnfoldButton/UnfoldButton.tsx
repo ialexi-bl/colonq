@@ -1,5 +1,5 @@
 import { CleanButton } from '../Button'
-import { Unfold } from 'components/icons/Unfold'
+import Expand from 'components/icons/Expand'
 import React, { MouseEventHandler } from 'react'
 import cn from 'clsx'
 import styles from './UnfoldButton.module.scss'
@@ -15,7 +15,7 @@ const UnfoldButton = ({ folded, className, ...props }: UnfoldButtonProps) => (
     className={cn(styles.UnfoldButton, className, folded && styles.folded)}
     {...props}
   >
-    <Unfold className={styles.Icon} />
+    <Expand className={styles.Icon} />
   </CleanButton>
 )
 

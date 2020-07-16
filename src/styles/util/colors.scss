@@ -24,12 +24,12 @@
 .bg-disabled {
   background: colors.$disabled;
 }
-.bg-incorrect {
-  background: colors.$incorrect;
+.bg-error {
+  background: colors.$error;
 }
 .bg-correct {
   background: colors.$correct;
 }
-.bg-error-darker {
-  background: colors.$error-darker;
+.bg-error-lighter {
+  background: colors.$error-lighter;
 }

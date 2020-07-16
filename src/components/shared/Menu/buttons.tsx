@@ -1,13 +1,12 @@
 import { CleanButton } from '../Button'
-import { Hamburger } from 'components/icons/Hamburger'
 import { Link } from 'react-router-dom'
-import { Signin } from 'components/icons/Signin'
-import { User } from 'components/icons/User'
 import { index, profile, signin } from 'config/routes'
+import Hamburger from 'components/icons/Hamburger'
 import InteractiveLogo from '../InteractiveLogo'
 import React from 'react'
+import User from 'components/icons/User'
 import cn from 'clsx'
-import styles from './Overlay.module.scss'
+import styles from './Menu.module.scss'
 
 export const LogoLink = () => (
   <Link to={index()} className={cn(styles.Button, styles.ButtonLogo)}>
@@ -34,10 +33,6 @@ export const ProfileButton = ({
       [styles.Active]: !loading,
     })}
   >
-    {authenticated ? (
-      <User className={styles.Icon} />
-    ) : (
-      <Signin className={styles.Icon} />
-    )}
+    <User className={styles.Icon} />
   </Link>
 )

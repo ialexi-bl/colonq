@@ -15,6 +15,6 @@ export type ParentSection = SectionCommons & {
 export type LeafSection = SectionCommons & {
   leaf: true
   parent: string
-  component: null | React.ComponentType
-  loadComponent: () => Promise<React.ComponentType>
+  component: null | { default: React.ComponentType }
+  loadComponent: () => Promise<{ default: React.ComponentType }>
 }

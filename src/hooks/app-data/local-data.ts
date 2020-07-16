@@ -1,12 +1,12 @@
 import { APPDATA_STORAGE, getDb } from 'services/database'
-import { AppDataManager } from 'services/applets/AppletManager'
+import AppletManager from 'services/applets/AppletManager'
 
 export type LocalAppData<TData> = {
   version: number
   data: TData
 }
 export async function getLocalData<TData, TStored>(
-  manager: AppDataManager<TData, TStored, any>,
+  manager: AppletManager<TData, TStored, any>,
 ): Promise<null | LocalAppData<TData>> {
   try {
     const db = await getDb
@@ -28,19 +28,19 @@ export async function getLocalData<TData, TStored>(
 }
 
 export async function setLocalData<TData, TStored>(
-  manager: AppDataManager<TData, TStored, any>,
+  manager: AppletManager<TData, TStored, any>,
   data: TData,
   version: number,
   fromServer?: false,
 ): Promise<void>
 export async function setLocalData<TData, TStored>(
-  manager: AppDataManager<TData, TStored, any>,
+  manager: AppletManager<TData, TStored, any>,
   data: TStored,
   version: number,
   fromServer: true,
 ): Promise<void>
 export async function setLocalData<TData, TStored>(
-  manager: AppDataManager<TData, TStored, any>,
+  manager: AppletManager<TData, TStored, any>,
   data: TData | TStored,
   version: number,
   fromServer: boolean = false,

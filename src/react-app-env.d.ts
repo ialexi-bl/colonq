@@ -14,11 +14,16 @@ declare namespace NodeJS {
 }
 
 declare namespace HTMLProps {
+  type className = { className?: string }
+  type children = { children?: React.ReactNode }
   type button = React.ButtonHTMLAttributes<HTMLButtonElement>
+  type input = React.InputHTMLAttributes<HTMLInputElement>
   type div = React.HTMLAttributes<HTMLDivElement>
   type svg = React.SVGAttributes<SVGSVGElement>
+  type img = React.ImgHTMLAttributes<HTMLImageElement>
   type a = React.AnchorHTMLAttributes<HTMLAnchorElement>
 }
+type Childfree<T> = Omit<T, 'children'>
 
 interface Response {
   _req: Request

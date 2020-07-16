@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { WordsData } from 'services/applets/WordsAppletManager/types'
+import { noop } from 'util/noop'
 import { useValue } from 'react-cosmos/fixture'
-import ControllableScrolbars from 'components/shared/ControllableScrollbars'
+import ControlledScrollbars from 'components/shared/ControlledScrollbars'
 import React from 'react'
-import VirtualizedList from 'components/shared/VirtualizedNestedList'
+import VirtualizedList from 'components/shared/VirtualizedList'
 import VirtualizedWordGroup from './VirtualizedWordGroup'
 import VirtualizedWordItem from './VirtualizedWordItem'
 import getVirtualizedWordViews from '.'
@@ -24,25 +25,7 @@ const getCount = (data: WordsData, groupIndex: number) =>
   groupIndex < 0 ? data.length : data[groupIndex].words.length
 
 export default {
-  Item: () => {
-    const [height] = useValue('height', { defaultValue: 48 })
-
-    return (
-      <div style={{ padding: '1rem' }}>
-        <VirtualizedWordItem
-          collapsing={false}
-          expanding={false}
-          groupIndex={0}
-          transform={''}
-          className={''}
-          itemIndex={0}
-          height={height}
-          data={data}
-        />
-      </div>
-    )
-  },
-  Group: () => {
+  Items: () => {
     const [height] = useValue('height', { defaultValue: 48 })
 
     return (
@@ -53,20 +36,33 @@ export default {
           transform={''}
           className={''}
           expanded={false}
+          dispatch={noop}
+          height={height}
+          data={data}
+        />
+        <hr />
+        <VirtualizedWordItem
+          collapsing={false}
+          expanding={false}
+          groupIndex={0}
+          transform={''}
+          className={''}
+          itemIndex={0}
+          dispatch={noop}
           height={height}
           data={data}
         />
       </div>
     )
   },
-  'Virtualized list': () => {
+  'Inside list': () => {
     const [height] = useValue('height', { defaultValue: 48 })
     const [gap] = useValue('gap', { defaultValue: 10 })
 
     const { Item, Group } = getVirtualizedWordViews({ height })
 
     return (
-      <ControllableScrolbars>
+      <ControlledScrollbars>
         <div style={{ width: '100%', height: '100%', padding: '1rem' }}>
           <VirtualizedList
             itemsHeight={height + gap}
@@ -76,7 +72,7 @@ export default {
             data={data}
           />
         </div>
-      </ControllableScrolbars>
+      </ControlledScrollbars>
     )
   },
 }

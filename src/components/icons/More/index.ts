@@ -1,1 +1,2 @@
-export { ReactComponent as More } from './More.svg'
+import { ReactComponent as More } from './More.svg'
+export default More

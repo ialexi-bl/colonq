@@ -1,0 +1,8 @@
+<svg viewBox="0 0 96 96" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+<path d="M29 26C29 23.7909 30.7909 22 33 22H81C83.2091 22 85 23.7909 85 26C85 28.2091 83.2091 30 81 30H33C30.7909 30 29 28.2091 29 26Z" />
+<circle cx="14" cy="27" r="4" />
+<rect x="29" y="44" width="56" height="8" rx="4" />
+<circle cx="14" cy="48" r="4" />
+<rect x="29" y="65" width="40" height="8" rx="4" />
+<circle cx="14" cy="69" r="4" />
+</svg>

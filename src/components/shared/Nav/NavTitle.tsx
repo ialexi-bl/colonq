@@ -1,4 +1,4 @@
-import { Back } from 'components/icons/Back'
+import Back from 'components/icons/Back'
 import { CleanButton } from 'components/shared/Button'
 import { Section } from 'config/apps-map'
 import React, { useCallback } from 'react'

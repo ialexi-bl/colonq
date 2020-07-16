@@ -3,28 +3,22 @@ import Button from 'components/shared/Button'
 import React from 'react'
 
 const onClick = () => alert("I'm working")
-export default {
-  'Clean Button': <CleanButton onClick={onClick}>Hello</CleanButton>,
-  Button: (
-    <div
-      style={{
-        display: 'grid',
-        grid: 'repeat(6, auto) / 200px',
-        gridGap: '10px',
-      }}
-    >
-      <Button onClick={onClick} color={'primary'}>
-        Primary
-      </Button>
-      <Button onClick={onClick} color={'neutral'}>
-        Neutral
-      </Button>
-      <Button onClick={onClick} color={'error'}>
-        Error
-      </Button>
-      <Button onClick={onClick} disabled>
-        Disabled
-      </Button>
-    </div>
-  ),
-}
+export default (
+  <div
+    style={{
+      display: 'grid',
+      padding: '2rem',
+      grid: 'repeat(6, auto) / 200px',
+      gridGap: '1rem',
+    }}
+  >
+    <CleanButton onClick={onClick}>Button with reset styles</CleanButton>
+    <Button onClick={onClick}>Primary</Button>
+    <Button onClick={onClick} secondary>
+      Secondary
+    </Button>
+    <Button onClick={onClick} disabled>
+      Disabled
+    </Button>
+  </div>
+)

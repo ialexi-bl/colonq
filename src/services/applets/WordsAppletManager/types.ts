@@ -25,18 +25,18 @@ export type Word = {
   id: number
 }
 
-export type WordsAppDataDispatch = (action: WordsAppDataAction) => unknown
-export type WordsAppDataAction =
+export type WordsEditDispatch = (action: WordsEditAction) => unknown
+export type WordsEditAction =
   | {
-      type: 'toggle-set'
+      type: 'toggle-group'
       payload: {
-        index: number
+        groupIndex: number
       }
     }
   | {
       type: 'toggle-item'
       payload: {
         groupIndex: number
-        index: number
+        itemIndex: number
       }
     }

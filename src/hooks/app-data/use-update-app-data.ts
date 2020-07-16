@@ -1,13 +1,13 @@
 import { AppData, defaultData, setAppData } from 'store/app-data'
-import { AppDataManager } from 'services/applets/AppletManager'
 import { AppState } from 'store/types'
 import { setLocalData } from './local-data'
 import { useCallback, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useUploadAppData } from './use-remote-app-data'
+import AppletManager from 'services/applets/AppletManager'
 
-export function useUpdateAppData<TData, TStored, TAction>(
-  manager: AppDataManager<TData, TStored, TAction>,
+export default function useUpdateAppData<TData, TStored, TAction>(
+  manager: AppletManager<TData, TStored, TAction>,
 ) {
   const dispatchGlobally = useDispatch()
   const { data, version } = useSelector<AppState, AppData<TData | null>>(

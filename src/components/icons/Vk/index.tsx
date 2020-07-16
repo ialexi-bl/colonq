@@ -1,1 +1,2 @@
-export { ReactComponent as Vk } from './Vk.svg'
+import { ReactComponent as Vk } from './Vk.svg'
+export default Vk

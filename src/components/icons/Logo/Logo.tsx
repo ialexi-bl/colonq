@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './LogoAnimation.module.scss'
 
-export const Logo = ({
+const Logo = ({
   thin,
   ...props
 }: HTMLProps.svg & {
@@ -31,3 +31,4 @@ export const Logo = ({
     <path d={'M170 383 L 210 242 L442 447'} className={styles.logoQTail} />
   </svg>
 )
+export default Logo

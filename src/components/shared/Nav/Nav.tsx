@@ -4,14 +4,14 @@ import { NavList } from './NavList'
 import { NavListContainer } from './NavListContainer'
 import { NavTitle } from './NavTitle'
 import { ParentSection, Section, appsMap } from 'config/apps-map'
-import { Report } from 'components/icons/Report'
 import { feedback } from 'config/routes'
 import { toggleNav } from 'store/view'
-import { useCurrentLocation } from 'hooks/shared/use-current-location'
 import { useDispatch } from 'react-redux'
-import { usePrevious } from 'hooks/shared/use-previous'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+import  Report  from 'components/icons/Report'
 import styles from './Nav.module.scss'
+import useCurrentLocation from 'hooks/shared/use-current-location'
+import usePrevious from 'hooks/shared/use-previous'
 
 export type NavProps = {
   open?: boolean

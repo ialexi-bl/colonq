@@ -1,1 +1,2 @@
-export { ReactComponent as Hamburger } from './Hamburger.svg'
+import { ReactComponent as Hamburger } from './Hamburger.svg'
+export default Hamburger

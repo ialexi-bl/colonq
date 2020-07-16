@@ -1,8 +1,8 @@
 import { AppState } from 'store/types'
 import { Boundary } from './pages/Boundary'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
+import { IS_PROD, REACT_APP_GA_ID } from 'config'
 import { NotFound } from './pages/NotFound'
-import { REACT_APP_GA_ID } from 'config'
 import {
   ROUTE_TRANSITION_CLASSNAME,
   ROUTE_TRANSITION_DURATION,
@@ -29,9 +29,12 @@ export function Router() {
   // on route change faster, than Router closes all previous loadings
   useLayoutEffect(() => {
     dispatch(hideNonRouterLoading())
-    gtag('config', REACT_APP_GA_ID, {
-      page_path: location.pathname,
-    })
+
+    if (IS_PROD) {
+      gtag('config', REACT_APP_GA_ID, {
+        page_path: location.pathname,
+      })
+    }
   }, [dispatch, location.pathname])
 
   return (

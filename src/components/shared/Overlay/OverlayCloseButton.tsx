@@ -1,5 +1,5 @@
 import { CleanButton } from '../Button'
-import { Close } from 'components/icons/Close'
+import Close from 'components/icons/Close'
 import React from 'react'
 import cn from 'clsx'
 import styles from './Overlay.module.scss'

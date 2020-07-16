@@ -5,7 +5,6 @@ import { cssUtil } from 'styles'
 import { notifyInfo } from 'store/view'
 import { signin } from 'config/routes'
 import { unauthenticate } from 'store/auth'
-import { useAuthenticatedRoute } from 'hooks/shared/use-authenticated-route'
 import { useDispatch, useSelector } from 'react-redux'
 import ApiClient from 'services/client'
 import Button from 'components/shared/Button'
@@ -15,6 +14,7 @@ import SocialLoginButton from 'components/form/SocialLoginButton'
 import Title from 'components/shared/Title'
 import cn from 'clsx'
 import styles from './ProfileUser.module.scss'
+import useAuthenticatedRoute from 'hooks/shared/use-authenticated-route'
 
 export default function ProfileUser() {
   const shouldDisplay = useAuthenticatedRoute(signin())

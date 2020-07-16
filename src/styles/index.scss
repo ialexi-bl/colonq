@@ -2,18 +2,13 @@
 @use './mixins/media';
 @use './variables/colors';
 @use './variables/dims';
+@import './util.scss';
+@import '~bootstrap-utilities';
 
 #root {
   overflow: hidden;
   position: relative;
   size: 100%;
-
-  padding-bottom: dims.$menu-size;
-
-  @include media.md {
-    padding-bottom: 0;
-    padding-top: dims.$menu-size;
-  }
 
   &.no-padding {
     padding: 0 !important;
@@ -55,6 +50,6 @@ a {
 }
 
 p {
-  font-size: 1.2rem;
+  // font-size: 1.2rem;
   margin-bottom: 1.2rem;
 }

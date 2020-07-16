@@ -1,18 +1,19 @@
 @use 'styles/variables/colors';
 @use 'styles/variables/dims';
 
-$correct: colors.$correct;
-$border: colors.$accent;
 $error: colors.$error;
-$placeholder-color: rgba(255, 255, 255, 0.5);
+$border: colors.$accent;
+$correct: colors.$correct;
+$placeholder-color: #888;
 
 .Input {
   composes: reset-input from '~styles/util/reset.scss';
 
   transition: box-shadow 150ms, border-radius 150ms;
+  background: colors.$background-lighter;
   box-shadow: 0 0 0 0 $border, inset 0 -3px $border;
   padding: 0.5em 0.8em;
-  border-radius: 0;
+  border-radius: dims.$border-radius dims.$border-radius 0 0;
   width: 100%;
 
   &:-ms-placeholder {

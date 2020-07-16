@@ -1,0 +1,30 @@
+@use 'styles/variables/colors';
+
+.LetterButton {
+  text-align: center;
+  display: inline-block;
+  padding: 0.1em 0.2em;
+}
+
+.correct {
+  background: colors.$correct;
+
+  &:hover {
+    background: colors.$correct-hover;
+  }
+  &:active,
+  &:focus {
+    background: colors.$correct-active;
+  }
+}
+.incorrect {
+  background: colors.$error;
+
+  &:hover {
+    background: colors.$error-hover;
+  }
+  &:active,
+  &:focus {
+    background: colors.$error-active;
+  }
+}

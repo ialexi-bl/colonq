@@ -1,7 +1,7 @@
 import { ChoiceOptions, getChoiceWord } from 'components/applets/ChoiceWord_del'
-import { WordsAppletManager } from 'services/applets/WordsAppletManager/WordsAppletManager'
-import { createWordsApplet } from 'components/applets/WordsApplet'
+import { createWordsApplet } from 'components/applets/WordsApplet_del'
 import { extractLetterAnswer } from '../_common/extract-letter-answer'
+import WordsAppletManager from 'services/applets/WordsAppletManager'
 
 const options: ChoiceOptions = () => ['н', 'нн']
 export default createWordsApplet({

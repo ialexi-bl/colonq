@@ -1,0 +1,52 @@
+@use 'styles/variables/colors';
+
+.ToggleInput {
+  opacity: 0;
+  margin: 0;
+  size: 0;
+}
+
+.Container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  size: 2.8em 1.5em;
+}
+.Track {
+  position: absolute 0.3em;
+  border-radius: 1em;
+  background: colors.$disabled;
+  transition: background 200ms;
+}
+.Slider {
+  position: absolute 0 * 0 0;
+  size: 1.5em;
+  border-radius: 100%;
+  background: colors.$text-disabled;
+  transition-duration: 200ms;
+  transition-property: transform, background, box-shadow;
+}
+
+.ToggleInput:focus,
+.ToggleInput:active {
+  & ~ .Slider {
+    box-shadow: 0 0 0 4px transparentize(colors.$text-disabled, 0.5);
+  }
+}
+
+.ToggleInput:checked {
+  & ~ .Track {
+    background: colors.$accent-darker;
+  }
+  & ~ .Slider {
+    background: colors.$accent-lighter;
+    transform: translate(2.8em - 1.5em);
+  }
+}
+
+.ToggleInput:focus:checked,
+.ToggleInput:active:checked {
+  & ~ .Slider {
+    box-shadow: 0 0 0 4px transparentize(colors.$accent-lighter, 0.5);
+  }
+}

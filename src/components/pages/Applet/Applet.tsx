@@ -1,3 +1,4 @@
+// TODO: delete
 import { NotFound } from '../NotFound'
 import { PageContainer } from 'components/shared/Page'
 import { Section, appsMap } from 'config/apps-map'
@@ -14,14 +15,14 @@ export default function Applet() {
 
   const dispatch = useDispatch()
   const section: Section | undefined = appsMap[location]
-  const [Component, setComponent] = useState<React.ComponentType | null>(() =>
-    section?.leaf ? section.component : null,
+  const [Component, setComponent] = useState<React.ComponentType | null>(
+    () => (section?.leaf && section.component?.default) || null,
   )
 
   useEffect(() => {
     if (section && !Component && section.leaf) {
       dispatch(showLoading(APPLET_LOADING))
-      section.loadComponent().then((x) => setComponent(() => x))
+      section.loadComponent().then((x) => setComponent(() => x.default))
     }
   }, [Component, dispatch, section])
 
