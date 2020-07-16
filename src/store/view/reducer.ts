@@ -1,7 +1,9 @@
 import {
+  CLOSE_NAVIGATION,
   CLOSE_NOTIFICATION,
   FORCE_LOADING,
   HIDE_NON_ROUTER_LOADING,
+  OPEN_NAVIGATION,
   OPEN_NOTIFICATION,
   SET_LOADING,
   TOGGLE_NAV,
@@ -23,6 +25,7 @@ const initialState: ViewState = {
   // Needed for `App` to check authentication
   // Disabled on load
   loading: ['App'],
+  navigationVisible: true,
   notification: null,
   navOpen: false,
 }
@@ -50,6 +53,16 @@ export function reducer(state = initialState, action: ViewAction): ViewState {
       return {
         ...state,
         navOpen: action.payload.state,
+      }
+    case OPEN_NAVIGATION:
+      return {
+        ...state,
+        navigationVisible: true,
+      }
+    case CLOSE_NAVIGATION:
+      return {
+        ...state,
+        navigationVisible: false,
       }
     case OPEN_NOTIFICATION:
       return {

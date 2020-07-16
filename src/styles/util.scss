@@ -1,12 +1,43 @@
-.font-1 {
-  font-size: 1rem !important;
+@function str-replace($string, $search, $replace: '') {
+  $string: inspect($string);
+  $index: str-index($string, $search);
+
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace +
+      str-replace(
+        str-slice($string, $index + str-length($search)),
+        $search,
+        $replace
+      );
+  }
+
+  @return $string;
 }
-.font-2 {
-  font-size: 1.3em !important;
+@mixin font($size, $label: $size) {
+  .font-#{$label} {
+    font-size: ($size * 1rem) !important;
+  }
 }
-.font-3 {
-  font-size: 1.4rem !important;
+@mixin size($width, $label: $width) {
+  $label: str-replace($label, '.', '\\.');
+
+  .w-#{$label} {
+    width: ($width * 1rem) !important;
+  }
+  .h-#{$label} {
+    height: ($width * 1rem) !important;
+  }
 }
-.font-3 {
-  font-size: 2rem !important;
-}
+
+@include font(1);
+@include font(1.5, 2);
+@include font(2, 3);
+@include font(2.5, 4);
+@include font(3, 5);
+
+@include size(1);
+@include size(1.5);
+@include size(2);
+@include size(2.5);
+@include size(3);
+@include size(4);

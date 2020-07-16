@@ -19,7 +19,7 @@ import styles from './WordsListEditor.module.scss'
 
 // TODO: split this mess into multiple modules
 
-const height = parseFloat(listItemHeight) + parseFloat(styles.margin)
+const height = parseFloat(2) + parseFloat(styles.margin)
 const rem = parseFloat(getComputedStyle(document.documentElement).fontSize)
 const duration = parseInt(styles.transitionDuration)
 const extraItems = 8

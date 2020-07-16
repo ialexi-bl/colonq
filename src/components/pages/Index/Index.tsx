@@ -66,25 +66,25 @@ export default function Index() {
             Выбери тему и занимайся каждый день
           </Title>
           <ThemeCard
-            href={app('russian/accents')}
+            to={app('russian/accents')}
             icon={<Accents />}
             label={'Ударения'}
             className={'mb-3'}
           />
           <ThemeCard
-            href={app('russian/prefixes')}
+            to={app('russian/prefixes')}
             icon={<Prefixes />}
             label={'Приставки'}
             className={'mb-3'}
           />
           <ThemeCard
-            href={app('russian/orthography')}
+            to={app('russian/orthography')}
             icon={<Orthography />}
             label={'Орфография'}
             className={'mb-3'}
           />
           <ThemeCard
-            href={app('russian/verb-endings')}
+            to={app('russian/verb-endings')}
             icon={<Verbs />}
             label={'Окончания глаголов и причастий'}
           />

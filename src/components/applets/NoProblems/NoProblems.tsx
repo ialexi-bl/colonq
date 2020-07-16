@@ -15,7 +15,7 @@ const NoProblems = ({
   type?: keyof typeof messages
 }) => (
   <CenteredBox className={className}>
-    <Title level={2} centered>
+    <Title className={'text-center'} level={2}>
       {messages[type]}
       <br />
       {CUTE_FACE}

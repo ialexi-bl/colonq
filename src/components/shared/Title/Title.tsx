@@ -4,7 +4,6 @@ import styles from './Title.module.scss'
 
 export interface TitleProps extends HTMLAttributes<HTMLHeadingElement> {
   level: 1 | 2 | 3 | 4 | 5 | 6
-  centered?: boolean
 }
 
 /**
@@ -12,18 +11,10 @@ export interface TitleProps extends HTMLAttributes<HTMLHeadingElement> {
  * @param props
  */
 const Title = forwardRef<HTMLHeadingElement, TitleProps>(function Title(
-  { level, className, centered, ...props },
+  { level, className, ...props },
   ref,
 ) {
   const H = `h${level}` as 'h1'
-  return (
-    <H
-      className={cn(styles.Title, styles[H], className, {
-        [styles.centered]: centered,
-      })}
-      ref={ref}
-      {...props}
-    />
-  )
+  return <H className={cn(styles.Title, className)} ref={ref} {...props} />
 })
 export default Title

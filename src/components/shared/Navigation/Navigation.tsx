@@ -1,4 +1,5 @@
 import { CleanButton } from '../Button'
+import { Link } from 'react-router-dom'
 import { list, profile, settings } from 'config/routes'
 import List from 'components/icons/List'
 import React from 'react'
@@ -8,15 +9,15 @@ import styles from './Navigation.module.scss'
 
 const Navigation = () => (
   <div className={styles.Navigation}>
-    <a href={list()} className={styles.Button}>
+    <Link to={list()} className={styles.Button}>
       <List />
-    </a>
-    <a href={profile()} className={styles.Button}>
+    </Link>
+    <Link to={profile()} className={styles.Button}>
       <User />
-    </a>
-    <a href={settings()} className={styles.Button}>
+    </Link>
+    <Link to={settings()} className={styles.Button}>
       <Settings />
-    </a>
+    </Link>
   </div>
 )
 export default Navigation

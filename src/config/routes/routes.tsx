@@ -13,7 +13,7 @@ export const routesArray: RouteOptions[] = [
   {
     path: '/list',
     name: 'list',
-    component: lazy(() => import('components/pages/Index')),
+    component: lazy(() => import('components/pages/List')),
   },
   {
     path: '/settings',
