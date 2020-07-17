@@ -1,40 +1,37 @@
 import { Endpoints } from 'config/endpoints'
 import { PageContainer } from 'components/shared/Page'
-import { cssUtil } from 'styles'
 import { profile } from 'config/routes'
+import PageTitle from 'components/shared/PageTitle'
 import React from 'react'
 import SocialLoginButton from 'components/form/SocialLoginButton'
-import Title from 'components/shared/Title'
-import cn from 'clsx'
-import styles from './ProfileGuest.module.scss'
-import useGuestRoute from 'hooks/shared/use-guest-route'
+import User from 'components/icons/User'
+import useIsGuest from 'hooks/shared/use-is-guest'
 
 export default function ProfileGuest() {
-  const shouldDisplay = useGuestRoute(profile())
-
-  if (!shouldDisplay) {
+  if (!useIsGuest(profile())) {
     return null
   }
 
   return (
-    <PageContainer className={cn(cssUtil.centered, styles.Container)}>
-      <div className={cn(cssUtil.routeTransitionRight, styles.AuthBlock)}>
-        <Title level={2} className={styles.AuthTitle}>
-          Вход
-        </Title>
-        <p>
-          Войди, чтобы настройки синхронизировались на нескольких устройствах
+    <PageContainer>
+      <PageTitle icon={<User />} label={'Профиль'} />
+      <div className={'px-4'}>
+        <p className={'mb-4'}>
+          Войди, чтобы начать занятия, вести статистику, сохранять прогресс и
+          синхронизировать настройки между устройствами
         </p>
-        <SocialLoginButton
-          href={Endpoints.OAuth.google}
-          className={styles.AuthButton}
-          provider={'google'}
-        />
-        <SocialLoginButton
-          href={Endpoints.OAuth.vk}
-          className={styles.AuthButton}
-          provider={'vk'}
-        />
+        <div className={'d-flex flex-column align-items-center'}>
+          <SocialLoginButton
+            className={'mb-3'}
+            provider={'vk'}
+            href={Endpoints.OAuth.vk}
+          />
+          <SocialLoginButton
+            className={'mb-3'}
+            provider={'google'}
+            href={Endpoints.OAuth.google}
+          />
+        </div>
       </div>
     </PageContainer>
   )

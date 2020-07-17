@@ -22,7 +22,7 @@ export default function Index() {
     <ScrollablePage ref={scrollbars}>
       <PageContainer>
         <Screen className={'px-4'}>
-          <Title level={1} className={cn('mb-2', styles.Title)}>
+          <Title level={1} className={cn('mb-4 font-5', styles.Title)}>
             <span>C</span>
             <LetterButton>O</LetterButton>
             <span>L</span>
@@ -30,7 +30,7 @@ export default function Index() {
             <span>N</span>
             <LetterButton state={'correct'}>Q</LetterButton>
           </Title>
-          <Title level={2} className={'text-center font-2 mb-4'}>
+          <Title level={2} className={'text-center font-2 mb-3'}>
             Твоя лучшая подружка в закреплении знаний по русскому языку
           </Title>
           <Button

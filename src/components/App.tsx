@@ -6,7 +6,6 @@ import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router'
 import ApiClient, { AuthEvent } from 'services/client'
 import LangErrors from 'lang/errors.json'
-import Menu from './shared/Menu'
 import Navigation from './shared/Navigation'
 import NotificationToaster, {
   CookiesNotification,

@@ -14,7 +14,7 @@ const EMAIL_SCOPE = 'https://www.googleapis.com/auth/userinfo.email'
 const PROFILE_SCOPE = 'https://www.googleapis.com/auth/userinfo.profile'
 
 const noSlash = (path: string) => (path.startsWith('/') ? path.slice(1) : path)
-
+console.log(123, process.env.REACT_APP_API_URL)
 // === Services URLs ===
 
 // export type ProviderServices = { [key in AuthProvider]: string }

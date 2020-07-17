@@ -49,6 +49,7 @@
       async
       src="https://www.googletagmanager.com/gtag/js?id=UA-166092289-1"
     ></script>
+    %REACT_APP_PROD_ONLY_END%
     <script>
       window.dataLayer = window.dataLayer || []
       function gtag() {
@@ -57,10 +58,8 @@
       gtag('js', new Date())
       gtag('config', '%REACT_APP_GA_ID%')
     </script>
-    %REACT_APP_PROD_ONLY_END%
 
     <!-- Yandex.Metrika counter -->
-    %REACT_APP_PROD_ONLY_START%
     <script type="text/javascript">
       ;(function (m, e, t, r, i, k, a) {
         m[i] =
@@ -91,6 +90,7 @@
         trackHash: true,
       })
     </script>
+    %REACT_APP_PROD_ONLY_START%
     <noscript
       ><div>
         <img

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg viewBox="9.2 9.2 27.6 27.6" style="border-radius:8px" version="1.1" xmlns="http://www.w3.org/2000/svg">
-    <!-- ©2018 Google LLC All rights reserved. Google and the Google logo are registered trademarks of Google LLC. -->
+<svg viewbox="9.2 9.2 27.6 27.6" style="border-radius:8px" version="1.1" xmlns="http://www.w3.org/2000/svg">
     <!-- Generator: Sketch 3.3.3 (12081) - http://www.bohemiancoding.com/sketch -->
     <title>btn_google_light_normal_ios</title>
     <desc>Created with Sketch.</desc>
@@ -25,10 +24,10 @@
         <g id="btn_google_light_normal" transform="translate(-1.000000, -1.000000)">
             <g id="button" transform="translate(4.000000, 4.000000)" filter="url(#filter-1)">
                 <g id="button-bg">
-                    <use fill="#FFFFFF" fill-rule="evenodd"></use>
-                    <use fill="none"></use>
-                    <use fill="none"></use>
-                    <use fill="none"></use>
+                    <use fill="#FFFFFF" fill-rule="evenodd" href="#path-2"></use>
+                    <use fill="none" href="#path-2"></use>
+                    <use fill="none" href="#path-2"></use>
+                    <use fill="none" href="#path-2"></use>
                 </g>
             </g>
             <g id="logo_googleg_48dp" transform="translate(15.000000, 15.000000)">
