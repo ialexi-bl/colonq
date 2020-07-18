@@ -7,8 +7,8 @@ export type PageTitleProps = {
 }
 
 const PageTitle = ({ label, icon }: PageTitleProps) => (
-  <Title level={1} className={'p-2 font-5 d-flex align-items-center my-5'}>
-    <span className={'d-inline-block w-3 h-3 mr-2'}>{icon}</span>
+  <Title level={1} className={'p-2 text-4xl flex items-center my-5'}>
+    <span className={'d-inline-block w-12 h-12 mr-2'}>{icon}</span>
     {label}
   </Title>
 )

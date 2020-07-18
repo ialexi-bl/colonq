@@ -34,7 +34,7 @@ export class Boundary extends React.Component<
 
   componentDidCatch(e: Error, info: ErrorInfo) {
     if (this.props.global) {
-      this.props.applyClassName('no-padding')
+      this.props.applyClassName('p-0')
     }
 
     let gaId, ymId

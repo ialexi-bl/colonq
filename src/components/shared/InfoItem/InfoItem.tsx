@@ -9,7 +9,7 @@ export type InfoItemProps = Childfree<HTMLProps.div> & {
 const InfoItem = ({ label, value, ...props }: InfoItemProps) => (
   <div {...props}>
     <div className={styles.Label}>{label}</div>
-    <div className={'font-2'}>{value}</div>
+    <div className={'text-2xl'}>{value}</div>
   </div>
 )
 export default InfoItem

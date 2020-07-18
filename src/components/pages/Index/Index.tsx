@@ -8,7 +8,6 @@ import Prefixes from 'components/icons/Prefixes'
 import React, { useRef } from 'react'
 import Scrollbars from 'react-custom-scrollbars'
 import ThemeCard from 'components/shared/ThemeCard/ThemeCard'
-import Title from 'components/shared/Title'
 import TitleLine from 'components/shared/TitleLine'
 import Verbs from 'components/icons/Verbs'
 import cn from 'clsx'
@@ -22,17 +21,17 @@ export default function Index() {
     <ScrollablePage ref={scrollbars}>
       <PageContainer>
         <Screen className={'px-4'}>
-          <Title level={1} className={cn('mb-4 font-5', styles.Title)}>
+          <h2 className={cn('mb-4 text-5xl', styles.Title)}>
             <span>C</span>
             <LetterButton>O</LetterButton>
             <span>L</span>
             <LetterButton>O</LetterButton>
             <span>N</span>
             <LetterButton state={'correct'}>Q</LetterButton>
-          </Title>
-          <Title level={2} className={'text-center font-2 mb-3'}>
+          </h2>
+          <h2 className={'text-center text-2xl mb-3'}>
             Твоя лучшая подружка в закреплении знаний по русскому языку
-          </Title>
+          </h2>
           <Button
             onClick={() => {
               if (scrollbars.current && listStart.current) {
@@ -44,16 +43,16 @@ export default function Index() {
                 })
               }
             }}
-            className={'font-2 w-75'}
+            className={'text-xl w-64'}
           >
             Начать
           </Button>
         </Screen>
         <Screen>
           <TitleLine>
-            <Title className={'text-center'} level={2}>
+            <h2 className={'text-3xl mb-6 text-center'}>
               Учись быстрее, запоминай надолго
-            </Title>
+            </h2>
             <p>
               Хорошо понимать предмет и знать правила очень важно, но без
               закрепления знаний не обойтись. ColonQ предлагает удобные
@@ -62,9 +61,9 @@ export default function Index() {
           </TitleLine>
         </Screen>
         <Screen className={'px-4'}>
-          <Title ref={listStart} className={'text-center'} level={2}>
+          <h2 ref={listStart} className={'text-3xl mb-6 text-center'}>
             Выбери тему и занимайся каждый день
-          </Title>
+          </h2>
           <ThemeCard
             to={app('russian/accents')}
             icon={<Accents />}
@@ -87,19 +86,21 @@ export default function Index() {
             to={app('russian/verb-endings')}
             icon={<Verbs />}
             label={'Окончания глаголов и причастий'}
+            className={'mb-3'}
           />
+          <ThemeCard to={'#'} label={'Скоро больше!'} />
         </Screen>
         <Screen className={'mb-5 px-4'}>
-          <Title className={'text-center'} level={2}>
+          <h2 className={'text-3xl mb-4 text-center'}>
             Удобнее заниматься в приложении?
-          </Title>
-          <p className={cn('font-2 text-center mb-4', styles.Subtitle)}>
+          </h2>
+          <p className={cn('text-2xl text-center mb-4', styles.Subtitle)}>
             Установи ColonQ на рабочий стол и включи уведомления, чтобы не
             пропускать занятия
           </p>
-          <div className={'d-flex flex-column'}>
-            <Button className={'font-2 mb-2'}>Установить</Button>
-            <Button className={'font-2'} secondary>
+          <div className={'flex flex-col'}>
+            <Button className={'text-xl mb-2'}>Установить</Button>
+            <Button className={'text-xl'} secondary>
               Включить уведомления
             </Button>
           </div>

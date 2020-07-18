@@ -7,9 +7,10 @@
 }
 
 .Container {
+  composes: cursor-pointer from global;
+
   position: relative;
   display: inline-block;
-  cursor: pointer;
   size: 2.8em 1.5em;
 }
 .Track {

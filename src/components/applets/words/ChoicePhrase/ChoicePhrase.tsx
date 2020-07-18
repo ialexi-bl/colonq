@@ -3,7 +3,6 @@ import {
   InlineChoiceProps,
 } from 'components/applets/InlineChoice'
 import React from 'react'
-import styles from './ChoicePhrase.module.scss'
 
 export default function ChoicePhrase({
   getOptions,
@@ -11,16 +10,16 @@ export default function ChoicePhrase({
   ...props
 }: ChoicePhraseProps) {
   return (
-    <div>
+    <div className={'uppercase text-3xl'}>
       {phrase.split(/\s+/).map((word) => {
         const info = getOptions(word)
 
         if (!info) {
-          return <span>{word}</span>
+          return <span>{word} </span>
         }
 
         return (
-          <span className={styles.ChoiceWord}>
+          <span className={'whitespace-pre align-middle'}>
             {info.start}
             <InlineChoice options={info.options} {...props} />
             {info.end}

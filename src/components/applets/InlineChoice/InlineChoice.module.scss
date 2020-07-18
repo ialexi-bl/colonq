@@ -9,23 +9,3 @@ $option-height: 1.3em;
   optionMargin: $option-margin;
   optionHeight: $option-height;
 }
-
-.Container {
-  min-width: 2em;
-  display: inline-block;
-  margin: 0 0.2emx;
-}
-.Option {
-  width: 100%;
-  display: block;
-  height: $option-height;
-  text-transform: uppercase;
-  padding: 0 0.5em;
-  font-size: 0.7em;
-  transition: 300ms;
-  transform: translate(0);
-
-  &:not(:last-child) {
-    margin-bottom: $option-margin;
-  }
-}

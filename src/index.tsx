@@ -13,7 +13,7 @@ const applyClassName = (className: string) => {
 
 const maintenance = ['true', '1'].includes(process.env.MAINTENANCE_MODE || '')
 if (maintenance) {
-  applyClassName('no-padding')
+  applyClassName('p-0')
 }
 
 window.TREE_MOUNTED = true

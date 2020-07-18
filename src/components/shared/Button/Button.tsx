@@ -17,6 +17,7 @@ export default function Button({
   return (
     <button
       className={cn(
+        'transition-color transition-200',
         className,
         styles.Button,
         disabled

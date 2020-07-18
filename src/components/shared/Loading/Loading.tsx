@@ -5,7 +5,7 @@ import styles from './Loading.module.scss'
 
 const Loading = ({ className, ...props }: HTMLProps.div) => (
   <div className={cn(className, styles.Logo)} {...props}>
-    <Logo thin />
+    <Logo animated thin />
   </div>
 )
 export default Loading

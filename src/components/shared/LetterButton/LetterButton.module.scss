@@ -1,11 +1,5 @@
 @use 'styles/variables/colors';
 
-.LetterButton {
-  text-align: center;
-  display: inline-block;
-  padding: 0.1em 0.2em;
-}
-
 .correct {
   background: colors.$correct;
 

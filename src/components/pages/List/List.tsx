@@ -14,8 +14,8 @@ export default function List() {
   return (
     <ScrollablePage>
       <PageTitle icon={<ListIcon />} label={'Темы'} />
-      <div className={'w-100 px-4'}>
-        <Title className={'font-3 mb-4'} level={2}>
+      <div className={'w-full px-4'}>
+        <Title className={'text-3xl mb-4'} level={2}>
           Русский язык
         </Title>
         <ThemeCard
@@ -43,7 +43,7 @@ export default function List() {
           className={'mb-5'}
         />
 
-        <Title className={'text-center font-2 mb-5'} level={3}>
+        <Title className={'text-center text-2xl mb-5'} level={3}>
           Новые темы и предметы скоро!
         </Title>
       </div>

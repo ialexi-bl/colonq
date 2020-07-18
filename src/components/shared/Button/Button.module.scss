@@ -20,7 +20,6 @@
 
 .Button {
   composes: reset-button from '~styles/util/reset.scss';
-  composes: text-primary from '~styles/util/colors.scss';
   composes: rounded from '~styles/util/rounded.scss';
 
   padding: 0.5em 1em;

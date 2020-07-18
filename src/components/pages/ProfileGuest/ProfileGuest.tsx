@@ -20,7 +20,7 @@ export default function ProfileGuest() {
           Войди, чтобы начать занятия, вести статистику, сохранять прогресс и
           синхронизировать настройки между устройствами
         </p>
-        <div className={'d-flex flex-column align-items-center'}>
+        <div className={'flex flex-col items-center'}>
           <SocialLoginButton
             className={'mb-3'}
             provider={'vk'}

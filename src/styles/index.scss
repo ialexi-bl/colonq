@@ -1,57 +1,10 @@
-@use './mixins/center-content';
-@use './mixins/media';
-@use './variables/colors';
-@use './variables/dims';
-@import './util.scss';
-@import '~bootstrap-utilities';
+@import './util';
+@import './base';
+@import './util/reset';
 
-#root {
-  overflow: hidden;
-  position: relative;
-  size: 100%;
+@tailwind base;
+@tailwind utilities;
 
-  &.no-padding {
-    padding: 0 !important;
-  }
-}
-#app {
-  position: relative;
-  size: 100%;
-
-  padding-bottom: 4rem;
-}
-
-.scroll-thumb {
-  $bg: rgba(255, 255, 255, 0.1);
-  background: $bg;
-  transition: background-color 100ms;
-  border-radius: 4px;
-  width: 7px !important;
-
-  &:hover {
-    background-color: transparentize($color: $bg, $amount: 0.01);
-  }
-  &:active {
-    background-color: transparentize($color: $bg, $amount: 0.03);
-  }
-}
-.scroll-track {
-  width: 10px !important;
-  top: 2px;
-  right: 0;
-  bottom: 2px;
-}
-
-button,
-textarea,
-input,
-select,
-svg,
-a {
-  -webkit-tap-highlight-color: transparent;
-}
-
-p {
-  // font-size: 1.2rem;
-  margin-bottom: 1.2rem;
+.asdasdasdas {
+  color: white;
 }

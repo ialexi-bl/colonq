@@ -1,5 +1,6 @@
 import { AppletStartProps } from 'components/applets/AppletContainer'
 import ControlledScrollbars from 'components/shared/ControlledScrollbars'
+import PageTitle from 'components/shared/PageTitle'
 import React, { useContext } from 'react'
 import Title from 'components/shared/Title'
 import WordsAppletContext from './context'
@@ -10,16 +11,12 @@ export default function WordsStartScreen({
   openSettings,
   startSession,
 }: AppletStartProps) {
-  const { text, manager } = useContext(WordsAppletContext)
+  const { title, icon, description } = useContext(WordsAppletContext)
 
   return (
     <ControlledScrollbars>
-      <div className={styles.StartScreen}>
-        <Title level={2}>{text.title}</Title>
-        <p>{text.help}</p>
-
-        <WordsEditor manager={manager} />
-      </div>
+      <PageTitle icon={icon} label={title} />
+      <div className={'px-4'}>{description}</div>
     </ControlledScrollbars>
   )
 }

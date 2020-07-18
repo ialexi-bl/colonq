@@ -1,3 +1,5 @@
+import ChoicePhrase from 'components/applets/words/ChoicePhrase'
+import Orthography from 'components/icons/Orthography'
 import React from 'react'
 import WordsApplet from 'components/applets/words/WordsApplet'
 import WordsAppletManager from 'services/applets/WordsAppletManager'
@@ -20,9 +22,14 @@ import presentation from './data.json'
 // })
 
 const manager = new WordsAppletManager('/russian/orthography', presentation)
-const text = {
-  title: 'Орфография',
-  help: 'help',
-}
 
-export default () => <WordsApplet manager={manager} text={text} />
+export default () => (
+  <WordsApplet
+    manager={manager}
+    title={'Орфография'}
+    icon={<Orthography />}
+    description={
+      'Выбирай из нескольких вариантов букву, которая должна стоять на месте пропуска в слове и проверяй ответ'
+    }
+  />
+)

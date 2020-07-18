@@ -7,5 +7,8 @@ import styles from './Page.module.scss'
  * @param props
  */
 export const PageContainer = ({ className, ...props }: HTMLProps.div) => (
-  <div className={cn(styles.PageContainer, className)} {...props} />
+  <div
+    className={cn('container', styles.PageContainer, className)}
+    {...props}
+  />
 )

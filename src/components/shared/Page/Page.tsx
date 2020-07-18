@@ -15,7 +15,7 @@ export default Page
 
 export const ScrollablePage = forwardRef<Scrollbars, ScrollbarProps>(
   ({ className, children, ...props }, ref) => (
-    <div className={cn(className, styles.Page)}>
+    <div className={cn('w-full h-full', className)}>
       <Scrollbars
         autoHide
         renderThumbVertical={renderScrollThumb}

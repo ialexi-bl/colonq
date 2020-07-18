@@ -18,7 +18,7 @@ export const routesArray: RouteOptions[] = [
   {
     path: '/settings',
     name: 'settings',
-    component: lazy(() => import('components/pages/Index')),
+    component: lazy(() => import('components/pages/Settings')),
   },
   {
     path: '/auth',

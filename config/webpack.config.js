@@ -125,6 +125,7 @@ module.exports = function (webpackEnv) {
         ident: 'postcss',
         syntax: preProcessor === 'sass-loader' ? 'postcss-scss' : undefined,
         plugins: () => [
+          require('tailwindcss'),
           require('postcss-flexbugs-fixes'),
           require('postcss-easings'),
           require('postcss-short'),

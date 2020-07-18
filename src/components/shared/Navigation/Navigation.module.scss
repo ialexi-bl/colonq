@@ -1,16 +1,12 @@
 @use 'styles/variables/colors';
 
 .Navigation {
-  composes: d-flex fixed-bottom justify-content-around from global;
+  composes: flex justify-around items-center absolute inset-x-0 bottom-0 h-12 px-2 from global;
 
-  height: 3.5rem;
-  padding: 0.5rem;
   background: colors.$navigation;
 }
 
 .Button {
   composes: reset-link from '~styles/util/reset.scss';
-  composes: h-100 from global;
-
-  width: 2.5rem;
+  composes: w-10 from global;
 }

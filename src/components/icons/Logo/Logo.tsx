@@ -1,17 +1,18 @@
 import React from 'react'
 import styles from './LogoAnimation.module.scss'
 
-const Logo = ({
-  thin,
-  ...props
-}: HTMLProps.svg & {
+export type LogoProps = HTMLProps.svg & {
+  animated?: boolean
   thin?: boolean
-}) => (
+}
+
+const Logo = ({ thin, animated, ...props }: LogoProps) => (
   <svg
     {...props}
     fill={'none'}
     stroke={'currentColor'}
     viewBox={'0 0 512 512'}
+    className={animated ? '' : styles.steady}
     strokeWidth={thin ? 18 : 28}
     strokeLinecap={'round'}
     strokeLinejoin={'round'}

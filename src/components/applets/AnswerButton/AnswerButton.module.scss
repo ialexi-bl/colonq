@@ -5,7 +5,7 @@
 .AnswerButton {
   composes: disable-touch-bg from '~styles/util/touch-bg.scss';
 
-  background: colors.$accent-darker;
+  background: colors.$accent;
   border-radius: dims.$border-radius;
   transition: background 300ms;
 

@@ -10,10 +10,14 @@ export type LetterButtonProps = Childfree<HTMLProps.button> & {
 
 const LetterButton = ({ className, state, ...props }: LetterButtonProps) => (
   <Button
-    className={cn(className, styles.LetterButton, {
-      [styles.correct]: state === 'correct',
-      [styles.incorrect]: state === 'incorrect',
-    })}
+    className={cn(
+      'text-center leading-none rounded-sm uppercase py-0 px-1',
+      className,
+      {
+        [styles.correct]: state === 'correct',
+        [styles.incorrect]: state === 'incorrect',
+      },
+    )}
     {...props}
   />
 )

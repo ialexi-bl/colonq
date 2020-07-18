@@ -1,3 +1,4 @@
+import 'styles/index.scss'
 import React from 'react'
 
 const styled = { div: (a: any) => a[0] }

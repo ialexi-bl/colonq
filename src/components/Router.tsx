@@ -13,6 +13,7 @@ import { routesArray } from 'config/routes'
 import { useDispatch, useSelector } from 'react-redux'
 import Page from './shared/Page'
 import React, { Suspense, useEffect, useLayoutEffect, useState } from 'react'
+import useUpdateTracker from 'hooks/shared/use-update-tracker'
 
 declare var gtag: Gtag.Gtag
 
@@ -36,6 +37,13 @@ export function Router() {
       })
     }
   }, [dispatch, location.pathname])
+
+  useUpdateTracker('Router', {
+    dispatch,
+    initialized,
+    loading,
+    location,
+  })
 
   return (
     <TransitionGroup component={null}>

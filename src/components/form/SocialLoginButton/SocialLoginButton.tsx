@@ -9,6 +9,7 @@ import styles from './SocialLoginButton.module.scss'
 export type SocialLoginButtonProps = HTMLProps.a & {
   provider: AuthProvider
   disabled?: boolean
+  link?: boolean
 }
 
 /**
@@ -16,10 +17,11 @@ export type SocialLoginButtonProps = HTMLProps.a & {
  * @param {SocialLoginButtonProps} props
  */
 export default function SocialLoginButton({
-  provider,
   className,
+  provider,
   disabled,
   onClick,
+  link,
   ...props
 }: SocialLoginButtonProps) {
   const Icon = icons[provider]
@@ -35,7 +37,7 @@ export default function SocialLoginButton({
       {...props}
     >
       <Icon className={styles.Icon} />
-      Войти через {labels[provider]}
+      {link ? 'Связать с' : 'Войти через'} {labels[provider]}
     </a>
   )
 }
