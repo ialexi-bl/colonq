@@ -1,4 +1,3 @@
-import { CleanButton } from './CleanButton'
 import Button from 'components/shared/Button'
 import React from 'react'
 
@@ -12,7 +11,6 @@ export default (
       gridGap: '1rem',
     }}
   >
-    <CleanButton onClick={onClick}>Button with reset styles</CleanButton>
     <Button onClick={onClick}>Primary</Button>
     <Button onClick={onClick} secondary>
       Secondary

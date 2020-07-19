@@ -1,0 +1,28 @@
+.button {
+  @apply p-2 duration-200 p-2 rounded;
+}
+.button-primary {
+  @apply bg-accent;
+
+  &:hover {
+    @apply bg-accent-hover;
+  }
+  &:active,
+  &:focus {
+    @apply bg-accent-active;
+  }
+}
+.button-secondary {
+  @apply border-solid border-4 border-accent;
+
+  &:hover {
+    @apply bg-transparent-hover;
+  }
+  &:active,
+  &:focus {
+    @apply bg-transparent-active;
+  }
+}
+.button-disabled {
+  @apply bg-disabled;
+}

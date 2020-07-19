@@ -1,7 +1,7 @@
+import './Button.scss'
 import { noop } from 'util/noop'
 import React from 'react'
 import cn from 'clsx'
-import styles from './Button.module.scss'
 
 export type ButtonProps = HTMLProps.button & {
   secondary?: boolean
@@ -17,14 +17,13 @@ export default function Button({
   return (
     <button
       className={cn(
-        'transition-color transition-200',
+        'button',
         className,
-        styles.Button,
         disabled
-          ? styles.disabled
+          ? 'button-disabled'
           : secondary
-          ? styles.secondary
-          : styles.primary,
+          ? 'button-secondary'
+          : 'button-primary',
       )}
       onClick={disabled ? noop : onClick}
       {...props}
