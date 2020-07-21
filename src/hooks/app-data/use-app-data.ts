@@ -3,8 +3,8 @@ import { AppState, MixedDispatch } from 'store/types'
 import { UnknownError } from 'services/errors'
 import { fetchAppData, uploadAppData } from './use-remote-app-data'
 import { getLocalData } from './local-data'
+import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useEffect, useState } from 'react'
 import AppletManager from 'services/applets/AppletManager'
 
 export default function useAppData<TData, TStored, TAction>(

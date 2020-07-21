@@ -1,4 +1,3 @@
-import ChoicePhrase from 'components/applets/words/ChoicePhrase'
 import Orthography from 'components/icons/Orthography'
 import React from 'react'
 import WordsApplet from 'components/applets/words/WordsApplet'

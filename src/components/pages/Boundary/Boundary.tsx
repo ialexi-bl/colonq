@@ -1,7 +1,6 @@
 import { CUTE_FACE } from 'config/view'
 import { Endpoints } from 'config/endpoints'
 import { PageContainer } from 'components/shared/Page'
-import { cssUtil } from 'styles'
 import ApiClient from 'services/client'
 import LetterTitle, {
   ActiveLetter,
@@ -10,7 +9,6 @@ import LetterTitle, {
 } from 'components/shared/LetterTitle'
 import React, { ErrorInfo } from 'react'
 import TitleLine from 'components/shared/TitleLine'
-import cn from 'clsx'
 import styles from './Boundary.module.scss'
 
 export class Boundary extends React.Component<
@@ -68,17 +66,15 @@ export class Boundary extends React.Component<
 
     return (
       <PageContainer className={styles.Boundary}>
-        <TitleLine className={cssUtil.routeTransitionBgOpacity}>
-          <LetterTitle
-            className={cn(cssUtil.routeTransitionDown, styles.Title)}
-          >
+        <TitleLine>
+          <LetterTitle className={styles.Title}>
             <ActiveLetter>E</ActiveLetter>
             <Letter>R</Letter>
             <Letter>R</Letter>
             <WrongLetter>O</WrongLetter>
             <Letter>R</Letter>
           </LetterTitle>
-          <p className={cn(cssUtil.routeTransitionDown, styles.Subtitle)}>
+          <p className={styles.Subtitle}>
             Что-то сломалось {CUTE_FACE}. Попробуй обновить страницу, если не
             получится - вернись позже. Всё обязательно заработает
           </p>

@@ -1,6 +1,10 @@
-import { AppletSessionProps } from 'components/applets/AppletContainer'
 import React from 'react'
 
-export default function WordsSession({ backToStart }: AppletSessionProps) {
+export type WordsSessionProps = {
+  running: boolean
+  finish: () => unknown
+}
+
+export default function WordsSession({ running, finish }: WordsSessionProps) {
   return <div></div>
 }

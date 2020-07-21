@@ -1,6 +1,4 @@
-import { CleanButton } from '../Button'
 import More from 'components/icons/More'
-import { cssUtil } from 'styles'
 import React from 'react'
 import cn from 'clsx'
 import styles from './Overlay.module.scss'
@@ -8,7 +6,6 @@ import styles from './Overlay.module.scss'
 type IconComponent = React.ComponentType<{
   className?: string
 }>
-type SetOpen = (open: boolean) => unknown
 
 export type OverlayOpenButtonProps = HTMLProps.button & {
   icon?: IconComponent
@@ -25,8 +22,8 @@ export const OverlayOpenButton = function OverlayOpen({
   ...props
 }: OverlayOpenButtonProps) {
   return (
-    <CleanButton className={cn(styles.OpenButton, className)} {...props}>
+    <button className={cn(styles.OpenButton, className)} {...props}>
       <Icon className={styles.Icon} />
-    </CleanButton>
+    </button>
   )
 }

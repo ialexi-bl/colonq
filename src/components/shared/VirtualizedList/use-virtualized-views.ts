@@ -34,9 +34,12 @@ export type VirtualizedViewsControls = {
  */
 export function useVirtualizedViews<TData, TAction>(
   options: VirtualizedListOptions<TData, TAction>,
+  container: React.RefObject<HTMLUListElement | null>,
 ): VirtualizedViewsControls {
   const { data, itemsHeight, getCount } = options
   const scrollApi = useContext(ScrollContext)
+  // @ts-ignore
+  window.sa = scrollApi
 
   const [status, setStatus] = useState<ItemAnimationStatus[]>(() => {
     const count = getCount(data, -1)
@@ -80,14 +83,18 @@ export function useVirtualizedViews<TData, TAction>(
 
       // Prevent updating more often than once every 100ms
       const now = performance.now()
-      if (now - lastUpdate.current < 100) return
+      if (!container.current || now - lastUpdate.current < 100) return
       lastUpdate.current = now
 
       cancelLastRefCountdown.current()
       cancelLastRefCountdown.current = noop
 
       // First item if the list is flat
-      const start = Math.max(Math.floor(scroll / itemsHeight) - extraItems, 0)
+      const rect = container.current.getBoundingClientRect()
+      const start = Math.max(
+        Math.floor(-rect.top / itemsHeight) - extraItems,
+        0,
+      )
 
       // Pointers to last processed group and item
       let { groupIndex, itemIndex } = findNestedItem(options, status, start)
@@ -205,7 +212,7 @@ export function useVirtualizedViews<TData, TAction>(
 
       setViews(views)
     },
-    [data, getCount, itemsHeight, options, status],
+    [container, data, getCount, itemsHeight, options, status],
   )
 
   // Update views when state, heihgt or data change

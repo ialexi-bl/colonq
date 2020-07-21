@@ -1,4 +1,9 @@
-export default function reduceSize(e: HTMLElement) {
+/**
+ * Makes element fit at most 40% of window heihgt and returns
+ * horizontal scale that must be applied to the element
+ * @param e - Element
+ */
+export default function fitHeightAndGetScale(e: HTMLElement) {
   const windowHeight = window.innerHeight
 
   let width = e.clientWidth
@@ -15,7 +20,6 @@ export default function reduceSize(e: HTMLElement) {
   if (diff < 0) {
     const ds = Math.abs(diff)
     const scale = 1 - ds / width
-    e.style.transform += `scale(${scale})`
     return scale
   }
 

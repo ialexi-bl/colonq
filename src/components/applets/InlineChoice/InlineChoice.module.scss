@@ -1,11 +1,14 @@
-@use 'styles/variables/colors';
-@use 'styles/mixins/center-content';
-@use 'styles/variables/dims';
-
-$option-margin: 0.2em;
+$option-margin: 0.25em;
 $option-height: 1.3em;
 
 :export {
   optionMargin: $option-margin;
   optionHeight: $option-height;
+}
+
+.Option {
+  composes: block min-w-12 transition duration-200 from global;
+
+  margin-bottom: $option-margin;
+  height: $option-height;
 }

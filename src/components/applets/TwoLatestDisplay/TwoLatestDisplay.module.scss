@@ -6,12 +6,7 @@ $transition-duration: 300ms;
 $transition-class-name: two-latest-display;
 
 .Container {
-  size: 100%;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  // transition: height 100ms;
+  composes: w-full h-full relative flex items-center justify-center from global;
 }
 
 @keyframes item-appear {
@@ -32,16 +27,16 @@ $transition-class-name: two-latest-display;
 
   position: absolute;
   animation: item-appear $transition-duration ease-out;
-  transition: $transition-duration * 0.75 ease-out;
+  transition: ($transition-duration * 0.75) ease-out;
   transition-property: transform, opacity;
 }
-.TransitionPrev1 {
+.TransitionPrevious {
   opacity: 0.75;
 }
-.TransitionPrev2 {
+.TransitionPrevious2 {
   opacity: 0;
 }
 .TransitionHiding {
   opacity: 0;
-  transform: translateY(5rem) scale(0.6);
+  transform: translate(5rem) scale(0.6);
 }

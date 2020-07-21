@@ -1,4 +1,3 @@
-import { CleanButton } from '../Button'
 import Expand from 'components/icons/Expand'
 import React, { MouseEventHandler } from 'react'
 import cn from 'clsx'
@@ -11,12 +10,12 @@ export type UnfoldButtonProps = HTMLProps.button & {
 }
 
 const UnfoldButton = ({ folded, className, ...props }: UnfoldButtonProps) => (
-  <CleanButton
+  <button
     className={cn(styles.UnfoldButton, className, folded && styles.folded)}
     {...props}
   >
     <Expand className={styles.Icon} />
-  </CleanButton>
+  </button>
 )
 
 export default UnfoldButton

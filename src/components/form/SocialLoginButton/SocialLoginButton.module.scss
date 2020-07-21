@@ -2,7 +2,7 @@
 @use 'styles/variables/colors';
 
 .SocialLoginButton {
-  composes: reset-link from '~styles/util/reset.scss';
+  composes: reset-link from global;
 
   border-radius: dims.$border-radius;
   align-items: center;
@@ -43,7 +43,7 @@
 
   &:hover {
     background: #4a8fff;
-  } 
+  }
   &:active,
   &:focus {
     background: #3d7ee7;

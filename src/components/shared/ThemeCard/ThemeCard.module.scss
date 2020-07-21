@@ -2,7 +2,7 @@
 @use 'styles/variables/dims';
 
 .ThemeCard {
-  composes: reset-link from '~styles/util/reset.scss';
+  composes: reset-link from global;
 
   size: 100% 8em;
   padding: 1em;

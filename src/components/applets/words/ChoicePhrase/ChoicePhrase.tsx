@@ -5,7 +5,7 @@ import {
 import React from 'react'
 
 export default function ChoicePhrase({
-  getOptions,
+  getOptionsForWord: getOptions,
   phrase,
   ...props
 }: ChoicePhraseProps) {
@@ -21,7 +21,11 @@ export default function ChoicePhrase({
         return (
           <span className={'whitespace-pre align-middle'}>
             {info.start}
-            <InlineChoice options={info.options} {...props} />
+            <InlineChoice
+              correctAnswer={info.correctAnswer}
+              options={info.options}
+              {...props}
+            />
             {info.end}
           </span>
         )
@@ -30,14 +34,18 @@ export default function ChoicePhrase({
   )
 }
 
-export type ChoicePhraseProps = Omit<InlineChoiceProps, 'options'> & {
-  getOptions: GetOptions
+export type ChoicePhraseProps = Omit<
+  InlineChoiceProps,
+  'options' | 'correctAnswer'
+> & {
+  getOptionsForWord: GetOptions
   phrase: string
 }
 export type GetOptions = (
   word: string,
 ) => null | {
+  end?: string
   start?: string
   options: string[]
-  end?: string
+  correctAnswer: number
 }

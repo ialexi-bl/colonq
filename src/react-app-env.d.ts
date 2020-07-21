@@ -16,6 +16,7 @@ declare namespace NodeJS {
 declare namespace HTMLProps {
   type className = { className?: string }
   type children = { children?: React.ReactNode }
+  type heading = React.HTMLAttributes<HTMLHeadingElement>
   type button = React.ButtonHTMLAttributes<HTMLButtonElement>
   type input = React.InputHTMLAttributes<HTMLInputElement>
   type div = React.HTMLAttributes<HTMLDivElement>

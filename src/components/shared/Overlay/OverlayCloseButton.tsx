@@ -1,4 +1,3 @@
-import { CleanButton } from '../Button'
 import Close from 'components/icons/Close'
 import React from 'react'
 import cn from 'clsx'
@@ -14,12 +13,12 @@ export const OverlayCloseButton = function OverlayOpen({
   ...props
 }: HTMLProps.button) {
   return (
-    <CleanButton
+    <button
       className={cn(styles.CloseButton, className)}
       title={'Закрыть'}
       {...props}
     >
       <Close className={styles.Icon} />
-    </CleanButton>
+    </button>
   )
 }

@@ -1,4 +1,4 @@
-import React, { InputHTMLAttributes } from 'react'
+import React from 'react'
 import cn from 'clsx'
 import styles from './Checkbox.module.scss'
 

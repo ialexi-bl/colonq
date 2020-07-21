@@ -1,4 +1,3 @@
-import { CleanButton } from 'components/shared/Button'
 import { Link } from 'react-router-dom'
 import { Section } from 'config/apps-map'
 import { app } from 'config/routes'
@@ -44,7 +43,7 @@ const NavItem = (
   const view = section.leaf ? (
     <Link to={app(section.location)} {...props} />
   ) : (
-    <CleanButton {...props} />
+    <button {...props} />
   )
 
   return (

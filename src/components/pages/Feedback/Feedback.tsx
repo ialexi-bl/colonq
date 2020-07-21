@@ -2,7 +2,6 @@ import { AppState, MixedDispatch, ThunkAction } from 'store/types'
 import { Endpoints } from 'config/endpoints'
 import { PageContainer } from 'components/shared/Page'
 import { TextArea } from 'components/form/Input/TextArea'
-import { cssUtil } from 'styles'
 import { emailRegex } from 'config/regex'
 import { handleRequestError } from 'services/errors/handle-request-error'
 import { hideLoading, showLoading, toggleNav } from 'store/view'
@@ -77,13 +76,7 @@ export default function Feedback() {
   }
 
   return (
-    <PageContainer
-      className={cn(
-        cssUtil.centered,
-        cssUtil.routeTransitionLeft,
-        styles.Container,
-      )}
-    >
+    <PageContainer className={styles.Container}>
       <form className={styles.Form} onSubmit={submit}>
         <Title level={2}>Обратная связь</Title>
         <p>

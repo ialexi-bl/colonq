@@ -1,7 +1,6 @@
 // @ts-nocheck
 /* eslint-disable */
 import { APPLET_LOADING } from 'components/pages/Applet'
-import { CleanButton } from 'components/shared/Button'
 import { GetSettingsLabel } from '../WordsList_del/WordEditor'
 import Hide from 'components/icons/DisableProblem'
 import {
@@ -9,7 +8,6 @@ import {
   TwoLatestDisplayViewProps,
 } from 'components/applets/TwoLatestDisplay'
 import { Word } from 'services/applets/WordsAppletManager/types'
-import { cssUtil } from 'styles'
 import { getWordSettings } from './WordsSettings'
 import { hideLoading } from 'store/view'
 import { useDispatch } from 'react-redux'
@@ -64,7 +62,7 @@ export function createWordsApplet({
             next={next}
           />
         )}
-        <CleanButton
+        <button
           title={'Не показывать'}
           className={cn(cssUtil.routeTransitionOpacity, styles.Hide)}
           onClick={() => {
@@ -83,7 +81,7 @@ export function createWordsApplet({
           }}
         >
           <Hide />
-        </CleanButton>
+        </button>
       </div>
     )
   }

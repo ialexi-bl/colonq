@@ -1,7 +1,7 @@
 import { ViewType, VirtualizedListOptions } from './internal-types'
 import { noop } from 'util/noop'
 import { useVirtualizedViews } from './use-virtualized-views'
-import React from 'react'
+import React, { useRef } from 'react'
 import styles from './VirtualizedList.module.scss'
 
 /**
@@ -15,11 +15,19 @@ import styles from './VirtualizedList.module.scss'
 export default function VirtualizedList<TData, TAction>(
   options: VirtualizedListOptions<TData, TAction>,
 ) {
+  const container = useRef<HTMLUListElement | null>(null)
   const { data, group: Group, item: Item } = options
-  const { containerHeight, toggleFold, views } = useVirtualizedViews(options)
+  const { containerHeight, toggleFold, views } = useVirtualizedViews(
+    options,
+    container,
+  )
 
   return (
-    <ul className={styles.Container} style={{ height: containerHeight }}>
+    <ul
+      ref={container}
+      className={styles.Container}
+      style={{ height: containerHeight }}
+    >
       {views.map(
         ({
           expanding,

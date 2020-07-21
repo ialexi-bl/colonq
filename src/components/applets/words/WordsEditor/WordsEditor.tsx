@@ -23,10 +23,11 @@ export default function WordsEditor({
   ])
   const { data, loading, dispatch } = useEditAppData(manager)
 
+  console.log(loading, data)
   if (loading) {
     return <Loading />
   }
-  console.log(data)
+
   // TODO: make normal error message
   if (!data) {
     return <div>Не удалось загрузить слова :(</div>

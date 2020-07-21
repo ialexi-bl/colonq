@@ -6,8 +6,7 @@ export default () => {
     <div style={{ padding: 20 }}>
       <ChoicePhrase
         phrase={'Лиса л[оА]вка'}
-        correctAnswer={1}
-        getOptions={(word) => {
+        getOptionsForWord={(word) => {
           const match = word.match(/(.*?)\[(.+?)\](.*)/)
 
           return (
@@ -15,6 +14,7 @@ export default () => {
               end: match[3],
               start: match[1],
               options: match[2].toLowerCase().split(''),
+              correctAnswer: 1,
             }
           )
         }}

@@ -6,8 +6,8 @@ export type WordsAppletText = {
   help: string
 }
 export type IWordsAppletContext = {
+  description?: string
   manager: WordsAppletManager
-  description?: ReactNode
   title: string
   icon: ReactNode
 }

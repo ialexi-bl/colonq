@@ -1,4 +1,3 @@
-import { CleanButton } from '../Button'
 import { Link } from 'react-router-dom'
 import { index, profile, signin } from 'config/routes'
 import Hamburger from 'components/icons/Hamburger'
@@ -15,9 +14,9 @@ export const LogoLink = () => (
 )
 
 export const NavButton = (props: { onClick?: HTMLProps.button['onClick'] }) => (
-  <CleanButton className={cn(styles.Button, styles.ButtonNav)} {...props}>
+  <button className={cn(styles.Button, styles.ButtonNav)} {...props}>
     <Hamburger className={styles.Icon} />
-  </CleanButton>
+  </button>
 )
 
 export const ProfileButton = ({

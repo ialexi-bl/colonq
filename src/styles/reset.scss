@@ -1,0 +1,33 @@
+a,
+svg,
+input,
+button,
+select,
+textarea,
+.cursor-pointer {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+.reset-link {
+  cursor: pointer;
+  border: none;
+  color: inherit;
+
+  &:focus,
+  &:active {
+    // Tailwind sets outline for buttons that should be overridden
+    outline: none !important;
+  }
+}
+
+button {
+  background: unset;
+
+  &::-moz-focus-inner {
+    border: 0;
+  }
+}
+.reset-link {
+  text-decoration: none;
+}

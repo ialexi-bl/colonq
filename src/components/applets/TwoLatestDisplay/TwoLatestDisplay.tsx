@@ -1,7 +1,7 @@
 import { Item, TwoLatestDisplayProps } from '.'
-import React from 'react'
+import React, { useRef } from 'react'
 import cn from 'clsx'
-import reduceFont from './reduce-font'
+import reduceFont from './scale-font'
 import styles from './TwoLatestDisplay.module.scss'
 
 /**
@@ -11,12 +11,14 @@ import styles from './TwoLatestDisplay.module.scss'
  */
 export function TwoLatestDisplay<TItem>({
   next,
+  current,
+  previous,
+  previous2,
   className,
   component: Component,
-  words: { current, prev1, prev2 },
 }: TwoLatestDisplayProps<TItem>) {
-  const iter = [current, prev1, prev2].filter(Boolean) as Item<TItem>[]
-  let size = 0
+  const iter = [previous2, previous, current].filter(Boolean) as Item<TItem>[]
+  const last = useRef(1)
 
   return (
     <div className={cn(styles.Container, className)}>
@@ -24,36 +26,21 @@ export function TwoLatestDisplay<TItem>({
         <div
           key={item.id}
           className={cn(styles.Transition, {
-            [styles.TransitionPrev1]: item === prev1,
-            [styles.TransitionPrev2]: item === prev2,
             [styles.TransitionHiding]: item.hiding,
+            [styles.TransitionPrevious]: item === previous,
+            [styles.TransitionPrevious2]: item === previous2,
           })}
-          // NOTE: this ref may be called multiple times on component updates
-          // and it may cause scaling component more than once.
-          // This should not happend under normal circumstances, but it does,
-          // for example, during hot reload
           ref={(e) => {
             if (!e) return
 
             if (item === current) {
-              if (item.scale) return
-
-              setTimeout(() => {
-                item.scale = reduceFont(e)
-                size = e.clientHeight * item.scale
-              }, 0)
-            } else if (!item.hiding) {
-              const gone = item === prev2
-
-              const scale = item.scale || 1
-              const k = gone ? scale * 0.6 : scale * 0.65
-
-              setTimeout(() => {
-                const translate = size / 2 + (e.clientHeight * k) / 2 + 7
-                e.style.transform = `translateY(-${
-                  gone ? translate + 30 : translate
-                }px) scale(${k})`
-              }, 0)
+              const scale = (last.current = reduceFont(e))
+              e.style.transform = `scale(${scale})`
+            } else {
+              const gone = item === previous2
+              e.style.transform = `translateY(-100%) scale(${
+                last.current * (gone ? 0.6 : 0.65)
+              })`
             }
           }}
         >

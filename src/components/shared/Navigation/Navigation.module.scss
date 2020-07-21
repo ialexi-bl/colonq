@@ -1,12 +1,14 @@
 @use 'styles/variables/colors';
 
 .Navigation {
-  composes: flex justify-around items-center absolute inset-x-0 bottom-0 h-12 px-2 from global;
+  composes: flex justify-around items-center bg-navigation absolute inset-x-0 bottom-0 h-12 px-2 from global;
 
-  background: colors.$navigation;
+  transition: transform 500ms;
+}
+.hidden {
+  transform: translateY(100%);
 }
 
 .Button {
-  composes: reset-link from '~styles/util/reset.scss';
-  composes: w-10 from global;
+  composes: reset-link w-10 from global;
 }

@@ -12,9 +12,10 @@ $focus-color: transparentize($color, 0.5);
 }
 
 .Container {
+  composes: cursor-pointer from global;
+
   position: relative;
   display: inline-block;
-  cursor: pointer;
   size: $size;
 }
 

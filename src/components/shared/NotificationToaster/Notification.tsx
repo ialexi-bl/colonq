@@ -1,6 +1,5 @@
-import { CleanButton } from 'components/shared/Button'
-import Close from 'components/icons/Close'
 import { NotificationType } from 'store/view'
+import Close from 'components/icons/Close'
 import React from 'react'
 import cn from 'clsx'
 import styles from './Notification.module.scss'
@@ -18,13 +17,13 @@ export function Notification({ text, type, close }: NotificationProps) {
         [styles.error]: type === 'error',
       })}
     >
-      <CleanButton
+      <button
         className={styles.DismissButton}
         onClick={close}
         title={'Закрыть'}
       >
         <Close />
-      </CleanButton>
+      </button>
       {text}
     </div>
   )

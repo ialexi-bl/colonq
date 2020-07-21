@@ -1,6 +1,5 @@
-import Back from 'components/icons/Back'
-import { CleanButton } from 'components/shared/Button'
 import { Section } from 'config/apps-map'
+import Back from 'components/icons/Back'
 import React, { useCallback } from 'react'
 import cn from 'clsx'
 import styles from './Nav.module.scss'
@@ -31,7 +30,7 @@ const NavTitle = ({
   ])
 
   return (
-    <CleanButton
+    <button
       className={cn(styles.Item, styles.ItemTitle, className, {
         [styles.ItemPlaceholder]: placeholder,
       })}
@@ -40,7 +39,7 @@ const NavTitle = ({
     >
       <Back className={styles.BackButton} />
       <span className={styles.ItemButton}>{section.title || 'Sections'}</span>
-    </CleanButton>
+    </button>
   )
 }
 

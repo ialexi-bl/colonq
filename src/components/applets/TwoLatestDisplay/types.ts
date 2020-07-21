@@ -8,7 +8,6 @@ export type TwoLatestDisplayItem<TData> = {
   id: string
   data: TData
   hiding?: boolean
-  scale?: number
 }
 export type TwoLatestItems<TData> = {
   current: Item<TData> | null
@@ -17,9 +16,12 @@ export type TwoLatestItems<TData> = {
 }
 export type TwoLatestDisplayProps<TData> = {
   component: React.ComponentType<TwoLatestDisplayViewProps<TData>>
-  words: TwoLatestItems<TData>
-  next: (hiding?: boolean) => unknown
+  // words: TwoLatestItems<TData>
   className?: string
+  next: (hiding?: boolean) => unknown
+  current: TwoLatestDisplayItem<TData> | null
+  previous: TwoLatestDisplayItem<TData> | null
+  previous2: TwoLatestDisplayItem<TData> | null
 }
 
 export type Item<TData> = TwoLatestDisplayItem<TData>
