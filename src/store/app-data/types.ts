@@ -1,4 +1,4 @@
-export const SET_APP_DATA = 'SET_APP_DATA'
+export const SET_APP_DATA = 'APP_DATA/SET'
 
 export interface AppDataState {
   [key: string]: AppData

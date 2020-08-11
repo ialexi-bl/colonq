@@ -24,6 +24,7 @@ export const routesArray: RouteOptions[] = [
     path: '/auth',
     name: 'auth',
     component: lazy(() => import('components/pages/Auth')),
+    performsInitialization: true,
   },
   {
     path: '/feedback',
@@ -46,6 +47,7 @@ export const routesArray: RouteOptions[] = [
     path: '/verify-email',
     name: 'verifyEmail',
     component: lazy(() => import('components/pages/VerifyEmail')),
+    performsInitialization: true,
   },
   {
     path: '/app/:path*',

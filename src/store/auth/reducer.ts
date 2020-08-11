@@ -9,7 +9,7 @@ export const initialState: AuthState = {
   id: null,
 }
 
-export function reducer(
+export default function reducer(
   state: AuthState = initialState,
   action: AuthAction,
 ): AuthState {

@@ -1,6 +1,6 @@
 import { AppState } from 'store/types'
-import { index } from 'config/routes'
 import { replace } from 'connected-react-router'
+import { signin } from 'config/routes'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 
@@ -9,7 +9,7 @@ import { useEffect } from 'react'
  * @param redirect - Redirect path
  * @returns - Whether the page should be displayed
  */
-export default function useIsAuthenticated(redirect = index()) {
+export default function useIsAuthenticated(redirect = signin()) {
   const dispatch = useDispatch()
   const { authenticated, loading } = useSelector(
     (state: AppState) => state.auth,

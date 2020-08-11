@@ -1,6 +1,6 @@
 import { PageContainer, ScrollablePage } from 'components/shared/Page'
 import { app } from 'config/routes'
-import Accents from 'components/icons/Accents'
+import Accents from 'components/icons/themes/russian/Accents'
 import Button from 'components/shared/Button'
 import LetterButton from 'components/shared/LetterButton'
 import Orthography from 'components/icons/Orthography'

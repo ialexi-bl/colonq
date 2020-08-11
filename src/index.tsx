@@ -2,6 +2,7 @@ import './styles/fonts.scss'
 import './styles/index.scss'
 import 'react-hot-loader'
 import * as serviceWorker from './service-worker'
+import { App } from 'components/App'
 import { Wrapper } from 'components/Wrapper'
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -16,9 +17,13 @@ if (maintenance) {
   applyClassName('p-0')
 }
 
+// Used in error handler to detect that old browser prevented
+// page from rendering
 window.TREE_MOUNTED = true
 ReactDOM.render(
-  <Wrapper applyClassName={applyClassName} maintenance={maintenance} />,
+  <Wrapper applyClassName={applyClassName} maintenance={maintenance}>
+    <App maintenance={maintenance} />
+  </Wrapper>,
   root,
 )
 

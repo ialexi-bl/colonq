@@ -18,7 +18,8 @@ import ApiClient from 'services/client'
 import LangErrors from 'lang/errors.json'
 import LangNotifications from 'lang/notifications.json'
 import React, { useCallback, useEffect, useState } from 'react'
-import Title  from 'components/shared/Title'
+import Title from 'components/shared/Title'
+import initApp from 'store/view/init-action'
 import styles from './Auth.module.scss'
 
 declare const gtag: Gtag.Gtag
@@ -118,6 +119,8 @@ function check(
         // NOTE: check from params is taken in App component
         // This is needed to ensure check is set before the first
         // token request fires, maybe find a workaround in future
+
+        await dispatch(initApp(params.get('check')))
 
         dispatch(
           notifyInfo(

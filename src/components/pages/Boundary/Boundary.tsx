@@ -1,5 +1,6 @@
 import { CUTE_FACE } from 'config/view'
 import { Endpoints } from 'config/endpoints'
+import { IS_PROD } from 'config'
 import { PageContainer } from 'components/shared/Page'
 import ApiClient from 'services/client'
 import LetterTitle, {
@@ -60,7 +61,7 @@ export class Boundary extends React.Component<
   }
 
   render() {
-    if (!this.state.hasError) {
+    if (!IS_PROD || !this.state.hasError) {
       return this.props.children
     }
 

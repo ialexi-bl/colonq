@@ -2,26 +2,24 @@ import { AppState } from 'store/types'
 import { Endpoints } from 'config/endpoints'
 import { ScrollablePage } from 'components/shared/Page'
 import { notifyInfo } from 'store/view'
-import { signin } from 'config/routes'
 import { unauthenticate } from 'store/auth'
 import { useDispatch, useSelector } from 'react-redux'
 import ApiClient from 'services/client'
+import Button from 'components/shared/Button'
 import InfoItem from 'components/shared/InfoItem'
 import LangNotifications from 'lang/notifications.json'
 import PageTitle from 'components/shared/PageTitle'
-import React, { useCallback } from 'react'
+import React from 'react'
 import SocialLoginButton from 'components/form/SocialLoginButton'
 import User from 'components/icons/User'
 import useIsAuthenticated from 'hooks/shared/use-is-authenticated'
 
 export default function ProfileUser() {
-  const shouldDisplay = useIsAuthenticated(signin())
-
   const dispatch = useDispatch()
   const { name, email, providers } = useSelector(
     (state: AppState) => state.auth,
   )
-  const logout = useCallback(() => {
+  const logout = () => {
     ApiClient.check = null
     dispatch(unauthenticate())
     dispatch(notifyInfo(LangNotifications.logout))
@@ -34,9 +32,9 @@ export default function ProfileUser() {
       // TODO: probably add error logging although the only error
       // that can happen here is network problem
     })
-  }, [dispatch])
+  }
 
-  if (!shouldDisplay) {
+  if (!useIsAuthenticated()) {
     return null
   }
 
@@ -51,7 +49,7 @@ export default function ProfileUser() {
           через них вход или если у тебя уже есть аккаунт ColonQ, связанный с
           другой сетью
         </p>
-        <div className={'flex flex-col items-center'}>
+        <div className={'flex flex-col items-end'}>
           <SocialLoginButton
             className={'mb-3'}
             provider={'vk'}
@@ -66,6 +64,9 @@ export default function ProfileUser() {
             href={Endpoints.OAuth.google}
             link
           />
+          <Button className={'w-64 mt-4'} onClick={logout} secondary>
+            Выход
+          </Button>
         </div>
       </div>
     </ScrollablePage>

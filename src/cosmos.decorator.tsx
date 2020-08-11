@@ -1,5 +1,7 @@
 import 'styles/index.scss'
+import { Wrapper } from 'components/Wrapper'
 import React from 'react'
+import ShapesManager from 'components/ShapesManager'
 
 const styled = { div: (a: any) => a[0] }
 const styles = styled.div`
@@ -24,9 +26,16 @@ const styles = styled.div`
   }
 `
 
-export default ({ children }: HTMLProps.div) => (
-  <>
-    <style>{styles}</style>
-    {children}
-  </>
-)
+export default ({ children }: HTMLProps.div) => {
+  const el = document.body.firstChild!
+  if (el.nodeType === 3 && el.textContent?.startsWith('/static/media/'))
+    el.remove()
+
+  return (
+    <Wrapper applyClassName={() => {}}>
+      <ShapesManager />
+      <style>{styles}</style>
+      {children}
+    </Wrapper>
+  )
+}

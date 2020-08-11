@@ -4,13 +4,12 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
-  s
     {
-      "type": "chrome",
-      "request": "attach",
-      "name": "Debug client",
+      "name": "Attach to Chrome",
       "port": 9222,
-      "webRoot": "${workspaceFolder}"
+      "request": "attach",
+      "type": "pwa-chrome",
+      "webRoot": "${workspaceFolder:Client}"
     }
   ]
 }

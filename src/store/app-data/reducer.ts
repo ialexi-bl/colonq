@@ -2,7 +2,7 @@ import { AppDataAction, AppDataState, SET_APP_DATA } from './types'
 
 export const initialState: AppDataState = {}
 
-export function reducer(
+export default function reducer(
   state: AppDataState = initialState,
   action: AppDataAction,
 ): AppDataState {

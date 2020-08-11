@@ -1,4 +1,4 @@
-import Accents from 'components/icons/Accents'
+import Accents from 'components/icons/themes/russian/Accents'
 import React from 'react'
 import ThemeCard from './ThemeCard'
 

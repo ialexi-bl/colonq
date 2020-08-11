@@ -1,7 +1,5 @@
 {
-  "scss.lint.validProperties": [
-    "composes"
-  ],
+  "scss.lint.validProperties": ["composes"],
   "scss.lint.duplicateProperties": "warning",
   "scss.lint.zeroUnits": "warning",
   "scss.lint.important": "warning",
@@ -9,6 +7,5 @@
   "scss.lint.ieHack": "warning",
   "scss.lint.float": "warning",
   "less.lint.duplicateProperties": "warning",
-  "css.lint.duplicateProperties": "warning",
-  "python.formatting.provider": "black"
+  "css.lint.duplicateProperties": "warning"
 }

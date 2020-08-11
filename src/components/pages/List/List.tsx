@@ -1,6 +1,6 @@
 import { ScrollablePage } from 'components/shared/Page'
 import { app } from 'config/routes'
-import Accents from 'components/icons/Accents'
+import Accents from 'components/icons/themes/russian/Accents'
 import ListIcon from 'components/icons/List'
 import Orthography from 'components/icons/Orthography'
 import PageTitle from 'components/shared/PageTitle'
@@ -14,7 +14,7 @@ export default function List() {
   return (
     <ScrollablePage>
       <PageTitle icon={<ListIcon />} label={'Темы'} />
-      <div className={'w-full px-4'}>
+      <div className={'w-full px-4 pb-64'}>
         <Title className={'text-3xl mb-4'} level={2}>
           Русский язык
         </Title>
@@ -43,7 +43,7 @@ export default function List() {
           className={'mb-5'}
         />
 
-        <Title className={'text-center text-2xl mb-5'} level={3}>
+        <Title className={'text-center text-xl mt-12'} level={3}>
           Новые темы и предметы скоро!
         </Title>
       </div>

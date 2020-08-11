@@ -1,24 +1,23 @@
 import { Router } from './Router'
-import { auth, verifyEmail } from 'config/routes'
 import { authenticate, unauthenticate } from 'store/auth'
-import { hideLoading, notifyError } from 'store/view'
+import { hideLoading } from 'store/view'
 import { useDispatch } from 'react-redux'
-import { useLocation } from 'react-router'
 import ApiClient, { AuthEvent } from 'services/client'
-import LangErrors from 'lang/errors.json'
 import Navigation from './shared/Navigation'
 import NotificationToaster, {
   CookiesNotification,
 } from './shared/NotificationToaster'
 import React, { useEffect, useState } from 'react'
 import RouteLoading from './shared/RouteLoading'
+import initApp from 'store/view/init-action'
+import useRoute from 'hooks/shared/use-route'
 
 const getMaintenanceComponent = () =>
   import('components/pages/Maintenance').then((x) => x.Maintenance)
 
 export function App({ maintenance }: { maintenance?: boolean }) {
   const dispatch = useDispatch()
-  const location = useLocation()
+  const route = useRoute()
   const [Maintenance, setMaintenance] = useState<React.ComponentType>(
     () => () => null,
   )
@@ -36,29 +35,8 @@ export function App({ maintenance }: { maintenance?: boolean }) {
       }
       ApiClient.addEventListener('authenticate', setUser)
 
-      // Ensure `check` parameter on auth page is set before token request
-      if (location.pathname === auth()) {
-        const params = new URLSearchParams(location.search)
-        if (params.has('check')) {
-          ApiClient.check = params.get('check')
-        }
-      }
-
-      // Credentials are received during email verification
-      if (location.pathname !== verifyEmail()) {
-        ApiClient.init()
-          .catch((e) => {
-            if (e.name === 'NoStorageError') {
-              dispatch(notifyError(LangErrors.noStorage))
-            } else {
-              dispatch(notifyError(LangErrors.network))
-            }
-
-            dispatch(unauthenticate())
-          })
-          .then(() => {
-            dispatch(hideLoading('App'))
-          })
+      if (!route?.performsInitialization) {
+        dispatch(initApp())
       }
       return () => ApiClient.removeEventListener('authenticate', setUser)
     } else {

@@ -15,23 +15,19 @@
   line-height: 120%;
 
   position: fixed;
+  bottom: 3rem;
   right: 0;
   left: 0;
-  top: 0;
 
   @include transition.self(notification, (exit, enter-to, appear-to)) {
-    transform: translate(0, 0);
+    transform: translateY(0);
   }
   @include transition.self(notification, (exit-to, from)) {
-    transform: translate(0, -100%);
+    transform: translateY(100%);
   }
 
   @include media.md {
-    top: auto;
     bottom: 0;
-    @include transition.self(notification, (exit-to, from)) {
-      transform: translate(0, 100%);
-    }
   }
 }
 .error {

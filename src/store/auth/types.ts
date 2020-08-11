@@ -1,6 +1,6 @@
 import { User } from 'services/client'
 
-export const AUTHENTICATE = 'AUTHENTICATE'
+export const AUTHENTICATE = 'AUTH/AUTHENTICATE'
 
 export type AuthState =
   | {

@@ -125,7 +125,9 @@ module.exports = function (webpackEnv) {
         ident: 'postcss',
         syntax: preProcessor === 'sass-loader' ? 'postcss-scss' : undefined,
         plugins: () => [
-          require('tailwindcss'),
+          require('tailwindcss')(
+            path.resolve(__dirname, '../tailwind.config.js'),
+          ),
           require('postcss-flexbugs-fixes'),
           require('postcss-easings'),
           require('postcss-short'),
@@ -341,6 +343,7 @@ module.exports = function (webpackEnv) {
         // from the current package.
         PnpWebpackPlugin.moduleLoader(module),
       ],
+      // modules: ['node_modules', path.resolve(__dirname, 'loaders')],
     },
     module: {
       strictExportPresence: true,
@@ -424,6 +427,10 @@ module.exports = function (webpackEnv) {
                   },
                 },
               ],
+            },
+            {
+              test: /\.shape\.svg/,
+              loader: path.resolve(__dirname, 'loaders/shape-loader.js'),
             },
             // Process any JS outside of the app with Babel.
             // Unlike the application JS, we only compile the standard ES features.

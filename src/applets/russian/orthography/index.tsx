@@ -3,6 +3,7 @@ import React from 'react'
 import WordsApplet from 'components/applets/words/WordsApplet'
 import WordsAppletManager from 'services/applets/WordsAppletManager'
 import presentation from './data.json'
+import useIsAuthenticated from 'hooks/shared/use-is-authenticated'
 
 // const options: ChoiceOptions = [
 //   (content) => content.length > 1 && content.split(''),
@@ -22,13 +23,17 @@ import presentation from './data.json'
 
 const manager = new WordsAppletManager('/russian/orthography', presentation)
 
-export default () => (
-  <WordsApplet
-    manager={manager}
-    title={'Орфография'}
-    icon={<Orthography />}
-    description={
-      'Выбирай из нескольких вариантов букву, которая должна стоять на месте пропуска в слове и проверяй ответ'
-    }
-  />
-)
+export default () => {
+  if (!useIsAuthenticated()) return null
+
+  return (
+    <WordsApplet
+      manager={manager}
+      title={'Орфография'}
+      icon={<Orthography />}
+      description={
+        'Выбирай из нескольких вариантов букву, которая должна стоять на месте пропуска в слове и проверяй ответ'
+      }
+    />
+  )
+}

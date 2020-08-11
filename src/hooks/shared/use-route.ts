@@ -1,12 +1,12 @@
 import { routes } from 'config/routes'
-import { useRouteMatch } from 'react-router'
+import { useLocation } from 'react-router'
 
-export default function useMatch() {
-  const match = useRouteMatch()
+export default function useRoute() {
+  const location = useLocation()
 
-  if (!(match.path in routes)) {
+  if (!(location.pathname in routes)) {
     return null
   }
 
-  return routes[match.path]
+  return routes[location.pathname]
 }

@@ -24,13 +24,16 @@ const hash = (str: string) => {
 const initialState: ViewState = {
   // Needed for `App` to check authentication
   // Disabled on load
-  loading: ['App'],
+  loading: ['Initialization'],
   navigationVisible: true,
   notification: null,
   navOpen: false,
 }
 
-export function reducer(state = initialState, action: ViewAction): ViewState {
+export default function reducer(
+  state = initialState,
+  action: ViewAction,
+): ViewState {
   switch (action.type) {
     case SET_LOADING:
       return {
@@ -47,7 +50,9 @@ export function reducer(state = initialState, action: ViewAction): ViewState {
     case HIDE_NON_ROUTER_LOADING:
       return {
         ...state,
-        loading: state.loading.filter((x) => x === 'Router' || x === 'App'),
+        loading: state.loading.filter(
+          (x) => x === 'Router' || x === 'Initialization',
+        ),
       }
     case TOGGLE_NAV:
       return {
