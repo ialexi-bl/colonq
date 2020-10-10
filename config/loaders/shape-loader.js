@@ -5,11 +5,19 @@ function round(n, p = 1000) {
 // to viewbox into percents
 function transformPath(str, w = 184, h = 33) {
   return str
-    .replace(/([ML])([\d\.]+)\s+([\d\.]+)/g, (_, p1, p2, p3) => {
-      return `${p1}${round(p2 / w)} ${round(p3 / h)}`
+    .replace(
+      /([C])([\d\.-]+)\s+([\d\.-]+)\s+([\d\.-]+)\s+([\d\.-]+)\s+([\d\.-]+)\s+([\d\.-]+)/g,
+      (_, t, n1, n2, n3, n4, n5, n6) => {
+        return `${t}${round(n1 / w)} ${round(n2 / h)} ${round(n3 / w)} ${round(
+          n4 / h,
+        )} ${round(n5 / w)} ${round(n6 / h)}`
+      },
+    )
+    .replace(/([ML])([\d\.-]+)\s+([\d\.-]+)/g, (_, t, n1, n2) => {
+      return `${t}${round(n1 / w)} ${round(n2 / h)}`
     })
-    .replace(/([HV])([\d\.]+)/g, (_, p1, p2) => {
-      return `${p1}${round(p2 / (p1 == 'H' ? w : h))}`
+    .replace(/([HV])([\d\.-]+)/g, (_, t, n) => {
+      return `${t}${round(n / (t == 'H' ? w : h))}`
     })
 }
 

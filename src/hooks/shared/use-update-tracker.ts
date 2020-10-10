@@ -1,8 +1,11 @@
 import { useEffect, useRef } from 'react'
 
-export default function useUpdateTracker(name: string, props: any) {
+export default function useDevUpdateTracker(name: string, props: any) {
   const previousProps = useRef<any>()
 
+  useEffect(() => {
+    console.warn("Update tracker used, don't forget to delete in production")
+  }, [])
   useEffect(() => {
     if (previousProps.current) {
       const allKeys = Object.keys({ ...previousProps.current, ...props })

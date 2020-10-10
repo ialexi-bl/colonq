@@ -19,6 +19,8 @@
 
 @mixin dir($x, $y: 0) {
   // Exit transitions are made with CSS animation
+  // TODO: recall why
+
   // @include route-transition.descendant(enter-from, exit-from) {
   // transition: transform time.$route-transition-duration !important;
   // }

@@ -3,11 +3,6 @@ import { Endpoints } from 'config/endpoints'
 import { IS_PROD } from 'config'
 import { PageContainer } from 'components/shared/Page'
 import ApiClient from 'services/client'
-import LetterTitle, {
-  ActiveLetter,
-  Letter,
-  WrongLetter,
-} from 'components/shared/LetterTitle'
 import React, { ErrorInfo } from 'react'
 import TitleLine from 'components/shared/TitleLine'
 import styles from './Boundary.module.scss'
@@ -68,13 +63,7 @@ export class Boundary extends React.Component<
     return (
       <PageContainer className={styles.Boundary}>
         <TitleLine>
-          <LetterTitle className={styles.Title}>
-            <ActiveLetter>E</ActiveLetter>
-            <Letter>R</Letter>
-            <Letter>R</Letter>
-            <WrongLetter>O</WrongLetter>
-            <Letter>R</Letter>
-          </LetterTitle>
+          ERROR
           <p className={styles.Subtitle}>
             Что-то сломалось {CUTE_FACE}. Попробуй обновить страницу, если не
             получится - вернись позже. Всё обязательно заработает

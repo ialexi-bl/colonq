@@ -6,6 +6,7 @@ export type InfoItemProps = Childfree<HTMLProps.div> & {
   value: string | null
 }
 
+// TODO: Maybe delete?
 const InfoItem = ({ label, value, ...props }: InfoItemProps) => (
   <div {...props}>
     <div className={styles.Label}>{label}</div>

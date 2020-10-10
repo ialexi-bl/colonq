@@ -14,8 +14,9 @@ body {
   height: 100%;
   width: 100%;
   color: #f3f2ff;
-  font-family: Roboto, Arial, Helvetica, sans-serif;
-  background: #151529;
+  font-family: Ubuntu Mono, sans-serif;
+  line-height: 1.2;
+  /* background: #151529; */
 }
 .centered {
   display: flex;

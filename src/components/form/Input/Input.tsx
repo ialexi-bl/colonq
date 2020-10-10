@@ -1,13 +1,12 @@
-import React, { InputHTMLAttributes, forwardRef } from 'react'
+import React, { forwardRef } from 'react'
 import cn from 'clsx'
+import paths from 'shapes/inputs.shape.svg'
 import styles from './Input.module.scss'
+import useClipShape from 'hooks/shared/use-svg-texture'
 
-export type InputProps = Omit<
-  InputHTMLAttributes<HTMLInputElement>,
-  'onChange'
-> & {
+export type InputProps = HTMLProps.input & {
   state?: null | 'valid' | 'invalid'
-  onChange?: (value: string, e: React.ChangeEvent) => unknown
+  variant?: 1 | 2 | 3
 }
 
 /**
@@ -16,15 +15,24 @@ export type InputProps = Omit<
  * @param {InputProps} props
  */
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ className, onChange, state, formNoValidate, ...props }, ref) => (
-    <input
-      ref={ref}
-      type={'text'}
-      tabIndex={0}
-      className={cn(className, styles.Input, state && styles[state])}
-      onChange={onChange && ((e) => onChange(e.target.value, e))}
-      {...props}
-    />
-  ),
+  ({ className, state, formNoValidate, variant = 1, ...props }, ref) => {
+    useClipShape('input', paths)
+
+    return (
+      <input
+        ref={ref}
+        type={'text'}
+        tabIndex={0}
+        className={cn(
+          'py-4 px-6 w-full outline-none',
+          className,
+          styles.Input,
+          styles[`variant-${variant}`],
+          state && styles[state],
+        )}
+        {...props}
+      />
+    )
+  },
 )
 export default Input

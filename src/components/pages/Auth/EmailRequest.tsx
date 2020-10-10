@@ -3,7 +3,6 @@ import Button from 'components/shared/Button'
 import ErrorMessage from 'components/form/ErrorMessage'
 import Input from 'components/form/Input'
 import React, { useState } from 'react'
-import Title from 'components/shared/Title'
 import styles from './Auth.module.scss'
 
 export function EmailRequest({
@@ -34,15 +33,13 @@ export function EmailRequest({
 
   return (
     <form onSubmit={submit} className={styles.Container}>
-      <Title level={2} className={styles.Title}>
-        Введи email
-      </Title>
+      <h2 className={styles.Title}>Введи email</h2>
       <Input
         type={'email'}
         value={email}
         state={error ? 'invalid' : null}
         onBlur={validate}
-        onChange={change}
+        onChange={(e) => change(e.target.value)}
         placeholder={'Email'}
         className={styles.Input}
       />

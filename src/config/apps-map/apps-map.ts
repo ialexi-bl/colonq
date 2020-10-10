@@ -3,7 +3,7 @@ import React from 'react'
 
 const cache: { [key: string]: { default: React.ComponentType } } = {}
 const applet = (name: string): LeafSection['loadComponent'] => async () => {
-  return cache[name] || (cache[name] = await import(`applets/${name}/index`))
+  return cache[name] || (cache[name] = await import(`apps/${name}/index`))
 }
 
 const getLeaf = (section: string, leaf: string, title: string): LeafSection => {
@@ -32,21 +32,6 @@ export const appsMap: AppsMap = {
       '/russian/paronyms',
     ],
   },
-
-  // Russian
-  // '/russian': {
-  //   title: 'Русский язык',
-  //   location: '/russian',
-  //   parent: '/',
-  //   leaf: false,
-  //   items: [
-  //     '/russian/accents',
-  //     '/russian/n-or-nn',
-  //     '/russian/verb-endings',
-  //     '/russian/prefixes',
-  //     '/russian/orthography',
-  //   ],
-  // },
 
   get '/russian/accents'(): Section {
     return getLeaf('/', 'russian/accents', 'Ударения')

@@ -38,10 +38,16 @@ export const routesArray: RouteOptions[] = [
     component: lazy(() => import('components/pages/ProfileUser')),
   },
   {
-    path: '/signin',
-    name: 'signin',
+    path: '/login',
+    name: 'login',
     authenticated: false,
-    component: lazy(() => import('components/pages/ProfileGuest')),
+    component: lazy(() => import('components/pages/Login')),
+  },
+  {
+    path: '/register',
+    name: 'register',
+    authenticated: false,
+    component: lazy(() => import('components/pages/Registration')),
   },
   {
     path: '/verify-email',
@@ -86,8 +92,9 @@ const cache: {
 export const verifyEmail = () => routes.verifyEmail.path
 export const feedback = () => routes.feedback.path
 export const settings = () => routes.settings.path
+export const register = () => routes.register.path
 export const profile = () => routes.profile.path
-export const signin = () => routes.signin.path
+export const login = () => routes.login.path
 export const index = () => routes.index.path
 export const list = () => routes.list.path
 export const auth = () => routes.auth.path

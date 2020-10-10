@@ -44,6 +44,9 @@ module.exports = {
           hover: '#bb2424',
           active: '#991616',
         },
+        warning: {
+          default: '#f8d979',
+        },
         transparent: {
           default: 'transparent',
           active: 'rgba(0, 0, 0, 0.1)',
@@ -61,6 +64,10 @@ module.exports = {
       },
       minWidth: (theme) => theme('spacing'),
     },
+  },
+  future: {
+    removeDeprecatedGapUtilities: true,
+    purgeLayersByDefault: true,
   },
   variants: {},
   plugins: [],

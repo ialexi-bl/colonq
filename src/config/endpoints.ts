@@ -34,7 +34,9 @@ export const Endpoints = {
 
   // Authentication endpoints
   Auth: {
+    login: 'auth/login',
     logout: 'auth/logout',
+    register: 'auth/register',
     getToken: 'auth/token',
     sendEmail: 'auth/send-email',
     verifyEmail: 'auth/verify-email',

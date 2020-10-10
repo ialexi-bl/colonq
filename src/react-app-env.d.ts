@@ -77,6 +77,11 @@ declare module '*.webp' {
   export default src
 }
 
+declare module '*.shape.svg' {
+  const shapes: string[]
+  export default shapes
+}
+
 declare module '*.svg' {
   import * as React from 'react'
 

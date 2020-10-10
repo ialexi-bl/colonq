@@ -1,15 +1,12 @@
 import { ScrollablePage } from 'components/shared/Page'
 import Button from 'components/shared/Button'
-import PageTitle from 'components/shared/PageTitle'
 import React from 'react'
-import SettingsIcon from 'components/icons/Settings'
 import Toggle from 'components/form/Toggle'
 import cn from 'clsx'
 
 export default function Settings() {
   return (
     <ScrollablePage>
-      <PageTitle icon={<SettingsIcon />} label={'Настройки'} />
       <div className={'px-4'}>
         <ToggleItem
           label={'Анимации'}

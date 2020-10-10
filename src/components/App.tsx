@@ -3,12 +3,12 @@ import { authenticate, unauthenticate } from 'store/auth'
 import { hideLoading } from 'store/view'
 import { useDispatch } from 'react-redux'
 import ApiClient, { AuthEvent } from 'services/client'
-import Navigation from './shared/Navigation'
 import NotificationToaster, {
   CookiesNotification,
 } from './shared/NotificationToaster'
 import React, { useEffect, useState } from 'react'
 import RouteLoading from './shared/RouteLoading'
+import ShapesManager from './ShapesManager'
 import initApp from 'store/view/init-action'
 import useRoute from 'hooks/shared/use-route'
 
@@ -56,8 +56,8 @@ export function App({ maintenance }: { maintenance?: boolean }) {
   return (
     <div id={'app'}>
       <Router />
-      <Navigation />
       <RouteLoading />
+      <ShapesManager />
       <CookiesNotification />
       <NotificationToaster />
     </div>

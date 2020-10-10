@@ -18,7 +18,6 @@ import ApiClient from 'services/client'
 import LangErrors from 'lang/errors.json'
 import LangNotifications from 'lang/notifications.json'
 import React, { useCallback, useEffect, useState } from 'react'
-import Title from 'components/shared/Title'
 import initApp from 'store/view/init-action'
 import styles from './Auth.module.scss'
 
@@ -81,7 +80,7 @@ export default function Auth() {
     return (
       <PageContainer className={'centered'}>
         <section className={styles.Box}>
-          <Title level={2}>Проверь почту!</Title>
+          <h2>Проверь почту!</h2>
           <p>
             Письмо с подтверждением должно скоро прийти. Оно будет действительно
             30 минут

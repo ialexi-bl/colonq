@@ -4,7 +4,6 @@ import { GetSettingsLabel } from '../WordsList_del/WordEditor'
 import { WordsList } from 'components/applets/WordsList_del'
 import { useEditAppData } from 'hooks/app-data'
 import React, { useState } from 'react'
-import Title from 'components/shared/Title'
 import WordsAppletManager from 'services/applets/WordsAppletManager'
 
 export function getWordSettings(

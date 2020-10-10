@@ -1,6 +1,9 @@
-import { REGISTER_SHAPE, ShapesAction } from './types'
+import { REGISTER_SHAPE, ShapesActions } from './types'
 
-export const registerShape = (name: string): ShapesAction['LOAD_SVG'] => ({
+export const registerShape = (
+  name: string,
+  paths: string[],
+): ShapesActions['REGISTER_SHAPE'] => ({
   type: REGISTER_SHAPE,
-  payload: name,
+  payload: { name, paths },
 })

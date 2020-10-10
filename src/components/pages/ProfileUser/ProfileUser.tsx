@@ -40,7 +40,7 @@ export default function ProfileUser() {
 
   return (
     <ScrollablePage>
-      <PageTitle icon={<User />} label={'Профиль'} />
+      <PageTitle icon={<User />}>Профиль</PageTitle>
       <div className={'px-4'}>
         <InfoItem className={'mb-4'} label={'Имя'} value={name} />
         <InfoItem className={'mb-12'} label={'Email'} value={email} />
@@ -54,14 +54,12 @@ export default function ProfileUser() {
             className={'mb-3'}
             provider={'vk'}
             disabled={providers.includes('vk')}
-            href={Endpoints.OAuth.vk}
             link
           />
           <SocialLoginButton
             className={'mb-3'}
             provider={'google'}
             disabled={providers.includes('google')}
-            href={Endpoints.OAuth.google}
             link
           />
           <Button className={'w-64 mt-4'} onClick={logout} secondary>

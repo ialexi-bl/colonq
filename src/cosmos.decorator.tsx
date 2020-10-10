@@ -9,7 +9,7 @@ const styles = styled.div`
     --primary: #151529;
   }
   body {
-    font-family: Roboto, Ubuntu, Helvetica, sans-serif;
+    font-family: Ubuntu Mono, sans-serif;
     background: var(--primary);
     color: #eee;
   }

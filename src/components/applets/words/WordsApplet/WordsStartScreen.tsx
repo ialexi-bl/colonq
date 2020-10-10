@@ -25,7 +25,9 @@ export default function WordsStartScreen({
   return (
     <CSSTransition timeout={duration} classNames={className}>
       <ControlledScrollbars>
-        <PageTitle className={styles.transitionUp} icon={icon} label={title} />
+        <PageTitle className={styles.transitionUp} icon={icon}>
+          {title}
+        </PageTitle>
         <div className={'px-4 pb-64'}>
           <div className={cn(styles.transitionUp, 'mb-64')}>{description}</div>
 

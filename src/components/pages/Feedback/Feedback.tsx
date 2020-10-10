@@ -11,7 +11,6 @@ import Button from 'components/shared/Button'
 import ErrorMessage from 'components/form/ErrorMessage'
 import Input from 'components/form/Input'
 import React, { useState } from 'react'
-import Title from 'components/shared/Title'
 import cn from 'clsx'
 import styles from './Feedback.module.scss'
 
@@ -67,7 +66,7 @@ export default function Feedback() {
   if (done) {
     return (
       <PageContainer className={cn('centered', styles.Container)}>
-        <Title level={2}>Спасибо за отзыв!</Title>
+        <h2>Спасибо за отзыв!</h2>
         <Button onClick={() => dispatch(toggleNav(true))}>
           Продолжить занятия
         </Button>
@@ -78,14 +77,14 @@ export default function Feedback() {
   return (
     <PageContainer className={styles.Container}>
       <form className={styles.Form} onSubmit={submit}>
-        <Title level={2}>Обратная связь</Title>
+        <h2>Обратная связь</h2>
         <p>
           Попалась ошибка, или хочешь новую функцию? Опиши как можно подробнее!
         </p>
         {!authenticated && (
           <Input
             state={!!error && error >= 2 ? 'invalid' : undefined}
-            onChange={setEmail}
+            onChange={(e) => setEmail(e.target.value)}
             value={email}
             onBlur={validateEmail}
             placeholder={'E-mail'}

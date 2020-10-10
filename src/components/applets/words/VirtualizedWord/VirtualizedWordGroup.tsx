@@ -5,7 +5,6 @@ import {
 } from 'services/applets/WordsAppletManager/types'
 import Checkbox from 'components/form/Checkbox'
 import React from 'react'
-import UnfoldButton from 'components/shared/UnfoldButton'
 import cn from 'clsx'
 import styles from './VirtualizedWord.module.scss'
 
@@ -43,13 +42,6 @@ export default function VirtualizedWordGroup({
         />
       </div>
       <p className={styles.Label}>{group.label}</p>
-      <div className={styles.ElementContainer}>
-        <UnfoldButton
-          onClick={() => toggleFold(groupIndex)}
-          folded={!expanded}
-          className={styles.UnfoldButton}
-        />
-      </div>
     </li>
   )
 }

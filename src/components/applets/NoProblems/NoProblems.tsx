@@ -1,7 +1,6 @@
 import { CUTE_FACE } from 'config/view'
-import CenteredBox from 'components/shared/CenteredBox'
 import React from 'react'
-import Title from 'components/shared/Title'
+import cn from 'clsx'
 
 const messages = {
   words: 'Слов нет',
@@ -14,12 +13,12 @@ const NoProblems = ({
   className?: string
   type?: keyof typeof messages
 }) => (
-  <CenteredBox className={className}>
-    <Title className={'text-center'} level={2}>
+  <div className={cn('flex items-center justify-center', className)}>
+    <h2 className={'text-center'}>
       {messages[type]}
       <br />
       {CUTE_FACE}
-    </Title>
-  </CenteredBox>
+    </h2>
+  </div>
 )
 export default NoProblems

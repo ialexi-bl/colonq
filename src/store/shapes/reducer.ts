@@ -8,7 +8,7 @@ export default function reducer(
 ) {
   switch (action.type) {
     case REGISTER_SHAPE:
-      return state.includes(action.payload)
+      return state.find((shape) => shape.name === action.payload.name)
         ? state
         : state.concat(action.payload)
     default:

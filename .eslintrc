@@ -17,8 +17,15 @@
     "no-useless-constructor": "off",
     "no-dupe-class-members": "off",
     "spaced-comment": "warn",
-    "react-hooks/exhaustive-deps": "error",
+    "no-inner-declarations": "off",
+    "no-use-before-define": "off",
     "sort-imports-es6-autofix/sort-imports-es6": ["warn"],
+    "react-hooks/exhaustive-deps": [
+      "error",
+      {
+        "additionalHooks": "(useAsyncCallback)"
+      }
+    ],
     "@typescript-eslint/no-useless-constructor": "error",
     "@typescript-eslint/no-unused-expressions": [
       "error",

@@ -1,32 +1,18 @@
 @use 'styles/variables/dims';
 @use 'styles/variables/colors';
 
-.SocialLoginButton {
-  composes: reset-link from global;
-
-  border-radius: dims.$border-radius;
-  align-items: center;
-  transition: background 100ms;
-  font-size: 1.2rem;
-  padding: 0.5em;
-  display: flex;
-  cursor: pointer;
-  width: 100%;
-
-  &:focus {
-    outline: none;
+.SocialButton {
+  &:nth-of-type(3n + 1) {
+    clip-path: url(#shape-button-1);
+  }
+  &:nth-of-type(3n + 2) {
+    clip-path: url(#shape-button-2);
+  }
+  &:nth-of-type(3n) {
+    clip-path: url(#shape-button-3);
   }
 }
-.Icon {
-  size: 1.5em;
-  margin-right: 0.5em;
-}
 
-.disabled {
-  background: colors.$disabled;
-  cursor: default;
-  color: colors.$text-disabled;
-}
 .vk {
   background: #4680c2;
 

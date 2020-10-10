@@ -2,24 +2,29 @@
 
 @keyframes ellipse {
   from {
-    stroke-dashoffset: 40;
+    stroke-dashoffset: 0;
+    stroke-dasharray: 220, 0;
+  }
+  50% {
+    stroke-dasharray: 220, 30;
   }
   to {
-    stroke-dashoffset: 1190;
+    stroke-dasharray: 220, 0;
+    stroke-dashoffset: 220;
   }
 }
 @keyframes circle {
   from {
-    stroke-dasharray: 130 0;
-    stroke-dashoffset: -150;
+    stroke-dasharray: 24 0;
+    stroke-dashoffset: 0;
   }
   50% {
-    stroke-dasharray: 125 30;
-    stroke-dashoffset: -75;
+    stroke-dasharray: 24 10;
+    stroke-dashoffset: 18;
   }
   to {
-    stroke-dasharray: 130 0;
-    stroke-dashoffset: 0;
+    stroke-dasharray: 24 0;
+    stroke-dashoffset: 24;
   }
 }
 @keyframes path {
@@ -27,7 +32,7 @@
     stroke-dashoffset: 0;
   }
   50% {
-    stroke-dashoffset: 100;
+    stroke-dashoffset: 36;
   }
   to {
     stroke-dashoffset: 0;
@@ -38,19 +43,16 @@
   animation-play-state: paused;
 }
 .logoQBody {
-  stroke-dasharray: 1000, 150;
   animation: ellipse 2s cubic-bezier(0.5, 0.17, 0.5, 0.83) infinite;
 }
 .logoDot1 {
-  stroke-dasharray: 125 25;
   animation: circle 2s linear infinite;
 }
 .logoDot2 {
-  stroke-dasharray: 125 25;
   animation: circle 2s 0.2s linear infinite;
 }
 .logoQTail {
-  stroke-dasharray: 456;
+  stroke-dasharray: 74;
   animation: path 2s ease-in-out infinite;
 }
 
@@ -60,5 +62,6 @@
 .logoQTail {
   /* Allow stopping animation from wrapper component */
   animation-play-state: inherit;
+  stroke-linecap: round;
   color: colors.$text;
 }

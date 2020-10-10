@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { APPLET_LOADING } from 'components/pages/Applet'
 import { GetSettingsLabel } from '../WordsList_del/WordEditor'
-import Hide from 'components/icons/DisableProblem'
+import Hide from 'components/icons/Hide'
 import {
   TwoLatestDisplay,
   TwoLatestDisplayViewProps,

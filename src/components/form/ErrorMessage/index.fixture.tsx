@@ -5,11 +5,11 @@ import Input from '../Input'
 import React, { useEffect } from 'react'
 
 const messages = [
+  null,
   "(1) I'm an error",
   // null,
   '(2) Oops, try again',
   '(3) Something went wrong',
-  null,
 ]
 
 export default {

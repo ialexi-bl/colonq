@@ -1,4 +1,3 @@
-import { App } from './App'
 import { Boundary } from './pages/Boundary'
 import { ConnectedRouter } from 'connected-react-router'
 import { Provider as ReduxProvider } from 'react-redux'

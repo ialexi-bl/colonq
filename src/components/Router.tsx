@@ -13,7 +13,7 @@ import { routesArray } from 'config/routes'
 import { useDispatch, useSelector } from 'react-redux'
 import Page from './shared/Page'
 import React, { Suspense, useEffect, useLayoutEffect, useState } from 'react'
-import useUpdateTracker from 'hooks/shared/use-update-tracker'
+import useDevUpdateTracker from 'hooks/shared/use-update-tracker'
 
 declare var gtag: Gtag.Gtag
 
@@ -38,7 +38,7 @@ export function Router() {
     }
   }, [dispatch, location.pathname])
 
-  useUpdateTracker('Router', {
+  useDevUpdateTracker('Router', {
     dispatch,
     initialized,
     loading,

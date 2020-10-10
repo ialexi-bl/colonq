@@ -1,36 +1,23 @@
 import { AppState } from 'store/types'
+import { Shape } from 'store/shapes'
 import { useSelector } from 'react-redux'
-import React, { ComponentType, Suspense, lazy } from 'react'
+import React from 'react'
 
 export default function ShapesManager() {
-  const names = useSelector((state: AppState) => state.shapes)
-
-  names.forEach((name) => {
-    if (!(name in cache)) {
-      cache[name] = lazy(() =>
-        import(`shapes/${name}.shape.svg`).then(({ default: paths }) => ({
-          default: getComponent(name, paths),
-        })),
-      )
-    }
-  })
+  const shapes = useSelector((state: AppState) => state.shapes)
 
   return (
-    <Suspense fallback={null}>
-      <svg className={'absolute h-0 w-0'}>
-        <defs>
-          {names.map((name) => {
-            const ShapesSet = cache[name]
-            return <ShapesSet key={name} />
-          })}
-        </defs>
-      </svg>
-    </Suspense>
+    <svg className={'absolute h-0 w-0'}>
+      <defs>
+        {shapes.map(({ name, paths }) => (
+          <ClipPath key={name} name={name} paths={paths} />
+        ))}
+      </defs>
+    </svg>
   )
 }
 
-const cache: Record<string, ComponentType> = {}
-const getComponent = (name: string, paths: string[]) => () => {
+function ClipPath({ name, paths }: Shape) {
   if (paths.length === 1) {
     return (
       <clipPath id={`shape-${name}`} clipPathUnits={'objectBoundingBox'}>

@@ -1,118 +1,134 @@
+import { LinkButton } from 'components/shared/Button'
 import { PageContainer, ScrollablePage } from 'components/shared/Page'
-import { app } from 'config/routes'
-import Accents from 'components/icons/themes/russian/Accents'
-import Button from 'components/shared/Button'
+import { login, register } from 'config/routes'
+import Hr from 'components/shared/Hr'
 import LetterButton from 'components/shared/LetterButton'
-import Orthography from 'components/icons/Orthography'
-import Prefixes from 'components/icons/Prefixes'
-import React, { useRef } from 'react'
+import NotificationIcon from 'components/icons/Notification'
+import React, { ReactNode, useRef } from 'react'
+import ScrollIcon from 'components/icons/Scroll'
 import Scrollbars from 'react-custom-scrollbars'
-import ThemeCard from 'components/shared/ThemeCard/ThemeCard'
-import TitleLine from 'components/shared/TitleLine'
-import Verbs from 'components/icons/Verbs'
+import Suffixes from 'components/icons/subjects/russian/Suffixes'
+import Trigonometry from 'components/icons/subjects/maths/Trigonometry'
 import cn from 'clsx'
 import styles from './Index.module.scss'
 
 export default function Index() {
   const scrollbars = useRef<Scrollbars | null>(null)
-  const listStart = useRef<HTMLHeadingElement | null>(null)
 
   return (
     <ScrollablePage ref={scrollbars}>
       <PageContainer>
-        <Screen className={'px-4'}>
-          <h2 className={cn('mb-4 text-5xl', styles.Title)}>
+        <div
+          className={cn(
+            styles.FirstScreen,
+            'bg-secondary-800 flex flex-col justify-center items-center px-4',
+          )}
+        >
+          <h1 className={cn('mb-4 text-6xl mt-16', styles.Title)}>
             <span>C</span>
             <LetterButton>O</LetterButton>
             <span>L</span>
             <LetterButton>O</LetterButton>
             <span>N</span>
             <LetterButton state={'correct'}>Q</LetterButton>
+          </h1>
+          <h2 className={'text-center text-2xl mb-6'}>
+            Твоя лучшая подружка в закреплении знаний по русскому языку.
+            Бесплатно.
           </h2>
-          <h2 className={'text-center text-2xl mb-3'}>
-            Твоя лучшая подружка в закреплении знаний по русскому языку
-          </h2>
-          <Button
-            onClick={() => {
-              if (scrollbars.current && listStart.current) {
-                const offset = listStart.current.getBoundingClientRect().top
-                // @ts-ignore
-                scrollbars.current.view.scroll({
-                  top: offset,
-                  behavior: 'smooth',
-                })
-              }
-            }}
-            className={'text-xl w-64'}
+          <LinkButton
+            className={'text-xl w-full py-4 mb-2 max-w-xs'}
+            variant={2}
+            to={register()}
           >
-            Начать
-          </Button>
-        </Screen>
-        <Screen>
-          <TitleLine>
-            <h2 className={'text-3xl mb-6 text-center'}>
-              Учись быстрее, запоминай надолго
-            </h2>
-            <p>
-              Хорошо понимать предмет и знать правила очень важно, но без
-              закрепления знаний не обойтись. ColonQ предлагает удобные
-              тренажеры, чтобы облегчить этот процесс
-            </p>
-          </TitleLine>
-        </Screen>
-        <Screen className={'px-4'}>
-          <h2 ref={listStart} className={'text-3xl mb-6 text-center'}>
-            Выбери тему и занимайся каждый день
-          </h2>
-          <ThemeCard
-            to={app('russian/accents')}
-            icon={<Accents />}
-            label={'Ударения'}
-            className={'mb-3'}
+            Зарегистрироваться
+          </LinkButton>
+          <LinkButton
+            className={'text-xl w-full py-4 max-w-xs'}
+            to={login()}
+            secondary
+          >
+            Войти
+          </LinkButton>
+          <ScrollIcon className={'h-12 mt-16'} />
+        </div>
+
+        <h2 className={'my-32 px-4 text-center text-4xl'}>
+          Запомни один раз, не забывай никогда
+        </h2>
+
+        <div className={cn(styles.AdvantagesBackground, 'bg-secondary-800')}>
+          <Advantage
+            icon={<Suffixes />}
+            title={'Русский язык'}
+            description={
+              'Практикуй правила и учи слова-исключения, чтобы чувствовать себя уверенно на контрольных'
+            }
           />
-          <ThemeCard
-            to={app('russian/prefixes')}
-            icon={<Prefixes />}
-            label={'Приставки'}
-            className={'mb-3'}
+          <Hr />
+          <Advantage
+            reversed
+            icon={<Trigonometry />}
+            title={'Математика'}
+            description={
+              'Запоминай простые факты и не трать драгоценное время экзамена на попытки их вспомнить'
+            }
           />
-          <ThemeCard
-            to={app('russian/orthography')}
-            icon={<Orthography />}
-            label={'Орфография'}
-            className={'mb-3'}
-          />
-          <ThemeCard
-            to={app('russian/verb-endings')}
-            icon={<Verbs />}
-            label={'Окончания глаголов и причастий'}
-            className={'mb-3'}
-          />
-          <ThemeCard to={'#'} label={'Скоро больше!'} />
-        </Screen>
-        <Screen className={'mb-5 px-4'}>
-          <h2 className={'text-3xl mb-4 text-center'}>
-            Удобнее заниматься в приложении?
-          </h2>
-          <p className={cn('text-2xl text-center mb-4', styles.Subtitle)}>
-            Установи ColonQ на рабочий стол и включи уведомления, чтобы не
-            пропускать занятия
-          </p>
-          <div className={'flex flex-col'}>
-            <Button className={'text-xl mb-2'}>Установить</Button>
-            <Button className={'text-xl'} secondary>
-              Включить уведомления
-            </Button>
-          </div>
-        </Screen>
+          <Hr />
+          <h4 className={'text-center text-3xl my-8'}>Скоро больше!</h4>
+        </div>
+
+        <div className={'my-64 px-4 flex flex-col items-center'}>
+          <NotificationIcon className={'h-32 w-32 mb-4'} />
+          <h3 className={'text-3xl text-center'}>
+            Уведомления не позволят пропускать ежедневные занятия
+          </h3>
+        </div>
+
+        <h2 className={'px-4 mb-6 text-4xl text-center'}>Начни прямо сейчас</h2>
+        <div className={'px-4 mb-64 flex flex-col items-center'}>
+          <LinkButton
+            className={'text-xl w-full py-4 mb-2 max-w-xs'}
+            variant={2}
+            to={register()}
+          >
+            Зарегистрироваться
+          </LinkButton>
+          <LinkButton
+            className={'text-xl w-full py-4 max-w-xs'}
+            to={login()}
+            secondary
+          >
+            Войти
+          </LinkButton>
+        </div>
       </PageContainer>
     </ScrollablePage>
   )
 }
 
-const Screen = ({
-  children,
-  className,
-}: HTMLProps.children & HTMLProps.className) => (
-  <div className={cn(className, styles.Screen)}>{children}</div>
+const Advantage = ({
+  icon,
+  title,
+  description,
+  reversed,
+}: {
+  icon: ReactNode
+  title: string
+  description: string
+  reversed?: boolean
+}) => (
+  <div
+    className={cn('flex h-40 px-4 items-center', {
+      'flex-row-reverse': reversed,
+    })}
+  >
+    <div className={cn('h-24 w-24 flex-shrink-0', reversed ? 'ml-6' : 'mr-6')}>
+      {icon}
+    </div>
+    <div>
+      <h3 className={'text-3xl text-center mb-2 flex-1'}>{title}</h3>
+      <p>{description}</p>
+    </div>
+  </div>
 )

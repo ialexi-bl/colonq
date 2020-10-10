@@ -16,7 +16,7 @@ export function WordsList({
     <div>
       <Input
         value={search}
-        onChange={setSearch}
+        onChange={(e) => setSearch(e.target.value)}
         placeholder={'Поиск'}
         className={styles.Search}
       />

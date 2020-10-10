@@ -1,7 +1,6 @@
 import { VirtualizedGroupProps, VirtualizedItemProps } from './types'
 import ControlledScrollbars from '../ControlledScrollbars'
 import React from 'react'
-import UnfoldButton from '../UnfoldButton'
 import VirtualizedList from './VirtualizedList'
 import cn from 'clsx'
 
@@ -52,11 +51,6 @@ function Group({
       ref={elementRef}
     >
       {group.label}
-      <UnfoldButton
-        className={'UnfoldButton'}
-        folded={!expanded}
-        onClick={() => toggleFold(groupIndex)}
-      />
     </div>
   )
 }

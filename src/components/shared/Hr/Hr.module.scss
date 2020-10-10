@@ -1,0 +1,18 @@
+.Hr {
+  &:nth-of-type(4n + 1) {
+    transform: rotate(-2deg);
+    margin: 1rem 0;
+  }
+  &:nth-of-type(4n + 2) {
+    transform: rotate(3deg);
+    margin: 1.5rem 0;
+  }
+  &:nth-of-type(4n + 3) {
+    transform: rotate(-2.5deg);
+    margin: 1.5rem 0;
+  }
+  &:nth-of-type(4n) {
+    transform: rotate(2deg);
+    margin: 1rem 0;
+  }
+}
