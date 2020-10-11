@@ -1,6 +1,6 @@
 {
   "extends": ["react-app", "standard", "prettier"],
-  "plugins": ["sort-imports-es6-autofix", "@typescript-eslint", "react-hooks"],
+  "plugins": ["@typescript-eslint", "sort-imports-es6-autofix", "react-hooks"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 6,
@@ -20,24 +20,27 @@
     "no-inner-declarations": "off",
     "no-use-before-define": "off",
     "sort-imports-es6-autofix/sort-imports-es6": ["warn"],
+
     "react-hooks/exhaustive-deps": [
       "error",
       {
         "additionalHooks": "(useAsyncCallback)"
       }
     ],
+    "react/jsx-curly-brace-presence": [
+      "warn",
+      {
+        "props": "always"
+      }
+    ],
+
     "@typescript-eslint/no-useless-constructor": "error",
+    "@typescript-eslint/member-ordering": "warn",
     "@typescript-eslint/no-unused-expressions": [
       "error",
       {
         "allowShortCircuit": true,
         "allowTernary": true
-      }
-    ],
-    "react/jsx-curly-brace-presence": [
-      "warn",
-      {
-        "props": "always"
       }
     ]
   }

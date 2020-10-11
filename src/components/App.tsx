@@ -1,6 +1,7 @@
+import { MixedDispatch } from 'store/types'
 import { Router } from './Router'
-import { authenticate, unauthenticate } from 'store/auth'
-import { hideLoading } from 'store/view'
+import { authenticate, unauthenticate } from 'store/user'
+import { closeLoading } from 'store/view'
 import { useDispatch } from 'react-redux'
 import ApiClient, { AuthEvent } from 'services/client'
 import NotificationToaster, {
@@ -16,7 +17,7 @@ const getMaintenanceComponent = () =>
   import('components/pages/Maintenance').then((x) => x.Maintenance)
 
 export function App({ maintenance }: { maintenance?: boolean }) {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<MixedDispatch>()
   const route = useRoute()
   const [Maintenance, setMaintenance] = useState<React.ComponentType>(
     () => () => null,
@@ -42,7 +43,7 @@ export function App({ maintenance }: { maintenance?: boolean }) {
     } else {
       getMaintenanceComponent().then((Component) => {
         setMaintenance(() => Component)
-        dispatch(hideLoading('App'))
+        dispatch(closeLoading('App'))
       })
     }
     // App shouldn't reinitialize with location changes

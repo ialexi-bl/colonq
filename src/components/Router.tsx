@@ -8,7 +8,7 @@ import {
   ROUTE_TRANSITION_DURATION,
 } from 'config/view'
 import { Route, Switch, useLocation } from 'react-router-dom'
-import { hideLoading, hideNonRouterLoading, showLoading } from 'store/view'
+import { closeLoading, closePageSpecificLoading, openLoading } from 'store/view'
 import { routesArray } from 'config/routes'
 import { useDispatch, useSelector } from 'react-redux'
 import Page from './shared/Page'
@@ -21,7 +21,7 @@ export function Router() {
   const location = useLocation()
   const dispatch = useDispatch()
   const [initialized, setInitialized] = useState(false)
-  const { loading } = useSelector((state: AppState) => state.auth)
+  const { loading } = useSelector((state: AppState) => state.user)
 
   useEffect(() => {
     if (!loading) setInitialized(true)
@@ -29,7 +29,7 @@ export function Router() {
   // Normal useEffect doesn't work, because children open loading
   // on route change faster, than Router closes all previous loadings
   useLayoutEffect(() => {
-    dispatch(hideNonRouterLoading())
+    dispatch(closePageSpecificLoading())
 
     if (IS_PROD) {
       gtag('config', REACT_APP_GA_ID, {
@@ -86,9 +86,9 @@ export function Router() {
 function Fallback() {
   const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(showLoading('Router'))
+    dispatch(openLoading('Router'))
     return () => {
-      dispatch(hideLoading('Router'))
+      dispatch(closeLoading('Router'))
     }
   }, [dispatch])
 

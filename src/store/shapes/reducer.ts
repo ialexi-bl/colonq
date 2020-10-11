@@ -1,17 +1,15 @@
-import { REGISTER_SHAPE, ShapesAction, ShapesState } from './types'
+import { Shape, ShapesState } from './types'
+import { createReducer } from 'redux-act'
+import { registerShape } from './actions'
 
-export const initialState: ShapesState = []
-
-export default function reducer(
-  state: ShapesState = initialState,
-  action: ShapesAction,
-) {
-  switch (action.type) {
-    case REGISTER_SHAPE:
-      return state.find((shape) => shape.name === action.payload.name)
-        ? state
-        : state.concat(action.payload)
-    default:
-      return state
-  }
-}
+export default createReducer<ShapesState>(
+  {
+    [String(registerShape)]: (state, payload: Shape) => {
+      if (state.find((x) => x.name === payload.name)) {
+        return state
+      }
+      return state.concat(payload)
+    },
+  },
+  [],
+)

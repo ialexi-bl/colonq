@@ -1,61 +1,14 @@
-import {
-  CLOSE_NAVIGATION,
-  CLOSE_NOTIFICATION,
-  FORCE_LOADING,
-  HIDE_NON_ROUTER_LOADING,
-  NotificationType,
-  OPEN_NAVIGATION,
-  OPEN_NOTIFICATION,
-  SET_LOADING,
-  TOGGLE_NAV,
-  ViewActions,
-} from './types'
+import { createAction } from 'redux-act'
 
-export const toggleNav = (state: boolean): ViewActions['TOGGLE_NAV'] => ({
-  type: TOGGLE_NAV,
-  payload: { state },
-})
+export const openLoading = createAction<string>('Open loading')
+export const closeLoading = createAction<string>('Close loading')
+export const closePageSpecificLoading = createAction<string>(
+  'Closes all loadings that are not opened by router or app',
+)
 
-export const setLoading = (
-  state = true,
-  id: string,
-): ViewActions['SET_LOADING'] => ({
-  type: SET_LOADING,
-  payload: { state, id },
-})
-export const showLoading = (id: string): ViewActions['SET_LOADING'] =>
-  setLoading(true, id)
-export const hideLoading = (id: string): ViewActions['SET_LOADING'] =>
-  setLoading(false, id)
+export const showNavigation = createAction('Show navigation panel')
+export const hideNavigation = createAction('Hide navigation panel')
 
-export const openNavigation = (): ViewActions['OPEN_NAVIGATION'] => ({
-  type: OPEN_NAVIGATION,
-})
-export const closeNavigation = (): ViewActions['CLOSE_NAVIGATION'] => ({
-  type: CLOSE_NAVIGATION,
-})
-
-export const forceLoading = (id: string): ViewActions['FORCE_LOADING'] => ({
-  type: FORCE_LOADING,
-  payload: { id },
-})
-export const hideNonRouterLoading = (): ViewActions['HIDE_NON_ROUTER_LOADING'] => ({
-  type: HIDE_NON_ROUTER_LOADING,
-})
-
-const openNotification = (
-  text: string,
-  type: NotificationType = 'info',
-): ViewActions['OPEN_NOTIFICATION'] => ({
-  type: OPEN_NOTIFICATION,
-  payload: {
-    text,
-    type,
-  },
-})
-export const notifyInfo = (text: string) => openNotification(text, 'info')
-export const notifyError = (text: string) => openNotification(text, 'error')
-
-export const closeNotification = (): ViewActions['CLOSE_NOTIFICATION'] => ({
-  type: CLOSE_NOTIFICATION,
-})
+export const notifyInfo = createAction<string>('Opens information notification')
+export const notifyError = createAction<string>('Opens error notification')
+export const closeNotification = createAction('Closes current notification')

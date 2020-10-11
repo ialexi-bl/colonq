@@ -12,7 +12,7 @@ export default function useAppData<TData, TStored, TAction>(
   onLoad?: () => unknown,
 ) {
   const dispatch = useDispatch<MixedDispatch>()
-  const authLoading = useSelector((state: AppState) => state.auth.loading)
+  const authLoading = useSelector((state: AppState) => state.user.loading)
   const { data, version, fetched } = useSelector<
     AppState,
     AppData<TData | null>

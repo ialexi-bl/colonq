@@ -2,7 +2,7 @@ import { AppState } from 'store/types'
 import { Endpoints } from 'config/endpoints'
 import { ScrollablePage } from 'components/shared/Page'
 import { notifyInfo } from 'store/view'
-import { unauthenticate } from 'store/auth'
+import { unauthenticate } from 'store/user'
 import { useDispatch, useSelector } from 'react-redux'
 import ApiClient from 'services/client'
 import Button from 'components/shared/Button'
@@ -16,8 +16,8 @@ import useIsAuthenticated from 'hooks/shared/use-is-authenticated'
 
 export default function ProfileUser() {
   const dispatch = useDispatch()
-  const { name, email, providers } = useSelector(
-    (state: AppState) => state.auth,
+  const { username: name, email, providers } = useSelector(
+    (state: AppState) => state.user,
   )
   const logout = () => {
     ApiClient.check = null

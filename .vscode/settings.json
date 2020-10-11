@@ -7,6 +7,5 @@
   "scss.lint.ieHack": "warning",
   "scss.lint.float": "warning",
   "less.lint.duplicateProperties": "warning",
-  "css.lint.duplicateProperties": "warning",
-  "eslint.enable": false
+  "css.lint.duplicateProperties": "warning"
 }

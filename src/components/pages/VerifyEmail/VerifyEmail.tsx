@@ -1,9 +1,9 @@
 import { Endpoints } from 'config/endpoints'
 import { MixedDispatch } from 'store/types'
 import { VerifyEmailResponse } from 'response-types/auth'
-import { authenticate, unauthenticate } from 'store/auth'
+import { authenticate, unauthenticate } from 'store/user'
 import { handleRequestError } from 'services/errors/handle-request-error'
-import { hideLoading, showLoading } from 'store/view'
+import { closeLoading, openLoading } from 'store/view'
 import { replace } from 'connected-react-router'
 import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
@@ -20,7 +20,7 @@ export default function VerifyEmail() {
       const token = new URLSearchParams(location.search).get('token')
       if (!token) return dispatch(replace('/'))
 
-      dispatch(showLoading(VERIFY_LOADING))
+      dispatch(openLoading(VERIFY_LOADING))
 
       try {
         const response = await ApiClient.post<VerifyEmailResponse>(
@@ -38,7 +38,7 @@ export default function VerifyEmail() {
         dispatch(handleRequestError(e))
       } finally {
         dispatch(unauthenticate())
-        dispatch(hideLoading(VERIFY_LOADING))
+        dispatch(closeLoading(VERIFY_LOADING))
         dispatch(replace('/profile'))
       }
     }

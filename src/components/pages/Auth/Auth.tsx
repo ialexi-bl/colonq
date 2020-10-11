@@ -4,14 +4,14 @@ import { Location } from 'history'
 import { MixedDispatch, ThunkAction } from 'store/types'
 import { PageContainer } from 'components/shared/Page'
 import { SendEmailResponse, VerifyEmailResponse } from 'response-types/auth'
-import { StatusCode } from 'config/status-codes'
+import { StatusCode } from 'services/client/api/error-names'
 import { UnknownError } from 'services/errors'
 import { emailRegex } from 'config/regex'
 import { handleRequestError } from 'services/errors/handle-request-error'
-import { hideLoading, notifyError, notifyInfo, showLoading } from 'store/view'
+import { closeLoading, notifyError, notifyInfo, openLoading } from 'store/view'
 import { profile } from 'config/routes'
 import { replace } from 'connected-react-router'
-import { unauthenticate } from 'store/auth'
+import { unauthenticate } from 'store/user'
 import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router'
 import ApiClient from 'services/client'
@@ -46,7 +46,7 @@ export default function Auth() {
   const verifyEmail = useCallback(
     (email: string) => {
       async function request() {
-        dispatch(showLoading(AUTH_LOADING))
+        dispatch(openLoading(AUTH_LOADING))
         const response = await ApiClient.post<SendEmailResponse>(
           Endpoints.Auth.sendEmail,
           { json: { email, token } },
@@ -54,7 +54,7 @@ export default function Auth() {
 
         if (response.status === 'ok') {
           setStatus('verify')
-          dispatch(hideLoading(AUTH_LOADING))
+          dispatch(closeLoading(AUTH_LOADING))
         } else {
           throw new UnknownError()
         }
@@ -182,7 +182,7 @@ function check(
 
 function verifyEmail(token: string): ThunkAction {
   return async (dispatch) => {
-    dispatch(showLoading(AUTH_LOADING))
+    dispatch(openLoading(AUTH_LOADING))
 
     try {
       await ApiClient.post<VerifyEmailResponse>(Endpoints.Auth.verifyEmail, {
@@ -193,7 +193,7 @@ function verifyEmail(token: string): ThunkAction {
     } catch (e) {
       dispatch(handleRequestError(e))
     } finally {
-      dispatch(hideLoading(AUTH_LOADING))
+      dispatch(closeLoading(AUTH_LOADING))
       dispatch(replace('/profile'))
     }
   }

@@ -1,8 +1,7 @@
-import { Endpoints } from './endpoints'
-
 /* eslint-disable camelcase */
-export type ProviderResponses = {
-  google: {
+
+namespace ProviderResponses {
+  export type Google = {
     state: 'google'
     scope: string
     access_token: string
@@ -11,7 +10,7 @@ export type ProviderResponses = {
     authuser: string
     prompt: string
   }
-  vk: {
+  export type Vk = {
     state: 'vk'
     access_token: string
     expires_in: string
@@ -19,27 +18,4 @@ export type ProviderResponses = {
     email: string
   }
 }
-export type ProviderResponse = ProviderResponses[keyof ProviderResponses]
-/* eslint-enable camelcase */
-
-export const getProviderUrl = (data: ProviderResponse) => {
-  switch (data.state) {
-    case 'google':
-      return {
-        path: Endpoints.Auth.providers.google,
-        body: {
-          accessToken: data.access_token,
-        },
-      }
-    case 'vk':
-      return {
-        path: Endpoints.Auth.providers.vk,
-        body: {
-          id: data.user_id,
-          email: data.email,
-        },
-      }
-    default:
-      return null
-  }
-}
+export default ProviderResponses

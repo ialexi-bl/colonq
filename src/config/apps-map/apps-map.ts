@@ -1,3 +1,4 @@
+// TODO: delete
 import { AppsMap, LeafSection, Section } from './types'
 import React from 'react'
 

@@ -5,11 +5,3 @@ export type Shape = {
   paths: string[]
 }
 export type ShapesState = Shape[]
-
-export type ShapesActions = {
-  REGISTER_SHAPE: {
-    type: typeof REGISTER_SHAPE
-    payload: Shape
-  }
-}
-export type ShapesAction = ShapesActions[keyof ShapesActions]

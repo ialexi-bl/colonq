@@ -1,6 +1,6 @@
 import { Endpoints } from 'config/endpoints'
 import { HTTPError, NetworkError } from '.'
-import { StatusCode } from 'config/status-codes'
+import { StatusCode } from 'services/client/api/error-names'
 import { ThunkAction } from 'store/types'
 import { notifyError } from 'store/view'
 import ApiClient from 'services/client'

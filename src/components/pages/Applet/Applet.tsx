@@ -2,7 +2,7 @@
 import { NotFound } from '../NotFound'
 import { PageContainer } from 'components/shared/Page'
 import { Section, appsMap } from 'config/apps-map'
-import { showLoading } from 'store/view'
+import { openLoading } from 'store/view'
 import { useDispatch } from 'react-redux'
 import { useRouteMatch } from 'react-router'
 import React, { useEffect, useState } from 'react'
@@ -21,7 +21,7 @@ export default function Applet() {
 
   useEffect(() => {
     if (section && !Component && section.leaf) {
-      dispatch(showLoading(APPLET_LOADING))
+      dispatch(openLoading(APPLET_LOADING))
       section.loadComponent().then((x) => setComponent(() => x.default))
     }
   }, [Component, dispatch, section])

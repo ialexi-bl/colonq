@@ -78,7 +78,7 @@ export function uploadAppData<TData, TStored>(
 ): ThunkAction {
   return async (dispatch, getStore) => {
     const store = getStore()
-    if (!store.auth.authenticated) return
+    if (!store.user.authenticated) return
 
     const data = _data || store.appData[manager.applet]?.data
     if (typeof data === 'undefined') {

@@ -1,55 +1,58 @@
 import { createUrl } from 'util/create-url'
 import { joinUrl } from 'util/join-url'
 
-// === Providers data ===
+namespace Endpoints {
+  const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID || ''
+  const VK_CLIENT_ID = process.env.REACT_APP_VK_OAUTH_CLIENT_ID || ''
 
-export type AuthProvider = 'google' | 'vk'
+  const GOOGLE_OAUTH_ENPOINT = 'https://accounts.google.com/o/oauth2/v2/auth'
+  const VK_AUTH_ENDPOINT = 'https://oauth.vk.com/authorize'
+  const EMAIL_SCOPE = 'https://www.googleapis.com/auth/userinfo.email'
+  const PROFILE_SCOPE = 'https://www.googleapis.com/auth/userinfo.profile'
 
-const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID || ''
-const VK_CLIENT_ID = process.env.REACT_APP_VK_OAUTH_CLIENT_ID || ''
-
-const GOOGLE_OAUTH_ENPOINT = 'https://accounts.google.com/o/oauth2/v2/auth'
-const VK_AUTH_ENDPOINT = 'https://oauth.vk.com/authorize'
-const EMAIL_SCOPE = 'https://www.googleapis.com/auth/userinfo.email'
-const PROFILE_SCOPE = 'https://www.googleapis.com/auth/userinfo.profile'
-
-const noSlash = (path: string) => (path.startsWith('/') ? path.slice(1) : path)
-// === Services URLs ===
-
-// export type ProviderServices = { [key in AuthProvider]: string }
-
-export const Endpoints = {
-  // API endpoints
-  Api: {
+  /**
+   * Other API endpoints
+   */
+  export const Api = {
     feedback: 'feedback',
     logError: 'log/error',
-  },
-  AppData: {
-    listen: 'app-data/listen',
-    get: 'app-data',
-    set: 'app-data',
-    getterOf: (applet: string) => `${Endpoints.AppData.get}/${noSlash(applet)}`,
-    setterOf: (applet: string) => `${Endpoints.AppData.set}/${noSlash(applet)}`,
-  },
+  }
 
-  // Authentication endpoints
-  Auth: {
-    login: 'auth/login',
-    logout: 'auth/logout',
-    register: 'auth/register',
-    getToken: 'auth/token',
-    sendEmail: 'auth/send-email',
-    verifyEmail: 'auth/verify-email',
-    providers: {
-      google: 'auth/google',
-      vk: 'auth/vk',
-    },
-  },
   /**
-   * Addresses to redirect
+   * Apps session API endpoints
    */
+  export const Session = {
+    // TODO: add endpoint
+  }
 
-  OAuth: {
+  /**
+   * Authentication endpoints
+   */
+  export const Auth = {
+    token: 'auth/token',
+    logout: 'auth/logout',
+    verifyEmail: 'auth/verify-email',
+    register: {
+      password: 'auth/register',
+      google: 'auth/google/register',
+      vk: 'auth/vk/register',
+      vkWithEmail: 'auth/vk/register/with-email',
+    },
+    login: {
+      password: 'auth/login',
+      google: 'auth/google/login',
+      vk: 'auth/vk/login',
+    },
+    link: {
+      google: 'auth/google/link',
+      vk: 'auth/vk/link',
+    },
+  }
+
+  /**
+   * Redirect addresses for social login
+   */
+  export const OAuth = {
     google: createUrl(GOOGLE_OAUTH_ENPOINT, {
       redirect_uri: joinUrl(process.env.REACT_APP_API_URL!, 'auth/google'),
       scope: `${EMAIL_SCOPE} ${PROFILE_SCOPE}`,
@@ -83,5 +86,6 @@ export const Endpoints = {
           response_type: 'code',
         }),
     },
-  },
+  }
 }
+export default Endpoints

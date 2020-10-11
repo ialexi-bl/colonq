@@ -1,4 +1,4 @@
-import { hideLoading, showLoading } from 'store/view'
+import { closeLoading, openLoading } from 'store/view'
 import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 
@@ -7,9 +7,9 @@ export default function useLoading(id: string, loading: boolean) {
 
   useEffect(() => {
     if (loading) {
-      dispatch(showLoading(id))
+      dispatch(openLoading(id))
     } else {
-      dispatch(hideLoading(id))
+      dispatch(closeLoading(id))
     }
   }, [dispatch, id, loading])
 }

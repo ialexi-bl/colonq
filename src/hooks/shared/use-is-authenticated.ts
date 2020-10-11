@@ -12,7 +12,7 @@ import { useEffect } from 'react'
 export default function useIsAuthenticated(redirect = login()) {
   const dispatch = useDispatch()
   const { authenticated, loading } = useSelector(
-    (state: AppState) => state.auth,
+    (state: AppState) => state.user,
   )
 
   useEffect(() => {

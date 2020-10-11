@@ -4,7 +4,7 @@ import { PageContainer } from 'components/shared/Page'
 import { TextArea } from 'components/form/Input/TextArea'
 import { emailRegex } from 'config/regex'
 import { handleRequestError } from 'services/errors/handle-request-error'
-import { hideLoading, showLoading, toggleNav } from 'store/view'
+import { closeLoading, openLoading, toggleNav } from 'store/view'
 import { useDispatch, useSelector } from 'react-redux'
 import ApiClient from 'services/client'
 import Button from 'components/shared/Button'
@@ -23,7 +23,7 @@ const errors = [
 export default function Feedback() {
   const dispatch = useDispatch<MixedDispatch>()
   const { authenticated, email: _email } = useSelector(
-    (state: AppState) => state.auth,
+    (state: AppState) => state.user,
   )
   const [done, setDone] = useState(false)
   const [email, setEmail] = useState(_email?.trim() || '')
@@ -123,7 +123,7 @@ function upload(
 ): ThunkAction<Promise<boolean>> {
   return async (dispatch) => {
     try {
-      dispatch(showLoading('Feedback'))
+      dispatch(openLoading('Feedback'))
       await ApiClient.post(Endpoints.Api.feedback, {
         authenticate: 'optionally',
         json: {
@@ -135,7 +135,7 @@ function upload(
     } catch (e) {
       dispatch(handleRequestError(e))
     } finally {
-      dispatch(hideLoading('Feedback'))
+      dispatch(closeLoading('Feedback'))
     }
     return false
   }

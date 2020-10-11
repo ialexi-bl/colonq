@@ -9,7 +9,7 @@ import {
 } from 'components/applets/TwoLatestDisplay'
 import { Word } from 'services/applets/WordsAppletManager/types'
 import { getWordSettings } from './WordsSettings'
-import { hideLoading } from 'store/view'
+import { closeLoading } from 'store/view'
 import { useDispatch } from 'react-redux'
 import { useUpdateAppData } from 'hooks/app-data'
 import { useWords } from './use-words'
@@ -40,7 +40,7 @@ export function createWordsApplet({
     const dispatchGlobally = useDispatch()
     const { dispatch } = useUpdateAppData(manager)
     const { loading, words, next } = useWords(manager, () => {
-      dispatchGlobally(hideLoading(APPLET_LOADING))
+      dispatchGlobally(closeLoading(APPLET_LOADING))
     })
 
     if (loading) {
