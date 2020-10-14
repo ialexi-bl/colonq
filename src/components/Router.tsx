@@ -1,7 +1,5 @@
 import { AppState } from 'store/types'
-import { Boundary } from './pages/Boundary'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
-import { IS_PROD, REACT_APP_GA_ID } from 'config'
 import { NotFound } from './pages/NotFound'
 import {
   ROUTE_TRANSITION_CLASSNAME,
@@ -11,9 +9,10 @@ import { Route, Switch, useLocation } from 'react-router-dom'
 import { closeLoading, closePageSpecificLoading, openLoading } from 'store/view'
 import { routesArray } from 'config/routes'
 import { useDispatch, useSelector } from 'react-redux'
+import Boundary from './pages/Boundary'
+import Config from 'config'
 import Page from './shared/Page'
 import React, { Suspense, useEffect, useLayoutEffect, useState } from 'react'
-import useDevUpdateTracker from 'hooks/shared/use-update-tracker'
 
 declare var gtag: Gtag.Gtag
 
@@ -21,29 +20,23 @@ export function Router() {
   const location = useLocation()
   const dispatch = useDispatch()
   const [initialized, setInitialized] = useState(false)
-  const { loading } = useSelector((state: AppState) => state.user)
+  const { status } = useSelector((state: AppState) => state.user)
 
   useEffect(() => {
-    if (!loading) setInitialized(true)
-  }, [loading])
+    if (status !== 'loading') setInitialized(true)
+  }, [status])
+
   // Normal useEffect doesn't work, because children open loading
   // on route change faster, than Router closes all previous loadings
   useLayoutEffect(() => {
     dispatch(closePageSpecificLoading())
 
-    if (IS_PROD) {
-      gtag('config', REACT_APP_GA_ID, {
+    if (Config.IS_PROD) {
+      gtag('config', Config.REACT_APP_GA_ID, {
         page_path: location.pathname,
       })
     }
   }, [dispatch, location.pathname])
-
-  useDevUpdateTracker('Router', {
-    dispatch,
-    initialized,
-    loading,
-    location,
-  })
 
   return (
     <TransitionGroup component={null}>
@@ -86,9 +79,9 @@ export function Router() {
 function Fallback() {
   const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(openLoading('Router'))
+    dispatch(openLoading('route-change'))
     return () => {
-      dispatch(closeLoading('Router'))
+      dispatch(closeLoading('route-change'))
     }
   }, [dispatch])
 

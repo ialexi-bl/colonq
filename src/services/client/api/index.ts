@@ -1,2 +1,5 @@
+export * from './verification-action'
 export { default as ApiErrorName } from './error-names'
+export { default as VerificationAction } from './verification-action'
 export type { default as ApiResponse } from './responses'
+export type { default as ProviderResponses } from './provider-responses'

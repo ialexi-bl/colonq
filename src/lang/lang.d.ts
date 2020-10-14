@@ -1,4 +1,6 @@
 declare module 'lang/errors.json' {
+  // TODO: delete all of that
+
   const LangErrors: {
     missingParameter: string
     tooManyRequests: string
@@ -17,6 +19,7 @@ declare module 'lang/errors.json' {
 
 declare module 'lang/notifications.json' {
   const LangNotifications: {
+    emailVerified: string
     noEmail: string
     logout: string
     signin: string

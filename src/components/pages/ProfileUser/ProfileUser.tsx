@@ -1,10 +1,9 @@
 import { AppState } from 'store/types'
-import { Endpoints } from 'config/endpoints'
 import { ScrollablePage } from 'components/shared/Page'
+import { User as UserType, unauthenticate } from 'store/user'
 import { notifyInfo } from 'store/view'
-import { unauthenticate } from 'store/user'
 import { useDispatch, useSelector } from 'react-redux'
-import ApiClient from 'services/client'
+import { useUserService } from 'services/user-service'
 import Button from 'components/shared/Button'
 import InfoItem from 'components/shared/InfoItem'
 import LangNotifications from 'lang/notifications.json'
@@ -18,20 +17,13 @@ export default function ProfileUser() {
   const dispatch = useDispatch()
   const { username: name, email, providers } = useSelector(
     (state: AppState) => state.user,
-  )
+  ) as UserType
+  const userService = useUserService()
+
   const logout = () => {
-    ApiClient.check = null
     dispatch(unauthenticate())
     dispatch(notifyInfo(LangNotifications.logout))
-
-    ApiClient.post(Endpoints.Auth.logout, {
-      mode: 'cors',
-      credentials: 'include',
-      authenticate: true,
-    }).catch(() => {
-      // TODO: probably add error logging although the only error
-      // that can happen here is network problem
-    })
+    userService.logout()
   }
 
   if (!useIsAuthenticated()) {

@@ -21,7 +21,7 @@ if (maintenance) {
 // page from rendering
 window.TREE_MOUNTED = true
 ReactDOM.render(
-  <Wrapper applyClassName={applyClassName} maintenance={maintenance}>
+  <Wrapper applyClassName={applyClassName}>
     <App maintenance={maintenance} />
   </Wrapper>,
   root,

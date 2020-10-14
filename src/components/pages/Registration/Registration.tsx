@@ -1,18 +1,24 @@
+import { MixedDispatch } from 'store/types'
 import { ScrollablePage } from 'components/shared/Page'
-import { profile } from 'config/routes'
+import { dedupe } from 'util/array'
+import { login, profile } from 'config/routes'
+import { notifyErrorObject } from 'store/view'
+import { push } from 'connected-react-router'
+import { useDispatch } from 'react-redux'
+import { useFormik } from 'formik'
+import { useUserService } from 'services/user-service'
 import Button from 'components/shared/Button'
+import ErrorMessage from 'components/form/ErrorMessage'
 import Input from 'components/form/Input'
+import Loading from 'components/shared/Loading'
 import PageTitle from 'components/shared/PageTitle'
 import React, { useState } from 'react'
+import Regex from 'config/regex'
 import SocialLoginButton from 'components/form/SocialLoginButton'
 import User from 'components/icons/User'
+import cn from 'clsx'
+import styles from './Registration.module.scss'
 import useIsGuest from 'hooks/shared/use-is-guest'
-import { useFormik } from 'formik'
-import { emailRegex, usernameForbiddenChars, usernameRegex } from 'config/regex'
-import { dedupe } from 'util/array'
-import ErrorMessage from 'components/form/ErrorMessage'
-import ApiClient from 'services/client'
-import { Endpoints } from 'config/endpoints'
 
 type FormValues = {
   email: string
@@ -22,23 +28,42 @@ type FormValues = {
 }
 
 export default function Registration() {
-  const [loading, setLoading] = useState(false)
-  const requests = useRequests({
-    register: '/api/register',
-  })
+  // Loading is used only for password, because social login
+  // buttons redirect to oauth page and don't load anything
+  // TODO: add extra state for email verification so one can login with social
+  // networks after logging in traditionally
+  const [status, setStatus] = useState<null | 'loading' | 'verify-email'>(null)
+  const dispatch = useDispatch<MixedDispatch>()
+  const userService = useUserService()
 
   const register = async (values: FormValues) => {
+    if (status) return
+    setStatus('loading')
+
     try {
-      await ApiClient.post(Endpoints.Auth.register, {
-        json: {
-          email: values.email,
-          username: values.username,
-          password: values.password,
-        },
-      })
-    } catch (e) {}
+      const result = await userService.register(
+        values.email,
+        values.username,
+        values.password,
+      )
+
+      if (result.emailVerified) {
+        dispatch(
+          push(login(), {
+            email: values.email,
+            password: values.password,
+          }),
+        )
+      } else {
+        setStatus('verify-email')
+      }
+    } catch (e) {
+      // TODO: check if some errors may be handled or modify interface
+      dispatch(notifyErrorObject(e))
+      setStatus(null)
+    }
   }
-  const formik = useFormik({
+  const formik = useFormik<FormValues>({
     initialValues: {
       email: '',
       username: '',
@@ -53,75 +78,106 @@ export default function Registration() {
     return null
   }
 
+  const disabled = status === 'loading'
   return (
     <ScrollablePage>
       <PageTitle icon={<User />}>Регистрация</PageTitle>
 
-      <div className={'px-4 pb-64'}>
-        <form onSubmit={formik.handleSubmit}>
-          <label className={'block mb-4'}>
-            <span className={'mb-1'}>Email</span>
-            <Input
-              state={getInputState(formik, 'email')}
-              {...formik.getFieldProps('email')}
-            />
-            <ErrorMessage
-              message={formik.touched.email && formik.errors.email}
-            />
-          </label>
-          <label className={'block mb-4'}>
-            <span className={'mb-1'}>Имя пользователя</span>
-            <Input
-              variant={2}
-              state={getInputState(formik, 'username')}
-              {...formik.getFieldProps('username')}
-            />
-            <ErrorMessage
-              message={formik.touched.username && formik.errors.username}
-            />
-          </label>
-          <label className={'block mb-4'}>
-            <span className={'mb-1'}>Пароль</span>
-            <Input
-              variant={3}
-              state={getInputState(formik, 'password')}
-              {...formik.getFieldProps('password')}
-            />
-            <ErrorMessage
-              message={
-                (formik.touched.password && formik.errors.password) ||
-                (/(^\s+)|(\s+$)/.test(formik.values.password) && {
-                  type: 'warning',
-                  text:
-                    'Пароль содержит пробелы в начале или в конце. Исправь, если они оказались там случайно',
-                })
-              }
-            />
-          </label>
-          <label className={'block mb-4'}>
-            <span className={'mb-1'}>Повтори пароль</span>
-            <Input
-              variant={2}
-              state={getInputState(formik, 'passwordRepeat')}
-              {...formik.getFieldProps('passwordRepeat')}
-            />
-            <ErrorMessage
-              message={
-                formik.touched.passwordRepeat && formik.errors.passwordRepeat
-              }
-            />
-          </label>
-          <div className={'text-center'}>
-            <Button variant={3} className={'text-center min-w-64'}>
-              Продолжить
-            </Button>
+      <div className={'max-w-xl mx-auto px-4 pb-64'}>
+        <div className={'relative'}>
+          <form
+            className={cn(
+              'duration-500 transform',
+              status === 'verify-email' && 'translate-x-full opacity-0',
+            )}
+            onSubmit={formik.handleSubmit}
+          >
+            <label className={'block mb-4'}>
+              <span className={'mb-1'}>Email</span>
+              <Input
+                disabled={disabled}
+                state={getInputState(formik, 'email')}
+                {...formik.getFieldProps('email')}
+              />
+              <ErrorMessage
+                message={formik.touched.email && formik.errors.email}
+              />
+            </label>
+            <label className={'block mb-4'}>
+              <span className={'mb-1'}>Имя пользователя</span>
+              <Input
+                variant={2}
+                disabled={disabled}
+                state={getInputState(formik, 'username')}
+                {...formik.getFieldProps('username')}
+              />
+              <ErrorMessage
+                message={formik.touched.username && formik.errors.username}
+              />
+            </label>
+            <label className={'block mb-4'}>
+              <span className={'mb-1'}>Пароль</span>
+              <Input
+                variant={3}
+                disabled={disabled}
+                state={getInputState(formik, 'password')}
+                {...formik.getFieldProps('password')}
+              />
+              <ErrorMessage
+                // Not checking if there are spaces, because they will be validated
+                // with password repeat
+                message={formik.touched.password && formik.errors.password}
+              />
+            </label>
+            <label className={'block mb-4'}>
+              <span className={'mb-1'}>Повтори пароль</span>
+              <Input
+                variant={2}
+                disabled={disabled}
+                state={getInputState(formik, 'passwordRepeat')}
+                {...formik.getFieldProps('passwordRepeat')}
+              />
+              <ErrorMessage
+                message={
+                  formik.touched.passwordRepeat && formik.errors.passwordRepeat
+                }
+              />
+            </label>
+            <div className={'text-center'}>
+              <Button
+                className={'text-center min-w-64'}
+                disabled={status !== null}
+                variant={3}
+              >
+                {/* TODO: check what if this loading looks fine */}
+                {status ? <Loading /> : 'Продолжить'}
+              </Button>
+            </div>
+          </form>
+          <div
+            className={cn(
+              'absolute inset-0 flex flex-col justify-center',
+              'duration-500 transform',
+              status !== 'verify-email' && '-transition-x-full opacity-0',
+            )}
+          >
+            <h2 className={'text-2xl'}>Подтвеждение почты</h2>
+            <p>
+              На адрес "{formik.values.email}" должно было прийти письмо с
+              ссылкой для подтверждения почты. Перейди по ней, чтобы закончить
+              регистрацию.
+            </p>
           </div>
-        </form>
+        </div>
 
         <div className={'my-16 text-center text-xl'}>ИЛИ</div>
 
-        <SocialLoginButton provider={'google'} className={'mb-2'} />
-        <SocialLoginButton provider={'vk'} />
+        <SocialLoginButton
+          disabled={status === 'loading'}
+          provider={'google'}
+          className={'mb-2'}
+        />
+        <SocialLoginButton disabled={status === 'loading'} provider={'vk'} />
       </div>
     </ScrollablePage>
   )
@@ -129,14 +185,15 @@ export default function Registration() {
 
 // Can't type formik here, because there is no declaration for
 // whatever `useFormik` returns
-const getInputState = (formik: any, field: string) =>
+const getInputState = (formik: any, field: keyof FormValues) =>
   formik.touched[field] ? (formik.errors[field] ? 'invalid' : 'valid') : null
 
 function validate(values: FormValues) {
   const errors: Partial<FormValues> = {}
+
   if (!values.email.trim()) {
     errors.email = 'Email нужен обязательно'
-  } else if (!emailRegex.test(values.email)) {
+  } else if (!Regex.email.test(values.email)) {
     errors.email = 'Это недействительный email'
   }
 
@@ -146,8 +203,8 @@ function validate(values: FormValues) {
     errors.username = 'Имя пользователя должно быть не короче 4 символов'
   } else if (values.username.length > 64) {
     errors.username = 'Имя пользователя должно быть не длиннее 64 символов'
-  } else if (!usernameRegex.test(values.username)) {
-    const forbiddenChars = values.username.match(usernameForbiddenChars)!
+  } else if (!Regex.username.test(values.username)) {
+    const forbiddenChars = values.username.match(Regex.usernameForbiddenChars)!
 
     errors.username = `Нельзя использовать символы: ${dedupe(
       forbiddenChars,

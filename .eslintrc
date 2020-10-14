@@ -18,7 +18,9 @@
     "no-dupe-class-members": "off",
     "spaced-comment": "warn",
     "no-inner-declarations": "off",
+    "no-sequences": "off",
     "no-use-before-define": "off",
+    "handle-callback-err": "off",
     "sort-imports-es6-autofix/sort-imports-es6": ["warn"],
 
     "react-hooks/exhaustive-deps": [

@@ -19,6 +19,7 @@ export default function useAsyncCallback<T extends any[], R>(
         .catch(() => {
           setStatus('error')
         })
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, deps),
   }
 }

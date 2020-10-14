@@ -19,7 +19,7 @@ const initialState: ViewState = {
   navigationVisible: true,
 }
 
-export default createReducer(
+export default createReducer<ViewState>(
   {
     [String(openLoading)]: (state, id: string) => ({
       ...state,

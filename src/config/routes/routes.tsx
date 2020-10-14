@@ -1,7 +1,6 @@
 import { NotFound } from 'components/pages/NotFound'
 import { RouteComponentProps } from 'react-router'
 import { RouteOptions, Routes } from './types'
-import { appsMap } from 'config/apps-map'
 import React, { lazy } from 'react'
 
 export const routesArray: RouteOptions[] = [
@@ -13,7 +12,7 @@ export const routesArray: RouteOptions[] = [
   {
     path: '/list',
     name: 'list',
-    component: lazy(() => import('components/pages/List')),
+    component: lazy(() => import('components/pages/AppsList')),
   },
   {
     path: '/settings',
@@ -24,7 +23,6 @@ export const routesArray: RouteOptions[] = [
     path: '/auth',
     name: 'auth',
     component: lazy(() => import('components/pages/Auth')),
-    performsInitialization: true,
   },
   {
     path: '/feedback',
@@ -53,7 +51,6 @@ export const routesArray: RouteOptions[] = [
     path: '/verify-email',
     name: 'verifyEmail',
     component: lazy(() => import('components/pages/VerifyEmail')),
-    performsInitialization: true,
   },
   {
     path: '/app/:path*',
@@ -90,6 +87,7 @@ const cache: {
 } = {}
 
 export const verifyEmail = () => routes.verifyEmail.path
+export const appsList = () => 'TODO APPS LIST'
 export const feedback = () => routes.feedback.path
 export const settings = () => routes.settings.path
 export const register = () => routes.register.path

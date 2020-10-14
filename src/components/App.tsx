@@ -1,54 +1,51 @@
 import { MixedDispatch } from 'store/types'
 import { Router } from './Router'
-import { authenticate, unauthenticate } from 'store/user'
 import { closeLoading } from 'store/view'
+import { useApiClient } from 'services/client'
 import { useDispatch } from 'react-redux'
-import ApiClient, { AuthEvent } from 'services/client'
 import NotificationToaster, {
   CookiesNotification,
 } from './shared/NotificationToaster'
 import React, { useEffect, useState } from 'react'
 import RouteLoading from './shared/RouteLoading'
 import ShapesManager from './ShapesManager'
-import initApp from 'store/view/init-action'
 import useRoute from 'hooks/shared/use-route'
 
 const getMaintenanceComponent = () =>
   import('components/pages/Maintenance').then((x) => x.Maintenance)
 
 export function App({ maintenance }: { maintenance?: boolean }) {
-  const dispatch = useDispatch<MixedDispatch>()
   const route = useRoute()
+  const client = useApiClient()
+  const dispatch = useDispatch<MixedDispatch>()
   const [Maintenance, setMaintenance] = useState<React.ComponentType>(
     () => () => null,
   )
 
   useEffect(() => {
-    if (!maintenance) {
-      // Defining event listener before query, because if check is absent
-      // event can might fire before the listener is bound
-      const setUser = (e: AuthEvent) => {
-        if (e.detail) {
-          dispatch(authenticate(e.detail))
-        } else {
-          dispatch(unauthenticate())
-        }
-      }
-      ApiClient.addEventListener('authenticate', setUser)
-
-      if (!route?.performsInitialization) {
-        dispatch(initApp())
-      }
-      return () => ApiClient.removeEventListener('authenticate', setUser)
-    } else {
-      getMaintenanceComponent().then((Component) => {
-        setMaintenance(() => Component)
-        dispatch(closeLoading('App'))
-      })
+    async function loadMaintenance() {
+      const Component = await getMaintenanceComponent()
+      setMaintenance(() => Component)
     }
-    // App shouldn't reinitialize with location changes
+    async function initialize() {
+      if (route?.preventClientInitialization) return
+      await client.initialize()
+    }
+
+    async function main() {
+      if (maintenance) {
+        await loadMaintenance()
+      } else {
+        await initialize()
+      }
+      dispatch(closeLoading('init'))
+    }
+    main()
+
+    // This effect initializes app and is supposed to only
+    // run once
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, maintenance])
+  }, [])
 
   if (maintenance) {
     return <Maintenance />

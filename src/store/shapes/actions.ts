@@ -1,4 +1,4 @@
-import { REGISTER_SHAPE, Shape, ShapesActions } from './types'
+import { Shape } from './types'
 import { createAction } from 'redux-act'
 
 export const registerShape = createAction<Shape>(

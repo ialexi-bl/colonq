@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { WordsData } from 'services/applets/WordsAppletManager/types'
 import { noop } from 'util/noop'
 import { useValue } from 'react-cosmos/fixture'
 import ControlledScrollbars from 'components/shared/ControlledScrollbars'

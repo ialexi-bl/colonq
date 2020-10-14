@@ -5,6 +5,9 @@ export default function useDevUpdateTracker(name: string, props: any) {
 
   useEffect(() => {
     console.warn("Update tracker used, don't forget to delete in production")
+    console.groupCollapsed('Trace')
+    console.trace()
+    console.groupEnd()
   }, [])
   useEffect(() => {
     if (previousProps.current) {

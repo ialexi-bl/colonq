@@ -12,5 +12,7 @@ enum ApiErrorName {
   CONFLICT = 'ConflictError',
   MISSING_DATA = 'MissingDataError',
   UNPROCESSABLE_ENTITY = 'UnprocessableEntityError',
+
+  UNKNOWN_ERROR = 'UnknownError',
 }
 export default ApiErrorName

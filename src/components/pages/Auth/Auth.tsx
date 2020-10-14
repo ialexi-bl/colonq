@@ -1,200 +1,276 @@
-import { EmailRequest } from './EmailRequest'
-import { Endpoints } from 'config/endpoints'
-import { Location } from 'history'
-import { MixedDispatch, ThunkAction } from 'store/types'
-import { PageContainer } from 'components/shared/Page'
-import { SendEmailResponse, VerifyEmailResponse } from 'response-types/auth'
-import { StatusCode } from 'services/client/api/error-names'
-import { UnknownError } from 'services/errors'
-import { emailRegex } from 'config/regex'
-import { handleRequestError } from 'services/errors/handle-request-error'
-import { closeLoading, notifyError, notifyInfo, openLoading } from 'store/view'
-import { profile } from 'config/routes'
-import { replace } from 'connected-react-router'
-import { unauthenticate } from 'store/user'
-import { useDispatch } from 'react-redux'
+import {
+  ApiErrorName,
+  SocialVerificationAction,
+  VerificationAction,
+} from 'services/client'
+import { AppState, MixedDispatch, ThunkAction } from 'store/types'
+import { HttpError } from 'services/errors'
+import { appsList, login } from 'config/routes'
+import {
+  closeLoading,
+  notifyError,
+  notifyErrorObject,
+  notifyInfo,
+  openLoading,
+} from 'store/view'
+import { getTokenField } from 'util/jwt'
+import { push, replace } from 'connected-react-router'
+import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router'
-import ApiClient from 'services/client'
+import EmailPrompt from './EmailPrompt'
 import LangErrors from 'lang/errors.json'
 import LangNotifications from 'lang/notifications.json'
-import React, { useCallback, useEffect, useState } from 'react'
-import initApp from 'store/view/init-action'
-import styles from './Auth.module.scss'
+import NewPasswordPrompt from './NewPasswordPrompt'
+import React, { useEffect, useState } from 'react'
+import UserService, { useUserService } from 'services/user-service'
 
-declare const gtag: Gtag.Gtag
-declare const ym: ym.Event
+type Status =
+  | null
+  | { action: 'prompt-password'; loading?: boolean }
+  | {
+      action: 'prompt-email'
+      token: string
+      loading?: boolean
+      emailSent?: boolean
+    }
 
-const AUTH_LOADING = 'Auth'
 export default function Auth() {
   const dispatch = useDispatch<MixedDispatch>()
   const location = useLocation()
-  const [token, setToken] = useState('')
-  const [status, setStatus] = useState<null | 'no-email' | 'verify'>(null)
+  const userService = useUserService()
+  const [status, setStatus] = useState<Status>(null)
+  const authStatus = useSelector((state: AppState) => state.user.status)
+  const params = new URLSearchParams(location.search)
 
-  useEffect(
-    () => {
-      dispatch(check(location)).then((result) => {
-        if (result.needEmail) {
-          setToken(result.token)
-          setStatus('no-email')
-        }
-      })
-    },
-    [], // eslint-disable-line react-hooks/exhaustive-deps
-  )
+  useEffect(() => {
+    if (authStatus === 'loading') return
 
-  const verifyEmail = useCallback(
-    (email: string) => {
-      async function request() {
-        dispatch(openLoading(AUTH_LOADING))
-        const response = await ApiClient.post<SendEmailResponse>(
-          Endpoints.Auth.sendEmail,
-          { json: { email, token } },
-        )
-
-        if (response.status === 'ok') {
-          setStatus('verify')
-          dispatch(closeLoading(AUTH_LOADING))
-        } else {
-          throw new UnknownError()
-        }
-      }
-
-      if (email.match(emailRegex)) {
-        request()
-      }
-    },
-    [dispatch, token],
-  )
-
-  if (status === 'no-email') {
-    return (
-      <PageContainer className={'centered'}>
-        <section className={styles.Box}>
-          <EmailRequest onSubmit={verifyEmail} />
-        </section>
-      </PageContainer>
+    dispatch(openLoading('auth'))
+    dispatch(process(authStatus === 'authenticated', userService, params)).then(
+      (status) => {
+        dispatch(closeLoading('auth'))
+        if (status) setStatus(status)
+      },
     )
-  }
-  if (status === 'verify') {
-    return (
-      <PageContainer className={'centered'}>
-        <section className={styles.Box}>
-          <h2>Проверь почту!</h2>
-          <p>
-            Письмо с подтверждением должно скоро прийти. Оно будет действительно
-            30 минут
-          </p>
-        </section>
-      </PageContainer>
-    )
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authStatus])
 
-  return null
-}
-
-function check(
-  location: Location,
-): ThunkAction<
-  Promise<
-    | { needEmail: false }
-    | {
-        needEmail: true
-        token: string
-      }
-  >
-> {
-  return async (dispatch) => {
-    const params = new URLSearchParams(location.search)
-    if (!params.has('status')) {
-      dispatch(replace('/'))
-      return { needEmail: false }
-    }
-    const status = params.get('status')
-
-    switch (status) {
-      case StatusCode.OK: {
-        const action = params.get('action')
-        // NOTE: check from params is taken in App component
-        // This is needed to ensure check is set before the first
-        // token request fires, maybe find a workaround in future
-
-        await dispatch(initApp(params.get('check')))
-
-        dispatch(
-          notifyInfo(
-            action === 'link'
-              ? LangNotifications.link
-              : LangNotifications.signin,
-          ),
-        )
-        dispatch(replace(profile()))
-
-        const provider = params.get('provider')
-        if (['google', 'vk', 'facebook'].includes(provider as string)) {
-          gtag('event', 'login', {
-            method: provider,
-          })
-          // ym()
-        }
-
-        return { needEmail: false }
-      }
-      case StatusCode.VERIFICATION: {
-        if (!params.has('token')) {
-          dispatch(replace(profile()))
-          return { needEmail: false }
-        }
-
-        const token = params.get('token')!
-        dispatch(verifyEmail(token))
-        return { needEmail: false }
-      }
-      case StatusCode.NO_EMAIL: {
-        if (!params.has('token')) {
-          dispatch(replace(profile()))
-          return { needEmail: false }
-        }
-        const token = params.get('token')!
-        dispatch(notifyInfo(LangNotifications.noEmail))
-        return { token, needEmail: true }
-      }
-      case StatusCode.UNAUTHENTICATED:
-        dispatch(unauthenticate())
-        dispatch(notifyError(LangErrors.unauthenticated))
-        break
-      case StatusCode.INVALID_TOKEN:
-        dispatch(notifyError(LangErrors.invalidToken))
-        break
-      case StatusCode.MISSING_PARAMETER:
-        dispatch(notifyError(LangErrors.missingParameter))
-        break
-      case StatusCode.MISSING_SCOPE:
-        dispatch(notifyError(LangErrors.missingScope))
-        break
-      default:
-        dispatch(notifyError(LangErrors.unknown))
-    }
-    dispatch(replace(profile()))
-    return { needEmail: false }
+  if (!status) return null
+  switch (status.action) {
+    case 'prompt-password':
+      return (
+        <NewPasswordPrompt
+          loading={status.loading}
+          onSubmit={async (password) => {
+            setStatus({ action: 'prompt-password', loading: true })
+            await dispatch(submitNewPassword(params, userService, password))
+            setStatus({ action: 'prompt-password', loading: false })
+          }}
+        />
+      )
+    case 'prompt-email':
+      return (
+        <EmailPrompt
+          loading={status.loading}
+          emailSent={status.emailSent}
+          onSubmit={async (email) => {
+            setStatus({ ...status, loading: true })
+            const emailSent = await dispatch(
+              submitMissingEmail(userService, status.token, email),
+            )
+            setStatus({ ...status, loading: true, emailSent })
+          }}
+        />
+      )
+    default:
+      return null
   }
 }
 
-function verifyEmail(token: string): ThunkAction {
+function process(
+  authenticated: boolean,
+  userService: UserService,
+  search: URLSearchParams,
+): ThunkAction<Promise<Status>> {
+  return search.has('action')
+    ? processAction(authenticated, userService, search)
+    : processSocialLogin(authenticated, userService, search)
+}
+
+function processAction(
+  authenticated: boolean,
+  userService: UserService,
+  search: URLSearchParams,
+): ThunkAction<Promise<Status>> {
   return async (dispatch) => {
-    dispatch(openLoading(AUTH_LOADING))
+    // Pretend token is defined, so that server throws an error
+    // and I don't have to make up custom handling for cases
+    // where token is absent
+    const token = search.get('token') || ''
 
     try {
-      await ApiClient.post<VerifyEmailResponse>(Endpoints.Auth.verifyEmail, {
-        credentials: 'include',
-        mode: 'cors',
-        json: { token },
-      })
+      switch (search.get('action')!) {
+        case VerificationAction.VERIFY_EMAIL: {
+          await userService.verifyEmail(token)
+
+          dispatch(notifyInfo(LangNotifications.emailVerified))
+          if (authenticated) {
+            dispatch(replace(appsList()))
+          } else {
+            dispatch(replace(login(), { email: getTokenField(token, 'email') }))
+          }
+
+          return null
+        }
+        case VerificationAction.UPDATE_EMAIL: {
+          if (!authenticated) {
+            dispatch(notifyError(LangErrors.unauthenticated))
+            break
+          }
+
+          await userService.changeEmailSubmit(login())
+          dispatch(replace(appsList()))
+          return null
+        }
+        case VerificationAction.RESTORE_PASSWORD: {
+          return { action: 'prompt-password' }
+        }
+        default: {
+          dispatch(replace(authenticated ? appsList() : login()))
+          return null
+        }
+      }
     } catch (e) {
-      dispatch(handleRequestError(e))
-    } finally {
-      dispatch(closeLoading(AUTH_LOADING))
-      dispatch(replace('/profile'))
+      dispatch(notifyErrorObject(e))
+      dispatch(replace(authenticated ? appsList() : login()))
     }
+    return null
+  }
+}
+function processSocialLogin(
+  authenticated: boolean,
+  userService: UserService,
+  search: URLSearchParams,
+): ThunkAction<Promise<Status>> {
+  return async (dispatch) => {
+    const code = search.get('code')
+    const state = search.get('state')
+
+    const data = getDataFromState(state)
+
+    if (!data || !code) {
+      console.warn(
+        `Invalid state or no code in search params: "${Array.from(
+          search.entries(),
+        )}"`,
+      )
+      dispatch(replace(authenticated ? appsList() : login()))
+      return null
+    }
+
+    const { action, provider, redirectUri } = data
+
+    try {
+      if (action === SocialVerificationAction.SOCIAL_PASSWORD) {
+      } else if (authenticated) {
+        // TODO: maybe move to language pack
+        dispatch(notifyError('Нельзя войти дважды'))
+        dispatch(replace(appsList()))
+      } else {
+        const method = {
+          [SocialVerificationAction.SOCIAL_REGISTER]: {
+            vk: 'registerVk' as const,
+            google: 'registerGoogle' as const,
+          },
+          [SocialVerificationAction.SOCIAL_LOGIN]: {
+            vk: 'loginVk' as const,
+            google: 'loginGoogle' as const,
+          },
+        }[action][provider]
+
+        // If this method doesn't throw error, user will be authenticated
+        await userService[method](code, redirectUri)
+        dispatch(replace(appsList()))
+
+        return null
+      }
+    } catch (e) {
+      if (
+        e instanceof HttpError &&
+        (await e.getApiName()) === ApiErrorName.MISSING_DATA
+      ) {
+        return {
+          token: (await e.getDetail()).token || '',
+          action: 'prompt-email',
+        }
+      }
+
+      dispatch(notifyErrorObject(e))
+      dispatch(replace(authenticated ? appsList() : login()))
+    }
+
+    return null
+  }
+}
+
+function submitNewPassword(
+  search: URLSearchParams,
+  userService: UserService,
+  password: string,
+): ThunkAction<Promise<void>> {
+  return async (dispatch) => {
+    try {
+      await userService.restorePasswordSubmit(search.get('token')!, password)
+      // TODO: maybe extract to language
+      dispatch(notifyInfo('Пароль изменён'))
+      dispatch(push(login()))
+    } catch (e) {
+      // TODO: maybe change route?
+      dispatch(notifyErrorObject(e))
+    }
+  }
+}
+
+function submitMissingEmail(
+  userService: UserService,
+  token: string,
+  email: string,
+): ThunkAction<Promise<boolean>> {
+  return async (dispatch) => {
+    // If extra social networks will be added, add here
+    // logic to handle missing email not only for vk but for every one
+    try {
+      await userService.registerVkEmail(token, email)
+      dispatch(push(appsList()))
+
+      return true
+    } catch (e) {
+      dispatch(notifyErrorObject(e))
+      return false
+    }
+  }
+}
+
+function getDataFromState(
+  state: string | null,
+): {
+  provider: 'vk' | 'google'
+  action: SocialVerificationAction
+  redirectUri: string
+} | null {
+  try {
+    const data = JSON.parse(state || '')
+
+    if (
+      !Object.values(SocialVerificationAction).includes(data.action) ||
+      !['vk', 'google'].includes(data) ||
+      typeof data.redirectUri !== 'string'
+    ) {
+      return null
+    }
+
+    return data
+  } catch (e) {
+    return null
   }
 }

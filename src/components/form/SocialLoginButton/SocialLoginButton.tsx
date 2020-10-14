@@ -1,5 +1,6 @@
-import { AuthProvider, Endpoints } from 'config/endpoints'
 import { noop } from 'lodash'
+import Config from 'config'
+import Endpoint from 'config/endpoint'
 import Google from 'components/icons/social/Google'
 import React from 'react'
 import Vk from 'components/icons/social/Vk'
@@ -9,7 +10,7 @@ import styles from './SocialLoginButton.module.scss'
 import useClipShape from 'hooks/shared/use-svg-texture'
 
 export type SocialLoginButtonProps = Omit<HTMLProps.a, 'href'> & {
-  provider: AuthProvider
+  provider: Config.SupportedProvider
   disabled?: boolean
   link?: boolean
 }
@@ -38,7 +39,7 @@ export default function SocialLoginButton({
         styles.SocialButton,
         className,
       )}
-      href={Endpoints.OAuth[provider]}
+      href={Endpoint.oauth[provider]}
       {...props}
     >
       <Icon className={'w-6 h-6 mr-2'} />
@@ -48,13 +49,13 @@ export default function SocialLoginButton({
 }
 
 const icons: Record<
-  AuthProvider,
+  Config.SupportedProvider,
   React.ComponentType<{ className?: string }>
 > = {
   vk: Vk,
   google: Google,
 }
-const labels: Record<AuthProvider, string> = {
+const labels: Record<Config.SupportedProvider, string> = {
   vk: 'ВКонтакте',
   google: 'Google',
 }

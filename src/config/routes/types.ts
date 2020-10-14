@@ -8,7 +8,8 @@ export type RouteOptions = {
   path: string
   name: string
   authenticated?: boolean
-  performsInitialization?: boolean
+  // TODO: delete if not used
+  preventClientInitialization?: boolean
 } & (
   | {
       render: (props: RouteComponentProps<any>) => React.ReactNode

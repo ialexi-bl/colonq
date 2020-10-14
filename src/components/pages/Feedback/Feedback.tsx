@@ -1,5 +1,5 @@
 import { AppState, MixedDispatch, ThunkAction } from 'store/types'
-import { Endpoints } from 'config/endpoints'
+import { Endpoint } from 'config/endpoint'
 import { PageContainer } from 'components/shared/Page'
 import { TextArea } from 'components/form/Input/TextArea'
 import { emailRegex } from 'config/regex'
@@ -124,7 +124,7 @@ function upload(
   return async (dispatch) => {
     try {
       dispatch(openLoading('Feedback'))
-      await ApiClient.post(Endpoints.Api.feedback, {
+      await ApiClient.post(Endpoint.Api.feedback, {
         authenticate: 'optionally',
         json: {
           message,

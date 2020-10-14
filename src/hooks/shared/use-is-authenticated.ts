@@ -1,6 +1,6 @@
 import { AppState } from 'store/types'
-import { replace } from 'connected-react-router'
 import { login } from 'config/routes'
+import { replace } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 
@@ -11,15 +11,13 @@ import { useEffect } from 'react'
  */
 export default function useIsAuthenticated(redirect = login()) {
   const dispatch = useDispatch()
-  const { authenticated, loading } = useSelector(
-    (state: AppState) => state.user,
-  )
+  const { status } = useSelector((state: AppState) => state.user)
 
   useEffect(() => {
-    if (!loading && !authenticated) {
+    if (status === 'unauthenticated') {
       dispatch(replace(redirect))
     }
-  }, [authenticated, dispatch, loading, redirect])
+  }, [dispatch, redirect, status])
 
-  return !loading && authenticated
+  return status === 'authenticated'
 }

@@ -404,6 +404,12 @@ module.exports = function (webpackEnv) {
                       require.resolve(
                         '@babel/plugin-proposal-optional-chaining',
                       ),
+                      [
+                        require.resolve('@babel/plugin-transform-typescript'),
+                        {
+                          allowNamespaces: true,
+                        },
+                      ],
                       require.resolve('react-hot-loader/babel'),
                       [
                         require.resolve('babel-plugin-named-asset-import'),

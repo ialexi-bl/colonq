@@ -1,17 +1,23 @@
 import { ApiErrorName, ApiResponse } from './api'
 import { HttpError, NetworkError } from 'services/errors'
-import { MixedDispatch } from 'store/types'
-import { authenticate, unauthenticate } from 'store/user'
-import { connectStoreDispatch } from 'store/connect-store'
-import Endpoints from 'config/endpoints'
+import { StoreController } from 'store'
+import { UserState, authenticate, unauthenticate } from 'store/user'
+import { connectStore } from 'store/connect-store'
+import { getTokenExpirationTime } from 'util/jwt'
+import { notifyError } from 'store/view'
+import Config from 'config'
+import Endpoint from 'config/endpoint'
 import ky, { Input, NormalizedOptions, Options } from 'ky'
 
-const base = 'abc'
+/**
+ * Manages all network requests and authenticated
+ * them when needed
+ */
+export default class ApiClient extends StoreController {
+  @connectStore((state) => state.user)
+  private readonly user!: UserState
 
-export default class ApiClient {
-  @connectStoreDispatch()
-  private dispatch!: MixedDispatch
-
+  /** Http client */
   private readonly client: typeof ky
 
   /**
@@ -26,26 +32,28 @@ export default class ApiClient {
    */
   private initialized = false
 
-  /**
-   * Access token expiration date
-   */
-  private tokenExpires: number | null = null
-  /**
-   * Access token
-   */
-  private token: string | null = null
-
   constructor() {
+    super()
+
     this.beforeRequest = this.beforeRequest.bind(this)
     this.afterResponse = this.afterResponse.bind(this)
 
     this.client = ky.create({
-      prefixUrl: base,
+      prefixUrl: Config.API_URL,
       hooks: {
         beforeRequest: [this.beforeRequest],
         afterResponse: [this.afterResponse],
       },
     })
+
+    // Token is not fetched in the constructor, because
+    // some pages get token by themselves and an extra request
+    // is unnecessary. Application must decide whether to
+    // initialize client or not (done in App component)
+  }
+
+  public async initialize() {
+    await this.getAccessToken()
   }
 
   /**
@@ -90,31 +98,6 @@ export default class ApiClient {
     return this.request<Response>('delete', url, options)
   }
 
-  // TODO: maybe move to utilities
-  /**
-   * Decodes base 64 preserving unicode characters
-   * @param str Base 64 encoded string
-   */
-  private base64decode(str: string) {
-    return decodeURIComponent(escape(atob(str)))
-  }
-
-  /**
-   * Returns amount of milliseconds that represent the time,
-   * when the token will expire
-   * @param token Access token
-   */
-  private getTokenExpirationTime(token: string): number {
-    try {
-      const seconds: number = +JSON.parse(
-        this.base64decode(token.split('.')[1]),
-      ).exp
-      return seconds * 1000
-    } catch (e) {
-      return 0
-    }
-  }
-
   /**
    * Performs an HTTP request. This method exists to
    * generalize logic for different methods
@@ -145,45 +128,47 @@ export default class ApiClient {
       await this.tokenUpdateRequest
     } else if (
       !this.initialized ||
-      (this.tokenExpires && this.tokenExpires < Date.now())
+      (this.user.tokenExpires || 0) < Date.now()
     ) {
       this.initialized = true
 
-      await (this.tokenUpdateRequest = this.updateToken())
+      await (this.tokenUpdateRequest = this.internalUpdateToken())
       this.tokenUpdateRequest = null
     }
 
-    return this.token
+    return this.user.token
   }
 
   /**
    * Fetches a new access token and caches it
+   * This method may only be used by "getAccessToken
    */
-  private async updateToken(): Promise<void> {
+  private async internalUpdateToken(): Promise<void> {
     try {
-      const { data } = await this.get<ApiResponse.Auth.TokenResponse>(
-        Endpoints.Auth.token,
+      const { data } = await this.get<ApiResponse.Auth.Token>(
+        Endpoint.auth.token,
+        { credentials: 'include' },
       )
-
-      this.token = data.token
-      this.tokenExpires = this.getTokenExpirationTime(data.token)
 
       this.dispatch(
         authenticate({
+          token: data.token,
+          tokenExpires: getTokenExpirationTime(data.token),
           providers: data.providers,
           username: data.username,
           email: data.email,
           id: data.id,
         }),
       )
-    } catch (e: unknown) {
+    } catch (e) {
       if (
         e instanceof HttpError &&
         (await e.getApiName()) === ApiErrorName.UNAUTHORIZED
       ) {
-        this.token = this.tokenExpires = null
+        this.dispatch(unauthenticate())
+      } else {
+        throw e
       }
-      this.dispatch(unauthenticate())
     }
   }
 
@@ -212,7 +197,19 @@ export default class ApiClient {
     res: Response,
   ) {
     if (!res.ok) {
-      throw new HttpError(req, res, options)
+      const error = new HttpError(req, res, options)
+
+      // TODO: maybe remove this funcionality
+      if (
+        options.notifyErrors ||
+        options.notifyErrorsExcept?.includes(await error.getApiName())
+      ) {
+        error.getApiMessage().then((text) => {
+          this.dispatch(notifyError(text))
+        })
+      }
+
+      throw error
     }
   }
 }

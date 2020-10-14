@@ -20,7 +20,7 @@ export default function Index() {
       <PageContainer>
         <div
           className={cn(
-            styles.FirstScreen,
+            styles.WelcomeBackground,
             'bg-secondary-800 flex flex-col justify-center items-center px-4',
           )}
         >
@@ -33,8 +33,7 @@ export default function Index() {
             <LetterButton state={'correct'}>Q</LetterButton>
           </h1>
           <h2 className={'text-center text-2xl mb-6'}>
-            Твоя лучшая подружка в закреплении знаний по русскому языку.
-            Бесплатно.
+            Твоя лучшая подружка в закреплении знаний. Бесплатно.
           </h2>
           <LinkButton
             className={'text-xl w-full py-4 mb-2 max-w-xs'}

@@ -4,9 +4,11 @@ import { createReducer } from 'redux-act'
 
 export const initialState: UserState = {
   status: 'loading',
+  token: null,
+  tokenExpires: null,
   providers: [],
-  email: null,
   username: null,
+  email: null,
   id: null,
 }
 

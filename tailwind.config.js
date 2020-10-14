@@ -36,8 +36,8 @@ module.exports = {
         },
         correct: {
           default: '#19963c',
-          hover: '#20aa47',
           active: '#158133',
+          hover: '#20aa47',
         },
         error: {
           default: '#ab1d1d',

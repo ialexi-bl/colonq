@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import ApiClientContext from './context'
 
-export default function useApiClient() {
+export function useApiClient() {
   return useContext(ApiClientContext)
 }

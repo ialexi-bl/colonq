@@ -11,15 +11,13 @@ import { useEffect } from 'react'
  */
 export default function useIsGuest(redirect = index()) {
   const dispatch = useDispatch()
-  const { authenticated, loading } = useSelector(
-    (state: AppState) => state.user,
-  )
+  const { status } = useSelector((state: AppState) => state.user)
 
   useEffect(() => {
-    if (!loading && authenticated) {
+    if (status === 'authenticated') {
       dispatch(replace(redirect))
     }
-  }, [authenticated, dispatch, loading, redirect])
+  }, [dispatch, redirect, status])
 
-  return !loading && !authenticated
+  return status === 'unauthenticated'
 }

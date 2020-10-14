@@ -1,7 +1,7 @@
 import { createUrl } from 'util/create-url'
 import { joinUrl } from 'util/join-url'
 
-namespace Endpoints {
+namespace Endpoint {
   const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID || ''
   const VK_CLIENT_ID = process.env.REACT_APP_VK_OAUTH_CLIENT_ID || ''
 
@@ -13,7 +13,7 @@ namespace Endpoints {
   /**
    * Other API endpoints
    */
-  export const Api = {
+  export const api = {
     feedback: 'feedback',
     logError: 'log/error',
   }
@@ -21,38 +21,50 @@ namespace Endpoints {
   /**
    * Apps session API endpoints
    */
-  export const Session = {
+  export const session = {
     // TODO: add endpoint
+  }
+
+  /**
+   * User data
+   */
+  export const user = {
+    getById: (id: string) => `user/${id}`,
+    getByEmail: (email: string) => `user/email/${email}`,
+
+    setEmail: (id: string) => `user/${id}/email`,
+    setUsername: (id: string) => `user/${id}/username`,
+    setPassword: (id: string) => `user/${id}/password`,
+    getPasswordUpdateOptions: (id: string) =>
+      `user/${id}/password/update-options`,
   }
 
   /**
    * Authentication endpoints
    */
-  export const Auth = {
+  export const auth = {
     token: 'auth/token',
     logout: 'auth/logout',
     verifyEmail: 'auth/verify-email',
-    register: {
-      password: 'auth/register',
-      google: 'auth/google/register',
-      vk: 'auth/vk/register',
-      vkWithEmail: 'auth/vk/register/with-email',
-    },
-    login: {
-      password: 'auth/login',
-      google: 'auth/google/login',
-      vk: 'auth/vk/login',
-    },
-    link: {
-      google: 'auth/google/link',
-      vk: 'auth/vk/link',
-    },
+    restorePassword: 'auth/restore-password',
+
+    register: 'auth/register',
+    registerGoogle: 'auth/google/register',
+    registerVk: 'auth/vk/register',
+    registerVkWithEmail: 'auth/vk/register/with-email',
+
+    login: 'auth/login',
+    loginGoogle: 'auth/google/login',
+    loginVk: 'auth/vk/login',
+
+    linkGoogle: 'auth/google/link',
+    linkVk: 'auth/vk/link',
   }
 
   /**
    * Redirect addresses for social login
    */
-  export const OAuth = {
+  export const oauth = {
     google: createUrl(GOOGLE_OAUTH_ENPOINT, {
       redirect_uri: joinUrl(process.env.REACT_APP_API_URL!, 'auth/google'),
       scope: `${EMAIL_SCOPE} ${PROFILE_SCOPE}`,
@@ -88,4 +100,4 @@ namespace Endpoints {
     },
   }
 }
-export default Endpoints
+export default Endpoint

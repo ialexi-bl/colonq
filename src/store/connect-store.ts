@@ -10,10 +10,3 @@ export const connectStore = <T>(
     enumerable: true,
   })
 }
-export const connectStoreDispatch = (): PropertyDecorator => (obj, name) => {
-  Object.defineProperty(obj, name, {
-    get: () => store.dispatch,
-    configurable: true,
-    enumerable: true,
-  })
-}

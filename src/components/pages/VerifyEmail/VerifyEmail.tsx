@@ -1,49 +1,62 @@
-import { Endpoints } from 'config/endpoints'
-import { MixedDispatch } from 'store/types'
-import { VerifyEmailResponse } from 'response-types/auth'
-import { authenticate, unauthenticate } from 'store/user'
-import { handleRequestError } from 'services/errors/handle-request-error'
-import { closeLoading, openLoading } from 'store/view'
-import { replace } from 'connected-react-router'
-import { useDispatch } from 'react-redux'
+import { AppState, MixedDispatch } from 'store/types'
+import { appsList, login } from 'config/routes'
+import {
+  closeLoading,
+  notifyErrorObject,
+  notifyInfo,
+  openLoading,
+} from 'store/view'
+import { getTokenPayload } from 'util/jwt'
+import { push, replace } from 'connected-react-router'
+import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { useLocation } from 'react-router'
-import ApiClient from 'services/client'
+import { useUserService } from 'services/user-service'
 
-const VERIFY_LOADING = 'VerifyEmail'
 export default function VerifyEmail() {
   const dispatch = useDispatch<MixedDispatch>()
   const location = useLocation()
+  const authStatus = useSelector((state: AppState) => state.user.status)
+  const userService = useUserService()
 
   useEffect(() => {
     async function request() {
       const token = new URLSearchParams(location.search).get('token')
       if (!token) return dispatch(replace('/'))
 
-      dispatch(openLoading(VERIFY_LOADING))
+      dispatch(openLoading('verify-email'))
 
       try {
-        const response = await ApiClient.post<VerifyEmailResponse>(
-          Endpoints.Auth.verifyEmail,
-          {
-            credentials: 'include',
-            mode: 'cors',
-            json: { token },
-          },
-        )
+        await userService.verifyEmail(token)
 
-        ApiClient.setCredentials(response)
-        dispatch(authenticate(response.data))
+        dispatch(notifyInfo('Email подтверждён'))
+
+        if (authStatus === 'authenticated') {
+          push(appsList())
+        } else {
+          let email = ''
+          try {
+            email = getTokenPayload(token).email
+          } catch (e) {
+            // TODO: remove console.warn and send logs to server
+            console.warn(
+              `Couldn't get email from email verification token: "${token}"`,
+            )
+          }
+
+          dispatch(push(login(), { email }))
+        }
       } catch (e) {
-        dispatch(handleRequestError(e))
+        dispatch(notifyErrorObject(e))
       } finally {
-        dispatch(unauthenticate())
-        dispatch(closeLoading(VERIFY_LOADING))
-        dispatch(replace('/profile'))
+        dispatch(closeLoading('verify-email'))
       }
     }
-    request()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+    if (authStatus !== 'loading') {
+      request()
+    }
+  }, [authStatus]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return null
 }

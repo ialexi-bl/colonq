@@ -1,17 +1,16 @@
-import React from 'react'
-import { ReactNode } from 'react'
 import ApiClient from './ApiClient'
 import ApiClientContext from './context'
+import React, { ReactNode } from 'react'
 
-const apiClient = new ApiClient()
-
-export default function ApiClientProvider({
+export function ApiClientProvider({
   children,
+  client,
 }: {
   children?: ReactNode
+  client: ApiClient
 }) {
   return (
-    <ApiClientContext.Provider value={apiClient}>
+    <ApiClientContext.Provider value={client}>
       {children}
     </ApiClientContext.Provider>
   )

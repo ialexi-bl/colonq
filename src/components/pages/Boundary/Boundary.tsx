@@ -1,22 +1,26 @@
 import { CUTE_FACE } from 'config/view'
-import { Endpoints } from 'config/endpoints'
-import { IS_PROD } from 'config'
 import { PageContainer } from 'components/shared/Page'
 import ApiClient from 'services/client'
-import React, { ErrorInfo } from 'react'
+import ApiClientContext from 'services/client/context'
+import Config from 'config'
+import Endpoint from 'config/endpoint'
+import React, { ErrorInfo, ReactNode } from 'react'
 import TitleLine from 'components/shared/TitleLine'
 import styles from './Boundary.module.scss'
 
-export class Boundary extends React.Component<
-  | {
-      global?: false
-    }
-  | {
-      global: true
-      applyClassName: (className: string) => unknown
-    }
-> {
-  state = {
+export type BoundaryProps = {
+  children?: ReactNode
+} & (
+  | { global?: false }
+  | { global: true; applyClassName: (className: string) => unknown }
+)
+
+declare const Ya: any
+export default class Boundary extends React.Component<BoundaryProps> {
+  static contextType = ApiClientContext
+  public context!: ApiClient
+
+  public state = {
     hasError: false,
   }
 
@@ -34,29 +38,30 @@ export class Boundary extends React.Component<
     let gaId, ymId
     /* eslint-disable no-undef */
     try {
-      // @ts-ignore
       gaId = ga.getAll()[0].get('clientId')
     } catch (e) {}
     try {
-      // @ts-ignore
       ymId = Ya._metrika.getCounters()[0].id
     } catch (e) {}
     /* eslint-enable no-undef */
 
-    ApiClient.post(Endpoints.Api.logError, {
-      json: {
-        type: 'page',
-        gaId,
-        ymId,
-        name: e.name,
-        message: e.message,
-        stack: `${e.stack}\nComponents stack: ${info.componentStack}`,
-      },
-    }).catch(() => {})
+    const client = this.context
+    client
+      .post(Endpoint.api.logError, {
+        json: {
+          type: 'page',
+          gaId,
+          ymId,
+          name: e.name,
+          message: e.message,
+          stack: `${e.stack}\nComponents stack: ${info.componentStack}`,
+        },
+      })
+      .catch(() => {})
   }
 
   render() {
-    if (!IS_PROD || !this.state.hasError) {
+    if (!Config.IS_PROD || !this.state.hasError) {
       return this.props.children
     }
 
