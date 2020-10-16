@@ -1,8 +1,4 @@
 import { VirtualizedGroupProps } from 'components/shared/VirtualizedList'
-import {
-  WordsData,
-  WordsEditAction,
-} from 'services/applets/WordsAppletManager/types'
 import Checkbox from 'components/form/Checkbox'
 import React from 'react'
 import cn from 'clsx'
@@ -18,7 +14,7 @@ export default function VirtualizedWordGroup({
   dispatch,
   data,
   height = 48,
-}: VirtualizedGroupProps<WordsData, WordsEditAction> & {
+}: VirtualizedGroupProps<any, any> & {
   height?: number
 }) {
   const group = data[groupIndex]

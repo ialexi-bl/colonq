@@ -43,16 +43,16 @@ export default function ProfileUser() {
         </p>
         <div className={'flex flex-col items-end'}>
           <SocialLoginButton
+            type={'link'}
             className={'mb-3'}
             provider={'vk'}
             disabled={providers.includes('vk')}
-            link
           />
           <SocialLoginButton
+            type={'link'}
             className={'mb-3'}
             provider={'google'}
             disabled={providers.includes('google')}
-            link
           />
           <Button className={'w-64 mt-4'} onClick={logout} secondary>
             Выход

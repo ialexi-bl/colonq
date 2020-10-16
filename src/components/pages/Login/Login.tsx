@@ -126,8 +126,12 @@ export default function Login() {
 
         <div className={'my-16 text-center text-xl'}>ИЛИ</div>
 
-        <SocialLoginButton provider={'google'} className={'mb-2'} />
-        <SocialLoginButton provider={'vk'} />
+        <SocialLoginButton
+          provider={'google'}
+          type={'login'}
+          className={'mb-2'}
+        />
+        <SocialLoginButton provider={'vk'} type={'login'} />
       </div>
     </PageContainer>
   )

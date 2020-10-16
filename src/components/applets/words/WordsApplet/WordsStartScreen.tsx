@@ -4,7 +4,6 @@ import ControlledScrollbars from 'components/shared/ControlledScrollbars'
 import PageTitle from 'components/shared/PageTitle'
 import React, { useContext } from 'react'
 import WordsAppletContext from './context'
-import WordsEditor from '../WordsEditor'
 import cn from 'clsx'
 import styles from './WordsApplet.module.scss'
 
@@ -40,7 +39,6 @@ export default function WordsStartScreen({
             Это список слов, из которых составлены задания. Ты можешь выключать
             те слова, которые уже хорошо знаешь или которые не считаешь важными
           </p>
-          <WordsEditor manager={manager} />
         </div>
       </ControlledScrollbars>
     </CSSTransition>

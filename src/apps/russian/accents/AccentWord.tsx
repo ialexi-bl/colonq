@@ -1,5 +1,6 @@
+// @ts-nocheck
+// eslint-disable
 import { TwoLatestDisplayViewProps } from 'components/applets/TwoLatestDisplay'
-import { Word } from 'services/applets/WordsAppletManager/types'
 import ChoiceButton from 'components/applets/AnswerButton'
 import React, { memo, useState } from 'react'
 import cn from 'clsx'

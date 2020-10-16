@@ -1,5 +1,4 @@
 import { ReactNode, createContext } from 'react'
-import WordsAppletManager from 'services/applets/WordsAppletManager'
 
 export type WordsAppletText = {
   title: string
@@ -7,7 +6,7 @@ export type WordsAppletText = {
 }
 export type IWordsAppletContext = {
   description?: string
-  manager: WordsAppletManager
+  manager: any
   title: string
   icon: ReactNode
 }

@@ -2,10 +2,6 @@ import {
   VirtualizedGroupProps,
   VirtualizedItemProps,
 } from 'components/shared/VirtualizedList'
-import {
-  WordsData,
-  WordsEditAction,
-} from 'services/applets/WordsAppletManager/types'
 import React from 'react'
 import VirtualizedWordGroup from './VirtualizedWordGroup'
 import VirtualizedWordItem from './VirtualizedWordItem'
@@ -21,10 +17,10 @@ export default function getVirtualizedWordViews({
   height?: number
 } = {}) {
   return {
-    Item: (props: VirtualizedItemProps<WordsData, WordsEditAction>) => (
+    Item: (props: VirtualizedItemProps<any, any>) => (
       <VirtualizedWordItem height={height} {...props} />
     ),
-    Group: (props: VirtualizedGroupProps<WordsData, WordsEditAction>) => (
+    Group: (props: VirtualizedGroupProps<any, any>) => (
       <VirtualizedWordGroup height={height} {...props} />
     ),
   }

@@ -16,6 +16,7 @@ export type BoundaryProps = {
 )
 
 declare const Ya: any
+declare const ga: any
 export default class Boundary extends React.Component<BoundaryProps> {
   static contextType = ApiClientContext
   public context!: ApiClient

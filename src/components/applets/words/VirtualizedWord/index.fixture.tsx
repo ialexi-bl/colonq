@@ -8,7 +8,7 @@ import VirtualizedWordGroup from './VirtualizedWordGroup'
 import VirtualizedWordItem from './VirtualizedWordItem'
 import getVirtualizedWordViews from '.'
 
-const data: WordsData = [...new Array(20)].map((_, i) => ({
+const data: any = [...new Array(20)].map((_, i) => ({
   id: i,
   label: `Group #${i + 1}`,
   enabled: true,
@@ -20,7 +20,7 @@ const data: WordsData = [...new Array(20)].map((_, i) => ({
     groupIndex: 0,
   })),
 }))
-const getCount = (data: WordsData, groupIndex: number) =>
+const getCount = (data: any, groupIndex: number) =>
   groupIndex < 0 ? data.length : data[groupIndex].words.length
 
 export default {

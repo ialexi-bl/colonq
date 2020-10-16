@@ -10,11 +10,11 @@ export default () => {
         grid: 'repeat(8, auto) / 300px',
       }}
     >
-      <SocialLoginButton provider={'vk'} />
-      <SocialLoginButton provider={'google'} />
+      <SocialLoginButton provider={'vk'} type={'register'} />
+      <SocialLoginButton provider={'google'} type={'register'} />
       <h3>Disabled</h3>
-      <SocialLoginButton disabled provider={'vk'} />
-      <SocialLoginButton disabled provider={'google'} />
+      <SocialLoginButton disabled provider={'vk'} type={'register'} />
+      <SocialLoginButton disabled provider={'google'} type={'register'} />
     </div>
   )
 }

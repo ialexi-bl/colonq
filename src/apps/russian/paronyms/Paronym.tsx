@@ -1,5 +1,6 @@
+// @ts-nocheck
+// eslint-disable
 import { TwoLatestDisplayViewProps } from 'components/applets/TwoLatestDisplay'
-import { Word } from 'services/applets/WordsAppletManager/types'
 import Input from 'components/form/Input'
 import React, { memo, useMemo, useState } from 'react'
 import styles from './Paronym.module.scss'
@@ -25,8 +26,6 @@ export const Paronym = memo(function Paronym({
     return [start, placeholder, end, correct]
   }, [word.label])
 
-  const isCorrect =
-    (value.trim() || helper).toLowerCase() === correct.toLowerCase()
   return (
     <div className={styles.Word}>
       {start}
@@ -36,7 +35,6 @@ export const Paronym = memo(function Paronym({
         state={active ? undefined : isCorrect ? 'valid' : 'invalid'}
         tabIndex={active ? 0 : -1}
         onChange={(e) => setValue(e.target.value)}
-        placeholder={helper}
         onKeyDown={(e) => {
           if (e.key !== 'Enter') return
           next()

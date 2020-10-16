@@ -17,7 +17,6 @@ import Regex from 'config/regex'
 import SocialLoginButton from 'components/form/SocialLoginButton'
 import User from 'components/icons/User'
 import cn from 'clsx'
-import styles from './Registration.module.scss'
 import useIsGuest from 'hooks/shared/use-is-guest'
 
 type FormValues = {
@@ -173,11 +172,16 @@ export default function Registration() {
         <div className={'my-16 text-center text-xl'}>ИЛИ</div>
 
         <SocialLoginButton
+          type={'register'}
           disabled={status === 'loading'}
           provider={'google'}
           className={'mb-2'}
         />
-        <SocialLoginButton disabled={status === 'loading'} provider={'vk'} />
+        <SocialLoginButton
+          type={'register'}
+          disabled={status === 'loading'}
+          provider={'vk'}
+        />
       </div>
     </ScrollablePage>
   )

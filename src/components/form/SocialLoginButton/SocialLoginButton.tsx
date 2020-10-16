@@ -1,4 +1,3 @@
-import { noop } from 'lodash'
 import Config from 'config'
 import Endpoint from 'config/endpoint'
 import Google from 'components/icons/social/Google'
@@ -12,9 +11,24 @@ import useClipShape from 'hooks/shared/use-clip-shape'
 export type SocialLoginButtonProps = Omit<HTMLProps.a, 'href'> & {
   provider: Config.SupportedProvider
   disabled?: boolean
-  link?: boolean
+  type: 'login' | 'register' | 'link'
 }
 
+const noop = () => {}
+const endpoint = {
+  login: {
+    vk: Endpoint.auth.loginVk,
+    google: Endpoint.auth.loginGoogle,
+  },
+  register: {
+    vk: Endpoint.auth.registerVk,
+    google: Endpoint.auth.registerGoogle,
+  },
+  link: {
+    vk: Endpoint.auth.linkVk,
+    google: Endpoint.auth.linkGoogle,
+  },
+}
 /**
  * Button with social network symbols and labels
  * @param {SocialLoginButtonProps} props
@@ -24,7 +38,7 @@ export default function SocialLoginButton({
   provider,
   disabled,
   onClick,
-  link,
+  type,
   ...props
 }: SocialLoginButtonProps) {
   useClipShape('button', paths)
@@ -39,11 +53,18 @@ export default function SocialLoginButton({
         styles.SocialButton,
         className,
       )}
-      href={Endpoint.oauth[provider]}
+      href={endpoint[type][provider]}
       {...props}
     >
       <Icon className={'w-6 h-6 mr-2'} />
-      {link ? 'Связать с' : 'Войти через'} {labels[provider]}
+      {
+        {
+          login: 'Войти через',
+          register: 'Зарегистрироваться с',
+          link: 'Связать с',
+        }[type]
+      }
+      {labels[provider]}
     </a>
   )
 }

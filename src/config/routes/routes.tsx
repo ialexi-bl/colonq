@@ -1,4 +1,3 @@
-import { NotFound } from 'components/pages/NotFound'
 import { RouteComponentProps } from 'react-router'
 import { RouteOptions, Routes } from './types'
 import React, { lazy } from 'react'
@@ -55,19 +54,7 @@ export const routesArray: RouteOptions[] = [
     }: RouteComponentProps<{
       path: string
     }>) => {
-      const app = `/${match.params.path}`
-      const info = appsMap[app]
-
-      if (!info?.leaf) {
-        return <NotFound />
-      }
-
-      let Component = cache[app]
-      if (!Component) {
-        Component = cache[app] = lazy(info.loadComponent)
-      }
-
-      return <Component />
+      return <div></div>
     },
   },
 ]

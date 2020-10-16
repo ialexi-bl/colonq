@@ -1,8 +1,4 @@
 import { VirtualizedItemProps } from 'components/shared/VirtualizedList'
-import {
-  WordsData,
-  WordsEditAction,
-} from 'services/applets/WordsAppletManager/types'
 import Checkbox from 'components/form/Checkbox'
 import React from 'react'
 import cn from 'clsx'
@@ -19,7 +15,7 @@ export default function VirtualizedWordItem({
   dispatch,
   data,
   height = 48,
-}: VirtualizedItemProps<WordsData, WordsEditAction> & {
+}: VirtualizedItemProps<any, any> & {
   height?: number
 }) {
   const item = data[groupIndex].words[itemIndex]

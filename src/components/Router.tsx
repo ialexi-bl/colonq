@@ -14,7 +14,7 @@ import Config from 'config'
 import Page from './shared/Page'
 import React, { Suspense, useEffect, useLayoutEffect, useState } from 'react'
 
-declare var gtag: Gtag.Gtag
+declare var gtag: any
 
 export function Router() {
   const location = useLocation()
