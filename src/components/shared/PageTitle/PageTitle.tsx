@@ -3,7 +3,7 @@ import cn from 'clsx'
 
 export type PageTitleProps = Childfree<HTMLProps.heading> & {
   children: string
-  icon: ReactNode
+  icon?: ReactNode
 }
 
 const PageTitle = ({ children, icon, className, ...props }: PageTitleProps) => (
@@ -11,7 +11,7 @@ const PageTitle = ({ children, icon, className, ...props }: PageTitleProps) => (
     className={cn(className, 'py-2 px-4 text-4xl flex items-center my-6')}
     {...props}
   >
-    <span className={'d-inline-block w-12 h-12 mr-4'}>{icon}</span>
+    {icon && <span className={'d-inline-block w-12 h-12 mr-4'}>{icon}</span>}
     {children}
   </h1>
 )

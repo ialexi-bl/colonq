@@ -48,11 +48,6 @@ export const routesArray: RouteOptions[] = [
     component: lazy(() => import('components/pages/Registration')),
   },
   {
-    path: '/verify-email',
-    name: 'verifyEmail',
-    component: lazy(() => import('components/pages/VerifyEmail')),
-  },
-  {
     path: '/app/:path*',
     name: 'app',
     render: ({

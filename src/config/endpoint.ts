@@ -1,12 +1,14 @@
+import { SocialVerificationAction } from 'services/client'
 import { createUrl } from 'util/create-url'
 import { joinUrl } from 'util/join-url'
+import Config from 'config'
 
 namespace Endpoint {
   const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID || ''
   const VK_CLIENT_ID = process.env.REACT_APP_VK_OAUTH_CLIENT_ID || ''
 
   const GOOGLE_OAUTH_ENPOINT = 'https://accounts.google.com/o/oauth2/v2/auth'
-  const VK_AUTH_ENDPOINT = 'https://oauth.vk.com/authorize'
+  const VK_OAUTH_ENDPOINT = 'https://oauth.vk.com/authorize'
   const EMAIL_SCOPE = 'https://www.googleapis.com/auth/userinfo.email'
   const PROFILE_SCOPE = 'https://www.googleapis.com/auth/userinfo.profile'
 
@@ -61,43 +63,47 @@ namespace Endpoint {
     linkVk: 'auth/vk/link',
   }
 
+  const redirectUri = joinUrl(Config.APP_URL, 'auth')
   /**
    * Redirect addresses for social login
    */
   export const oauth = {
-    google: createUrl(GOOGLE_OAUTH_ENPOINT, {
-      redirect_uri: joinUrl(process.env.REACT_APP_API_URL!, 'auth/google'),
-      scope: `${EMAIL_SCOPE} ${PROFILE_SCOPE}`,
-      client_id: GOOGLE_CLIENT_ID,
-      response_type: 'code',
-    }),
-    vk: createUrl(VK_AUTH_ENDPOINT, {
-      redirect_uri: joinUrl(process.env.REACT_APP_API_URL!, 'auth/vk'),
-      client_id: VK_CLIENT_ID,
-      scope: 'email',
-      response_type: 'code',
-    }),
-    link: {
-      google: (token: string) =>
-        createUrl(GOOGLE_OAUTH_ENPOINT, {
-          redirect_uri: joinUrl(
-            process.env.REACT_APP_API_URL!,
-            'auth/link/google',
-          ),
-          state: token,
-          scope: `${EMAIL_SCOPE} ${PROFILE_SCOPE}`,
-          client_id: GOOGLE_CLIENT_ID,
-          response_type: 'code',
+    registerGoogle: socialUrl('google', 'register'),
+    registerVk: socialUrl('vk', 'register'),
+    loginGoogle: socialUrl('google', 'login'),
+    loginVk: socialUrl('vk', 'login'),
+    linkGoogle: socialUrl('google', 'link'),
+    linkVk: socialUrl('vk', 'link'),
+  }
+
+  function socialUrl(
+    provider: 'vk' | 'google',
+    type: 'login' | 'register' | 'link',
+  ) {
+    return createUrl(
+      { vk: VK_OAUTH_ENDPOINT, google: GOOGLE_OAUTH_ENPOINT }[provider],
+      {
+        scope: {
+          vk: 'email',
+          google: `${EMAIL_SCOPE} ${PROFILE_SCOPE}`,
+        }[provider],
+        client_id: {
+          vk: VK_CLIENT_ID,
+          google: GOOGLE_CLIENT_ID,
+        }[provider],
+        redirect_uri: redirectUri,
+        response_type: 'code',
+        state: JSON.stringify({
+          provider,
+          redirectUri,
+          action: {
+            link: SocialVerificationAction.SOCIAL_LINK,
+            login: SocialVerificationAction.SOCIAL_LOGIN,
+            register: SocialVerificationAction.SOCIAL_REGISTER,
+          }[type],
         }),
-      vk: (token: string) =>
-        createUrl(VK_AUTH_ENDPOINT, {
-          redirect_uri: joinUrl(process.env.REACT_APP_API_URL!, 'auth/link/vk'),
-          state: token,
-          client_id: VK_CLIENT_ID,
-          scope: 'email',
-          response_type: 'code',
-        }),
-    },
+      },
+    )
   }
 }
 export default Endpoint

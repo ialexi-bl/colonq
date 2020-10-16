@@ -58,6 +58,8 @@ namespace ApiResponse {
     export type Login = UserData
     export type LoginVk = UserData
     export type LoginGoogle = UserData
+    export type LinkVk = UserData
+    export type LinkGoogle = UserData
 
     type LinkCommon = { id: string }
     export type VkLink = LinkCommon

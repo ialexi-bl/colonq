@@ -2,9 +2,9 @@ import { Link, LinkProps } from 'react-router-dom'
 import { noop } from 'util/noop'
 import React from 'react'
 import cn from 'clsx'
-import paths from 'shapes/button.shape.svg'
+import paths from './button.shape.svg'
 import styles from './Button.module.scss'
-import useClipShape from 'hooks/shared/use-svg-texture'
+import useClipShape from 'hooks/shared/use-clip-shape'
 
 type CommonProps = {
   secondary?: boolean

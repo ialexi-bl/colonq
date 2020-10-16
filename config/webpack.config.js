@@ -3,6 +3,17 @@
 const fs = require('fs')
 const isWsl = require('is-wsl')
 const path = require('path')
+// const path = {}
+// Object.keys(_path).forEach((key) => {
+//   path[key] =
+//     typeof _path[key] === 'function'
+//       ? (...args) => {
+//           console.log('method:', key, 'args:', args)
+//           return _path[key](...args)
+//         }
+//       : _path[key]
+// })
+
 const webpack = require('webpack')
 const resolve = require('resolve')
 const PnpWebpackPlugin = require('pnp-webpack-plugin')
@@ -18,6 +29,7 @@ const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin')
 const WorkboxWebpackPlugin = require('workbox-webpack-plugin')
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin')
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin')
+const ESLintPlugin = require('eslint-webpack-plugin')
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent')
 const paths = require('./paths')
 const modules = require('./modules')
@@ -77,6 +89,7 @@ module.exports = function (webpackEnv) {
   const publicUrl = isEnvProduction
     ? publicPath.slice(0, -1)
     : isEnvDevelopment && ''
+
   // Get environment variables to inject into our app.
   const env = getClientEnvironment(publicUrl)
 
@@ -181,7 +194,9 @@ module.exports = function (webpackEnv) {
     ].filter(Boolean),
     output: {
       // The build folder.
-      path: isEnvProduction ? paths.appBuild : undefined,
+      path: isEnvProduction
+        ? paths.appBuild
+        : path.resolve(__dirname, 'static'),
       // Add /* filename */ comments to generated require()s in the output.
       pathinfo: isEnvDevelopment,
       // There will be one main bundle, and one file per asynchronous chunk.
@@ -189,8 +204,6 @@ module.exports = function (webpackEnv) {
       filename: isEnvProduction
         ? 'static/js/[name].[contenthash:8].js'
         : isEnvDevelopment && 'static/js/bundle.js',
-      // TODO: remove this when upgrading to webpack 5
-      futureEmitAssets: true,
       // There are also additional JS chunk files if you use code splitting.
       chunkFilename: isEnvProduction
         ? 'static/js/[name].[contenthash:8].chunk.js'
@@ -207,9 +220,6 @@ module.exports = function (webpackEnv) {
         : isEnvDevelopment &&
           ((info) =>
             path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')),
-      // Prevents conflicts when multiple Webpack runtimes (from different apps)
-      // are used on the same page.
-      jsonpFunction: `webpackJsonp${appPackageJson.name}`,
       // this defaults to 'window', but by setting it to 'this' then
       // module chunks which are built will work in web workers as well.
       globalObject: 'this',
@@ -262,8 +272,8 @@ module.exports = function (webpackEnv) {
           // https://github.com/webpack-contrib/terser-webpack-plugin/issues/21
           parallel: !isWsl,
           // Enable file caching
-          cache: true,
-          sourceMap: shouldUseSourceMap,
+          // cache: true,
+          // sourceMap: shouldUseSourceMap,
         }),
         // This is only used in production mode
         new OptimizeCSSAssetsPlugin({
@@ -297,6 +307,18 @@ module.exports = function (webpackEnv) {
       },
     },
     resolve: {
+      // Some libraries import Node modules but don't use them in the browser.
+      // Tell Webpack to provide empty mocks for them so importing them works.
+      fallback: {
+        module: 'empty',
+        dgram: 'empty',
+        dns: 'mock',
+        fs: 'empty',
+        http2: 'empty',
+        net: 'empty',
+        tls: 'empty',
+        child_process: 'empty',
+      },
       // This allows you to set a fallback for where Webpack should look for modules.
       // We placed these paths second because we want `node_modules` to "win"
       // if there are any conflicts. This matches Node resolution mechanism.
@@ -349,25 +371,28 @@ module.exports = function (webpackEnv) {
       strictExportPresence: true,
       rules: [
         // Disable require.ensure as it's not a standard language feature.
-        { parser: { requireEnsure: false } },
+        {
+          test: /\.[cm]?js$/,
+          parser: { requireEnsure: false },
+        },
         // First, run the linter.
         // It's important to do this before Babel processes the JS.
-        {
-          test: /\.(js|mjs|jsx|ts|tsx)$/,
-          enforce: 'pre',
-          use: [
-            {
-              options: {
-                cache: true,
-                formatter: require.resolve('react-dev-utils/eslintFormatter'),
-                eslintPath: require.resolve('eslint'),
-                resolvePluginsRelativeTo: __dirname,
-              },
-              loader: require.resolve('eslint-loader'),
-            },
-          ],
-          include: paths.appSrc,
-        },
+        // {
+        //   test: /\.(js|mjs|jsx|ts|tsx)$/,
+        //   enforce: 'pre',
+        //   use: [
+        //     {
+        //       options: {
+        //         cache: true,
+        //         formatter: require.resolve('react-dev-utils/eslintFormatter'),
+        //         eslintPath: require.resolve('eslint'),
+        //         resolvePluginsRelativeTo: __dirname,
+        //       },
+        //       loader: require.resolve('eslint-loader'),
+        //     },
+        //   ],
+        //   include: paths.appSrc,
+        // },
         {
           // "oneOf" will traverse all following loaders until one will
           // match the requirements. When no loader matches it will fall
@@ -565,12 +590,14 @@ module.exports = function (webpackEnv) {
       ],
     },
     plugins: [
+      new ESLintPlugin(),
       // Generates an `index.html` file with the <script> injected.
       new HtmlWebpackPlugin(
         Object.assign(
           {},
           {
             inject: true,
+            filename: 'index.html',
             template: paths.appHtml,
           },
           isEnvProduction
@@ -709,18 +736,6 @@ module.exports = function (webpackEnv) {
           formatter: isEnvProduction ? typescriptFormatter : undefined,
         }),
     ].filter(Boolean),
-    // Some libraries import Node modules but don't use them in the browser.
-    // Tell Webpack to provide empty mocks for them so importing them works.
-    node: {
-      module: 'empty',
-      dgram: 'empty',
-      dns: 'mock',
-      fs: 'empty',
-      http2: 'empty',
-      net: 'empty',
-      tls: 'empty',
-      child_process: 'empty',
-    },
     // Turn off performance processing because we utilize
     // our own hints via the FileSizeReporter
     performance: false,

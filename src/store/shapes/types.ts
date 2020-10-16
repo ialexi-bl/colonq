@@ -2,6 +2,10 @@ export const REGISTER_SHAPE = 'SHAPES/REGISTER'
 
 export type Shape = {
   name: string
-  paths: string[]
+  shape: string
 }
-export type ShapesState = Shape[]
+export type ShapeSet = {
+  name: string
+  shapes: Shape[]
+}
+export type ShapesState = ShapeSet[]

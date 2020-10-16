@@ -5,9 +5,9 @@ import Google from 'components/icons/social/Google'
 import React from 'react'
 import Vk from 'components/icons/social/Vk'
 import cn from 'clsx'
-import paths from 'shapes/button.shape.svg'
+import paths from 'components/shared/Button/button.shape.svg'
 import styles from './SocialLoginButton.module.scss'
-import useClipShape from 'hooks/shared/use-svg-texture'
+import useClipShape from 'hooks/shared/use-clip-shape'
 
 export type SocialLoginButtonProps = Omit<HTMLProps.a, 'href'> & {
   provider: Config.SupportedProvider

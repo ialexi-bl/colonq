@@ -1,8 +1,8 @@
 import React, { forwardRef } from 'react'
 import cn from 'clsx'
-import paths from 'shapes/inputs.shape.svg'
+import paths from './inputs.shape.svg'
 import styles from './Input.module.scss'
-import useClipShape from 'hooks/shared/use-svg-texture'
+import useClipShape from 'hooks/shared/use-clip-shape'
 
 export type InputProps = HTMLProps.input & {
   state?: null | 'valid' | 'invalid'

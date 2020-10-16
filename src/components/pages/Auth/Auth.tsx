@@ -155,7 +155,6 @@ function processSocialLogin(
   return async (dispatch) => {
     const code = search.get('code')
     const state = search.get('state')
-
     const data = getDataFromState(state)
 
     if (!data || !code) {
@@ -172,7 +171,20 @@ function processSocialLogin(
 
     try {
       if (action === SocialVerificationAction.SOCIAL_PASSWORD) {
-      } else if (authenticated) {
+        // TODO: implement
+      } else if (
+        action === SocialVerificationAction.SOCIAL_LINK &&
+        !authenticated
+      ) {
+        // TODO: maybe move to language pack
+        dispatch(
+          notifyError('Чтобы связать аккаунт с социальной сетью, нужно войти'),
+        )
+        dispatch(replace(appsList()))
+      } else if (
+        action !== SocialVerificationAction.SOCIAL_LINK &&
+        authenticated
+      ) {
         // TODO: maybe move to language pack
         dispatch(notifyError('Нельзя войти дважды'))
         dispatch(replace(appsList()))
@@ -185,6 +197,10 @@ function processSocialLogin(
           [SocialVerificationAction.SOCIAL_LOGIN]: {
             vk: 'loginVk' as const,
             google: 'loginGoogle' as const,
+          },
+          [SocialVerificationAction.SOCIAL_LINK]: {
+            vk: 'linkVk' as const,
+            google: 'linkGoogle' as const,
           },
         }[action][provider]
 
@@ -263,7 +279,7 @@ function getDataFromState(
 
     if (
       !Object.values(SocialVerificationAction).includes(data.action) ||
-      !['vk', 'google'].includes(data) ||
+      !['vk', 'google'].includes(data.provider) ||
       typeof data.redirectUri !== 'string'
     ) {
       return null

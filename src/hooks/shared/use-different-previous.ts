@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 
 /**
  * Returns the value from last render that doesn't equal current one

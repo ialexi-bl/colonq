@@ -111,12 +111,12 @@ export default class UserService extends StoreController {
    * @param username
    * @param password
    */
-  public register(email: string, username: string, password: string) {
-    return this.request<ApiResponse.Auth.Registration>(Endpoint.auth.register, {
-      email,
-      username,
-      password,
-    })
+  public async register(email: string, username: string, password: string) {
+    const { data } = await this.client.post<ApiResponse.Auth.Registration>(
+      Endpoint.auth.register,
+      { json: { email, username, password } },
+    )
+    return data
   }
 
   /**
@@ -125,10 +125,9 @@ export default class UserService extends StoreController {
    * @param redirectUri
    */
   public async registerGoogle(code: string, redirectUri: string) {
-    const data = await this.request<ApiResponse.Auth.RegistrationGoogle>(
-      Endpoint.auth.registerGoogle,
-      { code, redirectUri },
-    )
+    const { data } = await this.client.post<
+      ApiResponse.Auth.RegistrationGoogle
+    >(Endpoint.auth.registerGoogle, { json: { code, redirectUri } })
     this.dispatch(
       authenticate({
         ...data,
@@ -143,9 +142,9 @@ export default class UserService extends StoreController {
    * @param redirectUri
    */
   public async registerVk(code: string, redirectUri: string) {
-    const data = await this.request<ApiResponse.Auth.RegistrationVk>(
+    const { data } = await this.client.post<ApiResponse.Auth.RegistrationVk>(
       Endpoint.auth.registerVk,
-      { code, redirectUri },
+      { json: { code, redirectUri } },
     )
     this.dispatch(
       authenticate({
@@ -155,11 +154,12 @@ export default class UserService extends StoreController {
     )
   }
 
-  public registerVkEmail(token: string, email: string) {
-    return this.request<ApiResponse.Auth.RegistrationVk>(
+  public async registerVkEmail(token: string, email: string) {
+    const { data } = await this.client.post<ApiResponse.Auth.RegistrationVk>(
       Endpoint.auth.registerVkWithEmail,
-      { token, email },
+      { json: { token, email } },
     )
+    return data
   }
 
   /**
@@ -200,14 +200,39 @@ export default class UserService extends StoreController {
   }
 
   /**
+   * Links user's google account to colonq account
+   * @param code
+   * @param redirectUri
+   */
+  public linkGoogle(code: string, redirectUri: string) {
+    return this._login<ApiResponse.Auth.LinkGoogle>(Endpoint.auth.linkGoogle, {
+      code,
+      redirectUri,
+    })
+  }
+
+  /**
+   * Links user's vk account to colonq account
+   * @param code
+   * @param redirectUri
+   */
+  public linkVk(code: string, redirectUri: string) {
+    return this._login<ApiResponse.Auth.LinkVk>(Endpoint.auth.linkVk, {
+      code,
+      redirectUri,
+    })
+  }
+
+  /**
    * Notifies server that user's email has been verified
    * @param token
    */
-  public verifyEmail(token: string) {
-    return this.request<ApiResponse.Auth.VerifyEmail>(
+  public async verifyEmail(token: string) {
+    const { data } = await this.client.post<ApiResponse.Auth.VerifyEmail>(
       Endpoint.auth.verifyEmail,
-      { token },
+      { json: { token } },
     )
+    return data
   }
 
   /**
@@ -216,11 +241,12 @@ export default class UserService extends StoreController {
    * by following a link sent via email
    * @param login
    */
-  public restorePasswordRequest(login: string) {
-    return this.request<ApiResponse.Auth.RestorePassword>(
+  public async restorePasswordRequest(login: string) {
+    const { data } = await this.client.post<ApiResponse.Auth.RestorePassword>(
       Endpoint.auth.restorePassword,
-      { login },
+      { json: { login } },
     )
+    return data
   }
 
   /**
@@ -229,11 +255,12 @@ export default class UserService extends StoreController {
    * @param token
    * @param password
    */
-  public restorePasswordSubmit(token: string, password: string) {
-    return this.request<ApiResponse.Auth.RestorePassword>(
+  public async restorePasswordSubmit(token: string, password: string) {
+    const { data } = await this.client.post<ApiResponse.Auth.RestorePassword>(
       Endpoint.auth.restorePassword,
-      { token, password },
+      { json: { token, password } },
     )
+    return data
   }
 
   /**
@@ -257,7 +284,7 @@ export default class UserService extends StoreController {
     url: string,
     body: any,
   ): Promise<void> {
-    const data = await this.request<T>(url, body)
+    const { data } = await this.client.post<T>(url, { json: body })
 
     this.dispatch(
       authenticate({
@@ -265,16 +292,5 @@ export default class UserService extends StoreController {
         tokenExpires: getTokenExpirationTime(data.token),
       }),
     )
-  }
-
-  /**
-   * Common logic for some methods
-   */
-  private async request<T>(url: string, body: any) {
-    const response = await this.client.post<T>(url, {
-      json: body,
-    })
-
-    return response.data
   }
 }

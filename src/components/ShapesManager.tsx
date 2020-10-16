@@ -1,5 +1,5 @@
 import { AppState } from 'store/types'
-import { Shape } from 'store/shapes'
+import { ShapeSet } from 'store/shapes'
 import { useSelector } from 'react-redux'
 import React from 'react'
 
@@ -9,32 +9,36 @@ export default function ShapesManager() {
   return (
     <svg className={'absolute h-0 w-0'}>
       <defs>
-        {shapes.map(({ name, paths }) => (
-          <ClipPath key={name} name={name} paths={paths} />
+        {shapes.map(({ name, shapes: paths }) => (
+          <ClipPath key={name} name={name} shapes={paths} />
         ))}
       </defs>
     </svg>
   )
 }
 
-function ClipPath({ name, paths }: Shape) {
-  if (paths.length === 1) {
+function ClipPath({ name, shapes }: ShapeSet) {
+  if (shapes.length === 1) {
     return (
-      <clipPath id={`shape-${name}`} clipPathUnits={'objectBoundingBox'}>
-        <path d={paths[0]} />
+      <clipPath
+        id={`shape-${name}-${shapes[0].name}`}
+        clipPathUnits={'objectBoundingBox'}
+      >
+        <path d={shapes[0].shape} />
       </clipPath>
     )
   }
+  console.log(name, shapes)
 
   return (
     <>
-      {paths.map((path, i) => (
+      {shapes.map(({ name: shapeName, shape }) => (
         <clipPath
-          id={`shape-${name}-${i + 1}`}
-          key={`${name}-${i}`}
+          id={`shape-${name}-${shapeName}`}
+          key={shapeName}
           clipPathUnits={'objectBoundingBox'}
         >
-          <path d={path} />
+          <path d={shape} />
         </clipPath>
       ))}
     </>

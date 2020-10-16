@@ -2,9 +2,9 @@ import { AppState, MixedDispatch, ThunkAction } from 'store/types'
 import { Endpoint } from 'config/endpoint'
 import { PageContainer } from 'components/shared/Page'
 import { TextArea } from 'components/form/Input/TextArea'
+import { closeLoading, openLoading, toggleNav } from 'store/view'
 import { emailRegex } from 'config/regex'
 import { handleRequestError } from 'services/errors/handle-request-error'
-import { closeLoading, openLoading, toggleNav } from 'store/view'
 import { useDispatch, useSelector } from 'react-redux'
 import ApiClient from 'services/client'
 import Button from 'components/shared/Button'
@@ -22,9 +22,7 @@ const errors = [
 ]
 export default function Feedback() {
   const dispatch = useDispatch<MixedDispatch>()
-  const { authenticated, email: _email } = useSelector(
-    (state: AppState) => state.user,
-  )
+  const { status, email: _email } = useSelector((state: AppState) => state.user)
   const [done, setDone] = useState(false)
   const [email, setEmail] = useState(_email?.trim() || '')
   const [message, setMessage] = useState('')

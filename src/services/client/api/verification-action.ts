@@ -6,7 +6,8 @@ enum VerificationAction {
 export default VerificationAction
 
 export enum SocialVerificationAction {
-  SOCIAL_REGISTER = 'social-register',
-  SOCIAL_PASSWORD = 'social-password',
-  SOCIAL_LOGIN = 'social-login',
+  SOCIAL_REGISTER = 'register',
+  SOCIAL_PASSWORD = 'password',
+  SOCIAL_LOGIN = 'login',
+  SOCIAL_LINK = 'link',
 }

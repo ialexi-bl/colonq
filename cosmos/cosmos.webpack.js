@@ -35,10 +35,7 @@ module.exports = (webpack) => {
                 return use
               }
 
-              return {
-                loader: use,
-                options: { hmr: false },
-              }
+              return { loader: use }
             }
 
             if (!use.loader || use.loader !== styleLoader) {
@@ -49,7 +46,7 @@ module.exports = (webpack) => {
               ...use,
               options: {
                 ...use.options,
-                hmr: false,
+                // hmr: false,
               },
             }
           }),
@@ -58,85 +55,6 @@ module.exports = (webpack) => {
 
     return rule
   })
-  /* 
-  webpack.module.rules = webpack.module.rules.filter((rule) => {
-    return Array.isArray(rule) || !isTs(rule.test)
-  })
-  webpack.module.rules.push(
-    ...oneOf
-      .filter(({ test }) => {
-        if (Array.isArray(test)) {
-          return test.some(isCss)
-        } else if (test) {
-          return isCss(test)
-        }
-      })
-      .map((rule) => {
-        return {
-          ...rule,
-          use: rule.use.map((use) => {
-            if (typeof use === 'string') {
-              if (use !== styleLoader) {
-                return use
-              }
-
-              return {
-                loader: use,
-                options: { hmr: false },
-              }
-            }
-
-            if (!use.loader || use.loader !== styleLoader) {
-              return use
-            }
-
-            return {
-              ...use,
-              options: {
-                ...use.options,
-                hmr: false,
-              },
-            }
-          }),
-        }
-      }),
-    ...oneOf.filter(({ test, ...t }) => {
-      if (Array.isArray(test)) {
-        return test.some(isPng) || test.some(isTs)
-      } else if (test) {
-        return isPng(test) || isTs(test)
-      }
-    }),
-    {
-      test: /\.svg$/,
-      use: [
-        {
-          loader: require.resolve('url-loader'),
-          options: {
-            limit: '10000',
-            name: 'static/media/[name].[hash:8].[ext]',
-          },
-        },
-        {
-          loader: '@svgr/webpack',
-          options: {
-            template: (
-              { template, ...rest },
-              _,
-              { imports, props, jsx, ...r },
-            ) => {
-              return template.ast`
-                ${imports}
-                export default "${_.state.filePath}";
-                export const ReactComponent = (${props}) => (${jsx});
-              `
-            },
-          },
-        },
-      ],
-    },
-  )
-   */
 
   webpack.resolve.modules = (
     webpack.resolve.modules || ['node_modules']

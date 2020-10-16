@@ -68,6 +68,8 @@ module.exports = {
   future: {
     removeDeprecatedGapUtilities: true,
     purgeLayersByDefault: true,
+    standardFontWeights: true,
+    defaultLineHeights: true,
   },
   variants: {},
   plugins: [],

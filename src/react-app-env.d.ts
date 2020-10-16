@@ -78,7 +78,7 @@ declare module '*.webp' {
 }
 
 declare module '*.shape.svg' {
-  const shapes: string[]
+  const shapes: { name: string; shape: string }[]
   export default shapes
 }
 

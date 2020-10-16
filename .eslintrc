@@ -23,6 +23,7 @@
     "handle-callback-err": "off",
     "sort-imports-es6-autofix/sort-imports-es6": ["warn"],
 
+    "react/jsx-key": ["warn", { "checkFragmentShorthand": true }],
     "react-hooks/exhaustive-deps": [
       "error",
       {
