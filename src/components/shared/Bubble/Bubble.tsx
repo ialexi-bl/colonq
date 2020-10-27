@@ -4,39 +4,53 @@ import shapes from './bubble.shape.svg'
 import styles from './Bubble.module.scss'
 import useClipShape from 'hooks/shared/use-clip-shape'
 
-export type BubbleProps = {
-  className?: string
+export type BubbleProps = HTMLProps.div & {
   /** Number between 0 and 1 */
+  disabled?: boolean
   progress?: number
   variant?: 1 | 2 | 3 | 4
   icon: React.ReactNode
 }
 export default function Bubble({
   icon,
+  disabled,
   className,
   variant = 1,
   progress = 1,
+  ...props
 }: BubbleProps) {
   useClipShape('bubble', shapes)
 
   return (
     <div
       className={cn(
-        'relative w-32 h-32',
+        'relative w-28 h-28',
         className,
         styles[`variant-${variant}`],
       )}
+      {...props}
     >
       <div
-        className={'absolute inset-0 bg-primary-500'}
+        className={cn(
+          'absolute inset-0 transition-colors duration-100',
+          disabled ? 'bg-disabled-700' : 'bg-primary-500',
+        )}
         style={{ clipPath: clipPath(progress) }}
       />
-      <div className={cn('bg-primary-900 p-6', styles.inner)}>{icon}</div>
+      <div
+        className={cn(
+          'p-6 transition-colors duration-100',
+          styles.inner,
+          disabled ? 'bg-disabled-1000' : 'bg-primary-900',
+        )}
+      >
+        {icon}
+      </div>
     </div>
   )
 }
 
-const polygon = (points: [number, number][]) =>
+const polygon = (points: Array<[number, number]>) =>
   `polygon(${points.map(([x, y]) => `${x * 100}% ${y * 100}%`).join(',')})`
 function clipPath(p: number) {
   const tan = Math.tan(Math.PI * 2 * p)

@@ -7,7 +7,7 @@ import { push } from 'connected-react-router'
 import { useDispatch } from 'react-redux'
 import { useFormik } from 'formik'
 import { useUserService } from 'services/user-service'
-import Button from 'components/shared/Button'
+import Button, { LinkButton } from 'components/shared/Button'
 import ErrorMessage from 'components/form/ErrorMessage'
 import Input from 'components/form/Input'
 import Loading from 'components/shared/Loading'
@@ -73,7 +73,7 @@ export default function Registration() {
     onSubmit: register,
   })
 
-  if (!useIsGuest(profile())) {
+  if (!useIsGuest()) {
     return null
   }
 
@@ -94,7 +94,7 @@ export default function Registration() {
             <label className={'block mb-4'}>
               <span className={'mb-1'}>Email</span>
               <Input
-                disabled={disabled}
+                readOnly={disabled}
                 state={getInputState(formik, 'email')}
                 {...formik.getFieldProps('email')}
               />
@@ -106,7 +106,7 @@ export default function Registration() {
               <span className={'mb-1'}>Имя пользователя</span>
               <Input
                 variant={2}
-                disabled={disabled}
+                readOnly={disabled}
                 state={getInputState(formik, 'username')}
                 {...formik.getFieldProps('username')}
               />
@@ -118,7 +118,7 @@ export default function Registration() {
               <span className={'mb-1'}>Пароль</span>
               <Input
                 variant={3}
-                disabled={disabled}
+                readOnly={disabled}
                 state={getInputState(formik, 'password')}
                 {...formik.getFieldProps('password')}
               />
@@ -132,7 +132,7 @@ export default function Registration() {
               <span className={'mb-1'}>Повтори пароль</span>
               <Input
                 variant={2}
-                disabled={disabled}
+                readOnly={disabled}
                 state={getInputState(formik, 'passwordRepeat')}
                 {...formik.getFieldProps('passwordRepeat')}
               />
@@ -142,22 +142,32 @@ export default function Registration() {
                 }
               />
             </label>
-            <div className={'text-center'}>
+            <div className={'flex items-center'}>
+              <div className={'w-12 ml-auto'} />
               <Button
                 className={'text-center min-w-64'}
-                disabled={status !== null}
                 variant={3}
+                disabled={
+                  status !== null || Object.keys(formik.errors).length > 0
+                }
+                // type={'submit'}
               >
                 {/* TODO: check what if this loading looks fine */}
-                {status ? <Loading /> : 'Продолжить'}
+                Продолжить
               </Button>
+              <Loading
+                className={cn(
+                  'h-8 w-8 ml-4 inline-block mr-auto duration-100',
+                  status ? 'opacity-100' : 'opacity-0',
+                )}
+              />
             </div>
           </form>
           <div
             className={cn(
               'absolute inset-0 flex flex-col justify-center',
               'duration-500 transform',
-              status !== 'verify-email' && '-transition-x-full opacity-0',
+              status !== 'verify-email' && '-translate-x-full opacity-0',
             )}
           >
             <h2 className={'text-2xl'}>Подтвеждение почты</h2>
@@ -165,22 +175,30 @@ export default function Registration() {
               На адрес "{formik.values.email}" должно было прийти письмо с
               ссылкой для подтверждения почты. Перейди по ней, чтобы закончить
               регистрацию.
-            </p>
+            </p>p
           </div>
         </div>
 
         <div className={'my-16 text-center text-xl'}>ИЛИ</div>
 
+        <LinkButton
+          className={'mb-2 block text-lg max-w-sm'}
+          to={login()}
+          secondary
+        >
+          Войти
+        </LinkButton>
         <SocialLoginButton
           type={'register'}
           disabled={status === 'loading'}
           provider={'google'}
-          className={'mb-2'}
+          className={'mb-2 max-w-sm'}
         />
         <SocialLoginButton
           type={'register'}
           disabled={status === 'loading'}
           provider={'vk'}
+          className={'max-w-sm'}
         />
       </div>
     </ScrollablePage>

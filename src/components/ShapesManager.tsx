@@ -19,22 +19,22 @@ export default function ShapesManager() {
 
 function ClipPath({ name, shapes }: ShapeSet) {
   if (shapes.length === 1) {
+    const shapeName = shapes[0].name
     return (
       <clipPath
-        id={`shape-${name}-${shapes[0].name}`}
+        id={`shape-${name}${shapeName && '-' + shapeName}`}
         clipPathUnits={'objectBoundingBox'}
       >
         <path d={shapes[0].shape} />
       </clipPath>
     )
   }
-  console.log(name, shapes)
 
   return (
     <>
       {shapes.map(({ name: shapeName, shape }) => (
         <clipPath
-          id={`shape-${name}-${shapeName}`}
+          id={`shape-${name}${shapeName && '-' + shapeName}`}
           key={shapeName}
           clipPathUnits={'objectBoundingBox'}
         >

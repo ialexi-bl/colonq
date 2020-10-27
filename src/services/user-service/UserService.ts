@@ -1,15 +1,16 @@
+import { ApiErrorName, ApiResponse, Endpoint } from 'services/client/config'
 import { HttpError } from 'services/errors'
-import { StoreController } from 'store'
-import { UserState, authenticate, unauthenticate } from 'store/user'
-import { connectStore } from 'store/connect-store'
+import { StoreConsumer } from 'store'
+import { authenticate, unauthenticate } from 'store/user'
 import { getTokenExpirationTime } from 'util/jwt'
-import ApiClient, { ApiErrorName, ApiResponse } from 'services/client'
-import Config from 'config'
-import Endpoint from 'config/endpoint'
+import ApiClient from 'services/client'
 
-export default class UserService extends StoreController {
-  @connectStore((state) => state.user)
-  private readonly user!: UserState
+import Config from 'config'
+
+export default class UserService extends StoreConsumer {
+  private get user() {
+    return this.selector((state) => state.user)
+  }
 
   constructor(private readonly client: ApiClient) {
     super()

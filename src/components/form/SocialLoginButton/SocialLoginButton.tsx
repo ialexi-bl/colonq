@@ -1,5 +1,5 @@
 import Config from 'config'
-import Endpoint from 'config/endpoint'
+import Endpoint from 'services/client/config/endpoints'
 import Google from 'components/icons/social/Google'
 import React from 'react'
 import Vk from 'components/icons/social/Vk'
@@ -14,19 +14,18 @@ export type SocialLoginButtonProps = Omit<HTMLProps.a, 'href'> & {
   type: 'login' | 'register' | 'link'
 }
 
-const noop = () => {}
 const endpoint = {
   login: {
-    vk: Endpoint.auth.loginVk,
-    google: Endpoint.auth.loginGoogle,
+    vk: Endpoint.oauth.loginVk,
+    google: Endpoint.oauth.loginGoogle,
   },
   register: {
-    vk: Endpoint.auth.registerVk,
-    google: Endpoint.auth.registerGoogle,
+    vk: Endpoint.oauth.registerVk,
+    google: Endpoint.oauth.registerGoogle,
   },
   link: {
-    vk: Endpoint.auth.linkVk,
-    google: Endpoint.auth.linkGoogle,
+    vk: Endpoint.oauth.linkVk,
+    google: Endpoint.oauth.linkGoogle,
   },
 }
 /**
@@ -46,10 +45,10 @@ export default function SocialLoginButton({
 
   return (
     <a
-      onClick={disabled ? noop : onClick}
+      onClick={disabled ? undefined : onClick}
       className={cn(
-        'reset-link flex items-center duration-100 text-lg py-4 px-6 max-w-sm outline-none',
-        disabled ? 'bg-disabled-200 cursor-default' : styles[provider],
+        'reset-link flex items-center duration-100 text-lg py-4 px-6 outline-none',
+        disabled ? 'bg-disabled-700 cursor-default' : styles[provider],
         styles.SocialButton,
         className,
       )}
@@ -59,9 +58,9 @@ export default function SocialLoginButton({
       <Icon className={'w-6 h-6 mr-2'} />
       {
         {
-          login: 'Войти через',
-          register: 'Зарегистрироваться с',
-          link: 'Связать с',
+          login: 'Войти через ',
+          register: 'Зарегистрироваться с ',
+          link: 'Связать с ',
         }[type]
       }
       {labels[provider]}

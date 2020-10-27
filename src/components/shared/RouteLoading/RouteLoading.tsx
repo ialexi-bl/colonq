@@ -3,6 +3,7 @@ import { CSSTransition } from 'react-transition-group'
 import { useSelector } from 'react-redux'
 import Loading from '../Loading'
 import React from 'react'
+import cn from 'clsx'
 import styles from './RouteLoading.module.scss'
 
 const TIMEOUT = parseInt(styles.transitionDuration)
@@ -20,7 +21,12 @@ export default function RouteLoading() {
 
   return (
     <CSSTransition timeout={TIMEOUT} classNames={CLASS_NAME} in={visible}>
-      <div className={styles.RouteLoading}>
+      <div
+        className={cn(
+          'absolute inset-0 bg-secondary-1000 z-30',
+          styles.RouteLoading,
+        )}
+      >
         <Loading />
       </div>
     </CSSTransition>

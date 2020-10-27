@@ -14,9 +14,6 @@ $transition-class-name: route-loading;
 .RouteLoading {
   composes: centered from '~styles/util/centered.scss';
 
-  background: colors.$background;
-  position: absolute 0;
-  z-index: elevation.$route-loading;
   transition: opacity $transition-duration
     (time.$route-transition-duration - $transition-duration);
 

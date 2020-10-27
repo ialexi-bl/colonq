@@ -1,4 +1,3 @@
-import { RouteComponentProps } from 'react-router'
 import { RouteOptions, Routes } from './types'
 import React, { lazy } from 'react'
 
@@ -9,8 +8,13 @@ export const routesArray: RouteOptions[] = [
     component: lazy(() => import('components/pages/Index')),
   },
   {
-    path: '/list',
-    name: 'list',
+    path: '/apps/edit',
+    name: 'appsChoice',
+    component: lazy(() => import('components/pages/AppsChoice')),
+  },
+  {
+    path: '/apps',
+    name: 'appsList',
     component: lazy(() => import('components/pages/AppsList')),
   },
   {
@@ -47,13 +51,9 @@ export const routesArray: RouteOptions[] = [
     component: lazy(() => import('components/pages/Registration')),
   },
   {
-    path: '/app/:path*',
+    path: '/app/:category/:name',
     name: 'app',
-    render: ({
-      match,
-    }: RouteComponentProps<{
-      path: string
-    }>) => {
+    render: () => {
       return <div></div>
     },
   },
@@ -64,19 +64,16 @@ for (const route of routesArray) {
   routes[route.name] = routes[route.path] = route
 }
 
-const cache: {
-  [key: string]: React.ComponentType
-} = {}
-
 export const verifyEmail = () => routes.verifyEmail.path
-export const appsList = () => 'TODO APPS LIST'
+export const appsChoice = () => routes.appsChoice.path
+export const appsList = () => routes.appsList.path
 export const feedback = () => routes.feedback.path
 export const settings = () => routes.settings.path
 export const register = () => routes.register.path
 export const profile = () => routes.profile.path
 export const login = () => routes.login.path
 export const index = () => routes.index.path
-export const list = () => routes.list.path
 export const auth = () => routes.auth.path
-export const app = (location: string) =>
-  `/app${location[0] === '/' ? location : `/${location}`}`
+export const app = (category: string, app: string) => `/app/${category}/${app}`
+export const appSettings = (category: string, app: string) =>
+  `/app/${category}/${app}/settings`

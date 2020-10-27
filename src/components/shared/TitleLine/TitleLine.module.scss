@@ -2,7 +2,8 @@
 @use 'styles/variables/time';
 
 .Container {
-  size: 100% 95vh;
+  width: 100% 95vh;
+  height: 100% 95vh;
   display: flex;
   align-items: center;
   padding-bottom: 3%;

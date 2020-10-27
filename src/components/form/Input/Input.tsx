@@ -15,19 +15,24 @@ export type InputProps = HTMLProps.input & {
  * @param {InputProps} props
  */
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ className, state, formNoValidate, variant = 1, ...props }, ref) => {
+  (
+    { className, state, formNoValidate, readOnly, variant = 1, ...props },
+    ref,
+  ) => {
     useClipShape('input', paths)
 
     return (
       <input
         ref={ref}
         type={'text'}
+        readOnly={readOnly}
         tabIndex={0}
         className={cn(
           'py-4 px-6 w-full outline-none',
           className,
           styles.Input,
           styles[`variant-${variant}`],
+          readOnly && styles.readonly,
           state && styles[state],
         )}
         {...props}

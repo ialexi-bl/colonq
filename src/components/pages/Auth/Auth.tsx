@@ -2,7 +2,7 @@ import {
   ApiErrorName,
   SocialVerificationAction,
   VerificationAction,
-} from 'services/client'
+} from 'services/client/config'
 import { AppState, MixedDispatch, ThunkAction } from 'store/types'
 import { HttpError } from 'services/errors'
 import { appsList, login } from 'config/routes'
@@ -181,6 +181,7 @@ function processSocialLogin(
           notifyError('Чтобы связать аккаунт с социальной сетью, нужно войти'),
         )
         dispatch(replace(appsList()))
+        // TODO: show notification about logging in
       } else if (
         action !== SocialVerificationAction.SOCIAL_LINK &&
         authenticated
@@ -189,20 +190,20 @@ function processSocialLogin(
         dispatch(notifyError('Нельзя войти дважды'))
         dispatch(replace(appsList()))
       } else {
-        const method = {
+        const method = ({
           [SocialVerificationAction.SOCIAL_REGISTER]: {
-            vk: 'registerVk' as const,
-            google: 'registerGoogle' as const,
+            vk: 'registerVk',
+            google: 'registerGoogle',
           },
           [SocialVerificationAction.SOCIAL_LOGIN]: {
-            vk: 'loginVk' as const,
-            google: 'loginGoogle' as const,
+            vk: 'loginVk',
+            google: 'loginGoogle',
           },
           [SocialVerificationAction.SOCIAL_LINK]: {
-            vk: 'linkVk' as const,
-            google: 'linkGoogle' as const,
+            vk: 'linkVk',
+            google: 'linkGoogle',
           },
-        }[action][provider]
+        } as const)[action][provider]
 
         // If this method doesn't throw error, user will be authenticated
         await userService[method](code, redirectUri)

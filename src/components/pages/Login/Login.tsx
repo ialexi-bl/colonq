@@ -1,16 +1,16 @@
-import { ApiErrorName } from 'services/client'
+import { ApiErrorName } from 'services/client/config'
 import { CUTE_FACE } from 'config/view'
 import { FormikHelpers, useFormik } from 'formik'
 import { HttpError } from 'services/errors'
 import { MixedDispatch } from 'store/types'
 import { PageContainer } from 'components/shared/Page'
-import { appsList, profile } from 'config/routes'
+import { appsList, profile, register } from 'config/routes'
 import { notifyErrorObject } from 'store/view'
 import { push } from 'connected-react-router'
 import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router'
 import { useUserService } from 'services/user-service'
-import Button from 'components/shared/Button'
+import Button, { LinkButton } from 'components/shared/Button'
 import ErrorMessage from 'components/form/ErrorMessage'
 import Input from 'components/form/Input'
 import Loading from 'components/shared/Loading'
@@ -18,6 +18,7 @@ import PageTitle from 'components/shared/PageTitle'
 import React, { useState } from 'react'
 import SocialLoginButton from 'components/form/SocialLoginButton'
 import User from 'components/icons/User'
+import cn from 'clsx'
 import useIsGuest from 'hooks/shared/use-is-guest'
 
 type FormValues = {
@@ -68,13 +69,14 @@ export default function Login() {
       login: typeof email === 'string' ? email : '',
       password: typeof password === 'string' ? password : '',
     },
-    validate: () => ({}),
     onSubmit: login,
   })
 
   if (!useIsGuest(profile())) {
     return null
   }
+  // @ts-ignore
+  window.a = () => setLoading((a) => !a)
 
   return (
     <PageContainer>
@@ -85,53 +87,71 @@ export default function Login() {
           <label className={'block mb-4'}>
             <span className={'mb-1'}>Email или имя пользователя</span>
             <Input
-              disabled={loading}
+              readOnly={loading}
               state={getInputState(formik, 'login')}
               {...formik.getFieldProps('login')}
             />
-            <ErrorMessage
-              message={formik.touched.login && formik.errors.login}
-            />
           </label>
-        </form>
-        <label className={'block mb-4'}>
-          <span className={'mb-1'}>Пароль</span>
-          <Input
-            variant={3}
-            disabled={loading}
-            state={getInputState(formik, 'password')}
-            {...formik.getFieldProps('password')}
-          />
-          <ErrorMessage
-            message={
-              /(^\s+)|(\s+$)/.test(formik.values.password) && {
-                type: 'warning',
-                // TODO: maybe move to language files
-                text:
-                  'Пароль содержит пробелы в начале или в конце. Исправь, если они оказались там случайно',
+          <label className={'block mb-4'}>
+            <span className={'mb-1'}>Пароль</span>
+            <Input
+              variant={3}
+              readOnly={loading}
+              state={getInputState(formik, 'password')}
+              {...formik.getFieldProps('password')}
+            />
+            <ErrorMessage
+              message={
+                /(^\s+)|(\s+$)/.test(formik.values.password) && {
+                  type: 'warning',
+                  // TODO: maybe move to language files
+                  text:
+                    'Пароль содержит пробелы в начале или в конце. Исправь, если они оказались там случайно',
+                }
               }
-            }
-          />
-        </label>
-        <div className={'text-center'}>
-          <Button
-            className={'text-center min-w-64'}
-            disabled={loading}
-            variant={3}
-          >
-            {/* TODO: check what if this loading looks fine */}
-            {loading ? <Loading /> : 'Продолжить'}
-          </Button>
-        </div>
+            />
+            <ErrorMessage message={formik.status} />
+          </label>
+          <div className={'flex items-center'}>
+            <div className={'w-12 max-w-sm ml-auto'} />
+            <Button
+              type={'submit'}
+              className={'text-center min-w-64'}
+              disabled={loading || Object.keys(formik.errors).length > 0}
+              variant={3}
+            >
+              Продолжить
+            </Button>
+            <Loading
+              className={cn(
+                'h-8 w-8 ml-4 inline-block mr-auto duration-100',
+                loading ? 'opacity-100' : 'opacity-0',
+              )}
+            />
+          </div>
+        </form>
 
         <div className={'my-16 text-center text-xl'}>ИЛИ</div>
 
+        <LinkButton
+          className={'mb-2 block text-lg max-w-sm'}
+          to={register()}
+          secondary
+        >
+          Зарегистрироваться
+        </LinkButton>
         <SocialLoginButton
           provider={'google'}
+          disabled={loading}
+          className={'mb-2 max-w-sm'}
           type={'login'}
-          className={'mb-2'}
         />
-        <SocialLoginButton provider={'vk'} type={'login'} />
+        <SocialLoginButton
+          disabled={loading}
+          provider={'vk'}
+          type={'login'}
+          className={'max-w-sm'}
+        />
       </div>
     </PageContainer>
   )

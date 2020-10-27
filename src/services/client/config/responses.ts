@@ -1,3 +1,4 @@
+import { StringLiteral } from 'typescript'
 import ApiErrorName from './error-names'
 
 namespace ApiResponse {
@@ -24,11 +25,33 @@ namespace ApiResponse {
       },
       T
     >
-    export type GetApps = { apps: string }
+
+    export type AppDescription = {
+      id: string
+      title: string
+      score: number
+      icon: string
+    }
+    export type DetailedAppDescription = {
+      title: string
+      icon: string
+      lessons: LessonDescription[]
+    }
+    export type LessonDescription = {
+      id: string
+      icon: string
+      score: number
+      title: string
+      unlocked: boolean
+    }
+
+    export type GetApp = DetailedAppDescription
+    export type GetApps = AppDescription[]
 
     export type PasswordUpdateOption = 'password' | 'vk' | 'google'
     export type GetPasswordUpdateOptions = PasswordUpdateOption[]
 
+    export type SetApps = Auth.Login
     export type SetPassword = null
     export type SetUsername = Auth.Login
     export type SetEmailRequest = null
@@ -37,9 +60,10 @@ namespace ApiResponse {
 
   export namespace Auth {
     export type UserData = {
-      token: string
       id: string
+      apps: string[]
       email: string
+      token: string
       username: string
       providers: string[]
     }
@@ -48,6 +72,7 @@ namespace ApiResponse {
 
     export type Registration = {
       id: string
+      apps: string[]
       email: string
       username: string
       providers: string[]

@@ -1,4 +1,4 @@
-import { ApiErrorName } from 'services/client'
+import { ApiErrorName } from 'services/client/config'
 import { ColonqError } from './Error'
 import { NormalizedOptions } from 'ky'
 import ErrorName from './ErrorName'

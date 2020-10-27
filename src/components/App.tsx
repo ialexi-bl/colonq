@@ -3,6 +3,7 @@ import { Router } from './Router'
 import { closeLoading } from 'store/view'
 import { useApiClient } from 'services/client'
 import { useDispatch } from 'react-redux'
+import Navigation from './shared/Navigation'
 import NotificationToaster, {
   CookiesNotification,
 } from './shared/NotificationToaster'
@@ -58,6 +59,7 @@ export function App({ maintenance }: { maintenance?: boolean }) {
       <ShapesManager />
       <CookiesNotification />
       <NotificationToaster />
+      <Navigation />
     </div>
   )
 }

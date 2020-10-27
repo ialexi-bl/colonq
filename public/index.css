@@ -14,10 +14,20 @@ body {
   height: 100%;
   width: 100%;
   color: #f3f2ff;
-  font-family: Ubuntu Mono, sans-serif;
+  font-family: Noto Sans, sans-serif;
   line-height: 1.2;
   /* background: #151529; */
 }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: Ubuntu Mono, monospace;
+}
+
 .centered {
   display: flex;
   align-items: center;

@@ -53,16 +53,19 @@ module.exports = function shapeLoader(source) {
       sx = sx || 0
       sy = sy || 0
 
+      const names = {}
       return svg.children.map((path) => {
         if (path.type !== 'tag' || path.name !== 'path') return
 
-        let { name, d } = path.attribs
-        if (!name) {
-          name = 'unknown'
-          console.warn(`No name for path in ${this.resourcePath}`)
+        let { name = '', d } = path.attribs
+        if (name in names) {
+          console.warn(`Duplicate names in "${this.resourcePath}"`)
+          return
         }
+        names[name] = true
+
         if (!d) {
-          console.warn(`Path with no "d" attribute in ${this.resourcePath}`)
+          console.warn(`Path with no "d" attribute in "${this.resourcePath}"`)
           return
         }
 

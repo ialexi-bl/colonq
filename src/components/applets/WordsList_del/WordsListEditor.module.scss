@@ -25,7 +25,10 @@ $margin: 0.5rem;
 .Set,
 .VirtualWord {
   transition: transform $transition-duration;
-  position: absolute 0 0 *;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
 .EditorContainer {

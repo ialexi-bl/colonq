@@ -3,7 +3,8 @@
 .ToggleInput {
   opacity: 0;
   margin: 0;
-  size: 0;
+  width: 0;
+  height: 0;
 }
 
 .Container {
@@ -11,17 +12,26 @@
 
   position: relative;
   display: inline-block;
-  size: 2.8em 1.5em;
+  width: 2.8em 1.5em;
+  height: 2.8em 1.5em;
 }
 .Track {
-  position: absolute 0.3em;
+  position: absolute;
+  top: 0.3em;
+  bottom: 0.3em;
+  left: 0.3em;
+  right: 0.3em;
   border-radius: 1em;
   background: colors.$disabled;
   transition: background 200ms;
 }
 .Slider {
-  position: absolute 0 * 0 0;
-  size: 1.5em;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 1.5em;
+  height: 1.5em;
   border-radius: 100%;
   background: colors.$text-disabled;
   transition-duration: 200ms;

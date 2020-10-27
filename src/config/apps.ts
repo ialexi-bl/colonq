@@ -7,11 +7,12 @@ import Trigonometry from 'components/icons/subjects/maths/Trigonometry'
 import Verbs from 'components/icons/subjects/russian/Verbs'
 
 export type App = {
-  category: string
+  icon: React.ComponentType
   name: string
   path: string
   title: string
-  icon: React.ComponentType
+  category: string
+  description: string
 }
 export type AppCategory = {
   name: string
@@ -21,6 +22,19 @@ export type AppCategory = {
 
 export const [Apps, AppsCategories] = flattenApps([
   {
+    name: 'maths',
+    title: 'Математика',
+    apps: [
+      {
+        icon: Trigonometry,
+        name: 'trigonometry',
+        title: 'Значения тригонометрических функций',
+        description:
+          'Значения тригонометрических функций для особых углов в градусах и радианах. Выбрать единицы измерения или включить секансы и косекансы можно в настройках.',
+      },
+    ],
+  },
+  {
     name: 'russian',
     title: 'Русский язык',
     apps: [
@@ -28,37 +42,36 @@ export const [Apps, AppsCategories] = flattenApps([
         name: 'accents',
         title: 'Ударения',
         icon: Accents,
+        description:
+          'Слова с непривычным ударением, включая все из орфоэпического словника ФИПИ. Соответствует заданию 4 ЕГЭ.',
       },
       {
         name: 'paronyms',
         title: 'Паронимы',
         icon: Paronyms,
+        description:
+          'Слова с похожим написанием, но разным значением. Соответствует заданию 5 ЕГЭ.',
       },
       {
         name: 'prefixes',
         title: 'Приставки и правописание Ъ и Ь',
         icon: Prefixes,
+        description:
+          'Приставки, оканчивающиеся на парный согласный, разница между “пре-” и “при-”, Ы и И после приставок и правописание твёрдого и мягкого знака в разных частях слова. Соответствует заданию 10 ЕГЭ.',
       },
       {
         name: 'suffixes',
         title: 'Суффиксы',
         icon: Suffixes,
+        description:
+          'Правописание суффиксов различных частей речи. Соответствует заданию 11 ЕГЭ.',
       },
       {
         name: 'verbs',
         title: 'Окончания глаголов и суффиксы причастий',
         icon: Verbs,
-      },
-    ],
-  },
-  {
-    name: 'maths',
-    title: 'Математика',
-    apps: [
-      {
-        name: 'trigonometry',
-        title: 'Значения тригонометрических функций',
-        icon: Trigonometry,
+        description:
+          'Глаголы и причастия, написание окончаний которых зависит от спряжения или гласной в суффиксе глагола. Соответствует заданию 12 ЕГЭ.',
       },
     ],
   },
@@ -73,7 +86,7 @@ function flattenApps(
   categories: {
     title: string
     name: string
-    apps: { name: string; title: string; icon: React.ComponentType }[]
+    apps: Omit<App, 'category' | 'path'>[]
   }[],
 ) {
   const result: Record<string, App> = {}
@@ -93,10 +106,8 @@ function flattenApps(
       apps.push(path)
       result[path] = {
         category: category.name,
-        title: app.title,
-        name: app.name,
-        icon: app.icon,
         path,
+        ...app,
       }
     })
     categoriesList.push({

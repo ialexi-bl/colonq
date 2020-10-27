@@ -22,7 +22,8 @@ $color-focus: darken($color, 20%);
   bottom: 15%;
   color: $color;
   left: 50%;
-  size: 3rem;
+  width: 3rem;
+  height: 3rem;
 
   &:hover {
     color: $color-hover;

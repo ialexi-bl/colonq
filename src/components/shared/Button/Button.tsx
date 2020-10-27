@@ -1,5 +1,4 @@
 import { Link, LinkProps } from 'react-router-dom'
-import { noop } from 'util/noop'
 import React from 'react'
 import cn from 'clsx'
 import paths from './button.shape.svg'
@@ -17,15 +16,14 @@ const Button = ({
   secondary,
   className,
   disabled,
-  onClick,
   variant = 1,
   ...props
 }: ButtonProps) => (
   useClipShape('button', paths),
   (
     <button
+      disabled={disabled}
       className={cn(className, buttonClassNames(variant, secondary, disabled))}
-      onClick={disabled ? noop : onClick}
       {...props}
     />
   )
@@ -62,7 +60,8 @@ const buttonClassNames = (
     disabled ? disabledCn : secondary ? secondaryCn : primaryCn,
   )
 
-const buttonCn = 'py-4 px-6 duration-200 bg-cover bg-center bg-no-repeat'
+const buttonCn =
+  'py-4 px-6 duration-200 bg-cover bg-center bg-no-repeat cursor-pointer'
 const primaryCn = `bg-primary-700 ${styles.primary}`
 const secondaryCn = `bg-secondary-200 ${styles.secondary}`
-const disabledCn = `bg-disabled`
+const disabledCn = `bg-disabled-700`

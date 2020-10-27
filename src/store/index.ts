@@ -1,2 +1,2 @@
 export * from './store'
-export { default as StoreController } from './StoreController'
+export { default as StoreConsumer } from './StoreController'

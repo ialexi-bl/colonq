@@ -46,7 +46,7 @@
     "postcss-normalize": "8.0.1",
     "postcss-preset-env": "6.7.0",
     "postcss-safe-parser": "4.0.1",
-    "react": "^16.14.0",
+    "react": "^17.0.1",
     "react-app-polyfill": "^1.0.6",
     "react-custom-scrollbars": "^4.2.1",
     "react-dev-utils": "^10.2.1",
@@ -158,8 +158,8 @@
     "@types/redux": "^3.6.0",
     "@types/redux-logger": "^3.0.8",
     "@types/redux-mock-store": "^1.0.2",
-    "@typescript-eslint/eslint-plugin": "^2.34.0",
-    "@typescript-eslint/parser": "^2.34.0",
+    "@typescript-eslint/eslint-plugin": "^4.4.1",
+    "@typescript-eslint/parser": "^4.4.1",
     "args": "^5.0.1",
     "eslint": "^7.11.0",
     "eslint-config-prettier": "^6.13.0",
@@ -175,12 +175,12 @@
     "ftp-deploy": "^2.3.8",
     "postcss-scss": "^3.0.2",
     "react-cosmos": "^5.5.0",
-    "react-dom": "npm:@hot-loader/react-dom@^17.0.0-rc.2",
+    "react-dom": "^17.0.1",
     "react-hot-loader": "^4.13.0",
     "readline-sync": "^1.4.10",
     "redux-devtools-extension": "^2.13.8",
     "redux-logger": "^3.0.6",
     "redux-mock-store": "^1.5.4",
-    "tailwindcss": "^1.9.2"
+    "tailwindcss": "^1.9.5"
   }
 }

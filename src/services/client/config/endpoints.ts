@@ -1,4 +1,4 @@
-import { SocialVerificationAction } from 'services/client'
+import { SocialVerificationAction } from 'services/client/config'
 import { createUrl } from 'util/create-url'
 import { joinUrl } from 'util/join-url'
 import Config from 'config'
@@ -24,7 +24,17 @@ namespace Endpoint {
    * Apps session API endpoints
    */
   export const session = {
-    // TODO: add endpoint
+    // TODO: add endpoints
+    lesson: (category: string, name: string, lesson?: string) => {
+      const app = lesson ? `${category}/${name}` : category
+      lesson ||= name
+      return `session/${app}/${lesson}`
+    },
+    appPractice: (category: string, name?: string) => {
+      const app = name ? `${category}/${name}` : category
+      return `session/${app}/practice`
+    },
+    practice: () => `session/practice`,
   }
 
   /**
@@ -39,6 +49,14 @@ namespace Endpoint {
     setPassword: (id: string) => `user/${id}/password`,
     getPasswordUpdateOptions: (id: string) =>
       `user/${id}/password/update-options`,
+
+    getApps: (id: string) => `user/${id}/apps`,
+    setApps: (id: string) => `user/${id}/apps`,
+
+    getApp(id: string, category: string, name?: string) {
+      const app = name ? `${category}/${name}` : category
+      return `user/${id}/app/${app}`
+    },
   }
 
   /**
@@ -80,6 +98,11 @@ namespace Endpoint {
     provider: 'vk' | 'google',
     type: 'login' | 'register' | 'link',
   ) {
+    // TODO: change to normal url for production
+    const uri =
+      provider === 'google'
+        ? 'https://aaaaaaaaaaaaaaaaaaaaaaaaa.com/auth'
+        : redirectUri
     return createUrl(
       { vk: VK_OAUTH_ENDPOINT, google: GOOGLE_OAUTH_ENPOINT }[provider],
       {
@@ -91,11 +114,11 @@ namespace Endpoint {
           vk: VK_CLIENT_ID,
           google: GOOGLE_CLIENT_ID,
         }[provider],
-        redirect_uri: redirectUri,
+        redirect_uri: uri,
         response_type: 'code',
         state: JSON.stringify({
           provider,
-          redirectUri,
+          redirectUri: uri,
           action: {
             link: SocialVerificationAction.SOCIAL_LINK,
             login: SocialVerificationAction.SOCIAL_LOGIN,

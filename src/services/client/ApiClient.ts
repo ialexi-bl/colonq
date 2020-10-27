@@ -1,21 +1,26 @@
-import { ApiErrorName, ApiResponse } from './api'
+import { ApiErrorName, ApiResponse } from './config'
 import { HttpError, NetworkError } from 'services/errors'
-import { StoreController } from 'store'
-import { UserState, authenticate, unauthenticate } from 'store/user'
-import { connectStore } from 'store/connect-store'
+import { StoreConsumer } from 'store'
+import { authenticate, unauthenticate } from 'store/user'
 import { getTokenExpirationTime } from 'util/jwt'
-import { notifyError } from 'store/view'
 import Config from 'config'
-import Endpoint from 'config/endpoint'
-import ky, { Input, NormalizedOptions, Options } from 'ky'
+import Endpoint from 'services/client/config/endpoints'
+import ky, {
+  BeforeRetryHook,
+  Input,
+  NormalizedOptions,
+  Options,
+  RetryOptions,
+} from 'ky'
 
 /**
  * Manages all network requests and authenticated
  * them when needed
  */
-export default class ApiClient extends StoreController {
-  @connectStore((state) => state.user)
-  private readonly user!: UserState
+export default class ApiClient extends StoreConsumer {
+  private get user() {
+    return this.selector((state) => state.user)
+  }
 
   /** Http client */
   private readonly client: typeof ky
@@ -37,12 +42,14 @@ export default class ApiClient extends StoreController {
 
     this.beforeRequest = this.beforeRequest.bind(this)
     this.afterResponse = this.afterResponse.bind(this)
+    this.beforeRetry = this.beforeRetry.bind(this)
 
     this.client = ky.create({
       prefixUrl: Config.API_URL,
       hooks: {
         beforeRequest: [this.beforeRequest],
         afterResponse: [this.afterResponse],
+        beforeRetry: [this.beforeRetry as BeforeRetryHook],
       },
     })
 
@@ -110,6 +117,10 @@ export default class ApiClient extends StoreController {
     url: Input,
     options?: Options,
   ) {
+    if (options?.authenticate) {
+      options.credentials = 'include'
+    }
+
     return this.client[method](url, options)
       .json<ApiResponse.Success<Response>>()
       .catch((e) => {
@@ -124,6 +135,16 @@ export default class ApiClient extends StoreController {
    * Fetches or returns cache access token
    */
   private async getAccessToken(): Promise<string | null> {
+    // @ts-ignore
+    // window.apiClient = this
+
+    // console.log('update promise:', this.tokenUpdateRequest)
+    // console.log('user:', this.user)
+    // console.log('expi:', this.user.tokenExpires)
+    // console.log('date:', Date.now())
+    // console.log((this.user.tokenExpires || 0) < Date.now())
+    // console.log('initialized:', this.initialized)
+
     if (this.tokenUpdateRequest) {
       await this.tokenUpdateRequest
     } else if (
@@ -145,19 +166,15 @@ export default class ApiClient extends StoreController {
    */
   private async internalUpdateToken(): Promise<void> {
     try {
-      const { data } = await this.get<ApiResponse.Auth.Token>(
+      const { data } = await this.post<ApiResponse.Auth.Token>(
         Endpoint.auth.token,
         { credentials: 'include' },
       )
 
       this.dispatch(
         authenticate({
-          token: data.token,
+          ...data,
           tokenExpires: getTokenExpirationTime(data.token),
-          providers: data.providers,
-          username: data.username,
-          email: data.email,
-          id: data.id,
         }),
       )
     } catch (e) {
@@ -182,6 +199,7 @@ export default class ApiClient extends StoreController {
 
       if (token) {
         req.headers.set('Authorization', `Bearer ${token}`)
+        // Credentials mode is set in "request" method
       }
     }
   }
@@ -197,19 +215,22 @@ export default class ApiClient extends StoreController {
     res: Response,
   ) {
     if (!res.ok) {
-      const error = new HttpError(req, res, options)
+      throw new HttpError(req, res, options)
+    }
+  }
 
-      // TODO: maybe remove this funcionality
-      if (
-        options.notifyErrors ||
-        options.notifyErrorsExcept?.includes(await error.getApiName())
-      ) {
-        error.getApiMessage().then((text) => {
-          this.dispatch(notifyError(text))
-        })
-      }
-
-      throw error
+  private async beforeRetry({
+    error,
+    options,
+  }: {
+    error: Error
+    options: NormalizedOptions
+  }) {
+    if (
+      error instanceof HttpError &&
+      !(options.retry as RetryOptions)!.statusCodes!.includes(error.status)
+    ) {
+      return ky.stop
     }
   }
 }

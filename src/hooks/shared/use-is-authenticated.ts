@@ -1,5 +1,5 @@
 import { AppState } from 'store/types'
-import { login } from 'config/routes'
+import { register } from 'config/routes'
 import { replace } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
@@ -9,7 +9,7 @@ import { useEffect } from 'react'
  * @param redirect - Redirect path
  * @returns - Whether the page should be displayed
  */
-export default function useIsAuthenticated(redirect = login()) {
+export default function useIsAuthenticated(redirect = register()) {
   const dispatch = useDispatch()
   const { status } = useSelector((state: AppState) => state.user)
 

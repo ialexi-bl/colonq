@@ -63,6 +63,12 @@ module.exports = {
         full: '500px',
       },
       minWidth: (theme) => theme('spacing'),
+      spacing: {
+        28: '7rem',
+      },
+      inset: {
+        12: '3rem',
+      },
     },
   },
   future: {

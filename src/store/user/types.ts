@@ -12,6 +12,8 @@ export type User = {
   providers: string[]
   username: string
   email: string
+  appsList: string[]
+  apps: Apps
   id: string
 }
 /**
@@ -26,9 +28,42 @@ export type EmptyUser = {
   providers: never[]
   username: null
   email: null
+  appsList: never[]
+  apps: null
   id: null
 }
 
-export type UserState =
-  | (User & { status: 'authenticated' })
-  | (EmptyUser & { status: 'loading' | 'unauthenticated' })
+export type Apps = Record<string, App>
+export type App = {
+  id: string
+  icon: string
+  score: number
+  title: string
+  loaded: boolean
+} & (
+  | {
+      loaded: false
+      lessons: never[]
+    }
+  | {
+      loaded: true
+      lessons: Lesson[]
+    }
+)
+
+export type Lesson = {
+  id: string
+  icon: string
+  score: number
+  title: string
+  unlocked: boolean
+}
+
+export type AuthUserState = User & {
+  status: 'authenticated'
+}
+export type EmptyUserState = EmptyUser & {
+  status: 'loading' | 'unauthenticated'
+}
+
+export type UserState = AuthUserState | EmptyUserState

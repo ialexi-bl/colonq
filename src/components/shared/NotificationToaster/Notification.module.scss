@@ -26,16 +26,17 @@
     transform: translateY(100%);
   }
 
-  @include media.md {
-    bottom: 0;
-  }
+  // @include media.md {
+  //   bottom: 0;
+  // }
 }
 .error {
   background: colors.$error;
 }
 
 .DismissButton {
-  size: 3rem;
+  width: 3rem;
+  height: 3rem;
   color: colors.$action;
   padding: 0.8rem;
   transition: color 100ms;
