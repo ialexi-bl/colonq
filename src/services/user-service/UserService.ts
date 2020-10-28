@@ -1,7 +1,7 @@
 import { ApiErrorName, ApiResponse, Endpoint } from 'services/client/config'
 import { HttpError } from 'services/errors'
 import { StoreConsumer } from 'store'
-import { authenticate, unauthenticate } from 'store/user'
+import { authenticateSuccess, unauthenticate } from 'store/user'
 import { getTokenExpirationTime } from 'util/jwt'
 import ApiClient from 'services/client'
 
@@ -57,7 +57,7 @@ export default class UserService extends StoreConsumer {
       { json: { username }, authenticate: true },
     )
     this.dispatch(
-      authenticate({
+      authenticateSuccess({
         ...data,
         tokenExpires: getTokenExpirationTime(data.token),
       }),
@@ -99,7 +99,7 @@ export default class UserService extends StoreConsumer {
       { json: { token }, authenticate: true },
     )
     this.dispatch(
-      authenticate({
+      authenticateSuccess({
         ...data,
         tokenExpires: getTokenExpirationTime(data.token),
       }),
@@ -130,7 +130,7 @@ export default class UserService extends StoreConsumer {
       ApiResponse.Auth.RegistrationGoogle
     >(Endpoint.auth.registerGoogle, { json: { code, redirectUri } })
     this.dispatch(
-      authenticate({
+      authenticateSuccess({
         ...data,
         tokenExpires: getTokenExpirationTime(data.token),
       }),
@@ -148,7 +148,7 @@ export default class UserService extends StoreConsumer {
       { json: { code, redirectUri } },
     )
     this.dispatch(
-      authenticate({
+      authenticateSuccess({
         ...data,
         tokenExpires: getTokenExpirationTime(data.token),
       }),
@@ -288,7 +288,7 @@ export default class UserService extends StoreConsumer {
     const { data } = await this.client.post<T>(url, { json: body })
 
     this.dispatch(
-      authenticate({
+      authenticateSuccess({
         ...data,
         tokenExpires: getTokenExpirationTime(data.token),
       }),

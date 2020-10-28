@@ -1,15 +1,46 @@
-import { App, Lesson, User } from './types'
-import { createAction } from 'redux-act'
+import { ApiResponse } from 'services/client/config'
+import { App, Lesson } from './types'
+import { createAction } from 'store/util'
 
-export const authenticate = createAction<Omit<User, 'appsList' | 'apps'>>(
-  'Authenticate user',
-)
-export const unauthenticate = createAction('Unauthenticate user')
+export enum UserAction {
+  AUTHENTICATE_REQUEST = 'USER/AUTHENTICATE/REQUEST',
+  AUTHENTICATE_SUCCESS = 'USER/AUTHENTICATE',
+  AUTHENTICATE_ERROR = 'USER/AUTHENTICATE/ERROR',
+  UNAUTHENTICATE = 'USER/UNAUTHENTICATE',
 
-export const addApps = createAction<Omit<App, 'loaded' | 'lessons'>[]>(
-  'Add apps list',
-)
-export const addAppDetails = createAction<{
+  LOAD_APPS_REQUEST = 'USER/LOAD_APPS/REQUEST',
+  LOAD_APPS_SUCCESS = 'USER/LOAD_APPS',
+  LOAD_APPS_ERROR = 'USER/LOAD_APPS/ERROR',
+
+  LOAD_APP_REQUEST = 'USER/LOAD_APP/REQUEST',
+  LOAD_APP_SUCCESS = 'USER/LOAD_APP',
+  LOAD_APP_ERROR = 'USER/LOAD_APP/ERROR',
+
+  LOGOUT = 'USER/LOGOUT',
+}
+
+export type LoadAppSuccessPayload = {
   app: string
+  title: string
+  icon: string
   lessons: Lesson[]
-}>('Add application')
+}
+
+export const authenticate = createAction(UserAction.AUTHENTICATE_REQUEST)
+export const authenticateError = createAction(UserAction.AUTHENTICATE_ERROR)
+export const authenticateSuccess = createAction<ApiResponse.Auth.UserData>(
+  UserAction.AUTHENTICATE_SUCCESS,
+)
+export const unauthenticate = createAction(UserAction.UNAUTHENTICATE)
+
+export const loadApps = createAction(UserAction.LOAD_APPS_REQUEST)
+export const loadAppsError = createAction(UserAction.LOAD_APPS_ERROR)
+export const loadAppsSuccess = createAction<Omit<App, 'status' | 'lessons'>[]>(
+  UserAction.LOAD_APPS_SUCCESS,
+)
+
+export const loadApp = createAction<string>(UserAction.LOAD_APPS_REQUEST)
+export const loadAppError = createAction<string>(UserAction.LOAD_APPS_ERROR)
+export const loadAppSuccess = createAction<LoadAppSuccessPayload>(
+  UserAction.LOAD_APP_SUCCESS,
+)

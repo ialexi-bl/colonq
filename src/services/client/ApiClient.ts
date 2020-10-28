@@ -1,7 +1,7 @@
 import { ApiErrorName, ApiResponse } from './config'
 import { HttpError, NetworkError } from 'services/errors'
 import { StoreConsumer } from 'store'
-import { authenticate, unauthenticate } from 'store/user'
+import { authenticateSuccess, unauthenticate } from 'store/user'
 import { getTokenExpirationTime } from 'util/jwt'
 import Config from 'config'
 import Endpoint from 'services/client/config/endpoints'
@@ -172,7 +172,7 @@ export default class ApiClient extends StoreConsumer {
       )
 
       this.dispatch(
-        authenticate({
+        authenticateSuccess({
           ...data,
           tokenExpires: getTokenExpirationTime(data.token),
         }),

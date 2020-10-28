@@ -1,12 +1,9 @@
 import { ApiResponse, Endpoint } from 'services/client/config'
-import { App, Apps, addAppDetails, addApps } from 'store/user'
+import { App, Apps, loadApp, loadApps } from 'store/user'
 import { StoreConsumer } from 'store'
 import ApiClient from 'services/client'
 
 export default class AppsService extends StoreConsumer {
-  private loading: Record<string, Promise<App | null>> = {}
-  private appsLoading: Promise<Apps | null> | null = null
-
   get user() {
     return this.selector((state) => state.user)
   }
@@ -48,7 +45,7 @@ export default class AppsService extends StoreConsumer {
       { authenticate: true },
     )
 
-    this.dispatch(addApps(data))
+    this.dispatch(loadApps(data))
     return this.user.apps
   }
 
@@ -61,7 +58,7 @@ export default class AppsService extends StoreConsumer {
       { authenticate: true },
     )
 
-    this.dispatch(addAppDetails({ app, lessons: data.lessons }))
+    this.dispatch(loadApp({ app, lessons: data.lessons }))
     return this.user.apps![app]
   }
 }

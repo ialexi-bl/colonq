@@ -4,6 +4,7 @@ export const FETCH_USER_SUCCESS = 'USER/FETCH_SUCCESS'
  * State with user information
  */
 export type User = {
+  status: 'authenticated' | 'loading' | 'error'
   /** Access JWT token */
   token: string
   /** Token expiry time in **milliseconds** */
@@ -12,14 +13,13 @@ export type User = {
   providers: string[]
   username: string
   email: string
-  appsList: string[]
-  apps: Apps
   id: string
-}
+} & AppsState
 /**
  * State for unauthenticated user
  */
 export type EmptyUser = {
+  status: 'unauthenticated' | 'loading' | 'error' | 'none'
   /** Access JWT token */
   token: null
   /** Token expiry time in **milliseconds** */
@@ -28,9 +28,13 @@ export type EmptyUser = {
   providers: never[]
   username: null
   email: null
-  appsList: never[]
-  apps: null
   id: null
+} & AppsState
+
+export type AppsState = {
+  appsStatus: 'none' | 'loading' | 'error' | 'loaded'
+  appsList: string[]
+  apps: Apps
 }
 
 export type Apps = Record<string, App>
@@ -39,14 +43,13 @@ export type App = {
   icon: string
   score: number
   title: string
-  loaded: boolean
 } & (
   | {
-      loaded: false
+      status: 'only-info' | 'loading' | 'error'
       lessons: never[]
     }
   | {
-      loaded: true
+      status: 'loaded' | 'loading' | 'error'
       lessons: Lesson[]
     }
 )
@@ -59,11 +62,4 @@ export type Lesson = {
   unlocked: boolean
 }
 
-export type AuthUserState = User & {
-  status: 'authenticated'
-}
-export type EmptyUserState = EmptyUser & {
-  status: 'loading' | 'unauthenticated'
-}
-
-export type UserState = AuthUserState | EmptyUserState
+export type UserState = User | EmptyUser
