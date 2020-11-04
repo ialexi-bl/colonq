@@ -16,6 +16,10 @@ export class HttpError extends ColonqError {
   ) {
     super(ErrorName.HTTP_ERRROR, response.statusText)
     this.status = response.status
+
+    this.getApiMessage = this.getApiMessage.bind(this)
+    this.getApiName = this.getApiName.bind(this)
+    this.getDetail = this.getDetail.bind(this)
   }
 
   async populateDetails() {

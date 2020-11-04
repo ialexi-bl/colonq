@@ -4,12 +4,12 @@ import { FormikHelpers, useFormik } from 'formik'
 import { HttpError } from 'services/errors'
 import { MixedDispatch } from 'store/types'
 import { PageContainer } from 'components/shared/Page'
-import { appsList, profile, register } from 'config/routes'
+import { UserApi } from 'services/api'
+import { appsList, register } from 'config/routes'
 import { notifyErrorObject } from 'store/view'
 import { push } from 'connected-react-router'
 import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router'
-import { useUserService } from 'services/user-service'
 import Button, { LinkButton } from 'components/shared/Button'
 import ErrorMessage from 'components/form/ErrorMessage'
 import Input from 'components/form/Input'
@@ -19,7 +19,8 @@ import React, { useState } from 'react'
 import SocialLoginButton from 'components/form/SocialLoginButton'
 import User from 'components/icons/User'
 import cn from 'clsx'
-import useIsGuest from 'hooks/shared/use-is-guest'
+import useApiClient from 'hooks/use-api-client'
+import useIsGuest from 'hooks/use-is-guest'
 
 type FormValues = {
   login: string
@@ -29,7 +30,7 @@ type FormValues = {
 export default function Login() {
   const location = useLocation<{ email?: unknown; password?: unknown }>()
   const dispatch = useDispatch<MixedDispatch>()
-  const userService = useUserService()
+  const { execute } = useApiClient()
   const { email, password } = location.state || {}
   const [loading, setLoading] = useState(false)
 
@@ -41,7 +42,7 @@ export default function Login() {
     setLoading(true)
 
     try {
-      await userService.login(values.login, values.password)
+      await execute(UserApi.login(values.login, values.password))
       push(appsList())
     } catch (e) {
       setLoading(false)
@@ -72,12 +73,11 @@ export default function Login() {
     onSubmit: login,
   })
 
-  if (!useIsGuest(profile())) {
+  if (!useIsGuest()) {
     return null
   }
-  // @ts-ignore
-  window.a = () => setLoading((a) => !a)
 
+  const autofocusPassword = formik.values.login !== ''
   return (
     <PageContainer>
       <PageTitle icon={<User />}>Вход</PageTitle>
@@ -85,17 +85,21 @@ export default function Login() {
       <div className={'max-w-xl mx-auto px-4'}>
         <form onSubmit={formik.handleSubmit}>
           <label className={'block mb-4'}>
-            <span className={'mb-1'}>Email или имя пользователя</span>
+            <span className={'mb-2'}>Email или имя пользователя</span>
             <Input
               readOnly={loading}
+              autoFocus={!autofocusPassword}
               state={getInputState(formik, 'login')}
               {...formik.getFieldProps('login')}
             />
           </label>
           <label className={'block mb-4'}>
-            <span className={'mb-1'}>Пароль</span>
+            <span className={'mb-2'}>Пароль</span>
             <Input
+              // TODO: add ability to show password
+              type={'password'}
               variant={3}
+              autoFocus={autofocusPassword}
               readOnly={loading}
               state={getInputState(formik, 'password')}
               {...formik.getFieldProps('password')}
@@ -133,29 +137,31 @@ export default function Login() {
 
         <div className={'my-16 text-center text-xl'}>ИЛИ</div>
 
-        <LinkButton
-          className={'mb-2 block text-lg max-w-sm'}
-          to={register()}
-          secondary
-        >
-          Зарегистрироваться
-        </LinkButton>
-        <SocialLoginButton
-          provider={'google'}
-          disabled={loading}
-          className={'mb-2 max-w-sm'}
-          type={'login'}
-        />
-        <SocialLoginButton
-          disabled={loading}
-          provider={'vk'}
-          type={'login'}
-          className={'max-w-sm'}
-        />
+        <div className={'flex flex-col items-center'}>
+          <LinkButton
+            className={'mb-2 block text-lg max-w-sm w-full'}
+            to={register()}
+            secondary
+          >
+            Зарегистрироваться
+          </LinkButton>
+          <SocialLoginButton
+            provider={'google'}
+            disabled={loading}
+            className={'mb-2 max-w-sm w-full'}
+            type={'login'}
+          />
+          <SocialLoginButton
+            disabled={loading}
+            provider={'vk'}
+            type={'login'}
+            className={'max-w-sm w-full'}
+          />
+        </div>
       </div>
     </PageContainer>
   )
 }
 
 const getInputState = (formik: any, field: keyof FormValues) =>
-  formik.touched[field] ? (formik.errors[field] ? 'invalid' : 'valid') : null
+  formik.touched[field] && formik.errors[field] ? 'invalid' : null

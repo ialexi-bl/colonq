@@ -385,6 +385,9 @@ module.exports = function (webpackEnv) {
                   // ),
                   // require.resolve('@babel/plugin-proposal-optional-chaining'),
 
+                  require.resolve(
+                    '@babel/plugin-proposal-logical-assignment-operators',
+                  ),
                   [
                     require.resolve('@babel/plugin-transform-typescript'),
                     { allowNamespaces: true },

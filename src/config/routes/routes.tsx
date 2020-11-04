@@ -1,4 +1,10 @@
+import { AppComponent, allowedCategories } from 'apps'
+import { RouteComponentProps } from 'react-router'
 import { RouteOptions, Routes } from './types'
+
+import Config from 'config'
+import EnsureAuthenticated from 'components/shared/EnsureAuthenticated'
+import NotFound from 'components/pages/NotFound'
 import React, { lazy } from 'react'
 
 export const routesArray: RouteOptions[] = [
@@ -36,7 +42,7 @@ export const routesArray: RouteOptions[] = [
     path: '/profile',
     name: 'profile',
     authenticated: true,
-    component: lazy(() => import('components/pages/ProfileUser')),
+    component: lazy(() => import('components/pages/Profile')),
   },
   {
     path: '/login',
@@ -51,17 +57,40 @@ export const routesArray: RouteOptions[] = [
     component: lazy(() => import('components/pages/Registration')),
   },
   {
-    path: '/app/:category/:name',
+    path: '/app/:category/:name/:path*',
     name: 'app',
-    render: () => {
-      return <div></div>
-    },
+    render: renderAppPage,
   },
 ]
 
 export const routes: Routes = {}
 for (const route of routesArray) {
   routes[route.name] = routes[route.path] = route
+}
+
+const cache: Record<string, AppComponent> = {}
+function renderAppPage({
+  match,
+}: RouteComponentProps<{ category: string; name: string; path?: string }>) {
+  const { category, name, path = '' } = match.params
+  if (!(category in allowedCategories)) {
+    return <NotFound />
+  }
+
+  const app = `${category}/${name}`
+  const Component = (cache[app] ||= lazy(() =>
+    import(`apps/${app}/index`).catch((e) => {
+      if (Config.IS_DEV) console.warn(e)
+      return { default: NotFound }
+    }),
+  ))
+
+  // * Not putting suspense here, because suspense from route does the job
+  return (
+    <EnsureAuthenticated>
+      <Component path={path} />
+    </EnsureAuthenticated>
+  )
 }
 
 export const verifyEmail = () => routes.verifyEmail.path
@@ -74,6 +103,7 @@ export const profile = () => routes.profile.path
 export const login = () => routes.login.path
 export const index = () => routes.index.path
 export const auth = () => routes.auth.path
-export const app = (category: string, app: string) => `/app/${category}/${app}`
-export const appSettings = (category: string, app: string) =>
-  `/app/${category}/${app}/settings`
+export const app = (id: string, path?: string) =>
+  `/app/${id}${path ? '/' + path : ''}`
+export const appSettings = (category: string, app?: string) =>
+  `/app/${app ? `${category}/${app}` : category}/settings`

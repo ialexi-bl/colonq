@@ -1,4 +1,5 @@
-import { App, Apps, EmptyUser, UserState } from './types'
+import { ApiResponse } from 'services/client/config'
+import { Apps, EmptyUser, UserState } from './types'
 import {
   LoadAppSuccessPayload,
   authenticate,
@@ -13,6 +14,7 @@ import {
   unauthenticate,
 } from './actions'
 import { createReducer } from 'store/util'
+import { getTokenExpirationTime } from 'util/jwt'
 
 export const initialState: EmptyUser = {
   status: 'loading',
@@ -24,6 +26,7 @@ export const initialState: EmptyUser = {
   id: null,
 
   appsStatus: 'none',
+  categories: [],
   appsList: [],
   apps: {},
 }
@@ -38,10 +41,17 @@ export default createReducer<UserState>(
       ...state,
       status: 'error',
     }),
-    [String(authenticateSuccess)]: (_, payload): UserState => ({
+    [String(authenticateSuccess)]: (
+      _,
+      payload: ApiResponse.Auth.UserData,
+    ): UserState => ({
       ...payload,
+      // TODO: maybe not reset these fields
+      appsStatus: 'none',
+      categories: [],
       appsList: [],
       apps: {},
+      tokenExpires: getTokenExpirationTime(payload.token),
       status: 'authenticated',
     }),
     [String(unauthenticate)]: (): UserState => ({
@@ -55,19 +65,30 @@ export default createReducer<UserState>(
       appsList: [],
       apps: {},
     }),
-    [String(loadAppsSuccess)]: (state, apps: App[]): UserState => {
-      const appsObj: Apps = {}
-      apps.forEach((app) => {
-        app.status = 'only-info'
-        app.lessons = []
-        appsObj[app.id] = app
+    [String(loadAppsSuccess)]: (
+      state,
+      categories: ApiResponse.User.CategoryDescription[],
+    ): UserState => {
+      const apps: Apps = {}
+      const appsList: string[] = []
+
+      categories.forEach((category) => {
+        category.apps.forEach((app) => {
+          appsList.push(app.id)
+          apps[app.id] = {
+            ...app,
+            status: 'only-info',
+            lessons: [],
+          }
+        })
       })
 
       return {
         ...state,
         appsStatus: 'loaded',
-        appsList: apps.map((x) => x.id),
-        apps: appsObj,
+        categories,
+        appsList,
+        apps,
       }
     },
     [String(loadAppsError)]: (state): UserState => ({

@@ -9,7 +9,7 @@ import {
   openLoading,
   showNavigation,
 } from './actions'
-import { createReducer } from 'redux-act'
+import { createReducer } from 'store/util'
 
 const initialState: ViewState = {
   // Needed for `App` to check authentication

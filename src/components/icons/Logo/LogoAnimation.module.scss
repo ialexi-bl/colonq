@@ -39,8 +39,13 @@
   }
 }
 
-.steady {
-  animation-play-state: paused;
+.still {
+  .logoQBody,
+  .logoDot1,
+  .logoDot2,
+  .logoQTail {
+    animation-play-state: paused;
+  }
 }
 .logoQBody {
   animation: ellipse 2s cubic-bezier(0.5, 0.17, 0.5, 0.83) infinite;
@@ -60,8 +65,6 @@
 .logoDot1,
 .logoDot2,
 .logoQTail {
-  /* Allow stopping animation from wrapper component */
-  animation-play-state: inherit;
   stroke-linecap: round;
   color: colors.$text;
 }

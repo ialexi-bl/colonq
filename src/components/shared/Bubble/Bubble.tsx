@@ -2,7 +2,7 @@ import React from 'react'
 import cn from 'clsx'
 import shapes from './bubble.shape.svg'
 import styles from './Bubble.module.scss'
-import useClipShape from 'hooks/shared/use-clip-shape'
+import useClipShape from 'hooks/use-clip-shape'
 
 export type BubbleProps = HTMLProps.div & {
   /** Number between 0 and 1 */

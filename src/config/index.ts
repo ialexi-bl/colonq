@@ -10,7 +10,7 @@ namespace Config {
   export const APP_URL = process.env.REACT_APP_URL || ''
   export const API_URL = process.env.REACT_APP_API_URL || ''
   export const CORS_MODE =
-    process.env.ENABLE_CORS === 'true' ? 'include' : 'same-origin'
+    process.env.REACT_APP_ENABLE_CORS === 'true' ? 'include' : 'same-origin'
   export const CHECK_COOKIE = IS_PROD ? '__Host-check' : 'check'
 }
 export default Config

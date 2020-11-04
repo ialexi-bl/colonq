@@ -1,5 +1,5 @@
 import { useValue } from 'react-cosmos/fixture'
-import Accents from 'components/icons/subjects/russian/Accents'
+import Accents from 'components/icons/dynamic/russian/accents'
 import Bubble from './Bubble'
 import React from 'react'
 

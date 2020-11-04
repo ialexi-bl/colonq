@@ -1,7 +1,6 @@
-import { StringLiteral } from 'typescript'
 import ApiErrorName from './error-names'
 
-namespace ApiResponse {
+declare namespace ApiResponse {
   export type Success<T = null> = {
     success: true
     data: T
@@ -26,12 +25,18 @@ namespace ApiResponse {
       T
     >
 
+    export type CategoryDescription = {
+      id: string
+      title: string
+      apps: AppDescription[]
+    }
     export type AppDescription = {
       id: string
       title: string
       score: number
       icon: string
     }
+
     export type DetailedAppDescription = {
       title: string
       icon: string
@@ -46,22 +51,37 @@ namespace ApiResponse {
     }
 
     export type GetApp = DetailedAppDescription
-    export type GetApps = AppDescription[]
+    export type GetApps = { categories: CategoryDescription[] }
 
     export type PasswordUpdateOption = 'password' | 'vk' | 'google'
     export type GetPasswordUpdateOptions = PasswordUpdateOption[]
 
-    export type SetApps = Auth.Login
     export type SetPassword = null
     export type SetUsername = Auth.Login
     export type SetEmailRequest = null
     export type SetEmailVerified = Auth.Login
+    export type SetApps = GetApps
+  }
+
+  export namespace Apps {
+    export type Category = {
+      id: string
+      title: string
+      apps: App[]
+    }
+    export type App = {
+      id: string
+      icon: string
+      title: string
+      description: string
+    }
+
+    export type GetApps = { categories: Category[] }
   }
 
   export namespace Auth {
     export type UserData = {
       id: string
-      apps: string[]
       email: string
       token: string
       username: string
@@ -72,7 +92,6 @@ namespace ApiResponse {
 
     export type Registration = {
       id: string
-      apps: string[]
       email: string
       username: string
       providers: string[]
@@ -97,6 +116,19 @@ namespace ApiResponse {
 
     export type Logout = null
     export type RestorePassword = null
+  }
+
+  export namespace Session {
+    type SessionData<TProblem> = {
+      app: string
+      problems: TProblem[]
+    }
+
+    type Submit = {
+      updatedLessons: Record<string, { old: number; new: number }>
+      unlockedLessons: string[]
+      lessons: User.LessonDescription[]
+    }
   }
 }
 export default ApiResponse

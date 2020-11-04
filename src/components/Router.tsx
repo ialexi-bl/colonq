@@ -1,18 +1,19 @@
 import { AppState } from 'store/types'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
-import { NotFound } from './pages/NotFound'
 import {
   ROUTE_TRANSITION_CLASSNAME,
   ROUTE_TRANSITION_DURATION,
 } from 'config/view'
 import { Route, Switch, useLocation } from 'react-router-dom'
-import { closeLoading, closePageSpecificLoading, openLoading } from 'store/view'
+import { closePageSpecificLoading } from 'store/view'
 import { routesArray } from 'config/routes'
 import { useDispatch, useSelector } from 'react-redux'
 import Boundary from './pages/Boundary'
 import Config from 'config'
+import NotFound from './pages/NotFound'
 import Page from './shared/Page'
 import React, { Suspense, useEffect, useLayoutEffect, useState } from 'react'
+import SuspenseLoading from './shared/SuspenseLoading'
 
 declare var gtag: any
 
@@ -49,7 +50,7 @@ export function Router() {
       >
         <Page>
           <Boundary>
-            <Suspense fallback={<Fallback />}>
+            <Suspense fallback={<SuspenseLoading id={'route-loading'} />}>
               <Switch location={location}>
                 {routesArray.map((route) => {
                   const props: any =
@@ -74,16 +75,4 @@ export function Router() {
       </CSSTransition>
     </TransitionGroup>
   )
-}
-
-function Fallback() {
-  const dispatch = useDispatch()
-  useEffect(() => {
-    dispatch(openLoading('route-change'))
-    return () => {
-      dispatch(closeLoading('route-change'))
-    }
-  }, [dispatch])
-
-  return null
 }

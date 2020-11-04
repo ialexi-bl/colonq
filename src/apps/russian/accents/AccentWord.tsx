@@ -1,7 +1,6 @@
 // @ts-nocheck
 // eslint-disable
-import { TwoLatestDisplayViewProps } from 'components/applets/TwoLatestDisplay'
-import ChoiceButton from 'components/applets/AnswerButton'
+import { TwoLatestDisplayViewProps } from 'components/apps/TwoLatestDisplay'
 import React, { memo, useState } from 'react'
 import cn from 'clsx'
 import styles from './Accents.module.scss'

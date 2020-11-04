@@ -171,12 +171,7 @@ export default class ApiClient extends StoreConsumer {
         { credentials: 'include' },
       )
 
-      this.dispatch(
-        authenticateSuccess({
-          ...data,
-          tokenExpires: getTokenExpirationTime(data.token),
-        }),
-      )
+      this.dispatch(authenticateSuccess(data))
     } catch (e) {
       if (
         e instanceof HttpError &&

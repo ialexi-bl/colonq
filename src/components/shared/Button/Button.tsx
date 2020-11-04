@@ -3,7 +3,7 @@ import React from 'react'
 import cn from 'clsx'
 import paths from './button.shape.svg'
 import styles from './Button.module.scss'
-import useClipShape from 'hooks/shared/use-clip-shape'
+import useClipShape from 'hooks/use-clip-shape'
 
 type CommonProps = {
   secondary?: boolean

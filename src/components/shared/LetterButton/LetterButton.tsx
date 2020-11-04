@@ -2,7 +2,7 @@ import React from 'react'
 import cn from 'clsx'
 import paths from './letter-button.shape.svg'
 import styles from './LetterButton.module.scss'
-import useClipShape from 'hooks/shared/use-clip-shape'
+import useClipShape from 'hooks/use-clip-shape'
 
 export type LetterButtonProps = Childfree<HTMLProps.button> & {
   children: string

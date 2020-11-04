@@ -1,16 +1,24 @@
 import { AppState } from 'store/types'
-import { Apps, AppsCategories } from 'config/apps'
-import { AuthUserState } from 'store/user'
+import { Fal } from 'components/shared/Fab'
 import { ScrollablePage } from 'components/shared/Page'
-import { app as appRoute, appSettings, appsChoice } from 'config/routes'
+import { User, loadApps } from 'store/user'
+import {
+  app as appRoute,
+  appSettings,
+  appsChoice,
+  appsList,
+} from 'config/routes'
+import { closeLoading, openLoading } from 'store/view'
 import { push } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import Accordion from 'components/shared/Accordion'
 import Button from 'components/shared/Button'
+import DynamicIcon from 'components/icons/DynamicIcon'
 import PageTitle from 'components/shared/PageTitle'
+import PracticeIcon from 'components/icons/Practice'
 import React, { useEffect, useReducer } from 'react'
 import ThemeCard from 'components/shared/ThemeCard'
-import useIsAuthenticated from 'hooks/shared/use-is-authenticated'
+import useIsAuthenticated from 'hooks/use-is-authenticated'
 
 const reducer = (chosen: Record<string, true>, app: string) => {
   const newState = { ...chosen }
@@ -22,18 +30,25 @@ const reducer = (chosen: Record<string, true>, app: string) => {
 export default function AppsList() {
   const dispatch = useDispatch()
   const [visible, toggleVisible] = useReducer(reducer, {})
-  const user = useSelector((state: AppState) => state.user as AuthUserState)
+  const user = useSelector((state: AppState) => state.user as User)
 
   useEffect(() => {
-    console.log(user.status, user.apps.length)
-    if (user.status === 'authenticated' && user.apps.length === 0) {
-      console.log('here')
-      console.log(appsChoice())
+    if (user.appsStatus !== 'loaded') {
+      dispatch(openLoading('apps-list'))
+      dispatch(loadApps())
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  useEffect(() => {
+    if (user.appsStatus === 'loaded' && !user.appsList.length) {
       dispatch(push(appsChoice()))
     }
-  }, [dispatch, user.apps.length, user.status])
+    if (user.appsStatus !== 'loading') {
+      dispatch(closeLoading('apps-list'))
+    }
+  }, [dispatch, user.appsList.length, user.appsStatus])
 
-  if (!useIsAuthenticated()) return null
+  if (!useIsAuthenticated() || !user.categories.length) return null
 
   return (
     <ScrollablePage>
@@ -41,47 +56,36 @@ export default function AppsList() {
       <p className={'px-4 mb-12'}>Нажми на тему, чтобы начать занятие</p>
 
       <div className={'px-4 pb-64'}>
-        {AppsCategories.map((category) => {
-          if (!category.apps.some((x) => user.apps.includes(x))) {
-            return null
-          }
-
+        {user.categories.map((category) => {
           return (
-            <div className={'mb-8'} key={category.name}>
+            <div className={'mb-8'} key={category.id}>
               <h2 className={'text-2xl mb-8'}>{category.title}</h2>
-              {category.apps.map((appPath, i) => {
-                if (!user.apps.includes(appPath)) return null
-                const app = Apps[appPath]
-
+              {category.apps.map((app, i) => {
                 return (
                   <Accordion
-                    key={app.name}
-                    expanded={appPath in visible}
+                    key={app.id}
+                    expanded={app.id in visible}
                     className={'mb-6'}
                     summary={
                       <ThemeCard
-                        onClick={() => toggleVisible(appPath)}
+                        onClick={() => toggleVisible(app.id)}
                         className={'cursor-pointer'}
                         variant={((i % 4) + 1) as 1}
                         title={app.title}
-                        icon={<app.icon />}
+                        icon={<DynamicIcon icon={app.icon} />}
                       />
                     }
                     details={
                       <div className={'flex flex-col px-6'}>
                         <Button
                           variant={2}
-                          onClick={() =>
-                            dispatch(push(appRoute(category.name, app.name)))
-                          }
+                          onClick={() => dispatch(push(appRoute(app.id)))}
                         >
                           Начать занятие
                         </Button>
                         <Button
                           secondary
-                          onClick={() =>
-                            dispatch(push(appSettings(category.name, app.name)))
-                          }
+                          onClick={() => dispatch(push(appSettings(app.id)))}
                         >
                           Настройки
                         </Button>
@@ -94,6 +98,7 @@ export default function AppsList() {
           )
         })}
       </div>
+      <Fal to={appsList()} icon={<PracticeIcon />} />
     </ScrollablePage>
   )
 }

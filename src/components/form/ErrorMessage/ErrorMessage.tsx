@@ -1,7 +1,7 @@
 import React from 'react'
 import cn from 'clsx'
 import styles from './ErrorMessage.module.scss'
-import useDifferentPrevious from 'hooks/shared/use-different-previous'
+import useDifferentPrevious from 'hooks/use-different-previous'
 
 export type Message =
   | string

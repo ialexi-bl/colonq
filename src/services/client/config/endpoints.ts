@@ -15,9 +15,9 @@ namespace Endpoint {
   /**
    * Other API endpoints
    */
-  export const api = {
+  export const general = {
     feedback: 'feedback',
-    logError: 'log/error',
+    log: 'log/error',
   }
 
   /**
@@ -25,13 +25,10 @@ namespace Endpoint {
    */
   export const session = {
     // TODO: add endpoints
-    lesson: (category: string, name: string, lesson?: string) => {
-      const app = lesson ? `${category}/${name}` : category
-      lesson ||= name
+    lesson: (app: string, lesson: string) => {
       return `session/${app}/${lesson}`
     },
-    appPractice: (category: string, name?: string) => {
-      const app = name ? `${category}/${name}` : category
+    appPractice: (app: string) => {
       return `session/${app}/practice`
     },
     practice: () => `session/practice`,
@@ -42,7 +39,7 @@ namespace Endpoint {
    */
   export const user = {
     getById: (id: string) => `user/${id}`,
-    getByEmail: (email: string) => `user/email/${email}`,
+    getByEmail: (email: string) => `user/email/${encodeURIComponent(email)}`,
 
     setEmail: (id: string) => `user/${id}/email`,
     setUsername: (id: string) => `user/${id}/username`,
@@ -57,6 +54,13 @@ namespace Endpoint {
       const app = name ? `${category}/${name}` : category
       return `user/${id}/app/${app}`
     },
+  }
+
+  /**
+   * Apps data
+   */
+  export const apps = {
+    get: 'apps',
   }
 
   /**

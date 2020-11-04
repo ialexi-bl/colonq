@@ -15,5 +15,3 @@ export function createAction<T = void>(type: string): ActionCreator<T> {
   creator.toString = () => type
   return creator
 }
-
-export function createAsyncAction<T>(type: string): AsyncActionCreator<T> {}

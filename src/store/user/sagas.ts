@@ -44,8 +44,10 @@ function* updateToken() {
 
       if (name === ApiErrorName.UNAUTHORIZED) {
         yield put(unauthenticate())
+        return
       }
     }
+    console.error(e)
     yield put(authenticateError())
     yield put(notifyErrorObject(e) as any)
   }
@@ -57,8 +59,9 @@ function* loadApps() {
       executeAuthorizedMethod,
       AppsApi.loadApps(),
     )
-    yield put(loadAppsSuccess(data))
+    yield put(loadAppsSuccess(data.categories))
   } catch (e) {
+    console.error(e)
     yield put(loadAppsError())
     yield put(notifyErrorObject(e) as any)
   }
@@ -66,12 +69,14 @@ function* loadApps() {
 
 function* loadApp(app: string) {
   try {
+    console.log('loading', app)
     const data: ApiResponse.User.GetApp = yield call(
       executeAuthorizedMethod,
       AppsApi.loadApp(app),
     )
     yield put(loadAppSuccess({ ...data, app }))
   } catch (e) {
+    console.error(e)
     yield put(loadAppError(app))
     yield put(notifyErrorObject(e) as any)
   }
@@ -97,6 +102,7 @@ function* watchUpdateToken() {
 function* watchLoadApps() {
   yield takeLeading(UserAction.LOAD_APPS_REQUEST, loadApps)
 }
+
 function* watchLoadApp() {
   const loading: Record<string, true> = {}
 
@@ -115,8 +121,11 @@ function* watchLoadApp() {
 
 export default function* userSaga() {
   while (true) {
-    const channel: Channel<any> = yield actionChannel('USER/*')
-    take(UserAction.AUTHENTICATE_REQUEST)
+    const channel: Channel<any> = yield actionChannel(
+      ({ type }: { type: string }) => {
+        return type.startsWith('USER/') && !type.startsWith('USER/AUTHENTICATE')
+      },
+    )
 
     const tokenTask = yield fork(updateToken)
     const action = yield take([
@@ -133,11 +142,13 @@ export default function* userSaga() {
     const tasks: Task[] = yield all([
       fork(watchLoadApps),
       fork(watchLoadApp),
-      fork(updateToken),
       fork(watchUpdateToken),
     ])
+
     // Executing actions that may have started while authentication way being performed
-    yield takeEvery(channel, put)
+    yield takeEvery(channel, function* (a) {
+      yield put(a)
+    })
     channel.close()
 
     yield take(UserAction.LOGOUT)

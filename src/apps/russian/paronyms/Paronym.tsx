@@ -1,6 +1,6 @@
 // @ts-nocheck
 // eslint-disable
-import { TwoLatestDisplayViewProps } from 'components/applets/TwoLatestDisplay'
+import { TwoLatestDisplayViewProps } from 'components/apps/TwoLatestDisplay'
 import Input from 'components/form/Input'
 import React, { memo, useMemo, useState } from 'react'
 import styles from './Paronym.module.scss'

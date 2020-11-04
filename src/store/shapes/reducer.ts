@@ -1,5 +1,5 @@
 import { ShapeSet, ShapesState } from './types'
-import { createReducer } from 'redux-act'
+import { createReducer } from 'store/util'
 import { registerShape } from './actions'
 
 export default createReducer<ShapesState>(

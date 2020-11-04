@@ -1,8 +1,7 @@
-import { MixedDispatch } from 'store/types'
+import { AppState, MixedDispatch } from 'store/types'
 import { Router } from './Router'
 import { closeLoading } from 'store/view'
-import { useApiClient } from 'services/client'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Navigation from './shared/Navigation'
 import NotificationToaster, {
   CookiesNotification,
@@ -10,43 +9,30 @@ import NotificationToaster, {
 import React, { useEffect, useState } from 'react'
 import RouteLoading from './shared/RouteLoading'
 import ShapesManager from './ShapesManager'
-import useRoute from 'hooks/shared/use-route'
 
 const getMaintenanceComponent = () =>
   import('components/pages/Maintenance').then((x) => x.Maintenance)
 
 export function App({ maintenance }: { maintenance?: boolean }) {
-  const route = useRoute()
-  const client = useApiClient()
+  const status = useSelector((state: AppState) => state.user.status)
   const dispatch = useDispatch<MixedDispatch>()
   const [Maintenance, setMaintenance] = useState<React.ComponentType>(
     () => () => null,
   )
 
   useEffect(() => {
-    async function loadMaintenance() {
-      const Component = await getMaintenanceComponent()
+    if (!maintenance) return
+    getMaintenanceComponent().then((Component) => {
       setMaintenance(() => Component)
-    }
-    async function initialize() {
-      if (route?.preventClientInitialization) return
-      await client.initialize()
-    }
+      dispatch(closeLoading('init'))
+    })
+  }, [dispatch, maintenance])
 
-    async function main() {
-      if (maintenance) {
-        await loadMaintenance()
-      } else {
-        await initialize()
-      }
+  useEffect(() => {
+    if (status !== 'loading') {
       dispatch(closeLoading('init'))
     }
-    main()
-
-    // This effect initializes app and is supposed to only
-    // run once
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [dispatch, status])
 
   if (maintenance) {
     return <Maintenance />

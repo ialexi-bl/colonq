@@ -1,8 +1,13 @@
 import { ApiResponse } from 'services/client/config'
 import { HttpError } from 'services/errors'
-import ky from 'ky'
+import { MixedDispatch } from 'store/types'
+import { authenticateSuccess } from 'store/user'
+import Config from 'config'
+import ky, { RetryOptions } from 'ky'
 
 const client = ky.create({
+  prefixUrl: Config.API_URL,
+  credentials: Config.CORS_MODE,
   hooks: {
     beforeRequest: [
       (req, opts) => {
@@ -16,14 +21,26 @@ const client = ky.create({
         if (!res.ok) throw new HttpError(req, res, opts)
       },
     ],
+    beforeRetry: [
+      ({ error, options }) => {
+        if (!(error instanceof HttpError)) return
+
+        const status = error.status
+        if (!(options.retry as RetryOptions).statusCodes!.includes(status)) {
+          return ky.stop as any
+        }
+      },
+    ],
   },
 })
 
 export interface UnauthorizedApiMethod<T> {
-  (): Promise<ApiResponse.Success<T>>
+  (dispatch: MixedDispatch): Promise<ApiResponse.Success<T>>
 }
 export interface AuthorizedApiMethod<T> {
-  (token: string, id: string): Promise<ApiResponse.Success<T>>
+  (token: string, id: string, dispatch: MixedDispatch): Promise<
+    ApiResponse.Success<T>
+  >
 }
 export type ApiMethod<T> = UnauthorizedApiMethod<T> | AuthorizedApiMethod<T>
 
@@ -38,5 +55,25 @@ export default class Api {
 
   public static post<T>(...args: Parameters<typeof ky.get>) {
     return client.post(...args).json<ApiResponse.Success<T>>()
+  }
+
+  public static authenticate<T extends ApiResponse.Auth.UserData>(
+    fetch: UnauthorizedApiMethod<T>,
+  ) {
+    return (dispatch: MixedDispatch) =>
+      fetch(dispatch).then((response) => {
+        dispatch(authenticateSuccess(response.data))
+        return response
+      })
+  }
+
+  public static authorizedAuthenticate<T extends ApiResponse.Auth.UserData>(
+    fetch: AuthorizedApiMethod<T>,
+  ) {
+    return (token: string, id: string, dispatch: MixedDispatch) =>
+      fetch(token, id, dispatch).then((response) => {
+        dispatch(authenticateSuccess(response.data))
+        return response
+      })
   }
 }

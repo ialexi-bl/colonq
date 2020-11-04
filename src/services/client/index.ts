@@ -1,10 +1,2 @@
 export { default } from './ApiClient'
 export * from './ApiClient'
-// export * from './api'
-// export { default as VerificationAction } from './api/verification-action'
-// export { default as ApiErrorName } from './api/error-names'
-// export type { default as ApiResponse } from './api/responses'
-// export type { default as ProviderResponses } from './api/provider-responses'
-// export { SocialVerificationAction } from './api/verification-action'
-
-export * from './use-api-client'

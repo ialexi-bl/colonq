@@ -1,24 +1,24 @@
+import { ApiClientProps, withApiClient } from 'hooks/use-api-client'
 import { CUTE_FACE } from 'config/view'
 import { PageContainer } from 'components/shared/Page'
 import ApiClient from 'services/client'
-import ApiClientContext from 'services/client/context'
 import Config from 'config'
-import Endpoint from 'services/client/config/endpoints'
+import GeneralApi from 'services/api/general'
 import React, { ErrorInfo, ReactNode } from 'react'
 import TitleLine from 'components/shared/TitleLine'
 import styles from './Boundary.module.scss'
 
-export type BoundaryProps = {
+export type BoundaryProps = ApiClientProps & {
   children?: ReactNode
-} & (
-  | { global?: false }
-  | { global: true; applyClassName: (className: string) => unknown }
-)
+  global?: boolean
+  // Needed only for global
+  applyClassName?: (className: string) => unknown
+}
 
 declare const Ya: any
 declare const ga: any
-export default class Boundary extends React.Component<BoundaryProps> {
-  static contextType = ApiClientContext
+
+class Boundary extends React.Component<BoundaryProps> {
   public context!: ApiClient
 
   public state = {
@@ -33,7 +33,7 @@ export default class Boundary extends React.Component<BoundaryProps> {
 
   componentDidCatch(e: Error, info: ErrorInfo) {
     if (this.props.global) {
-      this.props.applyClassName('p-0')
+      this.props.applyClassName?.('p-0')
     }
 
     let gaId, ymId
@@ -46,18 +46,18 @@ export default class Boundary extends React.Component<BoundaryProps> {
     } catch (e) {}
     /* eslint-enable no-undef */
 
-    const client = this.context
-    client
-      .post(Endpoint.api.logError, {
-        json: {
+    // TODO: check if this needs to be authorized
+    this.props
+      .execute(
+        GeneralApi.log({
           type: 'page',
           gaId,
           ymId,
           name: e.name,
           message: e.message,
           stack: `${e.stack}\nComponents stack: ${info.componentStack}`,
-        },
-      })
+        }),
+      )
       .catch(() => {})
   }
 
@@ -79,3 +79,4 @@ export default class Boundary extends React.Component<BoundaryProps> {
     )
   }
 }
+export default withApiClient<BoundaryProps>(Boundary)

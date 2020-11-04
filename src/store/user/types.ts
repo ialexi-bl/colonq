@@ -33,26 +33,34 @@ export type EmptyUser = {
 
 export type AppsState = {
   appsStatus: 'none' | 'loading' | 'error' | 'loaded'
+  categories: {
+    id: string
+    title: string
+    apps: PlainApp[]
+  }[]
+  // TODO: remove this field if it's not needed anywhere
   appsList: string[]
   apps: Apps
 }
 
 export type Apps = Record<string, App>
-export type App = {
+export type App = PlainApp &
+  (
+    | {
+        status: 'only-info' | 'loading' | 'error'
+        lessons: never[]
+      }
+    | {
+        status: 'loaded' | 'loading' | 'error'
+        lessons: Lesson[]
+      }
+  )
+export type PlainApp = {
   id: string
   icon: string
   score: number
   title: string
-} & (
-  | {
-      status: 'only-info' | 'loading' | 'error'
-      lessons: never[]
-    }
-  | {
-      status: 'loaded' | 'loading' | 'error'
-      lessons: Lesson[]
-    }
-)
+}
 
 export type Lesson = {
   id: string
