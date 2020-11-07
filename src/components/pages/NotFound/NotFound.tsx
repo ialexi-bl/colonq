@@ -6,7 +6,7 @@ import React from 'react'
 import cn from 'clsx'
 import styles from './NotFound.module.scss'
 
-export default () => (
+const NotFound = () => (
   <PageContainer
     className={'flex flex-col md:flex-row-reverse justify-center items-center'}
   >
@@ -22,3 +22,4 @@ export default () => (
     </LinkButton>
   </PageContainer>
 )
+export default NotFound

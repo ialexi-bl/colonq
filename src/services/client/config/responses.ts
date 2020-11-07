@@ -125,7 +125,7 @@ declare namespace ApiResponse {
     }
 
     type Submit = {
-      updatedLessons: Record<string, { old: number; new: number }>
+      updatedLessons: { old: number; new: number; id: string }[]
       unlockedLessons: string[]
       lessons: User.LessonDescription[]
     }

@@ -5,6 +5,7 @@ import styles from './Bubble.module.scss'
 import useClipShape from 'hooks/use-clip-shape'
 
 export type BubbleProps = HTMLProps.div & {
+  unlockTransition?: boolean
   /** Number between 0 and 1 */
   disabled?: boolean
   progress?: number
@@ -15,6 +16,7 @@ export default function Bubble({
   icon,
   disabled,
   className,
+  unlockTransition,
   variant = 1,
   progress = 1,
   ...props
@@ -32,15 +34,18 @@ export default function Bubble({
     >
       <div
         className={cn(
-          'absolute inset-0 transition-colors duration-100',
+          'absolute inset-0 transition-colors',
+          unlockTransition ? 'duration-1000 delay-200' : 'duration-100',
           disabled ? 'bg-disabled-700' : 'bg-primary-500',
         )}
         style={{ clipPath: clipPath(progress) }}
       />
       <div
         className={cn(
-          'p-6 transition-colors duration-100',
+          'p-6 transition-colors',
           styles.inner,
+          // ? NOTE: maybe transition duration and delay should be dynamic?
+          unlockTransition ? 'duration-1000 delay-200' : 'duration-100',
           disabled ? 'bg-disabled-1000' : 'bg-primary-900',
         )}
       >

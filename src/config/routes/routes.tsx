@@ -105,5 +105,3 @@ export const index = () => routes.index.path
 export const auth = () => routes.auth.path
 export const app = (id: string, path?: string) =>
   `/app/${id}${path ? '/' + path : ''}`
-export const appSettings = (category: string, app?: string) =>
-  `/app/${app ? `${category}/${app}` : category}/settings`

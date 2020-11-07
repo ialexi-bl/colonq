@@ -9,16 +9,15 @@ import styles from './TwoLatestDisplay.module.scss'
  * its way, when the next word comes, it disappears and so on
  * @param props
  */
-export function TwoLatestDisplay<TItem>({
+export function TwoLatestDisplay<TItem, TNext extends Function>({
   next,
   current,
   previous,
   previous2,
   className,
   component: Component,
-}: TwoLatestDisplayProps<TItem>) {
+}: TwoLatestDisplayProps<TItem, TNext>) {
   const iter = [previous2, previous, current].filter(Boolean) as Item<TItem>[]
-  const last = useRef(1)
 
   return (
     <div className={cn(styles.Container, className)}>
@@ -34,13 +33,20 @@ export function TwoLatestDisplay<TItem>({
             if (!e) return
 
             if (item === current) {
-              const scale = (last.current = reduceFont(e))
-              e.style.transform = `scale(${scale})`
-            } else {
-              const gone = item === previous2
-              e.style.transform = `translateY(-100%) scale(${
-                last.current * (gone ? 0.6 : 0.65)
-              })`
+              if (item.transformed !== 'curr') {
+                item.transformed = 'curr'
+                e.style.transform = `scale(${reduceFont(e)})`
+              }
+            } else if (item === previous) {
+              if (item.transformed !== 'prev') {
+                item.transformed = 'prev'
+                e.style.transform = `translateY(${
+                  item.hiding ? '5rem' : '-100%'
+                }) ${e.style.transform} scale(0.6)`
+              }
+            } else if (item.transformed !== 'prev1') {
+              item.transformed = 'prev1'
+              e.style.transform += ` scale(0.9)`
             }
           }}
         >

@@ -6,13 +6,26 @@ export type DynamicIconProps = HTMLProps.svg & {
 }
 
 export default function DynamicIcon({ icon, ...props }: DynamicIconProps) {
-  const Component = (cache[icon] ||= lazy(
-    () => import(`components/icons/dynamic/${icon}/index`),
-  ))
+  const Component = (cache[icon] ||= lazy(() => importIcon(icon)))
 
   return (
     <Suspense fallback={<svg {...props} />}>
       <Component {...props} />
     </Suspense>
   )
+}
+
+export function preloadIcons(icons: string[]) {
+  const promises: Promise<void>[] = []
+  icons.forEach((icon) => {
+    if (!(icon in cache)) {
+      const promise = importIcon(icon)
+      cache[icon] = lazy(() => promise)
+      promises.push(promise.then(() => {}))
+    }
+  })
+  return Promise.all(promises)
+}
+function importIcon(icon: string) {
+  return import(`components/icons/dynamic/${icon}/index`)
 }

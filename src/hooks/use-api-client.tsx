@@ -11,6 +11,10 @@ export interface ExecuteMethod {
 export interface ExecuteMethodAuthorized {
   <T>(method: AuthorizedApiMethod<T>): Promise<ApiResponse.Success<T>>
 }
+export type ApiClient = {
+  execute: ExecuteMethod
+  executeAuthorized: ExecuteMethodAuthorized
+}
 
 type PendingRequest = {
   method: AuthorizedApiMethod<any>
@@ -20,7 +24,7 @@ const execute: ExecuteMethod = <T extends any>(
   method: UnauthorizedApiMethod<T>,
 ) => method(store.dispatch)
 
-export default function useApiClient() {
+export default function useApiClient(): ApiClient {
   const user = useSelector((state: AppState) => state.user)
   const pending = useRef<PendingRequest[]>([])
 

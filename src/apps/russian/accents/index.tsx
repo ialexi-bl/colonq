@@ -5,11 +5,22 @@ import { app } from 'config/routes'
 import AccentsSession from './AccentsSession'
 import AppContainer from 'apps/AppContainer'
 import NotFound from 'components/pages/NotFound'
+import ProblemsProvider from 'apps/shared/ProblemsProvider'
 import React from 'react'
 
-const PracticeSession = () => <AccentsSession lesson={PRACTICE} />
+const PracticeSession = () => (
+  <ProblemsProvider
+    app={'russian/accents'}
+    lesson={PRACTICE}
+    consumer={AccentsSession}
+  />
+)
 const LessonSession = ({ match }: RouteComponentProps<{ lesson: string }>) => (
-  <AccentsSession lesson={match.params.lesson} />
+  <ProblemsProvider
+    app={'russian/accents'}
+    lesson={match.params.lesson}
+    consumer={AccentsSession}
+  />
 )
 
 const Accents: AppComponent = () => (
@@ -18,6 +29,11 @@ const Accents: AppComponent = () => (
       <Route
         exact
         path={app('russian/accents', 'practice')}
+        render={PracticeSession}
+      />
+      <Route
+        exact
+        path={app('russian/accents', 'list')}
         render={PracticeSession}
       />
       <Route

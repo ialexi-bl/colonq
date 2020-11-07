@@ -11,6 +11,7 @@ const phrases = [
   'удушл[Ие]вый',
 ]
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default () => {
   const [cur, setCur] = useValue<number>('current', { defaultValue: 0 })
 
@@ -42,7 +43,10 @@ export default () => {
   )
 }
 
-function Word({ item, next }: TwoLatestDisplayViewProps<string>) {
+function Word({
+  item,
+  next,
+}: TwoLatestDisplayViewProps<string, () => unknown>) {
   const [answer, setAnswer] = useState<undefined | number>(undefined)
 
   return (

@@ -6,6 +6,7 @@ export type ActionsMap<S> = {
 }
 
 export function createReducer<S>(actionsMap: ActionsMap<S>, initialState: S) {
+  // eslint-disable-next-line default-param-last
   return (state: S = initialState, action: { type: string; payload: any }) => {
     if (action.type in actionsMap) {
       return actionsMap[action.type](state, action.payload)

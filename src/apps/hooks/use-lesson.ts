@@ -1,13 +1,15 @@
+import { ApiErrorName } from 'services/client/config'
 import { HttpError } from 'services/errors'
 import { useEffect, useState } from 'react'
 import Config from 'config'
 import SessionApi from 'services/api/session'
 import useApiClient from 'hooks/use-api-client'
 
+type Status = 'loading' | 'loaded' | 'error' | ApiErrorName
 type Result<TProblem> =
   | {
-      status: 'loading' | 'error' | 'not-found'
-      problems: null
+      status: Exclude<Status, 'loaded'>
+      problems: never[]
     }
   | {
       status: 'loaded'
@@ -15,16 +17,17 @@ type Result<TProblem> =
     }
 
 export const PRACTICE: unique symbol = Symbol('practice')
+export type LessonType = string | typeof PRACTICE
+
 export default function useLesson<TProblem>(
   app: string,
   lesson: string | typeof PRACTICE,
-) {
-  const [data, setData] = useState<Result<TProblem>>({
-    status: 'loading',
-    problems: null,
-  })
+): Result<TProblem> {
+  const [status, setStatus] = useState<Status>('loading')
+  const [problems, setProblems] = useState<TProblem[]>([])
   const { executeAuthorized } = useApiClient()
 
+  // Fetching session data
   useEffect(() => {
     executeAuthorized(
       lesson === PRACTICE
@@ -32,17 +35,19 @@ export default function useLesson<TProblem>(
         : SessionApi.getLesson<TProblem>(app, lesson),
     )
       .then(({ data: { problems } }) => {
-        setData({ status: 'loaded', problems })
+        setProblems(problems)
+        setStatus('loaded')
       })
-      .catch((error) => {
-        if (error instanceof HttpError && error.status === 404) {
-          return setData({ status: 'not-found', problems: null })
+      .catch(async (error) => {
+        if (error instanceof HttpError) {
+          const name = await error.getApiName()
+          return setStatus(name)
         }
 
         if (Config.IS_DEV) console.error(error)
-        setData({ status: 'error', problems: null })
+        setStatus('error')
       })
   }, [app, executeAuthorized, lesson])
 
-  return data
+  return { status, problems } as Result<TProblem>
 }

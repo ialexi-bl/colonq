@@ -32,6 +32,7 @@ namespace Endpoint {
       return `session/${app}/practice`
     },
     practice: () => `session/practice`,
+    submitAnswers: (app: string) => `session/${app}/answer`,
   }
 
   /**

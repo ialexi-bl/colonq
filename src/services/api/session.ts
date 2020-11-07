@@ -17,4 +17,16 @@ export default class SessionApi {
         { token },
       )
   }
+
+  public static submitAnswers<TAnswers>(
+    app: string,
+    answers: TAnswers,
+    disabled: string[] = [],
+  ) {
+    return (token: string) =>
+      Api.post<ApiResponse.Session.Submit>(
+        Endpoint.session.submitAnswers(app),
+        { json: { answers, disabled }, token },
+      )
+  }
 }

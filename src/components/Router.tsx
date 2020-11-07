@@ -15,7 +15,7 @@ import Page from './shared/Page'
 import React, { Suspense, useEffect, useLayoutEffect, useState } from 'react'
 import SuspenseLoading from './shared/SuspenseLoading'
 
-declare var gtag: any
+declare const gtag: any
 
 export function Router() {
   const location = useLocation()

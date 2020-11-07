@@ -1,27 +1,28 @@
-export type TwoLatestDisplayViewProps<TItem> = {
+export type TwoLatestDisplayViewProps<TItem, TNext extends Function> = {
   active: boolean
   item: TItem
-  next: () => unknown
+  next: TNext
 }
 
 export type TwoLatestDisplayItem<TData> = {
   id: string
   data: TData
   hiding?: boolean
+  /** @internal */
+  transformed?: 'curr' | 'prev' | 'prev1'
 }
 export type TwoLatestItems<TData> = {
   current: Item<TData> | null
   prev1: Item<TData> | null
   prev2: Item<TData> | null
 }
-export type TwoLatestDisplayProps<TData> = {
-  component: React.ComponentType<TwoLatestDisplayViewProps<TData>>
-  // words: TwoLatestItems<TData>
-  className?: string
-  next: (hiding?: boolean) => unknown
+export type TwoLatestDisplayProps<TData, TNext extends Function> = {
+  component: React.ComponentType<TwoLatestDisplayViewProps<TData, TNext>>
+  next: TNext
   current: TwoLatestDisplayItem<TData> | null
   previous: TwoLatestDisplayItem<TData> | null
   previous2: TwoLatestDisplayItem<TData> | null
+  className?: string
 }
 
 export type Item<TData> = TwoLatestDisplayItem<TData>

@@ -23,7 +23,7 @@ import LangErrors from 'lang/errors.json'
 import LangNotifications from 'lang/notifications.json'
 import NewPasswordPrompt from './NewPasswordPrompt'
 import React, { useEffect, useState } from 'react'
-import useApiClient, { ExecuteMethod } from 'hooks/use-api-client'
+import useApiClient, { ApiClient } from 'hooks/use-api-client'
 
 type Status =
   | null
@@ -38,7 +38,7 @@ type Status =
 export default function Auth() {
   const dispatch = useDispatch<MixedDispatch>()
   const location = useLocation()
-  const { execute } = useApiClient()
+  const apiClient = useApiClient()
   const [status, setStatus] = useState<Status>(null)
   const authStatus = useSelector((state: AppState) => state.user.status)
   const params = new URLSearchParams(location.search)
@@ -47,7 +47,7 @@ export default function Auth() {
     if (authStatus === 'loading') return
 
     dispatch(openLoading('auth'))
-    dispatch(process(authStatus === 'authenticated', execute, params)).then(
+    dispatch(process(authStatus === 'authenticated', apiClient, params)).then(
       (status) => {
         dispatch(closeLoading('auth'))
         if (status) setStatus(status)
@@ -64,7 +64,7 @@ export default function Auth() {
           loading={status.loading}
           onSubmit={async (password) => {
             setStatus({ action: 'prompt-password', loading: true })
-            await dispatch(submitNewPassword(params, execute, password))
+            await dispatch(submitNewPassword(params, apiClient, password))
             setStatus({ action: 'prompt-password', loading: false })
           }}
         />
@@ -77,7 +77,7 @@ export default function Auth() {
           onSubmit={async (email) => {
             setStatus({ ...status, loading: true })
             const emailSent = await dispatch(
-              submitMissingEmail(execute, status.token, email),
+              submitMissingEmail(apiClient, status.token, email),
             )
             setStatus({ ...status, loading: true, emailSent })
           }}
@@ -90,7 +90,7 @@ export default function Auth() {
 
 function process(
   authenticated: boolean,
-  execute: ExecuteMethod,
+  execute: ApiClient,
   search: URLSearchParams,
 ): ThunkAction<Promise<Status>> {
   return search.has('action')
@@ -100,7 +100,7 @@ function process(
 
 function processAction(
   authenticated: boolean,
-  execute: ExecuteMethod,
+  { execute, executeAuthorized }: ApiClient,
   search: URLSearchParams,
 ): ThunkAction<Promise<Status>> {
   return async (dispatch) => {
@@ -129,7 +129,7 @@ function processAction(
             break
           }
 
-          await execute(UserApi.submitChangeEmail(token))
+          await executeAuthorized(UserApi.submitChangeEmail(token))
           dispatch(replace(appsList()))
           return null
         }
@@ -150,7 +150,7 @@ function processAction(
 }
 function processSocialLogin(
   authenticated: boolean,
-  execute: ExecuteMethod,
+  { execute, executeAuthorized }: ApiClient,
   search: URLSearchParams,
 ): ThunkAction<Promise<Status>> {
   return async (dispatch) => {
@@ -191,23 +191,28 @@ function processSocialLogin(
         dispatch(notifyError('Нельзя войти дважды'))
         dispatch(replace(appsList()))
       } else {
-        const method = ({
-          [SocialVerificationAction.SOCIAL_REGISTER]: {
-            vk: 'registerVk',
-            google: 'registerGoogle',
-          },
-          [SocialVerificationAction.SOCIAL_LOGIN]: {
-            vk: 'loginVk',
-            google: 'loginGoogle',
-          },
-          [SocialVerificationAction.SOCIAL_LINK]: {
+        if (action === SocialVerificationAction.SOCIAL_LINK) {
+          const method = ({
             vk: 'linkVk',
             google: 'linkGoogle',
-          },
-        } as const)[action][provider]
+          } as const)[provider]
 
-        // If this method doesn't throw error, user will be authenticated
-        await execute(UserApi[method](code, redirectUri))
+          await executeAuthorized(UserApi[method](code, redirectUri))
+        } else {
+          const method = ({
+            [SocialVerificationAction.SOCIAL_REGISTER]: {
+              vk: 'registerVk',
+              google: 'registerGoogle',
+            },
+            [SocialVerificationAction.SOCIAL_LOGIN]: {
+              vk: 'loginVk',
+              google: 'loginGoogle',
+            },
+          } as const)[action][provider]
+
+          // If this method doesn't throw error, user will be authenticated
+          await execute(UserApi[method](code, redirectUri))
+        }
         dispatch(replace(appsList()))
 
         return null
@@ -233,7 +238,7 @@ function processSocialLogin(
 
 function submitNewPassword(
   search: URLSearchParams,
-  execute: ExecuteMethod,
+  { execute }: ApiClient,
   password: string,
 ): ThunkAction<Promise<void>> {
   return async (dispatch) => {
@@ -253,7 +258,7 @@ function submitNewPassword(
 }
 
 function submitMissingEmail(
-  execute: ExecuteMethod,
+  { execute }: ApiClient,
   token: string,
   email: string,
 ): ThunkAction<Promise<boolean>> {

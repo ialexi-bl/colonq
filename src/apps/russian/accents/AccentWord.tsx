@@ -1,6 +1,6 @@
-// @ts-nocheck
-// eslint-disable
+import { AccentsProblem } from './AccentsSession'
 import { TwoLatestDisplayViewProps } from 'components/apps/TwoLatestDisplay'
+import LetterButton from 'components/shared/LetterButton'
 import React, { memo, useState } from 'react'
 import cn from 'clsx'
 import styles from './Accents.module.scss'
@@ -19,17 +19,17 @@ export const vowels = {
 }
 
 export const AccentWord = memo(function AccentWord({
-  item: word,
+  item,
   active,
   next,
-}: TwoLatestDisplayViewProps<Word>) {
+}: TwoLatestDisplayViewProps<AccentsProblem, (answer: number) => unknown>) {
   const [answer, setAnswer] = useState(-1)
   const answered = answer >= 0
 
   let hidden = false
   return (
     <div className={cn(styles.Word, {})}>
-      {word.label.split('').map((letter, i) => {
+      {item.problem.split('').map((letter, i) => {
         if (letter === '(') {
           hidden = true
         } else if (letter === ')') {
@@ -45,23 +45,29 @@ export const AccentWord = memo(function AccentWord({
           )
         }
 
-        const isCorrect =
-          word.label[i] !== word.label[i].toLowerCase() || letter === 'ё'
-
+        const isAnswer = item.answer === i
         return (
-          <ChoiceButton
+          <LetterButton
             key={`${i}-${letter}`}
             onClick={() => {
               setAnswer(i)
-              next()
+              next(i)
             }}
             tabIndex={active ? 0 : -1}
             className={styles.Letter}
-            incorrect={answered && isCorrect}
-            correct={answered && !isCorrect && i === answer}
+            state={
+              !answered
+                ? null
+                : isAnswer
+                ? 'correct'
+                : i === answer
+                ? 'incorrect'
+                : null
+            }
           >
-            {lower === 'ё' && !answered ? 'е' : lower}
-          </ChoiceButton>
+            {/* Hiding points above ё */}
+            {answered || lower !== 'ё' ? lower : 'е'}
+          </LetterButton>
         )
       })}
     </div>

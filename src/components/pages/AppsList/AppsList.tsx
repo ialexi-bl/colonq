@@ -2,12 +2,7 @@ import { AppState } from 'store/types'
 import { Fal } from 'components/shared/Fab'
 import { ScrollablePage } from 'components/shared/Page'
 import { User, loadApps } from 'store/user'
-import {
-  app as appRoute,
-  appSettings,
-  appsChoice,
-  appsList,
-} from 'config/routes'
+import { app as appRoute, appsChoice, appsList } from 'config/routes'
 import { closeLoading, openLoading } from 'store/view'
 import { push } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
@@ -56,7 +51,7 @@ export default function AppsList() {
       <p className={'px-4 mb-12'}>Нажми на тему, чтобы начать занятие</p>
 
       <div className={'px-4 pb-64'}>
-        {user.categories.map((category) => {
+        {user.categories.map((category, i) => {
           return (
             <div className={'mb-8'} key={category.id}>
               <h2 className={'text-2xl mb-8'}>{category.title}</h2>
@@ -78,14 +73,28 @@ export default function AppsList() {
                     details={
                       <div className={'flex flex-col px-6'}>
                         <Button
-                          variant={2}
-                          onClick={() => dispatch(push(appRoute(app.id)))}
+                          variant={((i % 2) + 1) as 1}
+                          onClick={() =>
+                            dispatch(push(appRoute(app.id, 'practice')))
+                          }
                         >
                           Начать занятие
                         </Button>
                         <Button
+                          variant={((i % 2) + 2) as 1}
                           secondary
-                          onClick={() => dispatch(push(appSettings(app.id)))}
+                          onClick={() =>
+                            dispatch(push(appRoute(app.id, 'list')))
+                          }
+                        >
+                          Уроки
+                        </Button>
+                        <Button
+                          variant={i % 2 ? 1 : 3}
+                          secondary
+                          onClick={() =>
+                            dispatch(push(appRoute(app.id, 'settings')))
+                          }
                         >
                           Настройки
                         </Button>

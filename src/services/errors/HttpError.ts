@@ -38,7 +38,7 @@ export class HttpError extends ColonqError {
 
   async getApiName() {
     await this.populateDetails()
-    return this.apiName as string
+    return this.apiName as ApiErrorName
   }
 
   async getApiMessage() {
