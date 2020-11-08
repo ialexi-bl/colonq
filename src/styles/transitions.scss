@@ -1,0 +1,31 @@
+@use './mixins/transition-presets';
+
+.route-opacity {
+  @include transition-presets.opacity;
+}
+
+.route-translate-x-full {
+  @include transition-presets.right;
+}
+.-route-translate-x-full {
+  @include transition-presets.left;
+}
+.route-translate-y-full {
+  @include transition-presets.down;
+}
+.-route-translate-y-full {
+  @include transition-presets.up;
+}
+
+.route-translate-x-full.route-opacity {
+  @include transition-presets.right-opacity;
+}
+.-route-translate-x-full.route-opacity {
+  @include transition-presets.left-opacity;
+}
+.route-translate-y-full.route-opacity {
+  @include transition-presets.down-opacity;
+}
+.-route-translate-y-full.route-opacity {
+  @include transition-presets.up-opacity;
+}

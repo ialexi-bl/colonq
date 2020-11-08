@@ -18,6 +18,9 @@ export function TwoLatestDisplay<TItem, TNext extends Function>({
   component: Component,
 }: TwoLatestDisplayProps<TItem, TNext>) {
   const iter = [previous2, previous, current].filter(Boolean) as Item<TItem>[]
+  const { current: transformed } = useRef<
+    Record<string, 'curr' | 'prev' | 'prev1'>
+  >({})
 
   return (
     <div className={cn(styles.Container, className)}>
@@ -33,19 +36,19 @@ export function TwoLatestDisplay<TItem, TNext extends Function>({
             if (!e) return
 
             if (item === current) {
-              if (item.transformed !== 'curr') {
-                item.transformed = 'curr'
+              if (transformed[item.id] !== 'curr') {
+                transformed[item.id] = 'curr'
                 e.style.transform = `scale(${reduceFont(e)})`
               }
             } else if (item === previous) {
-              if (item.transformed !== 'prev') {
-                item.transformed = 'prev'
+              if (transformed[item.id] !== 'prev') {
+                transformed[item.id] = 'prev'
                 e.style.transform = `translateY(${
                   item.hiding ? '5rem' : '-100%'
                 }) ${e.style.transform} scale(0.6)`
               }
-            } else if (item.transformed !== 'prev1') {
-              item.transformed = 'prev1'
+            } else if (transformed[item.id] !== 'prev1') {
+              transformed[item.id] = 'prev1'
               e.style.transform += ` scale(0.9)`
             }
           }}

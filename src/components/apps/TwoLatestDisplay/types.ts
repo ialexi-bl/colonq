@@ -8,8 +8,6 @@ export type TwoLatestDisplayItem<TData> = {
   id: string
   data: TData
   hiding?: boolean
-  /** @internal */
-  transformed?: 'curr' | 'prev' | 'prev1'
 }
 export type TwoLatestItems<TData> = {
   current: Item<TData> | null

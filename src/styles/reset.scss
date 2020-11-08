@@ -31,3 +31,7 @@ button {
 .reset-link {
   text-decoration: none;
 }
+
+.disable-touch-bg {
+  -webkit-tap-highlight-color: transparent;
+}

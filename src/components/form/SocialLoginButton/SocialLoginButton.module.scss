@@ -1,6 +1,3 @@
-@use 'styles/variables/dims';
-@use 'styles/variables/colors';
-
 .SocialButton {
   &:nth-of-type(3n + 1) {
     clip-path: url(#shape-button-1);

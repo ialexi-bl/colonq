@@ -1,6 +1,3 @@
-@use 'styles/variables/colors';
-@use 'styles/variables/dims';
-
 $placeholder-color: #888;
 
 .Input {
@@ -38,9 +35,9 @@ $placeholder-color: #888;
 .valid {
   box-shadow: inset 0 -8px theme('colors.correct.default');
 }
-  .readonly {
-    box-shadow: inset 0 -8px theme('colors.disabled.700');
-  }
+.readonly {
+  box-shadow: inset 0 -8px theme('colors.disabled.700');
+}
 
 .variant-1 {
   clip-path: url(#shape-input-1);

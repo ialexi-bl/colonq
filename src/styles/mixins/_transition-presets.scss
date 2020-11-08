@@ -1,0 +1,114 @@
+@use 'styles/mixins/route-transition';
+
+// Animations
+@keyframes opacity-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@mixin dir-animation($name, $x, $y: 0) {
+  @keyframes #{$name} {
+    from {
+      transform: translate($x, $y);
+    }
+    to {
+      transform: translate(0, 0);
+    }
+  }
+}
+@include dir-animation('up-enter', 0, -100vh);
+@include dir-animation('down-enter', 0, 100vh);
+@include dir-animation('left-enter', -100vw);
+@include dir-animations('right-enter', 100vw);
+
+@mixin dir-opacity-animation($name, $x, $y: 0) {
+  @keyframes #{$name} {
+    from {
+      opacity: 0;
+      transform: translate($x, $y);
+    }
+    to {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+  }
+}
+@include dir-opacity-animation('up-opacity-enter', 0, -100vh);
+@include dir-opacity-animation('down-opacity-enter', 0, 100vh);
+@include dir-opacity-animation('left-opacity-enter', -100vw);
+@include dir-opacity-animation('right-opacity-enter', 100vw);
+
+// Transition mixins
+@mixin opacity {
+  animation: opacity-enter theme('transitionDuration.route');
+
+  // Enter via animation, not transition
+  @include route-transition.descendant(exit) {
+    opacity: 1;
+  }
+  @include route-transition.descendant(exit-active) {
+    transition: opacity theme('transitionDuration.route') !important;
+    opacity: 0;
+  }
+}
+
+@mixin dir($x, $y: 0) {
+  // Enter via animation, not transition
+  @include route-transition.descendant(/* enter-active,  */ exit) {
+    transform: translateY(0);
+  }
+  @include route-transition.descendant(exit-active) {
+    transition: transform theme('transitionDuration.route') !important;
+    transform: translate($x, $y);
+  }
+}
+@mixin up {
+  animation: anim-up theme('transitionDuration.route');
+  @include dir(0, -100vh);
+}
+@mixin down {
+  animation: anim-down theme('transitionDuration.route');
+  @include dir(0, 100vh);
+}
+@mixin right {
+  animation: anim-right theme('transitionDuration.route');
+  @include dir(100vw);
+}
+@mixin left {
+  animation: anim-left theme('transitionDuration.route');
+  @include dir(-100vw);
+}
+
+@mixin dir-opacity($x, $y: 0) {
+  // Enter via animation, not transition
+  @include route-transition.descendant(/* enter-active,  */ exit) {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @include route-transition.descendant(exit-active) {
+    opacity: 0;
+    transform: translate($x, $y);
+    transition-property: opacity, transform !important;
+    transition-duration: theme('transitionDuration.route') !important;
+  }
+}
+@mixin up-opacity {
+  animation: anim-up theme('transitionDuration.route');
+  @include dir-opacity(0, -100vh);
+}
+@mixin down-opacity {
+  animation: anim-down theme('transitionDuration.route');
+  @include dir-opacity(0, 100vh);
+}
+@mixin right-opacity {
+  animation: anim-right theme('transitionDuration.route');
+  @include dir-opacity(100vw);
+}
+@mixin left-opacity {
+  animation: anim-left theme('transitionDuration.route');
+  @include dir-opacity(-100vw);
+}

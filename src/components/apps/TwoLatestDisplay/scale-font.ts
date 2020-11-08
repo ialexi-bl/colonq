@@ -1,5 +1,5 @@
 /**
- * Makes element fit at most 40% of window heihgt and returns
+ * Makes element fit at most 40% of window height and returns
  * horizontal scale that must be applied to the element
  * @param e - Element
  */

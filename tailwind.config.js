@@ -1,5 +1,5 @@
 module.exports = {
-  purge: ['./src/**/*.html', './src/**/*.tsx'],
+  purge: ['./src/**/*.html', './src/**/*.tsx', './src/**/*.scss'],
   theme: {
     extend: {
       colors: {
@@ -53,7 +53,11 @@ module.exports = {
           hover: 'rgba(255, 255, 255, 0.03)',
         },
 
+        light: '#f3f2ff',
         faded: '#aaa',
+      },
+      transitionDuration: {
+        route: '750ms',
       },
       borderRadius: {
         none: 0,

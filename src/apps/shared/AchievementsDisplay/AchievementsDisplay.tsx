@@ -1,21 +1,23 @@
 import { ApiResponse } from 'services/client/config'
 import { closeLoading, openLoading } from 'store/view'
-import { preloadIcons } from 'components/icons/DynamicIcon'
 import { useDispatch } from 'react-redux'
-import Accents from 'components/icons/dynamic/russian/accents'
 import Bubble from 'components/shared/Bubble'
+import DynamicIcon, { preloadIcons } from 'components/icons/DynamicIcon'
 import Hr from 'components/shared/Hr'
 import React, { ReactNode, useEffect, useMemo, useState } from 'react'
 import useTween from 'hooks/use-tween'
 
 export type AchievementsDisplayProps = {
   response: ApiResponse.Session.Submit
+  delay?: number
 }
 
 export default function AchievementsDisplay({
   response,
+  delay = 200,
 }: AchievementsDisplayProps) {
   const { lessons, updatedLessons, unlockedLessons } = response
+  const hrVariant = useMemo(() => (Math.floor(Math.random() * 2) + 1) as 1, [])
   const dispatch = useDispatch()
   const [loaded, setLoaded] = useState(false)
 
@@ -41,13 +43,13 @@ export default function AchievementsDisplay({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (!loaded) return
+  if (!loaded) return null
 
   return (
     <div className={'w-full h-full flex flex-col justify-center'}>
-      <Updated lessons={lessonsObj} updated={updatedLessons} />
-      {unlockedLessons.length > 0 && <Hr />}
-      <Unlocked lessons={lessonsObj} unlocked={unlockedLessons} />
+      <Unlocked lessons={lessonsObj} unlocked={unlockedLessons} delay={delay} />
+      {unlockedLessons.length > 0 && <Hr variant={hrVariant} />}
+      <Updated lessons={lessonsObj} updated={updatedLessons} delay={delay} />
     </div>
   )
 }
@@ -55,9 +57,11 @@ export default function AchievementsDisplay({
 type UpdatedProps = {
   lessons: Record<string, ApiResponse.User.LessonDescription>
   updated: { id: string; new: number; old: number }[]
+  delay: number
 }
-function Updated({ lessons, updated }: UpdatedProps) {
-  const tween = useTween(updated.length > 0, 1000, 200)
+function Updated({ lessons, updated, delay }: UpdatedProps) {
+  const tween = useTween(updated.length > 0, 1000, delay)
+
   return (
     <div className={'flex flex-wrap justify-center items-center'}>
       {updated.map((score, i) => {
@@ -71,7 +75,7 @@ function Updated({ lessons, updated }: UpdatedProps) {
             <Bubble
               variant={((i % 4) + 1) as 1}
               progress={(score.old + (score.new - score.old) * tween) / 100}
-              icon={<Accents />}
+              icon={<DynamicIcon icon={lessons[score.id].icon} />}
             />
           </Figure>
         )
@@ -83,13 +87,14 @@ function Updated({ lessons, updated }: UpdatedProps) {
 type UnlockedProps = {
   lessons: Record<string, ApiResponse.User.LessonDescription>
   unlocked: string[]
+  delay: number
 }
-function Unlocked({ lessons, unlocked }: UnlockedProps) {
+function Unlocked({ lessons, unlocked, delay }: UnlockedProps) {
   const [disabled, setDisabled] = useState(true)
 
   useEffect(() => {
-    if (unlocked.length) setTimeout(() => setDisabled(false), 10)
-  }, [unlocked.length])
+    if (unlocked.length) setTimeout(() => setDisabled(false), delay)
+  }, [delay, unlocked.length])
 
   if (!unlocked.length) return null
 
@@ -108,7 +113,7 @@ function Unlocked({ lessons, unlocked }: UnlockedProps) {
               disabled={disabled}
               variant={((i % 4) + 1) as 1}
               progress={0}
-              icon={<Accents />}
+              icon={<DynamicIcon icon={lessons[id].icon} />}
             />
           </Figure>
         )

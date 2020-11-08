@@ -1,0 +1,9 @@
+<svg viewBox="0 0 96 96" fill="currentCOlor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" clip-rule="evenodd"
+    d="M18.5 57.5V79L39.5 78.5V57.5H18.5ZM46 51.5L12 51L11 86L47 85.5L46 51.5Z" />
+  <path
+    d="M85.5 68.7324C85.5 72.8072 83.5866 76.7684 80.5697 79.7609C77.5322 82.7737 73.6859 84.5 70.2319 84.5C62.0487 84.5 55.5 77.4039 55.5 68.7324C55.5 63.5092 56.9985 59.7551 59.2526 57.3375C61.4832 54.9452 64.7878 53.5 69.1594 53.5C77.899 53.5 85.5 60.2547 85.5 68.7324Z"
+    fill="none" stroke="currentColor" stroke-width="7" />
+  <path fill-rule="evenodd" clip-rule="evenodd"
+    d="M48.5238 8L29 47L69 45.9459L48.5238 8ZM48.5238 19.5L39.5 41H59.5L48.5238 19.5Z" />
+</svg>

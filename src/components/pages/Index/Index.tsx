@@ -21,6 +21,7 @@ export default function Index() {
         <div
           className={cn(
             styles.WelcomeBackground,
+            '-route-translate-x-full',
             'bg-secondary-800 flex flex-col justify-center items-center px-4',
           )}
         >

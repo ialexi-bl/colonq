@@ -28,8 +28,8 @@ $offset: 10rem;
 
 .VirtualizedGroup,
 .VirtualizedItem {
-  composes: pure-box from '~styles/util/layout.scss';
-
+  // TODO: change
+  background: red;
   list-style: none;
   display: flex;
   width: 100%;
@@ -53,14 +53,14 @@ $duration: 400ms;
 }
 
 .ElementContainer {
-  composes: centered from '~styles/util/centered.scss';
+  composes: flex items-center justify-center from global;
 }
 .Checkbox {
   margin: 0 0.5em;
 }
 
 .Label {
-  composes: text-primary from '~styles/util/colors.scss';
+  composes: text-light from global;
 
   flex: 1;
   margin: 0;

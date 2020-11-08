@@ -1,8 +1,4 @@
-@use 'styles/variables/colors';
-@use 'styles/mixins/transition';
-@use 'styles/mixins/transition-opacity';
-
-$transition-duration: 300ms;
+$transition-duration: 200ms;
 $transition-class-name: two-latest-display;
 
 .Container {
@@ -23,12 +19,14 @@ $transition-class-name: two-latest-display;
   }
 }
 .Transition {
-  composes: centered from '~styles/util/centered.scss';
+  composes: flex justify-center items-center from global;
 
   position: absolute;
   animation: item-appear $transition-duration ease-out;
   transition: ($transition-duration * 0.75) ease-out;
   transition-property: transform, opacity;
+  // Lags without this
+  // will-change: transform;
 }
 .TransitionPrevious {
   opacity: 0.75;

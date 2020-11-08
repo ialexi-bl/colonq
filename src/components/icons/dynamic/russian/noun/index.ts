@@ -1,1 +1,2 @@
-export { ReactComponent as Noun } from './Noun.svg'
+import { ReactComponent as Noun } from './Noun.svg'
+export default Noun

@@ -1,9 +1,6 @@
 @use 'styles/mixins/transition';
-@use 'styles/variables/time';
-@use 'styles/variables/colors';
-@use 'styles/variables/elevation';
 
-$transition-duration: time.$route-transition-duration * 0.75;
+$transition-duration: theme('transitionDuration.route') * 0.75;
 $transition-class-name: route-loading;
 
 :export {
@@ -12,10 +9,10 @@ $transition-class-name: route-loading;
 }
 
 .RouteLoading {
-  composes: centered from '~styles/util/centered.scss';
+  composes: flex items-center justify-center from global;
 
   transition: opacity $transition-duration
-    (time.$route-transition-duration - $transition-duration);
+    (theme('transitionDuration.route') - $transition-duration);
 
   @include transition.self($transition-class-name, (from)) {
     opacity: 0;

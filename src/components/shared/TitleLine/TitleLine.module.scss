@@ -1,6 +1,3 @@
-@use 'styles/variables/colors';
-@use 'styles/variables/time';
-
 .Container {
   width: 100% 95vh;
   height: 100% 95vh;
@@ -10,9 +7,10 @@
 }
 
 .Line {
-  composes: bg-primary-lighter from '~styles/util/colors.scss';
+  // TODO: change or delete or whatever or delete TitleLine entirely
+  composes: bg-secondary-100 from global;
 
-  box-shadow: 0 0 15px colors.$shadow;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   padding: 3rem 2rem;
   width: 100%;
 

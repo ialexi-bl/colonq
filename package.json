@@ -176,6 +176,7 @@
     "eslint-plugin-standard": "^4.0.2",
     "eslint-webpack-plugin": "^2.1.0",
     "ftp-deploy": "^2.3.8",
+    "postcss-import": "^13.0.0",
     "postcss-scss": "^3.0.2",
     "react-cosmos": "^5.5.0",
     "react-dom": "^17.0.1",

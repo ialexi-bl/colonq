@@ -1,9 +1,0 @@
-@use 'styles/variables/colors';
-@use 'styles/variables/elevation';
-
-.Navigation {
-  transition: transform 500ms;
-}
-.hidden {
-  transform: translateY(100%);
-}

@@ -1,16 +1,12 @@
 @use 'styles/mixins/transition';
-@use 'styles/mixins/media';
-@use 'styles/variables/colors';
-@use 'styles/variables/elevation';
 
 .Notification {
-  composes: text-primary from '~styles/util/colors.scss';
+  composes: text-light z-40 from global;
 
-  z-index: elevation.$notification;
   padding: 1.5em 2em;
   font-size: 1.2rem;
   box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.4);
-  background: colors.$accent-darker;
+  background: theme('colors.primary.900');
   transition: transform 300ms;
   line-height: 120%;
 
@@ -25,19 +21,15 @@
   @include transition.self(notification, (exit-to, from)) {
     transform: translateY(100%);
   }
-
-  // @include media.md {
-  //   bottom: 0;
-  // }
 }
 .error {
-  background: colors.$error;
+  background: theme('colors.error.default');
 }
 
 .DismissButton {
   width: 3rem;
   height: 3rem;
-  color: colors.$action;
+  color: theme('colors.light');
   padding: 0.8rem;
   transition: color 100ms;
   position: absolute;
@@ -45,12 +37,13 @@
   top: 0;
 
   &:hover {
-    color: colors.$hover;
+    // TODO: maybe change colors
+    color: white;
   }
   &:active {
     opacity: 0.9;
   }
   &:focus {
-    color: colors.$focus;
+    color: #bbb;
   }
 }

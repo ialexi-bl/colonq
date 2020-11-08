@@ -1,8 +1,7 @@
 import { AccentsProblem } from './AccentsSession'
 import { TwoLatestDisplayViewProps } from 'components/apps/TwoLatestDisplay'
 import LetterButton from 'components/shared/LetterButton'
-import React, { memo, useState } from 'react'
-import cn from 'clsx'
+import React, { useState } from 'react'
 import styles from './Accents.module.scss'
 
 export const vowels = {
@@ -18,7 +17,7 @@ export const vowels = {
   ю: true,
 }
 
-export const AccentWord = memo(function AccentWord({
+export const AccentWord = function AccentWord({
   item,
   active,
   next,
@@ -26,20 +25,24 @@ export const AccentWord = memo(function AccentWord({
   const [answer, setAnswer] = useState(-1)
   const answered = answer >= 0
 
-  let hidden = false
+  let skip = false
   return (
-    <div className={cn(styles.Word, {})}>
+    <div className={styles.Word}>
       {item.problem.split('').map((letter, i) => {
         if (letter === '(') {
-          hidden = true
+          skip = true
         } else if (letter === ')') {
-          hidden = false
+          skip = false
         }
 
         const lower = letter.toLowerCase()
-        if (!(lower in vowels) || hidden) {
+        if (!(lower in vowels) || skip) {
           return (
-            <div key={`${i}-${letter}`} className={styles.Letter}>
+            <div
+              onClick={() => next(0)}
+              key={`${i}-${letter}`}
+              className={styles.Letter}
+            >
               {letter}
             </div>
           )
@@ -72,4 +75,4 @@ export const AccentWord = memo(function AccentWord({
       })}
     </div>
   )
-})
+}

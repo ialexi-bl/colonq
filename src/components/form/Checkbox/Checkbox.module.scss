@@ -1,8 +1,5 @@
-@use 'styles/variables/colors';
-@use 'styles/variables/dims';
-
 $size: 1.5em;
-$color: colors.$accent-lighter;
+$color: theme('colors.primary.500');
 $focus-color: transparentize($color, 0.5);
 
 .CheckboxInput {
@@ -22,14 +19,14 @@ $focus-color: transparentize($color, 0.5);
 }
 
 .Checkbox {
-  composes: disable-touch-bg from '~styles/util/touch-bg.scss';
+  composes: disable-touch-bg from global;
 
   width: 100%;
   height: 100%;
   border: 3px solid $color;
   display: inline-block;
   box-shadow: 0 0 0 0 $focus-color;
-  border-radius: (dims.$border-radius / 2);
+  // border-radius: (dims.$border-radius / 2);
   transition: box-shadow 100ms;
 
   .CheckboxInput:active ~ &,

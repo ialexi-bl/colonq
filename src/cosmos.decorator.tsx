@@ -26,7 +26,7 @@ const styles = styled.div`
   }
 `
 
-export default ({ children }: HTMLProps.div) => {
+const Decorator = ({ children }: HTMLProps.div) => {
   const el = document.body.firstChild!
   if (el.nodeType === 3 && el.textContent?.startsWith('/static/media/'))
     el.remove()
@@ -39,3 +39,4 @@ export default ({ children }: HTMLProps.div) => {
     </Wrapper>
   )
 }
+export default Decorator
