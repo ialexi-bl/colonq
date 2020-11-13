@@ -57,7 +57,9 @@ module.exports = {
         faded: '#aaa',
       },
       transitionDuration: {
-        route: '750ms',
+        route: '500ms',
+        routeLoading: '250ms',
+        routeLoadingDelay: '250ms',
       },
       borderRadius: {
         none: 0,
@@ -72,6 +74,11 @@ module.exports = {
       },
       inset: {
         12: '3rem',
+      },
+      zIndex: {
+        navigation: 200,
+        notification: 190,
+        loading: 180,
       },
     },
   },

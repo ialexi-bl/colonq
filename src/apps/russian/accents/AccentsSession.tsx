@@ -1,20 +1,23 @@
 import { AccentWord } from './AccentWord'
 import { ApiResponse } from 'services/client/config'
-import { PageContainer } from 'components/shared/Page'
+import { Elevation } from 'config/view'
+import { MixedDispatch } from 'store/types'
 import { ProblemsConsumerProps } from 'apps/shared/ProblemsProvider'
 import { TwoLatestDisplay } from 'components/apps/TwoLatestDisplay'
 import { appsList } from 'config/routes'
 import { closeLoading, notifyErrorObject, openLoading } from 'store/view'
+import { executeAuthorizedMethod } from 'store/user'
 import { push } from 'connected-react-router'
 import { useDispatch } from 'react-redux'
 import AchievementsDisplay from 'apps/shared/AchievementsDisplay'
 import Exit from 'components/icons/Exit'
 import Hide from 'components/icons/Hide'
+import Page from 'components/shared/Page'
 import ProgressBar from 'apps/shared/ProgressBar'
-import React, {  useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SessionApi from 'services/api/session'
 import cn from 'clsx'
-import useApiClient from 'hooks/use-api-client'
+import useElevation from 'hooks/use-elevation'
 import useHideNavigation from 'hooks/use-hide-navigation'
 import useTwoLatestProblemControls from 'apps/hooks/use-two-latest-problem-controls'
 
@@ -45,16 +48,19 @@ export default function AccentsSession({
     submitResponse,
     setSubmitResponse,
   ] = useState<ApiResponse.Session.Submit | null>(null)
-  const dispatch = useDispatch()
-  const { executeAuthorized } = useApiClient()
+  const dispatch = useDispatch<MixedDispatch>()
 
+  useElevation(Elevation.session)
   useHideNavigation()
+
   useEffect(() => {
     if (!done) return
 
     dispatch(openLoading('session'))
-    executeAuthorized(
-      SessionApi.submitAnswers('russian/accents', answers, disabled),
+    dispatch(
+      executeAuthorizedMethod(
+        SessionApi.submitAnswers('russian/accents', answers, disabled),
+      ),
     )
       .then((response) => {
         setSubmitResponse(response.data)
@@ -69,7 +75,10 @@ export default function AccentsSession({
   }, [answers, disabled, dispatch, done, executeAuthorized])
 
   return (
-    <PageContainer className={'flex flex-col overflow-hidden h-0'}>
+    <Page
+      routeElevation={Elevation.session}
+      className={'flex flex-col overflow-hidden h-0 route-overlay'}
+    >
       <ProgressBar progress={progress} />
       <div className={'flex-1'}>
         <TwoLatestDisplay
@@ -90,6 +99,7 @@ export default function AccentsSession({
       <div
         className={cn(
           'absolute inset-0 duration-500 transform bg-secondary-900',
+          'route-exit-translate-y',
           !submitResponse && 'translate-y-full',
         )}
       >
@@ -97,6 +107,6 @@ export default function AccentsSession({
           <AchievementsDisplay delay={500} response={submitResponse} />
         )}
       </div>
-    </PageContainer>
+    </Page>
   )
 }

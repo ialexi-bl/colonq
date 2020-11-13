@@ -38,11 +38,7 @@ export const AccentWord = function AccentWord({
         const lower = letter.toLowerCase()
         if (!(lower in vowels) || skip) {
           return (
-            <div
-              onClick={() => next(0)}
-              key={`${i}-${letter}`}
-              className={styles.Letter}
-            >
+            <div key={`${i}-${letter}`} className={styles.Letter}>
               {letter}
             </div>
           )

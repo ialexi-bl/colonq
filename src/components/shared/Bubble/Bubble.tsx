@@ -42,7 +42,7 @@ export default function Bubble({
       />
       <div
         className={cn(
-          'p-6 transition-colors',
+          'p-6 transition-colors w-28 h-28',
           styles.inner,
           // ? NOTE: maybe transition duration and delay should be dynamic?
           unlockTransition ? 'duration-1000 delay-200' : 'duration-100',

@@ -1,6 +1,9 @@
 import { ApiResponse } from 'services/client/config'
+import { LinkButton } from 'components/shared/Button'
+import { appsList } from 'config/routes'
 import { closeLoading, openLoading } from 'store/view'
 import { useDispatch } from 'react-redux'
+import { useLocation } from 'react-router'
 import Bubble from 'components/shared/Bubble'
 import DynamicIcon, { preloadIcons } from 'components/icons/DynamicIcon'
 import Hr from 'components/shared/Hr'
@@ -16,6 +19,7 @@ export default function AchievementsDisplay({
   response,
   delay = 200,
 }: AchievementsDisplayProps) {
+  const location = useLocation<undefined | { redirect?: string }>()
   const { lessons, updatedLessons, unlockedLessons } = response
   const hrVariant = useMemo(() => (Math.floor(Math.random() * 2) + 1) as 1, [])
   const dispatch = useDispatch()
@@ -46,10 +50,18 @@ export default function AchievementsDisplay({
   if (!loaded) return null
 
   return (
-    <div className={'w-full h-full flex flex-col justify-center'}>
+    <div className={'w-full h-full flex flex-col justify-center items-center'}>
       <Unlocked lessons={lessonsObj} unlocked={unlockedLessons} delay={delay} />
-      {unlockedLessons.length > 0 && <Hr variant={hrVariant} />}
+      {unlockedLessons.length > 0 && (
+        <Hr className={'w-full'} variant={hrVariant} />
+      )}
       <Updated lessons={lessonsObj} updated={updatedLessons} delay={delay} />
+      <LinkButton
+        to={location.state?.redirect || appsList()}
+        className={'mt-8 min-w-64'}
+      >
+        Продолжить
+      </LinkButton>
     </div>
   )
 }

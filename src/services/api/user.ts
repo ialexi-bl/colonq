@@ -10,10 +10,9 @@ const emailCache: Record<string, boolean> = {}
 export default class UserApi {
   // Authentication
   public static fetchToken() {
-    return () =>
-      Api.post<ApiResponse.Auth.Token>(Endpoint.auth.token, {
-        credentials: Config.CORS_MODE,
-      })
+    return Api.post<ApiResponse.Auth.Token>(Endpoint.auth.token, {
+      credentials: Config.CORS_MODE,
+    })
   }
 
   /**
@@ -51,12 +50,17 @@ export default class UserApi {
   }
 
   public static register(email: string, username: string, password: string) {
-    return () =>
-      Api.post<ApiResponse.Auth.Registration>(Endpoint.auth.register, {
-        json: { email, username, password },
-      })
+    return Api.post<ApiResponse.Auth.Registration>(Endpoint.auth.register, {
+      json: { email, username, password },
+    })
   }
 
+  /**
+   * Register user with VK
+   * * This method must be dispatched
+   * @param code
+   * @param redirectUri
+   */
   public static registerVk(code: string, redirectUri: string) {
     return Api.authenticate(() =>
       Api.post<ApiResponse.Auth.RegistrationVk>(Endpoint.auth.registerVk, {
@@ -65,6 +69,12 @@ export default class UserApi {
     )
   }
 
+  /**
+   * Verifies email for user whose VK didn't provide one
+   * * This method must be dispatched
+   * @param token
+   * @param email
+   */
   public static registerVkEmail(token: string, email: string) {
     return Api.authenticate(() =>
       Api.post<ApiResponse.Auth.RegistrationVk>(
@@ -74,6 +84,12 @@ export default class UserApi {
     )
   }
 
+  /**
+   * Register user with Google
+   * * This method must be dispatched
+   * @param code
+   * @param redirectUri
+   */
   public static registerGoogle(code: string, redirectUri: string) {
     return Api.authenticate(() =>
       Api.post<ApiResponse.Auth.RegistrationGoogle>(
@@ -83,6 +99,12 @@ export default class UserApi {
     )
   }
 
+  /**
+   * Logs user in
+   * * This method must be dispatched
+   * @param code
+   * @param redirectUri
+   */
   public static login(login: string, password: string) {
     return Api.authenticate(() =>
       Api.post<ApiResponse.Auth.Login>(Endpoint.auth.login, {
@@ -91,6 +113,12 @@ export default class UserApi {
     )
   }
 
+  /**
+   * Logs user in with VK
+   * * This method must be dispatched
+   * @param code
+   * @param redirectUri
+   */
   public static loginVk(code: string, redirectUri: string) {
     return Api.authenticate(() =>
       Api.post<ApiResponse.Auth.LoginVk>(Endpoint.auth.loginVk, {
@@ -99,6 +127,12 @@ export default class UserApi {
     )
   }
 
+  /**
+   * Logs user in with Google
+   * * This method must be dispatched
+   * @param code
+   * @param redirectUri
+   */
   public static loginGoogle(code: string, redirectUri: string) {
     return Api.authenticate(() =>
       Api.post<ApiResponse.Auth.LoginGoogle>(Endpoint.auth.loginGoogle, {
@@ -126,27 +160,24 @@ export default class UserApi {
   }
 
   public static requestRestorePassword(login: string) {
-    return () =>
-      Api.post<ApiResponse.Auth.RestorePassword>(
-        Endpoint.auth.restorePassword,
-        { json: { login } },
-      )
+    return Api.post<ApiResponse.Auth.RestorePassword>(
+      Endpoint.auth.restorePassword,
+      { json: { login } },
+    )
   }
 
   // TODO: verify token before asking password
   public static submitRestorePassword(token: string, password: string) {
-    return () =>
-      Api.post<ApiResponse.Auth.RestorePassword>(
-        Endpoint.auth.restorePassword,
-        { json: { token, password } },
-      )
+    return Api.post<ApiResponse.Auth.RestorePassword>(
+      Endpoint.auth.restorePassword,
+      { json: { token, password } },
+    )
   }
 
   public static verifyEmail(token: string) {
-    return () =>
-      Api.post<ApiResponse.Auth.VerifyEmail>(Endpoint.auth.verifyEmail, {
-        json: { token },
-      })
+    return Api.post<ApiResponse.Auth.VerifyEmail>(Endpoint.auth.verifyEmail, {
+      json: { token },
+    })
   }
 
   public static logout() {
@@ -154,13 +185,12 @@ export default class UserApi {
 
     // Even if this request fails, because check cookie is deleted
     // user won't be able to log in
-    return () =>
-      Api.post<ApiResponse.Auth.Logout>(Endpoint.auth.logout).catch(
-        (): ApiResponse.Success<ApiResponse.Auth.Logout> => ({
-          success: true,
-          data: null,
-        }),
-      )
+    return Api.post<ApiResponse.Auth.Logout>(Endpoint.auth.logout).catch(
+      (): ApiResponse.Success<ApiResponse.Auth.Logout> => ({
+        success: true,
+        data: null,
+      }),
+    )
   }
 
   public static setUsername(username: string) {

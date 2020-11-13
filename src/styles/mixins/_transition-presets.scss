@@ -1,5 +1,9 @@
 @use 'styles/mixins/route-transition';
 
+// * NOTE: entering is done via animation, because
+// * if transition is used, routes are not animated
+// * after loading
+
 // Animations
 @keyframes opacity-enter {
   from {
@@ -23,7 +27,7 @@
 @include dir-animation('up-enter', 0, -100vh);
 @include dir-animation('down-enter', 0, 100vh);
 @include dir-animation('left-enter', -100vw);
-@include dir-animations('right-enter', 100vw);
+@include dir-animation('right-enter', 100vw);
 
 @mixin dir-opacity-animation($name, $x, $y: 0) {
   @keyframes #{$name} {
@@ -37,78 +41,148 @@
     }
   }
 }
-@include dir-opacity-animation('up-opacity-enter', 0, -100vh);
-@include dir-opacity-animation('down-opacity-enter', 0, 100vh);
-@include dir-opacity-animation('left-opacity-enter', -100vw);
-@include dir-opacity-animation('right-opacity-enter', 100vw);
+$dir-opacity-offset: 5rem;
+@include dir-opacity-animation('up-opacity-enter', 0, -$dir-opacity-offset);
+@include dir-opacity-animation('down-opacity-enter', 0, $dir-opacity-offset);
+@include dir-opacity-animation('left-opacity-enter', -$dir-opacity-offset);
+@include dir-opacity-animation('right-opacity-enter', $dir-opacity-offset);
 
 // Transition mixins
-@mixin opacity {
-  animation: opacity-enter theme('transitionDuration.route');
-
-  // Enter via animation, not transition
-  @include route-transition.descendant(exit) {
+@mixin opacity-start {
+  #animation-controller:not(.no-animation-start) & {
+    animation: opacity-enter theme('transitionDuration.route');
+  }
+}
+@mixin opacity-end {
+  @include route-transition.descendant-no-module(exit) {
     opacity: 1;
   }
-  @include route-transition.descendant(exit-active) {
+  @include route-transition.descendant-no-module(exit-active) {
     transition: opacity theme('transitionDuration.route') !important;
     opacity: 0;
   }
 }
+@mixin opacity {
+  @include opacity-start;
+  @include opacity-end;
+}
 
 @mixin dir($x, $y: 0) {
-  // Enter via animation, not transition
-  @include route-transition.descendant(/* enter-active,  */ exit) {
-    transform: translateY(0);
+  @include route-transition.descendant-no-module(/* enter-active,  */ exit) {
+    transform: translate(0);
   }
-  @include route-transition.descendant(exit-active) {
+  @include route-transition.descendant-no-module(exit-active) {
     transition: transform theme('transitionDuration.route') !important;
     transform: translate($x, $y);
   }
 }
-@mixin up {
-  animation: anim-up theme('transitionDuration.route');
+@mixin up-start {
+  #animation-controller:not(.no-animation-start) & {
+    animation: up-enter theme('transitionDuration.route');
+  }
+}
+@mixin up-end {
   @include dir(0, -100vh);
 }
-@mixin down {
-  animation: anim-down theme('transitionDuration.route');
+@mixin up {
+  @include up-start;
+  @include up-end;
+}
+@mixin down-start {
+  #animation-controller:not(.no-animation-start) & {
+    animation: down-enter theme('transitionDuration.route');
+  }
+}
+@mixin down-end {
   @include dir(0, 100vh);
 }
-@mixin right {
-  animation: anim-right theme('transitionDuration.route');
+@mixin down {
+  @include down-start;
+  @include down-end;
+}
+@mixin right-start {
+  #animation-controller:not(.no-animation-start) & {
+    animation: right-enter theme('transitionDuration.route');
+  }
+}
+@mixin right-end {
   @include dir(100vw);
 }
-@mixin left {
-  animation: anim-left theme('transitionDuration.route');
+@mixin right {
+  @include right-start;
+  @include right-end;
+}
+@mixin left-start {
+  #animation-controller:not(.no-animation-start) & {
+    animation: left-enter theme('transitionDuration.route');
+  }
+}
+@mixin left-end {
   @include dir(-100vw);
+}
+@mixin left {
+  @include left-start;
+  @include left-end;
 }
 
 @mixin dir-opacity($x, $y: 0) {
   // Enter via animation, not transition
-  @include route-transition.descendant(/* enter-active,  */ exit) {
+  @include route-transition.descendant-no-module(/* enter-active,  */ exit) {
     opacity: 1;
     transform: translateY(0);
   }
-  @include route-transition.descendant(exit-active) {
+  @include route-transition.descendant-no-module(exit-active) {
     opacity: 0;
     transform: translate($x, $y);
     transition-property: opacity, transform !important;
     transition-duration: theme('transitionDuration.route') !important;
   }
 }
+@mixin up-opacity-start {
+  #animation-controller:not(.no-animation-start) & {
+    animation: up-opacity-enter theme('transitionDuration.route');
+  }
+}
+@mixin up-opacity-end {
+  @include dir-opacity(0, -$dir-opacity-offset);
+}
 @mixin up-opacity {
-  animation: anim-up theme('transitionDuration.route');
-  @include dir-opacity(0, -100vh);
+  @include up-opacity-start;
+  @include up-opacity-end;
+}
+@mixin down-opacity-start {
+  #animation-controller:not(.no-animation-start) & {
+    animation: down-opacity-enter theme('transitionDuration.route');
+  }
+}
+@mixin down-opacity-end {
+  @include dir-opacity(0, $dir-opacity-offset);
 }
 @mixin down-opacity {
-  animation: anim-down theme('transitionDuration.route');
-  @include dir-opacity(0, 100vh);
+  @include down-opacity-start;
+  @include down-opacity-end;
+}
+@mixin right-opacity-start {
+  #animation-controller:not(.no-animation-start) & {
+    animation: right-opacity-enter theme('transitionDuration.route');
+  }
+}
+@mixin right-opacity-end {
+  @include dir-opacity($dir-opacity-offset);
 }
 @mixin right-opacity {
-  animation: anim-right theme('transitionDuration.route');
-  @include dir-opacity(100vw);
+  @include right-opacity-start;
+  @include right-opacity-end;
+}
+@mixin left-opacity-start {
+  #animation-controller:not(.no-animation-start) & {
+    animation: left-opacity-enter theme('transitionDuration.route');
+  }
+}
+@mixin left-opacity-end {
+  @include dir-opacity(-$dir-opacity-offset);
 }
 @mixin left-opacity {
-  animation: anim-left theme('transitionDuration.route');
-  @include dir-opacity(-100vw);
+  @include left-opacity-start;
+  @include left-opacity-end;
 }

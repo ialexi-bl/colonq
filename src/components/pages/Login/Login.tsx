@@ -1,9 +1,8 @@
 import { ApiErrorName } from 'services/client/config'
-import { CUTE_FACE } from 'config/view'
+import { CUTE_FACE, Elevation } from 'config/view'
 import { FormikHelpers, useFormik } from 'formik'
 import { HttpError } from 'services/errors'
 import { MixedDispatch } from 'store/types'
-import { PageContainer } from 'components/shared/Page'
 import { UserApi } from 'services/api'
 import { appsList, register } from 'config/routes'
 import { notifyErrorObject } from 'store/view'
@@ -14,12 +13,12 @@ import Button, { LinkButton } from 'components/shared/Button'
 import ErrorMessage from 'components/form/ErrorMessage'
 import Input from 'components/form/Input'
 import Loading from 'components/shared/Loading'
+import Page from 'components/shared/Page'
 import PageTitle from 'components/shared/PageTitle'
 import React, { useState } from 'react'
 import SocialLoginButton from 'components/form/SocialLoginButton'
 import User from 'components/icons/User'
 import cn from 'clsx'
-import useApiClient from 'hooks/use-api-client'
 import useIsGuest from 'hooks/use-is-guest'
 
 type FormValues = {
@@ -30,7 +29,6 @@ type FormValues = {
 export default function Login() {
   const location = useLocation<{ email?: unknown; password?: unknown }>()
   const dispatch = useDispatch<MixedDispatch>()
-  const { execute } = useApiClient()
   const { email, password } = location.state || {}
   const [loading, setLoading] = useState(false)
 
@@ -42,7 +40,7 @@ export default function Login() {
     setLoading(true)
 
     try {
-      await execute(UserApi.login(values.login, values.password))
+      await dispatch(UserApi.login(values.login, values.password))
       push(appsList())
     } catch (e) {
       setLoading(false)
@@ -79,10 +77,13 @@ export default function Login() {
 
   const autofocusPassword = formik.values.login !== ''
   return (
-    <PageContainer>
+    <Page
+      routeElevation={Elevation.login}
+      className={'bg-route -route-translate-x'}
+    >
       <PageTitle icon={<User />}>Вход</PageTitle>
 
-      <div className={'max-w-xl mx-auto px-4'}>
+      <div className={'max-w-xl mx-auto px-4 overflow-hidden'}>
         <form onSubmit={formik.handleSubmit}>
           <label className={'block mb-4'}>
             <span className={'mb-2'}>Email или имя пользователя</span>
@@ -159,7 +160,7 @@ export default function Login() {
           />
         </div>
       </div>
-    </PageContainer>
+    </Page>
   )
 }
 

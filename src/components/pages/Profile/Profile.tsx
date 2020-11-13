@@ -11,7 +11,6 @@ import PageTitle from 'components/shared/PageTitle'
 import React from 'react'
 import SocialLoginButton from 'components/form/SocialLoginButton'
 import User from 'components/icons/User'
-import useApiClient from 'hooks/use-api-client'
 import useIsAuthenticated from 'hooks/use-is-authenticated'
 
 export default function Profile() {
@@ -19,12 +18,11 @@ export default function Profile() {
   const { username: name, email, providers } = useSelector(
     (state: AppState) => state.user,
   ) as UserType
-  const { execute } = useApiClient()
 
   const logout = () => {
     dispatch(unauthenticate())
     dispatch(notifyInfo(LangNotifications.logout))
-    execute(UserApi.logout())
+    UserApi.logout()
   }
 
   if (!useIsAuthenticated()) {

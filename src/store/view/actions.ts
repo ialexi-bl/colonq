@@ -8,12 +8,15 @@ export enum ViewAction {
   CLOSE_LOADING = 'VIEW/CLOSE_LOADING',
   CLOSE_PAGE_SPECIFIC_LOADING = 'VIEW/CLOSE_PAGE_SPECIFIC_LOADING',
 
+  SET_ELEVATION = 'VIEW/SET_ELEVATION',
   SHOW_NAVIGATION = 'VIEW/SHOW_NAVIGATION',
   HIDE_NAVIGATION = 'VIEW/HIDE_NAVIGATION',
   NOTIFY_INFO = 'VIEW/NOTIFY_INFO',
   NOTIFY_ERROR = 'VIEW/NOTIFY_ERROR',
   CLOSE_NOTIFICATION = 'VIEW/CLOSE_NOTIFICATION',
 }
+
+export const setElevation = createAction<number>(ViewAction.SET_ELEVATION)
 
 export const openLoading = createAction<string>(ViewAction.OPEN_LOADING)
 export const closeLoading = createAction<string>(ViewAction.CLOSE_LOADING)

@@ -1,8 +1,9 @@
 import { ApiResponse } from 'services/client/config'
 import { AppState } from 'store/types'
 import { AuthorizedApiMethod, UnauthorizedApiMethod } from 'services/api/api'
+import { authenticate } from 'store/user'
 import { store } from 'store'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import React, { useCallback, useEffect, useRef } from 'react'
 
 export interface ExecuteMethod {
@@ -25,31 +26,44 @@ const execute: ExecuteMethod = <T extends any>(
 ) => method(store.dispatch)
 
 export default function useApiClient(): ApiClient {
+  const dispatch = useDispatch()
   const user = useSelector((state: AppState) => state.user)
   const pending = useRef<PendingRequest[]>([])
 
   useEffect(() => {
-    if (pending.current.length && user.status !== 'loading' && user.token) {
+    if (
+      pending.current.length &&
+      user.status !== 'loading' &&
+      user.token &&
+      user.tokenExpires - Date.now() > 500
+    ) {
       pending.current.forEach(({ method, resolve }) => {
         method(user.token, user.id, store.dispatch).then(resolve)
       })
       pending.current = []
     }
-  }, [user.id, user.status, user.token])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user.status])
 
   return {
     execute,
     executeAuthorized: useCallback<ExecuteMethodAuthorized>(
       <T extends any>(method: AuthorizedApiMethod<T>) => {
-        if (user.status !== 'loading' && user.token) {
+        if (
+          user.status !== 'loading' &&
+          user.token &&
+          user.tokenExpires - Date.now() > 500
+        ) {
           return method(user.token, user.id, store.dispatch)
         } else {
+          dispatch(authenticate())
           return new Promise<ApiResponse.Success<T>>((resolve) => {
             pending.current.push({ method, resolve })
           })
         }
       },
-      [user.id, user.status, user.token],
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [dispatch, user],
     ),
   }
 }

@@ -39,7 +39,7 @@
 .ToggleInput:focus,
 .ToggleInput:active {
   & ~ .Slider {
-    box-shadow: 0 0 0 4px transparentize(theme('colors.disabled.100'), 0.5);
+    box-shadow: 0 0 0 4px theme('colors.disabled.100');
   }
 }
 
@@ -56,6 +56,6 @@
 .ToggleInput:focus:checked,
 .ToggleInput:active:checked {
   & ~ .Slider {
-    box-shadow: 0 0 0 4px transparentize(theme('colors.primary.400'), 0.5);
+    box-shadow: 0 0 0 4px theme('colors.primary.400');
   }
 }

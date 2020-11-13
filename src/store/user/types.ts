@@ -1,3 +1,5 @@
+import { MixedDispatch } from 'store/types'
+
 export const FETCH_USER_SUCCESS = 'USER/FETCH_SUCCESS'
 
 /**
@@ -14,6 +16,8 @@ export type User = {
   username: string
   email: string
   id: string
+
+  methodsQueue: AuthorizedMethodInternal<any>[]
 } & AppsState
 /**
  * State for unauthenticated user
@@ -29,6 +33,8 @@ export type EmptyUser = {
   username: null
   email: null
   id: null
+
+  methodsQueue: AuthorizedMethodInternal<any>[]
 } & AppsState
 
 export type AppsState = {
@@ -43,6 +49,15 @@ export type AppsState = {
   apps: Apps
 }
 
+export type AuthorizedMethodInternal<T> = (
+  token: string,
+  id: string,
+) => Promise<T>
+export type AuthorizedMethod<T> = (
+  token: string,
+  id: string,
+  dispatch: MixedDispatch,
+) => Promise<T>
 export type Apps = Record<string, App>
 export type App = PlainApp &
   (

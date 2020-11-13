@@ -3,7 +3,7 @@ import Api from './api'
 
 export default class AppsApi {
   public static getAppsList() {
-    return () => Api.get<ApiResponse.Apps.GetApps>(Endpoint.apps.get)
+    return Api.get<ApiResponse.Apps.GetApps>(Endpoint.apps.get)
   }
 
   public static loadApps() {

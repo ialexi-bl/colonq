@@ -1,4 +1,6 @@
 .Hr {
+  border-top-width: 2px;
+
   &.variant-1,
   &:nth-of-type(4n + 1) {
     transform: rotate(-2deg);

@@ -1,9 +1,12 @@
 import { ApiErrorName } from 'services/client/config'
 import { HttpError } from 'services/errors'
+import { MixedDispatch } from 'store/types'
+import { closeLoading, openLoading } from 'store/view'
+import { executeAuthorizedMethod } from 'store/user'
+import { useDispatch } from 'react-redux'
 import { useEffect, useState } from 'react'
 import Config from 'config'
 import SessionApi from 'services/api/session'
-import useApiClient from 'hooks/use-api-client'
 
 type Status = 'loading' | 'loaded' | 'error' | ApiErrorName
 type Result<TProblem> =
@@ -23,16 +26,19 @@ export default function useLesson<TProblem>(
   app: string,
   lesson: string | typeof PRACTICE,
 ): Result<TProblem> {
+  const dispatch = useDispatch<MixedDispatch>()
   const [status, setStatus] = useState<Status>('loading')
   const [problems, setProblems] = useState<TProblem[]>([])
-  const { executeAuthorized } = useApiClient()
 
   // Fetching session data
   useEffect(() => {
-    executeAuthorized(
-      lesson === PRACTICE
-        ? SessionApi.getPracticeLesson<TProblem>(app)
-        : SessionApi.getLesson<TProblem>(app, lesson),
+    dispatch(openLoading('use-lesson'))
+    dispatch(
+      executeAuthorizedMethod(
+        lesson === PRACTICE
+          ? SessionApi.getPracticeLesson<TProblem>(app)
+          : SessionApi.getLesson<TProblem>(app, lesson),
+      ),
     )
       .then(({ data: { problems } }) => {
         setProblems(problems)
@@ -47,7 +53,10 @@ export default function useLesson<TProblem>(
         if (Config.IS_DEV) console.error(error)
         setStatus('error')
       })
-  }, [app, executeAuthorized, lesson])
+      .then(() => {
+        dispatch(closeLoading('use-lesson'))
+      })
+  }, [app, dispatch, lesson])
 
   return { status, problems } as Result<TProblem>
 }

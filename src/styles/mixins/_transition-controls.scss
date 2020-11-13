@@ -87,16 +87,30 @@ $availableStates: (
   @return $res;
 }
 
-@function create-selectors($prefix, $values, $nested: false) {
+@function create-selector($prefix, $value, $ensure-global, $nested) {
   $res: '';
-  @each $value in $values {
-    $res: $res + ', ';
-    @if $nested == false {
-      $res: $res + '&';
-    }
+  @if $nested == false {
+    $res: $res + '&';
+  }
+  @if $ensure-global {
     $res: $res + ':global(.' + $prefix + '-' + $value + ')';
-    @if $nested {
-      $res: $res + ' &';
+  } @else {
+    $res: $res + '.' + $prefix + '-' + $value;
+  }
+  @if $nested {
+    $res: $res + ' &';
+  }
+  @return $res;
+}
+
+@function create-selectors($prefix, $values, $ensure-global: true) {
+  $res: '';
+
+  @each $value in $values {
+    @each $nested in (true, false) {
+      $res: $res +
+        ', ' +
+        create-selector($prefix, $value, $ensure-global, $nested);
     }
   }
   @return string.slice($res, 2);

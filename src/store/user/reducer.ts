@@ -1,9 +1,9 @@
 import { ApiResponse } from 'services/client/config'
-import { Apps, EmptyUser, UserState } from './types'
+import { Apps, AuthorizedMethodInternal, EmptyUser, UserState } from './types'
 import {
   LoadAppSuccessPayload,
-  authenticate,
   authenticateError,
+  authenticateStart,
   authenticateSuccess,
   loadApp,
   loadAppError,
@@ -11,6 +11,7 @@ import {
   loadApps,
   loadAppsError,
   loadAppsSuccess,
+  queueAuthMethod,
   unauthenticate,
 } from './actions'
 import { createReducer } from 'store/util'
@@ -29,11 +30,13 @@ export const initialState: EmptyUser = {
   categories: [],
   appsList: [],
   apps: {},
+
+  methodsQueue: [],
 }
 
 export default createReducer<UserState>(
   {
-    [String(authenticate)]: (state): UserState => ({
+    [String(authenticateStart)]: (state): UserState => ({
       ...state,
       status: 'loading',
     }),
@@ -42,9 +45,10 @@ export default createReducer<UserState>(
       status: 'error',
     }),
     [String(authenticateSuccess)]: (
-      _,
+      state,
       payload: ApiResponse.Auth.UserData,
     ): UserState => ({
+      methodsQueue: state.methodsQueue,
       ...payload,
       // TODO: maybe not reset these fields
       appsStatus: 'none',
@@ -135,6 +139,14 @@ export default createReducer<UserState>(
           status: 'error',
         },
       },
+    }),
+
+    [String(queueAuthMethod)]: (
+      state,
+      method: AuthorizedMethodInternal<any>,
+    ) => ({
+      ...state,
+      methodsQueue: state.methodsQueue.concat(method),
     }),
   },
   initialState,

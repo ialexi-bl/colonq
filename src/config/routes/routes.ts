@@ -1,11 +1,6 @@
-import { AppComponent, allowedCategories } from 'apps'
-import { RouteComponentProps } from 'react-router'
 import { RouteOptions, Routes } from './types'
-
-import Config from 'config'
-import EnsureAuthenticated from 'components/shared/EnsureAuthenticated'
-import NotFound from 'components/pages/NotFound'
-import React, { lazy } from 'react'
+import { lazy } from 'react'
+import appsRoutes from './apps-routes'
 
 export const routesArray: RouteOptions[] = [
   {
@@ -56,41 +51,12 @@ export const routesArray: RouteOptions[] = [
     authenticated: false,
     component: lazy(() => import('components/pages/Registration')),
   },
-  {
-    path: '/app/:category/:name/:path*',
-    name: 'app',
-    render: renderAppPage,
-  },
+  ...appsRoutes,
 ]
 
 export const routes: Routes = {}
 for (const route of routesArray) {
   routes[route.name] = routes[route.path] = route
-}
-
-const cache: Record<string, AppComponent> = {}
-function renderAppPage({
-  match,
-}: RouteComponentProps<{ category: string; name: string; path?: string }>) {
-  const { category, name, path = '' } = match.params
-  if (!(category in allowedCategories)) {
-    return <NotFound />
-  }
-
-  const app = `${category}/${name}`
-  const Component = (cache[app] ||= lazy(() =>
-    import(`apps/${app}/index`).catch((e) => {
-      if (Config.IS_DEV) console.warn(e)
-      return { default: NotFound }
-    }),
-  ))
-
-  // * Not putting suspense here, because suspense from route does the job
-  return (
-    <EnsureAuthenticated>
-      <Component path={path} />
-    </EnsureAuthenticated>
-  )
 }
 
 export const verifyEmail = () => routes.verifyEmail.path

@@ -1,6 +1,6 @@
 @use 'styles/mixins/transition';
 
-$transition-duration: theme('transitionDuration.route') * 0.75;
+$transition-duration: theme('transitionDuration.routeLoading');
 $transition-class-name: route-loading;
 
 :export {
@@ -11,8 +11,7 @@ $transition-class-name: route-loading;
 .RouteLoading {
   composes: flex items-center justify-center from global;
 
-  transition: opacity $transition-duration
-    (theme('transitionDuration.route') - $transition-duration);
+  transition: opacity $transition-duration;
 
   @include transition.self($transition-class-name, (from)) {
     opacity: 0;

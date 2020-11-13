@@ -13,14 +13,16 @@ export default function Navigation() {
     <div
       className={cn(
         'flex items-center bg-navigation fixed inset-x-0 bottom-0 h-12 px-2',
-        'z-50 transition-transform duration-300 transform',
+        'z-navigation transition-transform duration-300 transform',
         !visible && 'translate-y-full',
       )}
     >
       <Link className={'w-10'} to={index()}>
         <InteractiveLogo />
       </Link>
-      <h1 className={'ml-4 text-2xl'}>ColonQ</h1>
+      <h1 className={'ml-4 text-2xl'}>
+        <Link to={index()}>ColonQ</Link>
+      </h1>
     </div>
   )
 }

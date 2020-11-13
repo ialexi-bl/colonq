@@ -1,31 +1,87 @@
 @use './mixins/transition-presets';
 
-.route-opacity {
-  @include transition-presets.opacity;
+// @layer utilities {
+.route-opacity,
+.route-enter-opacity {
+  @include transition-presets.opacity-start;
+}
+.route-opacity,
+.route-exit-opacity {
+  @include transition-presets.opacity-end;
+}
+.bg-page,
+.route-overlay {
+  background: theme('colors.secondary.1000');
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 }
 
-.route-translate-x-full {
-  @include transition-presets.right;
+.route-enter-translate-x,
+.route-translate-x,
+.route-overlay {
+  @include transition-presets.right-start;
 }
-.-route-translate-x-full {
-  @include transition-presets.left;
+.-route-enter-translate-x,
+.-route-translate-x {
+  @include transition-presets.left-start;
 }
-.route-translate-y-full {
-  @include transition-presets.down;
+.route-enter-translate-y,
+.route-translate-y {
+  @include transition-presets.down-start;
 }
-.-route-translate-y-full {
-  @include transition-presets.up;
+.-route-enter-translate-y,
+.-route-translate-y {
+  @include transition-presets.up-start;
 }
 
-.route-translate-x-full.route-opacity {
-  @include transition-presets.right-opacity;
+.route-exit-translate-x,
+.route-translate-x,
+.route-overlay {
+  @include transition-presets.right-end;
 }
-.-route-translate-x-full.route-opacity {
-  @include transition-presets.left-opacity;
+.-route-exit-translate-x,
+.-route-translate-x {
+  @include transition-presets.left-end;
 }
-.route-translate-y-full.route-opacity {
-  @include transition-presets.down-opacity;
+.route-exit-translate-y,
+.route-translate-y {
+  @include transition-presets.down-end;
 }
-.-route-translate-y-full.route-opacity {
-  @include transition-presets.up-opacity;
+.-route-exit-translate-y,
+.-route-translate-y {
+  @include transition-presets.up-end;
 }
+
+.route-translate-x.route-opacity,
+.route-enter-translate-x.route-enter-opacity {
+  @include transition-presets.right-opacity-start;
+}
+.-route-translate-x.route-opacity,
+.-route-enter-translate-x.route-enter-opacity {
+  @include transition-presets.left-opacity-start;
+}
+.route-translate-y.route-opacity,
+.route-enter-translate-y.route-enter-opacity {
+  @include transition-presets.down-opacity-start;
+}
+.-route-translate-y.route-opacity,
+.-route-enter-translate-y.route-enter-opacity {
+  @include transition-presets.up-opacity-start;
+}
+
+.route-translate-x.route-opacity,
+.route-exit-translate-x.route-exit-opacity {
+  @include transition-presets.right-opacity-end;
+}
+.-route-translate-x.route-opacity,
+.-route-exit-translate-x.route-exit-opacity {
+  @include transition-presets.left-opacity-end;
+}
+.route-translate-y.route-opacity,
+.route-exit-translate-y.route-exit-opacity {
+  @include transition-presets.down-opacity-end;
+}
+.-route-translate-y.route-opacity,
+.-route-exit-translate-y.route-exit-opacity {
+  @include transition-presets.up-opacity-end;
+}
+// }

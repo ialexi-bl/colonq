@@ -4,7 +4,7 @@
 /// <reference types="gtag.js" />
 /// <reference types="yandex-metrika-tag" />
 
-declare var gtag: Gtag.Gtag
+declare let gtag: Gtag.Gtag
 
 declare namespace NodeJS {
   interface ProcessEnv {
@@ -22,6 +22,7 @@ declare namespace HTMLProps {
   type div = React.HTMLAttributes<HTMLDivElement>
   type svg = React.SVGAttributes<SVGSVGElement>
   type img = React.ImgHTMLAttributes<HTMLImageElement>
+  type hr = React.HTMLAttributes<HTMLHRElement>
   type a = React.AnchorHTMLAttributes<HTMLAnchorElement>
 }
 type Childfree<T> = Omit<T, 'children'>

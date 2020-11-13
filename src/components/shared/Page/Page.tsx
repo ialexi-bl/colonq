@@ -4,27 +4,33 @@ import React, { forwardRef } from 'react'
 import cn from 'clsx'
 import styles from './Page.module.scss'
 
-/**
- * Provides default styles for page layout, route changing transitions
- * and custom scrollbars
- */
-const Page = ({ className, ...props }: HTMLProps.div) => (
-  <div className={cn(styles.Page, className)} {...props} />
+type ElevationProps = {
+  routeElevation?: number
+}
+export type PageProps = HTMLProps.div & ElevationProps
+
+const Page = ({ className, routeElevation, ...props }: PageProps) => (
+  <div
+    className={cn(styles.Page, className)}
+    style={{ zIndex: routeElevation }}
+    {...props}
+  />
 )
 export default Page
 
-export const ScrollablePage = forwardRef<Scrollbars, ScrollbarProps>(
-  ({ className, children, ...props }, ref) => (
-    <div className={cn('w-full h-full', className)}>
-      <Scrollbars
-        autoHide
-        renderThumbVertical={renderScrollThumb}
-        renderTrackVertical={renderScrollTrack}
-        ref={ref}
-        {...props}
-      >
-        {children}
-      </Scrollbars>
-    </div>
-  ),
-)
+export const ScrollablePage = forwardRef<
+  Scrollbars,
+  ScrollbarProps & ElevationProps
+>(({ className, children, routeElevation, ...props }, ref) => (
+  <Page routeElevation={routeElevation} className={className}>
+    <Scrollbars
+      autoHide
+      renderThumbVertical={renderScrollThumb}
+      renderTrackVertical={renderScrollTrack}
+      ref={ref}
+      {...props}
+    >
+      {children}
+    </Scrollbars>
+  </Page>
+))

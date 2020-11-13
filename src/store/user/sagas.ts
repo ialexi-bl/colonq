@@ -1,19 +1,22 @@
 import { ApiErrorName, ApiResponse } from 'services/client/config'
 import { AppState } from 'store/types'
 import { AppsApi, UserApi } from 'services/api'
+import { AuthorizedMethodInternal, UserState } from './types'
 import { Channel, Task } from 'redux-saga'
 import { HttpError } from 'services/errors'
 import {
   UserAction,
+  authenticate,
   authenticateError,
+  authenticateStart,
   authenticateSuccess,
   loadAppError,
   loadAppSuccess,
   loadAppsError,
   loadAppsSuccess,
+  queueAuthMethod,
   unauthenticate,
 } from './actions'
-import { UserState } from './types'
 import {
   actionChannel,
   all,
@@ -33,6 +36,7 @@ import { notifyErrorObject } from 'store/view'
 
 function* updateToken() {
   try {
+    yield put(authenticateStart())
     const data: ApiResponse.Auth.Token = yield call(
       executeMethod,
       UserApi.fetchToken(),
@@ -69,7 +73,6 @@ function* loadApps() {
 
 function* loadApp(app: string) {
   try {
-    console.log('loading', app)
     const data: ApiResponse.User.GetApp = yield call(
       executeAuthorizedMethod,
       AppsApi.loadApp(app),
@@ -82,25 +85,56 @@ function* loadApp(app: string) {
   }
 }
 
+function* requestAuthMethod({
+  payload,
+}: {
+  payload: AuthorizedMethodInternal<any>
+}) {
+  const user: UserState = yield select((state: AppState) => state.user)
+
+  if (
+    user.status !== 'loading' &&
+    user.token &&
+    user.tokenExpires - Date.now() > 500
+  ) {
+    payload(user.token, user.id)
+  } else {
+    yield put(queueAuthMethod(payload))
+    yield put(authenticate())
+  }
+}
+
 // Watchers
 
 function* watchUpdateToken() {
   yield takeLeading(UserAction.AUTHENTICATE_REQUEST, function* () {
-    const user: UserState = yield select((state: AppState) => state.user)
+    let user: UserState = yield select((state: AppState) => state.user)
     // Prevent updating token that hasn't expired yet
     if (
-      user.status === 'authenticated' &&
-      user.tokenExpires > Date.now() + 2000
+      user.status !== 'loading' &&
+      user.token &&
+      user.tokenExpires - Date.now() > 500
     ) {
       return
     }
 
     yield call(updateToken)
+
+    user = yield select((state: AppState) => state.user)
+    if (user.token) {
+      user.methodsQueue.forEach((method) => {
+        method(user.token!, user.id!)
+      })
+    }
   })
 }
 
 function* watchLoadApps() {
   yield takeLeading(UserAction.LOAD_APPS_REQUEST, loadApps)
+}
+
+function* watchExecuteAuthorizedMethod() {
+  yield takeEvery(UserAction.REQUEST_AUTH_METHOD, requestAuthMethod as any)
 }
 
 function* watchLoadApp() {
@@ -143,6 +177,7 @@ export default function* userSaga() {
       fork(watchLoadApps),
       fork(watchLoadApp),
       fork(watchUpdateToken),
+      fork(watchExecuteAuthorizedMethod),
     ])
 
     // Executing actions that may have started while authentication way being performed

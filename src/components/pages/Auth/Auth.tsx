@@ -14,6 +14,7 @@ import {
   notifyInfo,
   openLoading,
 } from 'store/view'
+import { executeAuthorizedMethod } from 'store/user'
 import { getTokenField } from 'util/jwt'
 import { push, replace } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
@@ -22,8 +23,7 @@ import EmailPrompt from './EmailPrompt'
 import LangErrors from 'lang/errors.json'
 import LangNotifications from 'lang/notifications.json'
 import NewPasswordPrompt from './NewPasswordPrompt'
-import React, { useEffect, useState } from 'react'
-import useApiClient, { ApiClient } from 'hooks/use-api-client'
+import React, { useEffect, useRef, useState } from 'react'
 
 type Status =
   | null
@@ -38,21 +38,20 @@ type Status =
 export default function Auth() {
   const dispatch = useDispatch<MixedDispatch>()
   const location = useLocation()
-  const apiClient = useApiClient()
   const [status, setStatus] = useState<Status>(null)
   const authStatus = useSelector((state: AppState) => state.user.status)
   const params = new URLSearchParams(location.search)
+  const processed = useRef(false)
 
   useEffect(() => {
-    if (authStatus === 'loading') return
+    if (processed.current || authStatus === 'loading') return
+    processed.current = true
 
     dispatch(openLoading('auth'))
-    dispatch(process(authStatus === 'authenticated', apiClient, params)).then(
-      (status) => {
-        dispatch(closeLoading('auth'))
-        if (status) setStatus(status)
-      },
-    )
+    dispatch(process(authStatus === 'authenticated', params)).then((status) => {
+      dispatch(closeLoading('auth'))
+      if (status) setStatus(status)
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authStatus])
 
@@ -64,7 +63,7 @@ export default function Auth() {
           loading={status.loading}
           onSubmit={async (password) => {
             setStatus({ action: 'prompt-password', loading: true })
-            await dispatch(submitNewPassword(params, apiClient, password))
+            await dispatch(submitNewPassword(params, password))
             setStatus({ action: 'prompt-password', loading: false })
           }}
         />
@@ -77,7 +76,7 @@ export default function Auth() {
           onSubmit={async (email) => {
             setStatus({ ...status, loading: true })
             const emailSent = await dispatch(
-              submitMissingEmail(apiClient, status.token, email),
+              submitMissingEmail(status.token, email),
             )
             setStatus({ ...status, loading: true, emailSent })
           }}
@@ -90,17 +89,15 @@ export default function Auth() {
 
 function process(
   authenticated: boolean,
-  execute: ApiClient,
   search: URLSearchParams,
 ): ThunkAction<Promise<Status>> {
   return search.has('action')
-    ? processAction(authenticated, execute, search)
-    : processSocialLogin(authenticated, execute, search)
+    ? processAction(authenticated, search)
+    : processSocialLogin(authenticated, search)
 }
 
 function processAction(
   authenticated: boolean,
-  { execute, executeAuthorized }: ApiClient,
   search: URLSearchParams,
 ): ThunkAction<Promise<Status>> {
   return async (dispatch) => {
@@ -112,7 +109,7 @@ function processAction(
     try {
       switch (search.get('action')!) {
         case VerificationAction.VERIFY_EMAIL: {
-          await execute(UserApi.verifyEmail(token))
+          await UserApi.verifyEmail(token)
 
           dispatch(notifyInfo(LangNotifications.emailVerified))
           if (authenticated) {
@@ -129,7 +126,9 @@ function processAction(
             break
           }
 
-          await executeAuthorized(UserApi.submitChangeEmail(token))
+          await dispatch(
+            executeAuthorizedMethod(UserApi.submitChangeEmail(token)),
+          )
           dispatch(replace(appsList()))
           return null
         }
@@ -150,7 +149,6 @@ function processAction(
 }
 function processSocialLogin(
   authenticated: boolean,
-  { execute, executeAuthorized }: ApiClient,
   search: URLSearchParams,
 ): ThunkAction<Promise<Status>> {
   return async (dispatch) => {
@@ -197,7 +195,9 @@ function processSocialLogin(
             google: 'linkGoogle',
           } as const)[provider]
 
-          await executeAuthorized(UserApi[method](code, redirectUri))
+          await dispatch(
+            executeAuthorizedMethod(UserApi[method](code, redirectUri)),
+          )
         } else {
           const method = ({
             [SocialVerificationAction.SOCIAL_REGISTER]: {
@@ -211,7 +211,7 @@ function processSocialLogin(
           } as const)[action][provider]
 
           // If this method doesn't throw error, user will be authenticated
-          await execute(UserApi[method](code, redirectUri))
+          await dispatch(UserApi[method](code, redirectUri))
         }
         dispatch(replace(appsList()))
 
@@ -238,14 +238,11 @@ function processSocialLogin(
 
 function submitNewPassword(
   search: URLSearchParams,
-  { execute }: ApiClient,
   password: string,
 ): ThunkAction<Promise<void>> {
   return async (dispatch) => {
     try {
-      await execute(
-        UserApi.submitRestorePassword(search.get('token')!, password),
-      )
+      await UserApi.submitRestorePassword(search.get('token')!, password)
 
       // TODO: maybe extract to language
       dispatch(notifyInfo('Пароль изменён'))
@@ -258,7 +255,6 @@ function submitNewPassword(
 }
 
 function submitMissingEmail(
-  { execute }: ApiClient,
   token: string,
   email: string,
 ): ThunkAction<Promise<boolean>> {
@@ -266,7 +262,7 @@ function submitMissingEmail(
     // If extra social networks will be added, add here
     // logic to handle missing email not only for vk but for every one
     try {
-      await execute(UserApi.registerVkEmail(token, email))
+      await dispatch(UserApi.registerVkEmail(token, email))
       dispatch(push(appsList()))
 
       return true

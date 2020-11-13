@@ -1,3 +1,4 @@
+import { Elevation } from 'config/view'
 import { MixedDispatch } from 'store/types'
 import { ScrollablePage } from 'components/shared/Page'
 import { UserApi } from 'services/api'
@@ -14,7 +15,6 @@ import RegistrationInput from './Input'
 import SocialLoginButton from 'components/form/SocialLoginButton'
 import User from 'components/icons/User'
 import cn from 'clsx'
-import useApiClient from 'hooks/use-api-client'
 import useIsGuest from 'hooks/use-is-guest'
 import validate, {
   RegistrationFormValues,
@@ -28,7 +28,6 @@ export default function Registration() {
   // networks after logging in traditionally
   const [status, setStatus] = useState<null | 'loading' | 'verify-email'>(null)
   const dispatch = useDispatch<MixedDispatch>()
-  const { execute } = useApiClient()
   const temp = useRef<TempValidationData>({
     blur: false,
     timer: null,
@@ -39,8 +38,10 @@ export default function Registration() {
     setStatus('loading')
 
     try {
-      const { data } = await execute(
-        UserApi.register(values.email, values.username, values.password),
+      const { data } = await UserApi.register(
+        values.email,
+        values.username,
+        values.password,
       )
 
       if (data.emailVerified) {
@@ -80,7 +81,10 @@ export default function Registration() {
 
   const loading = status === 'loading'
   return (
-    <ScrollablePage>
+    <ScrollablePage
+      routeElevation={Elevation.registration}
+      className={'bg-route route-translate-x'}
+    >
       <PageTitle icon={<User />}>Регистрация</PageTitle>
 
       <div className={'max-w-xl mx-auto px-4 pb-64'}>

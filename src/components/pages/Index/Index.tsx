@@ -1,3 +1,4 @@
+import { Elevation } from 'config/view'
 import { LinkButton } from 'components/shared/Button'
 import { PageContainer, ScrollablePage } from 'components/shared/Page'
 import { login, register } from 'config/routes'
@@ -16,12 +17,12 @@ export default function Index() {
   const scrollbars = useRef<Scrollbars | null>(null)
 
   return (
-    <ScrollablePage ref={scrollbars}>
+    <ScrollablePage routeElevation={Elevation.index} ref={scrollbars}>
       <PageContainer>
         <div
           className={cn(
             styles.WelcomeBackground,
-            '-route-translate-x-full',
+            '-route-translate-y',
             'bg-secondary-800 flex flex-col justify-center items-center px-4',
           )}
         >
@@ -53,11 +54,16 @@ export default function Index() {
           <ScrollIcon className={'h-12 mt-16'} />
         </div>
 
-        <h2 className={'my-32 px-4 text-center text-4xl'}>
+        <h2 className={'my-32 px-4 text-center text-4xl route-translate-y'}>
           Запомни один раз, не забывай никогда
         </h2>
 
-        <div className={cn(styles.AdvantagesBackground, 'bg-secondary-800')}>
+        <div
+          className={cn(
+            styles.AdvantagesBackground,
+            'bg-secondary-800 route-translate-y',
+          )}
+        >
           <Advantage
             icon={<Suffixes />}
             title={'Русский язык'}

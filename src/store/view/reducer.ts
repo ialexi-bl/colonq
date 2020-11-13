@@ -7,6 +7,7 @@ import {
   notifyError,
   notifyInfo,
   openLoading,
+  setElevation,
   showNavigation,
 } from './actions'
 import { createReducer } from 'store/util'
@@ -17,6 +18,8 @@ const initialState: ViewState = {
   loading: ['init'],
   notification: null,
   navigationVisible: true,
+  currentElevation: Infinity,
+  previousElevation: Infinity,
 }
 
 export default createReducer<ViewState>(
@@ -32,6 +35,12 @@ export default createReducer<ViewState>(
     [String(closePageSpecificLoading)]: (state) => ({
       ...state,
       loading: state.loading.filter((x) => x in { router: 1, init: 1 }),
+    }),
+
+    [String(setElevation)]: (state, z: number) => ({
+      ...state,
+      previousElevation: state.currentElevation,
+      currentElevation: z,
     }),
 
     [String(showNavigation)]: (state) => ({

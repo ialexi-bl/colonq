@@ -1,9 +1,10 @@
 import { ApiResponse } from 'services/client/config'
-import { AppState } from 'store/types'
+import { AppState, MixedDispatch } from 'store/types'
 import { AppsApi, UserApi } from 'services/api'
 import { ScrollablePage } from 'components/shared/Page'
 import { appsList } from 'config/routes'
 import { closeLoading, notifyErrorObject, openLoading } from 'store/view'
+import { executeAuthorizedMethod } from 'store/user'
 import { push } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import Accordion from 'components/shared/Accordion/Accordion'
@@ -11,29 +12,21 @@ import Continue from 'components/icons/Continue'
 import DynamicIcon from 'components/icons/DynamicIcon'
 import Fab from 'components/shared/Fab/Fab'
 import PageTitle from 'components/shared/PageTitle'
-import React, { useEffect, useReducer, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import TextContainer from 'components/shared/TextContainer'
 import ThemeCard from 'components/shared/ThemeCard'
-import useApiClient from 'hooks/use-api-client'
 import useIsAuthenticated from 'hooks/use-is-authenticated'
-
-const reducer = (chosen: Record<string, true>, app: string) => {
-  const newState = { ...chosen }
-  if (newState[app]) delete newState[app]
-  else newState[app] = true
-  return newState
-}
+import useItemsToggler from 'hooks/use-items-toggler'
 
 export default function AppsChoice() {
-  const dispatch = useDispatch()
-  const { execute, executeAuthorized } = useApiClient()
+  const dispatch = useDispatch<MixedDispatch>()
   const user = useSelector((state: AppState) => state.user)
 
   const [categories, setCategories] = useState<
     null | ApiResponse.Apps.Category[]
   >(null)
-  const [visible, toggleVisible] = useReducer(reducer, {})
-  const [chosen, toggle] = useReducer(reducer, {}, () => {
+  const [visible, toggleVisible] = useItemsToggler()
+  const [chosen, toggle] = useItemsToggler(() => {
     const chosen: Record<string, true> = {}
     if (user.token) {
       user.categories.forEach((category) => {
@@ -50,17 +43,16 @@ export default function AppsChoice() {
     if (apps.length === 0) return
 
     try {
-      await executeAuthorized(UserApi.setApps(apps))
+      await dispatch(executeAuthorizedMethod(UserApi.setApps(apps)))
       dispatch(push(appsList()))
     } catch (e) {
-      console.log(e)
       dispatch(notifyErrorObject(e))
     }
   }
 
   useEffect(() => {
     dispatch(openLoading('apps-choice'))
-    execute(AppsApi.getAppsList()).then((apps) => {
+    AppsApi.getAppsList().then((apps) => {
       setCategories(apps.data.categories)
       dispatch(closeLoading('apps-choice'))
     })

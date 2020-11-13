@@ -1,5 +1,5 @@
 {
-  "name": "client-fix",
+  "name": "colonq-client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -42,7 +42,7 @@
     "path-to-regexp": "^6.2.0",
     "pnp-webpack-plugin": "1.6.4",
     "postcss-flexbugs-fixes": "4.1.0",
-    "postcss-loader": "3.0.0",
+    "postcss-loader": "^4.0.4",
     "postcss-normalize": "8.0.1",
     "postcss-preset-env": "6.7.0",
     "postcss-safe-parser": "4.0.1",
@@ -176,8 +176,8 @@
     "eslint-plugin-standard": "^4.0.2",
     "eslint-webpack-plugin": "^2.1.0",
     "ftp-deploy": "^2.3.8",
-    "postcss-import": "^13.0.0",
-    "postcss-scss": "^3.0.2",
+    "postcss": "^8.1.6",
+    "postcss-scss": "^3.0.4",
     "react-cosmos": "^5.5.0",
     "react-dom": "^17.0.1",
     "react-hot-loader": "^4.13.0",

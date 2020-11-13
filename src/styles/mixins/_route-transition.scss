@@ -4,7 +4,7 @@
   $selector: transition.create-selectors(
     'route-transition',
     transition.get-states($states),
-    false
+    true
   );
   #{$selector} {
     @content;
@@ -15,6 +15,19 @@
     'route-transition',
     transition.get-states($states),
     true
+  );
+  #{$selector} {
+    @content;
+  }
+}
+
+// Same as `descendant` but works outside of css modules, so it doesn't
+// add :global() to classes
+@mixin descendant-no-module($states...) {
+  $selector: transition.create-selectors(
+    'route-transition',
+    transition.get-states($states),
+    false
   );
   #{$selector} {
     @content;

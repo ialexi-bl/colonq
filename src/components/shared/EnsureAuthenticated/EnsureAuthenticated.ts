@@ -3,5 +3,6 @@ import useIsAuthenticated from 'hooks/use-is-authenticated'
 
 const EnsureAuthenticated: ComponentType<{ children?: ReactNode }> = ({
   children,
-}) => (useIsAuthenticated() && (children as any)) || null
+}) => (useIsAuthenticated() ? (children as any) : null)
+
 export default EnsureAuthenticated

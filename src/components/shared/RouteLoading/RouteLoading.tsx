@@ -23,7 +23,7 @@ export default function RouteLoading() {
     <CSSTransition timeout={TIMEOUT} classNames={CLASS_NAME} in={visible}>
       <div
         className={cn(
-          'absolute inset-0 bg-secondary-1000 z-30',
+          'absolute inset-0 bg-secondary-1000 z-loading',
           styles.RouteLoading,
         )}
       >

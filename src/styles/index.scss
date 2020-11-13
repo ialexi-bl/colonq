@@ -1,6 +1,10 @@
-@import './base';
-@import './reset';
-@import './transitions';
+// Removing extension doesn't work, because importing is done in
+// postcss and not scss
+// `transitions.scss` is also imported first, because it has @use
+// directive
+@import './transitions.scss';
+@import './base.scss';
+@import './reset.scss';
 
 @tailwind base;
 @tailwind utilities;

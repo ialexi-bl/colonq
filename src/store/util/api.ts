@@ -16,7 +16,7 @@ export function* executeMethod(method: UnauthorizedApiMethod<any>) {
 export function* executeAuthorizedMethod(method: ApiMethod<any>) {
   let user: UserState = yield select((state: AppState) => state.user)
 
-  if (!user.token) {
+  if (!user.token || user.tokenExpires - Date.now() < 500) {
     yield put(authenticate())
     const { type } = yield take([
       UserAction.AUTHENTICATE_SUCCESS,
