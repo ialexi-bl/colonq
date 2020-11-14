@@ -1,4 +1,4 @@
-import { ApiErrorName } from 'services/client/config'
+import { ApiErrorName } from 'services/api/config'
 import { HttpError } from 'services/errors'
 import { MixedDispatch } from 'store/types'
 import { closeLoading, openLoading } from 'store/view'
@@ -41,6 +41,7 @@ export default function useLesson<TProblem>(
       ),
     )
       .then(({ data: { problems } }) => {
+        console.log(problems)
         setProblems(problems)
         setStatus('loaded')
       })

@@ -1,4 +1,4 @@
-import { ApiResponse } from 'services/client/config'
+import { ApiResponse } from 'services/api/config'
 import { AppState, MixedDispatch } from 'store/types'
 import { AppsApi, UserApi } from 'services/api'
 import { ScrollablePage } from 'components/shared/Page'

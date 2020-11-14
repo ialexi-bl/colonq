@@ -1,4 +1,4 @@
-import { ApiResponse } from 'services/client/config'
+import { ApiResponse } from 'services/api/config'
 import { HttpError } from 'services/errors'
 import { MixedDispatch } from 'store/types'
 import { authenticateSuccess } from 'store/user'

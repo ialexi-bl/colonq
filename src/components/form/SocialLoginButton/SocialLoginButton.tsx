@@ -1,5 +1,5 @@
 import Config from 'config'
-import Endpoint from 'services/client/config/endpoints'
+import Endpoint from 'services/api/config/endpoints'
 import Google from 'components/icons/social/Google'
 import React from 'react'
 import Vk from 'components/icons/social/Vk'

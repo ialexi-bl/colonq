@@ -1,4 +1,4 @@
-import { ApiResponse } from 'services/client/config'
+import { ApiResponse } from 'services/api/config'
 import { LinkButton } from 'components/shared/Button'
 import { appsList } from 'config/routes'
 import { closeLoading, openLoading } from 'store/view'

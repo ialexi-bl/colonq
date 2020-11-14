@@ -1,4 +1,4 @@
-import { ApiResponse } from 'services/client/config'
+import { ApiResponse } from 'services/api/config'
 import { AuthorizedMethod, AuthorizedMethodInternal, Lesson } from './types'
 import { ThunkAction } from 'store/types'
 import { createAction } from 'store/util'

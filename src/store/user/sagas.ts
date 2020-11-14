@@ -1,4 +1,4 @@
-import { ApiErrorName, ApiResponse } from 'services/client/config'
+import { ApiErrorName, ApiResponse } from 'services/api/config'
 import { AppState } from 'store/types'
 import { AppsApi, UserApi } from 'services/api'
 import { AuthorizedMethodInternal, UserState } from './types'
@@ -29,7 +29,7 @@ import {
   takeEvery,
   takeLeading,
 } from 'redux-saga/effects'
-import { executeAuthorizedMethod, executeMethod } from 'store/util'
+import { executeAuthorizedMethod } from 'store/util'
 import { notifyErrorObject } from 'store/view'
 
 // Logic
@@ -37,11 +37,17 @@ import { notifyErrorObject } from 'store/view'
 function* updateToken() {
   try {
     yield put(authenticateStart())
-    const data: ApiResponse.Auth.Token = yield call(
-      executeMethod,
-      UserApi.fetchToken(),
+    const { data }: ApiResponse.Success<ApiResponse.Auth.Token> = yield call(
+      UserApi.fetchToken,
     )
     yield put(authenticateSuccess(data))
+
+    const methods: AuthorizedMethodInternal<any>[] = yield select(
+      (state: AppState) => state.user.methodsQueue,
+    )
+    methods.forEach((method) => {
+      method(data.token, data.id)
+    })
   } catch (e) {
     if (e instanceof HttpError) {
       const name: string = yield call(e.getApiName)
@@ -108,7 +114,7 @@ function* requestAuthMethod({
 
 function* watchUpdateToken() {
   yield takeLeading(UserAction.AUTHENTICATE_REQUEST, function* () {
-    let user: UserState = yield select((state: AppState) => state.user)
+    const user: UserState = yield select((state: AppState) => state.user)
     // Prevent updating token that hasn't expired yet
     if (
       user.status !== 'loading' &&
@@ -119,13 +125,6 @@ function* watchUpdateToken() {
     }
 
     yield call(updateToken)
-
-    user = yield select((state: AppState) => state.user)
-    if (user.token) {
-      user.methodsQueue.forEach((method) => {
-        method(user.token!, user.id!)
-      })
-    }
   })
 }
 

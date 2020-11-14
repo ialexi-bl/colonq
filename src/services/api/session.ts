@@ -1,4 +1,4 @@
-import { ApiResponse, Endpoint } from 'services/client/config'
+import { ApiResponse, Endpoint } from 'services/api/config'
 import Api from './api'
 
 export default class SessionApi {

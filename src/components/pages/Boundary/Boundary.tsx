@@ -1,7 +1,6 @@
 import { ApiClientProps, withApiClient } from 'hooks/use-api-client'
 import { CUTE_FACE } from 'config/view'
 import { PageContainer } from 'components/shared/Page'
-import ApiClient from 'services/client'
 import Config from 'config'
 import GeneralApi from 'services/api/general'
 import React, { ErrorInfo, ReactNode } from 'react'
@@ -19,8 +18,6 @@ declare const Ya: any
 declare const ga: any
 
 class Boundary extends React.Component<BoundaryProps> {
-  public context!: ApiClient
-
   public state = {
     hasError: false,
   }

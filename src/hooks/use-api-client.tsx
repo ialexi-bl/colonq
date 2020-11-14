@@ -1,4 +1,4 @@
-import { ApiResponse } from 'services/client/config'
+import { ApiResponse } from 'services/api/config'
 import { AppState } from 'store/types'
 import { AuthorizedApiMethod, UnauthorizedApiMethod } from 'services/api/api'
 import { authenticate } from 'store/user'

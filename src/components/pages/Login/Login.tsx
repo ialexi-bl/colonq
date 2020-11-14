@@ -1,4 +1,4 @@
-import { ApiErrorName } from 'services/client/config'
+import { ApiErrorName } from 'services/api/config'
 import { CUTE_FACE, Elevation } from 'config/view'
 import { FormikHelpers, useFormik } from 'formik'
 import { HttpError } from 'services/errors'

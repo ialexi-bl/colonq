@@ -2,7 +2,7 @@ import {
   ApiErrorName,
   SocialVerificationAction,
   VerificationAction,
-} from 'services/client/config'
+} from 'services/api/config'
 import { AppState, MixedDispatch, ThunkAction } from 'store/types'
 import { HttpError } from 'services/errors'
 import { UserApi } from 'services/api'

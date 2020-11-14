@@ -1,4 +1,4 @@
-import { ApiErrorName } from 'services/client/config'
+import { ApiErrorName } from 'services/api/config'
 import AppError from 'apps/shared/AppError'
 import AppLocked from '../AppLocked'
 import NotFound from 'components/pages/NotFound'

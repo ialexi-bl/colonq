@@ -1,4 +1,4 @@
-import { ApiErrorName, ApiResponse, Endpoint } from 'services/client/config'
+import { ApiErrorName, ApiResponse, Endpoint } from 'services/api/config'
 import { HttpError } from 'services/errors'
 import { MixedDispatch } from 'store/types'
 import { loadAppsSuccess } from 'store/user'

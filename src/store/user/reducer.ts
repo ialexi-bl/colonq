@@ -1,4 +1,4 @@
-import { ApiResponse } from 'services/client/config'
+import { ApiResponse } from 'services/api/config'
 import { Apps, AuthorizedMethodInternal, EmptyUser, UserState } from './types'
 import {
   LoadAppSuccessPayload,

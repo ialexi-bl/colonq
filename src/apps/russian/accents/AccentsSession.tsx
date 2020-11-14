@@ -1,5 +1,5 @@
 import { AccentWord } from './AccentWord'
-import { ApiResponse } from 'services/client/config'
+import { ApiResponse } from 'services/api/config'
 import { Elevation } from 'config/view'
 import { MixedDispatch } from 'store/types'
 import { ProblemsConsumerProps } from 'apps/shared/ProblemsProvider'
@@ -72,7 +72,7 @@ export default function AccentsSession({
       .then(() => {
         dispatch(closeLoading('session'))
       })
-  }, [answers, disabled, dispatch, done, executeAuthorized])
+  }, [answers, disabled, dispatch, done])
 
   return (
     <Page
