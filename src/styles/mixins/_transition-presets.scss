@@ -67,7 +67,7 @@ $dir-opacity-offset: 5rem;
   @include opacity-end;
 }
 
-@mixin dir($x, $y: 0) {
+@mixin dir-end($x, $y: 0) {
   @include route-transition.descendant-no-module(/* enter-active,  */ exit) {
     transform: translate(0);
   }
@@ -82,7 +82,7 @@ $dir-opacity-offset: 5rem;
   }
 }
 @mixin up-end {
-  @include dir(0, -100vh);
+  @include dir-end(0, -100vh);
 }
 @mixin up {
   @include up-start;
@@ -94,7 +94,7 @@ $dir-opacity-offset: 5rem;
   }
 }
 @mixin down-end {
-  @include dir(0, 100vh);
+  @include dir-end(0, 100vh);
 }
 @mixin down {
   @include down-start;
@@ -106,7 +106,7 @@ $dir-opacity-offset: 5rem;
   }
 }
 @mixin right-end {
-  @include dir(100vw);
+  @include dir-end(100vw);
 }
 @mixin right {
   @include right-start;
@@ -118,7 +118,7 @@ $dir-opacity-offset: 5rem;
   }
 }
 @mixin left-end {
-  @include dir(-100vw);
+  @include dir-end(-100vw);
 }
 @mixin left {
   @include left-start;

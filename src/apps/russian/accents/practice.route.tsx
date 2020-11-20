@@ -1,14 +1,16 @@
+import { AccentWord, AccentsProblem } from './AccentWord'
 import { PRACTICE } from 'apps/hooks/use-lesson'
-import AccentsSession from './AccentsSession'
-import ProblemsProvider from 'apps/shared/ProblemsProvider'
+import { RouteComponentProps } from 'config/routes'
 import React from 'react'
+import WordsSessionPage from 'apps/shared/words/SessionPage'
 
-export default function Practice() {
+export default function Practice(controls: RouteComponentProps) {
   return (
-    <ProblemsProvider
+    <WordsSessionPage<AccentsProblem>
       app={'russian/accents'}
       lesson={PRACTICE}
-      consumer={AccentsSession}
+      wordView={AccentWord}
+      {...controls}
     />
   )
 }

@@ -1,7 +1,14 @@
 import { ApiResponse } from 'services/api/config'
-import { Apps, AuthorizedMethodInternal, EmptyUser, UserState } from './types'
+import {
+  Apps,
+  AuthorizedMethodInternal,
+  EmptyUser,
+  Lesson,
+  UserState,
+} from './types'
 import {
   LoadAppSuccessPayload,
+  UpdateLessonsPayload,
   authenticateError,
   authenticateStart,
   authenticateSuccess,
@@ -13,6 +20,7 @@ import {
   loadAppsSuccess,
   queueAuthMethod,
   unauthenticate,
+  updateLessons,
 } from './actions'
 import { createReducer } from 'store/util'
 import { getTokenExpirationTime } from 'util/jwt'
@@ -34,6 +42,8 @@ export const initialState: EmptyUser = {
   methodsQueue: [],
 }
 
+const getScore = (lessons: Lesson[]) =>
+  lessons.reduce((a, b) => a + b.score, 0) / lessons.length
 export default createReducer<UserState>(
   {
     [String(authenticateStart)]: (state): UserState => ({
@@ -48,13 +58,9 @@ export default createReducer<UserState>(
       state,
       payload: ApiResponse.Auth.UserData,
     ): UserState => ({
-      methodsQueue: state.methodsQueue,
+      ...(state.id === payload.id ? state : initialState),
       ...payload,
-      // TODO: maybe not reset these fields
-      appsStatus: 'none',
-      categories: [],
-      appsList: [],
-      apps: {},
+      methodsQueue: [],
       tokenExpires: getTokenExpirationTime(payload.token),
       status: 'authenticated',
     }),
@@ -66,8 +72,6 @@ export default createReducer<UserState>(
     [String(loadApps)]: (state): UserState => ({
       ...state,
       appsStatus: 'loading',
-      appsList: [],
-      apps: {},
     }),
     [String(loadAppsSuccess)]: (
       state,
@@ -79,11 +83,20 @@ export default createReducer<UserState>(
       categories.forEach((category) => {
         category.apps.forEach((app) => {
           appsList.push(app.id)
-          apps[app.id] = {
-            ...app,
-            status: 'only-info',
-            lessons: [],
-          }
+
+          const previous = state.apps[app.id]
+          apps[app.id] =
+            previous?.status === 'loaded'
+              ? {
+                  ...app,
+                  status: 'loaded',
+                  lessons: previous.lessons,
+                }
+              : {
+                  ...app,
+                  status: 'only-info',
+                  lessons: [],
+                }
         })
       })
 
@@ -113,19 +126,38 @@ export default createReducer<UserState>(
     [String(loadAppSuccess)]: (
       state,
       { app, title, icon, lessons }: LoadAppSuccessPayload,
-    ): UserState => {
-      const score = lessons.reduce((a, b) => a + b.score, 0) / lessons.length
+    ): UserState => ({
+      ...state,
+      apps: {
+        ...state.apps,
+        [app]: {
+          score: getScore(lessons),
+          status: 'loaded',
+          id: app,
+          lessons,
+          title,
+          icon,
+        },
+      },
+    }),
+    [String(updateLessons)]: (
+      state,
+      { app: appName, lessons }: UpdateLessonsPayload,
+    ) => {
+      const app = state.apps[appName]
+      if (app?.status !== 'loaded') {
+        // If app hasn't been loaded, then loading will be requested later
+        // by components that will need it
+        return state
+      }
       return {
         ...state,
         apps: {
           ...state.apps,
-          [app]: {
-            status: 'loaded',
-            id: app,
+          [appName]: {
+            ...app,
+            score: getScore(lessons),
             lessons,
-            title,
-            score,
-            icon,
           },
         },
       }

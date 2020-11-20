@@ -28,7 +28,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         readOnly={readOnly}
         tabIndex={0}
         className={cn(
-          'py-4 px-6 w-full outline-none',
+          'py-4 px-6 outline-none',
           className,
           styles.Input,
           styles[`variant-${variant}`],

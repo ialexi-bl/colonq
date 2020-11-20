@@ -3,7 +3,7 @@ import Accents from 'components/icons/dynamic/russian/accents'
 import React from 'react'
 import ThemeCard from './ThemeCard'
 
-export default () => {
+export default function ThemeCardFixture() {
   const [progress, setProgress] = useValue<number>('progress', {
     defaultValue: 1,
   })

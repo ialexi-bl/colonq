@@ -1,11 +1,11 @@
 import { ApiResponse } from 'services/api/config'
-import { LinkButton } from 'components/shared/Button'
-import { appsList } from 'config/routes'
 import { closeLoading, openLoading } from 'store/view'
 import { useDispatch } from 'react-redux'
-import { useLocation } from 'react-router'
+import { useHistory } from 'react-router'
 import Bubble from 'components/shared/Bubble'
+import Button from 'components/shared/Button'
 import DynamicIcon, { preloadIcons } from 'components/icons/DynamicIcon'
+import FullscreenLoading from 'components/shared/GlobalLoading/FullscreenLoading'
 import Hr from 'components/shared/Hr'
 import React, { ReactNode, useEffect, useMemo, useState } from 'react'
 import useTween from 'hooks/use-tween'
@@ -19,10 +19,10 @@ export default function AchievementsDisplay({
   response,
   delay = 200,
 }: AchievementsDisplayProps) {
-  const location = useLocation<undefined | { redirect?: string }>()
   const { lessons, updatedLessons, unlockedLessons } = response
   const hrVariant = useMemo(() => (Math.floor(Math.random() * 2) + 1) as 1, [])
   const dispatch = useDispatch()
+  const history = useHistory()
   const [loaded, setLoaded] = useState(false)
 
   const lessonsObj = useMemo(() => {
@@ -47,21 +47,29 @@ export default function AchievementsDisplay({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (!loaded) return null
-
   return (
     <div className={'w-full h-full flex flex-col justify-center items-center'}>
-      <Unlocked lessons={lessonsObj} unlocked={unlockedLessons} delay={delay} />
-      {unlockedLessons.length > 0 && (
-        <Hr className={'w-full'} variant={hrVariant} />
+      <FullscreenLoading visible={!loaded} absolute />
+      {loaded && (
+        <>
+          <Unlocked
+            lessons={lessonsObj}
+            unlocked={unlockedLessons}
+            delay={delay}
+          />
+          {unlockedLessons.length > 0 && (
+            <Hr className={'w-full'} variant={hrVariant} />
+          )}
+          <Updated
+            lessons={lessonsObj}
+            updated={updatedLessons}
+            delay={delay}
+          />
+          <Button onClick={history.goBack} className={'mt-8 min-w-64'}>
+            Продолжить
+          </Button>
+        </>
       )}
-      <Updated lessons={lessonsObj} updated={updatedLessons} delay={delay} />
-      <LinkButton
-        to={location.state?.redirect || appsList()}
-        className={'mt-8 min-w-64'}
-      >
-        Продолжить
-      </LinkButton>
     </div>
   )
 }
@@ -105,7 +113,10 @@ function Unlocked({ lessons, unlocked, delay }: UnlockedProps) {
   const [disabled, setDisabled] = useState(true)
 
   useEffect(() => {
-    if (unlocked.length) setTimeout(() => setDisabled(false), delay)
+    if (unlocked.length) {
+      const timeout = window.setTimeout(() => setDisabled(false), delay)
+      return () => clearTimeout(timeout)
+    }
   }, [delay, unlocked.length])
 
   if (!unlocked.length) return null

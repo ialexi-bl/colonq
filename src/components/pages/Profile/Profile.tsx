@@ -1,4 +1,5 @@
 import { AppState } from 'store/types'
+import { RouteComponentProps } from 'config/routes'
 import { ScrollablePage } from 'components/shared/Page'
 import { UserApi } from 'services/api'
 import { User as UserType, unauthenticate } from 'store/user'
@@ -8,12 +9,12 @@ import Button from 'components/shared/Button'
 import InfoItem from 'components/shared/InfoItem'
 import LangNotifications from 'lang/notifications.json'
 import PageTitle from 'components/shared/PageTitle'
-import React from 'react'
+import React, { useEffect } from 'react'
 import SocialLoginButton from 'components/form/SocialLoginButton'
 import User from 'components/icons/User'
 import useIsAuthenticated from 'hooks/use-is-authenticated'
 
-export default function Profile() {
+export default function Profile({ setProgress }: RouteComponentProps) {
   const dispatch = useDispatch()
   const { username: name, email, providers } = useSelector(
     (state: AppState) => state.user,
@@ -25,9 +26,11 @@ export default function Profile() {
     UserApi.logout()
   }
 
-  if (!useIsAuthenticated()) {
-    return null
-  }
+  useEffect(() => {
+    setProgress(100)
+  }, [setProgress])
+
+  if (!useIsAuthenticated()) return null
 
   return (
     <ScrollablePage>

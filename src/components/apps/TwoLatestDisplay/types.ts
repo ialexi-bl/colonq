@@ -1,4 +1,5 @@
 export type TwoLatestDisplayViewProps<TItem, TNext extends Function> = {
+  firstItem: boolean
   active: boolean
   item: TItem
   next: TNext

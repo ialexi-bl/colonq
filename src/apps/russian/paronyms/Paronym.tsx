@@ -1,54 +1,49 @@
-// @ts-nocheck
-// eslint-disable
 import { TwoLatestDisplayViewProps } from 'components/apps/TwoLatestDisplay'
+import { WordsNext } from 'apps/shared/words/SessionPage'
 import Input from 'components/form/Input'
-import React, { memo, useMemo, useState } from 'react'
-import styles from './Paronym.module.scss'
+import React, { useState } from 'react'
 
-export type AccentWordProps = {
-  word: [number, string]
-  onLetterClick: (i: number) => unknown
-  answer: undefined | number
+export type ParonymsProblem = {
+  id: string
+  answer: string
+  problem: string
+  placeholder: string
 }
 
-export const Paronym = memo(function Paronym({
-  item: word,
-  active,
+export const Paronym = function Paronym({
+  item,
   next,
-}: TwoLatestDisplayViewProps<Word>) {
+  active,
+  firstItem,
+}: TwoLatestDisplayViewProps<ParonymsProblem, WordsNext>) {
   const [value, setValue] = useState('')
-  const [start, helper, end, correct] = useMemo(() => {
-    const [, start, content, end] = word.label.match(/^([^[]*)\[(.+?)\](.*)/)!
-
-    const options = content.split('|')
-    const placeholder = random(options)
-    const correct = options.find((x) => x !== x.toLowerCase()) || ''
-    return [start, placeholder, end, correct]
-  }, [word.label])
+  const [start, end] = item.problem.split('_')
+  const isCorrect =
+    value.trim().toLowerCase() === (item.answer as any).toLowerCase()
 
   return (
-    <div className={styles.Word}>
+    <div className={'text-center text-xl leading-8 px-1'}>
       {start}
       <Input
-        size={Math.max(helper.length, correct.length) + 4}
-        value={active ? value : correct}
+        size={(item.answer as any).length + 4}
+        value={active ? value : item.answer}
         state={active ? undefined : isCorrect ? 'valid' : 'invalid'}
+        className={'text-center text-base uppercase mx-1'}
         tabIndex={active ? 0 : -1}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(e) => active && setValue(e.target.value)}
+        autoFocus={!firstItem}
+        placeholder={item.placeholder}
         onKeyDown={(e) => {
-          if (e.key !== 'Enter') return
-          next()
-        }}
-        ref={(e) => {
-          if (e && active && isInput(document.activeElement)) {
-            e.focus()
+          if (e.key !== 'Enter' || !active) return
+
+          if (value) next(value)
+          else {
+            setValue(item.placeholder)
+            next(item.placeholder)
           }
         }}
       />
       {end}
     </div>
   )
-})
-
-const isInput = (e: Element | null) => e?.tagName.toLowerCase() === 'input'
-const random = <T extends any>(arr: T[]) => arr[~~(Math.random() * arr.length)]
+}

@@ -41,11 +41,11 @@ export default function useLesson<TProblem>(
       ),
     )
       .then(({ data: { problems } }) => {
-        console.log(problems)
         setProblems(problems)
         setStatus('loaded')
       })
       .catch(async (error) => {
+        console.log(error)
         if (error instanceof HttpError) {
           const name = await error.getApiName()
           return setStatus(name)

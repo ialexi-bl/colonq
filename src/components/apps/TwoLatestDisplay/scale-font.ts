@@ -9,7 +9,7 @@ export default function fitHeightAndGetScale(e: HTMLElement) {
   let width = e.clientWidth
   let i = 0
 
-  while (i++ < 50 && e.clientHeight / windowHeight > 0.4) {
+  while (i++ < 50 && e.clientHeight / windowHeight > 0.3) {
     width += 100
     // For some reason just width doesn't always work, min-width is also necessary
     e.style.width = e.style.minWidth = `${width}px`

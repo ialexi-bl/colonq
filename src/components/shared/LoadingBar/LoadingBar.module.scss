@@ -1,0 +1,49 @@
+@use 'styles/mixins/transition';
+
+$transition-class-name: loading-bar;
+$transition-duration: 100ms;
+$transition-duration-exit: 500ms;
+$transform-duration: 700ms;
+
+:export {
+  transitionClassName: $transition-class-name;
+  transitionDuration: $transition-duration;
+  transitionDurationExit: $transition-duration-exit;
+}
+
+.Track {
+  height: 8px;
+  clip-path: url(#shape-loading-bar);
+}
+
+.Fill {
+  opacity: 0;
+
+  @include transition.self($transition-class-name, (enter)) {
+    opacity: 0;
+    transform: scaleX(0) !important;
+  }
+  @include transition.self($transition-class-name, (enter-to)) {
+    opacity: 1;
+    transition: opacity $transition-duration, transform $transform-duration;
+  }
+
+  @include transition.self($transition-class-name, (exit)) {
+    opacity: 1;
+    transform: scaleX(1) !important;
+    transition: opacity $transition-duration-exit, transform $transform-duration;
+  }
+  @include transition.self($transition-class-name, (exit-active)) {
+    transition: opacity $transition-duration-exit, transform $transform-duration;
+    opacity: 0 !important;
+  }
+}
+
+// .hidden {
+//   transition: opacity 200ms 500ms, transform 500ms;
+//   opacity: 0;
+// }
+// .visible {
+//   transition: opacity 200ms, transform 500ms;
+//   opacity: 1;
+// }

@@ -75,9 +75,7 @@ export default function Registration() {
     },
   })
 
-  if (!useIsGuest()) {
-    return null
-  }
+  if (!useIsGuest()) return null
 
   const loading = status === 'loading'
   return (

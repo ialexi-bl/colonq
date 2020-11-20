@@ -1,22 +1,18 @@
 import ChoicePhrase from './ChoicePhrase'
 import React from 'react'
 
-export default () => {
+export default function ChoicePhraseFixture() {
   return (
     <div style={{ padding: 20 }}>
       <ChoicePhrase
-        phrase={'Лиса л[оА]вка'}
-        parseWord={(word) => {
-          const match = word.match(/(.*?)\[(.+?)\](.*)/)
-
-          return (
-            match && {
-              end: match[3],
-              start: match[1],
-              options: match[2].toLowerCase().split(''),
-              correctAnswer: 1,
-            }
-          )
+        firstItem={true}
+        active={true}
+        next={() => {}}
+        item={{
+          id: 'w',
+          problem: 'Лиса л_вка',
+          options: ['о', 'а'],
+          answer: 'а',
         }}
       />
     </div>

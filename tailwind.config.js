@@ -76,9 +76,9 @@ module.exports = {
         12: '3rem',
       },
       zIndex: {
-        navigation: 200,
-        notification: 190,
-        loading: 180,
+        navigation: 600,
+        notification: 590,
+        loading: 580,
       },
     },
   },

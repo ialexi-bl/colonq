@@ -10,12 +10,15 @@
   @include transition-presets.opacity-end;
 }
 .bg-page,
-.route-overlay {
+.route-overlay,
+.route-exit-overlay,
+.route-enter-overlay {
   background: theme('colors.secondary.1000');
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 }
 
 .route-enter-translate-x,
+.route-enter-overlay,
 .route-translate-x,
 .route-overlay {
   @include transition-presets.right-start;
@@ -34,6 +37,7 @@
 }
 
 .route-exit-translate-x,
+.route-exit-overlay,
 .route-translate-x,
 .route-overlay {
   @include transition-presets.right-end;

@@ -5,18 +5,14 @@ import { hot } from 'react-hot-loader/root'
 import Boundary from './pages/Boundary'
 import React, { ReactNode } from 'react'
 
-export const Wrapper = hot(function Wrapper({
-  children,
-  applyClassName,
-}: {
-  children?: ReactNode
-  applyClassName: (className: string) => unknown
-}) {
+
+const Wrapper = hot(function Wrapper({ children }: { children?: ReactNode }) {
   return (
     <ReduxProvider store={store}>
-      <Boundary applyClassName={applyClassName} global>
+      <Boundary global>
         <ConnectedRouter history={history}>{children}</ConnectedRouter>
       </Boundary>
     </ReduxProvider>
   )
 })
+export default Wrapper

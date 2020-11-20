@@ -1,11 +1,11 @@
 import { Elevation } from 'config/view'
 import { LinkButton } from 'components/shared/Button'
 import { PageContainer, ScrollablePage } from 'components/shared/Page'
-import { login, register } from 'config/routes'
+import { RouteComponentProps, login, register } from 'config/routes'
 import Hr from 'components/shared/Hr'
 import LetterButton from 'components/shared/LetterButton'
 import NotificationIcon from 'components/icons/Notification'
-import React, { ReactNode, useRef } from 'react'
+import React, { ReactNode, useEffect, useRef } from 'react'
 import ScrollIcon from 'components/icons/Scroll'
 import Scrollbars from 'react-custom-scrollbars'
 import Suffixes from 'components/icons/dynamic/russian/suffixes'
@@ -13,8 +13,12 @@ import Trigonometry from 'components/icons/dynamic/maths/Trigonometry'
 import cn from 'clsx'
 import styles from './Index.module.scss'
 
-export default function Index() {
+export default function Index({ setProgress }: RouteComponentProps) {
   const scrollbars = useRef<Scrollbars | null>(null)
+
+  useEffect(() => {
+    setProgress(100)
+  }, [setProgress])
 
   return (
     <ScrollablePage routeElevation={Elevation.index} ref={scrollbars}>

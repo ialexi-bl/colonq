@@ -17,11 +17,13 @@ export function TwoLatestDisplay<TItem, TNext extends Function>({
   className,
   component: Component,
 }: TwoLatestDisplayProps<TItem, TNext>) {
-  const iter = [previous2, previous, current].filter(Boolean) as Item<TItem>[]
+  const firstRender = useRef(true)
+  const iter = [current, previous, previous2].filter(Boolean) as Item<TItem>[]
   const { current: transformed } = useRef<
     Record<string, 'curr' | 'prev' | 'prev1'>
   >({})
 
+  let prevHeight = 0
   return (
     <div className={cn(styles.Container, className)}>
       {iter.map((item) => (
@@ -38,13 +40,19 @@ export function TwoLatestDisplay<TItem, TNext extends Function>({
             if (item === current) {
               if (transformed[item.id] !== 'curr') {
                 transformed[item.id] = 'curr'
-                e.style.transform = `scale(${reduceFont(e)})`
+
+                const scale = reduceFont(e)
+                e.style.transform = `scale(${scale})`
+                prevHeight = e.clientHeight * scale
               }
             } else if (item === previous) {
+              console.log(prevHeight)
               if (transformed[item.id] !== 'prev') {
                 transformed[item.id] = 'prev'
                 e.style.transform = `translateY(${
-                  item.hiding ? '5rem' : '-100%'
+                  item.hiding
+                    ? '5rem'
+                    : `-${prevHeight / 2 + e.clientHeight / 2}px`
                 }) ${e.style.transform} scale(0.6)`
               }
             } else if (transformed[item.id] !== 'prev1') {
@@ -53,7 +61,16 @@ export function TwoLatestDisplay<TItem, TNext extends Function>({
             }
           }}
         >
-          <Component active={item === current} item={item.data} next={next} />
+          <Component
+            firstItem={(() => {
+              const t = firstRender.current
+              firstRender.current = false
+              return t
+            })()}
+            active={item === current}
+            item={item.data}
+            next={next}
+          />
         </div>
       ))}
     </div>

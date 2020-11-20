@@ -3,8 +3,8 @@ import { CUTE_FACE, Elevation } from 'config/view'
 import { FormikHelpers, useFormik } from 'formik'
 import { HttpError } from 'services/errors'
 import { MixedDispatch } from 'store/types'
+import { RouteComponentProps, appsList, register } from 'config/routes'
 import { UserApi } from 'services/api'
-import { appsList, register } from 'config/routes'
 import { notifyErrorObject } from 'store/view'
 import { push } from 'connected-react-router'
 import { useDispatch } from 'react-redux'
@@ -15,7 +15,7 @@ import Input from 'components/form/Input'
 import Loading from 'components/shared/Loading'
 import Page from 'components/shared/Page'
 import PageTitle from 'components/shared/PageTitle'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SocialLoginButton from 'components/form/SocialLoginButton'
 import User from 'components/icons/User'
 import cn from 'clsx'
@@ -26,11 +26,15 @@ type FormValues = {
   password: string
 }
 
-export default function Login() {
+export default function Login({ setProgress }: RouteComponentProps) {
   const location = useLocation<{ email?: unknown; password?: unknown }>()
   const dispatch = useDispatch<MixedDispatch>()
   const { email, password } = location.state || {}
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    setProgress(100)
+  }, [setProgress])
 
   const login = async (
     values: FormValues,

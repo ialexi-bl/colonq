@@ -1,74 +1,62 @@
-import { RouteOptions } from './types'
-import { allowedCategories } from 'apps'
+import { RouteComponentProps, RouteOptions } from './types'
 import Config from 'config'
-import EnsureAuthenticated from 'components/shared/EnsureAuthenticated'
 import NotFound from 'components/pages/NotFound'
-import React, { ComponentType, lazy } from 'react'
+import React from 'react'
 
+const getKey: RouteOptions['getKey'] = ({ match: { params } }) =>
+  `${params.category}/${params.name}`
 const appsRoutes: RouteOptions[] = [
   {
+    getKey,
     path: '/app/:category/:name/list',
     name: 'appList',
-    render: ({
+    getComponent: ({
       match: {
         params: { category, name },
       },
-    }) => renderAppPage(category, name, 'list'),
+    }) => importAppComponent(category, name, 'list'),
   },
   {
+    getKey,
     path: '/app/:category/:name/settings',
     name: 'appSettings',
-    render: ({
+    getComponent: ({
       match: {
         params: { category, name },
       },
-    }) => renderAppPage(category, name, 'settings'),
+    }) => importAppComponent(category, name, 'settings'),
   },
   {
+    getKey,
     path: '/app/:category/:name/practice',
     name: 'appSession',
-    render: ({
+    getComponent: ({
       match: {
         params: { category, name },
       },
-    }) => renderAppPage(category, name, 'practice'),
+    }) => importAppComponent(category, name, 'practice'),
   },
   {
+    getKey,
     path: '/app/:category/:name/lesson/:lesson',
     name: 'appPractice',
-    render: ({
+    getComponent: ({
       match: {
         params: { category, name, lesson },
       },
-    }) => renderAppPage(category, name, 'session', { lesson }),
+    }) =>
+      importAppComponent(category, name, 'session').then((module) => ({
+        default: (controls: RouteComponentProps) => (
+          <module.default lesson={lesson} {...controls} />
+        ),
+      })),
   },
 ]
 export default appsRoutes
 
-const cache: Record<string, ComponentType<any>> = {}
-function getComponent(category: string, name: string, path: string) {
-  if (!(category in allowedCategories)) {
-    return NotFound
-  }
-
-  const file = `${category}/${name}/${path}`
-  return (cache[file] ||= lazy(() =>
-    import(`apps/${file}.route`).catch((e) => {
-      if (Config.IS_DEV) console.warn(e)
-      return { default: NotFound }
-    }),
-  ))
-}
-function renderAppPage(
-  category: string,
-  name: string,
-  path: string,
-  props: any = {},
-) {
-  const Component = getComponent(category, name, path)
-  return (
-    <EnsureAuthenticated>
-      <Component {...props} />
-    </EnsureAuthenticated>
-  )
+function importAppComponent(category: string, name: string, path: string) {
+  return import(`apps/${category}/${name}/${path}.route`).catch((e) => {
+    if (Config.IS_DEV) console.warn(e)
+    return { default: NotFound }
+  })
 }

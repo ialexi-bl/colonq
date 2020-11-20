@@ -13,6 +13,7 @@ enum ApiErrorName {
   MISSING_DATA = 'MissingDataError',
   UNPROCESSABLE_ENTITY = 'UnprocessableEntityError',
 
+  NO_PROBLEMS_ERROR = 'NoProblemsError',
   UNKNOWN_ERROR = 'UnknownError',
 }
 export default ApiErrorName

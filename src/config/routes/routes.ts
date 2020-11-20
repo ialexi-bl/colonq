@@ -1,55 +1,54 @@
 import { RouteOptions, Routes } from './types'
-import { lazy } from 'react'
 import appsRoutes from './apps-routes'
 
 export const routesArray: RouteOptions[] = [
   {
     path: '/',
     name: 'index',
-    component: lazy(() => import('components/pages/Index')),
+    getComponent: () => import('components/pages/Index'),
   },
   {
     path: '/apps/edit',
     name: 'appsChoice',
-    component: lazy(() => import('components/pages/AppsChoice')),
+    getComponent: () => import('components/pages/AppsChoice'),
   },
   {
     path: '/apps',
     name: 'appsList',
-    component: lazy(() => import('components/pages/AppsList')),
+    getComponent: () => import('components/pages/AppsList'),
   },
   {
     path: '/settings',
     name: 'settings',
-    component: lazy(() => import('components/pages/Settings')),
+    getComponent: () => import('components/pages/Settings'),
   },
   {
     path: '/auth',
     name: 'auth',
-    component: lazy(() => import('components/pages/Auth')),
+    getComponent: () => import('components/pages/Auth'),
   },
   {
     path: '/feedback',
     name: 'feedback',
-    component: lazy(() => import('components/pages/Feedback')),
+    getComponent: () => import('components/pages/Feedback'),
   },
   {
     path: '/profile',
     name: 'profile',
     authenticated: true,
-    component: lazy(() => import('components/pages/Profile')),
+    getComponent: () => import('components/pages/Profile'),
   },
   {
     path: '/login',
     name: 'login',
     authenticated: false,
-    component: lazy(() => import('components/pages/Login')),
+    getComponent: () => import('components/pages/Login'),
   },
   {
     path: '/register',
     name: 'register',
     authenticated: false,
-    component: lazy(() => import('components/pages/Registration')),
+    getComponent: () => import('components/pages/Registration'),
   },
   ...appsRoutes,
 ]

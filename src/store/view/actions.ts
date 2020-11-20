@@ -1,6 +1,7 @@
 import { HttpError } from 'services/errors'
 import { ThunkAction } from 'store/types'
 import { createAction } from 'store/util'
+import Config from 'config'
 import LangErrors from 'lang/errors.json'
 
 export enum ViewAction {
@@ -38,7 +39,13 @@ export const notifyHttpError = (error: HttpError): ThunkAction<void> => async (
   const message = await error.getApiMessage()
   dispatch(notifyError(message))
 }
-export const notifyErrorObject = (e: Error): ThunkAction<void> => (dispatch) =>
-  e instanceof HttpError
-    ? dispatch(notifyHttpError(e))
-    : dispatch(notifyError(LangErrors.unknown))
+export const notifyErrorObject = (e: Error): ThunkAction<void> => (
+  dispatch,
+) => {
+  if (e instanceof HttpError) {
+    dispatch(notifyHttpError(e))
+  } else {
+    if (Config.IS_DEV) console.error(e)
+    dispatch(notifyError(LangErrors.unknown))
+  }
+}

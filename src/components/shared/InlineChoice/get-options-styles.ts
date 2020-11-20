@@ -1,6 +1,6 @@
 import styles from './InlineChoice.module.scss'
 
-const optionMargin = 0.25
+const optionMargin = parseFloat(styles.optionMargin)
 const optionHeight = parseFloat(styles.optionHeight)
 
 /**

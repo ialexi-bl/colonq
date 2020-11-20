@@ -1,10 +1,11 @@
 import { ApiResponse } from 'services/api/config'
 import { AppState, MixedDispatch } from 'store/types'
 import { AppsApi, UserApi } from 'services/api'
+import { Elevation } from 'config/view'
+import { RouteComponentProps, appsList } from 'config/routes'
 import { ScrollablePage } from 'components/shared/Page'
-import { appsList } from 'config/routes'
-import { closeLoading, notifyErrorObject, openLoading } from 'store/view'
 import { executeAuthorizedMethod } from 'store/user'
+import { notifyErrorObject } from 'store/view'
 import { push } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import Accordion from 'components/shared/Accordion/Accordion'
@@ -15,17 +16,21 @@ import PageTitle from 'components/shared/PageTitle'
 import React, { useEffect, useState } from 'react'
 import TextContainer from 'components/shared/TextContainer'
 import ThemeCard from 'components/shared/ThemeCard'
+import useElevation from 'hooks/use-elevation'
 import useIsAuthenticated from 'hooks/use-is-authenticated'
 import useItemsToggler from 'hooks/use-items-toggler'
 
-export default function AppsChoice() {
+export default function AppsChoice({
+  visible,
+  setProgress,
+}: RouteComponentProps) {
   const dispatch = useDispatch<MixedDispatch>()
   const user = useSelector((state: AppState) => state.user)
 
   const [categories, setCategories] = useState<
     null | ApiResponse.Apps.Category[]
   >(null)
-  const [visible, toggleVisible] = useItemsToggler()
+  const [visibleItems, toggleVisible] = useItemsToggler()
   const [chosen, toggle] = useItemsToggler(() => {
     const chosen: Record<string, true> = {}
     if (user.token) {
@@ -51,20 +56,23 @@ export default function AppsChoice() {
   }
 
   useEffect(() => {
-    dispatch(openLoading('apps-choice'))
     AppsApi.getAppsList().then((apps) => {
       setCategories(apps.data.categories)
-      dispatch(closeLoading('apps-choice'))
+      setProgress(100)
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+  useElevation(Elevation.appsChoice)
 
-  if (!useIsAuthenticated() || !categories) {
+  if (!useIsAuthenticated() || !visible || !categories) {
     return null
   }
 
   return (
-    <ScrollablePage>
+    <ScrollablePage
+      routeElevation={Elevation.appsChoice}
+      className={'route-overlay'}
+    >
       <PageTitle>Выбор тем</PageTitle>
       <p className={'px-4 mb-2'}>
         Выбери темы, по которым ты хочешь заниматься. Их можно будет добавить и
@@ -82,7 +90,7 @@ export default function AppsChoice() {
             {category.apps.map((app, i) => (
               <Accordion
                 key={app.id}
-                expanded={app.id in visible}
+                expanded={app.id in visibleItems}
                 className={'mb-6'}
                 summary={
                   <ThemeCard

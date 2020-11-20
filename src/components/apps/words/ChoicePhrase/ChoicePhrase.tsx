@@ -1,48 +1,52 @@
-import { InlineChoice, InlineChoiceProps } from 'components/shared/InlineChoice'
-import React from 'react'
+import { InlineChoice } from 'components/shared/InlineChoice'
+import { TwoLatestDisplayViewProps } from 'components/apps/TwoLatestDisplay'
+import { WordsNext } from 'apps/shared/words/SessionPage'
+import Config from 'config'
+import React, { useState } from 'react'
+
+export type ChoicePhraseProblem = {
+  id: string
+  answer: string
+  problem: string
+  options: string[]
+}
 
 export default function ChoicePhrase({
-  parseWord,
-  phrase,
-  ...props
-}: ChoicePhraseProps) {
+  item,
+  next,
+  active,
+}: TwoLatestDisplayViewProps<ChoicePhraseProblem, WordsNext>) {
+  const [answer, setAnswer] = useState(-1)
+
+  const [before, after] = item.problem.split('_')
+  const [start, prefix] = before.split(/\s*([^\s]*)$/)
+  // First element is always an empty string
+  const [, postfix, end] = after.split(/^([^\s]*)\s*/)
+
+  if (Config.IS_DEV && item.options.indexOf(item.answer) < 0) {
+    console.warn(
+      `Correct answer is not one of the options for phrase ${item.id}: ${item.problem}`,
+    )
+  }
+
   return (
     <div className={'uppercase text-3xl'}>
-      {phrase.split(/\s+/).map((word) => {
-        const info = parseWord(word)
-
-        if (!info) {
-          // * Space shall not be removed
-          return <span>{word} </span>
-        }
-
-        return (
-          <span key={word} className={'whitespace-pre align-middle'}>
-            {info.start}
-            <InlineChoice
-              correctAnswer={info.correctAnswer}
-              options={info.options}
-              {...props}
-            />
-            {info.end}
-          </span>
-        )
-      })}
+      {start}
+      <span className={'whitespace-pre align-middle'}>
+        {prefix}
+        <InlineChoice
+          correctAnswer={item.options.indexOf(item.answer)}
+          onChange={(answer) => {
+            setAnswer(answer)
+            next(item.options[answer])
+          }}
+          options={item.options}
+          active={active}
+          answer={answer < 0 ? null : answer}
+        />
+        {postfix}
+      </span>
+      {end}
     </div>
   )
 }
-
-export type ChoicePhraseProps = Omit<
-  InlineChoiceProps,
-  'options' | 'correctAnswer'
-> & {
-  parseWord: ParsePhrase
-  phrase: string
-}
-export type PhraseInfo = {
-  end?: string
-  start?: string
-  options: string[]
-  correctAnswer: number
-}
-export type ParsePhrase = (word: string) => null | PhraseInfo

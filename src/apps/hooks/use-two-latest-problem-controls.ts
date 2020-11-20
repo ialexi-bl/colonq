@@ -53,6 +53,7 @@ export default function useTwoLatestProblemControls<
           return progress + (1 - progress) / (problems.length - p)
         })
       }
+      console.log(problems)
       setAnswers((answers) =>
         answers.concat({
           id: problems[p].data.id,
@@ -65,8 +66,18 @@ export default function useTwoLatestProblemControls<
       setProblems((problems) => {
         problems[p].hiding = true
 
-        // TODO: maybe handle this better than just dismissing problems
-        return problems.filter((x, i) => i <= p || x.id !== problems[p].id)
+        let count = 1
+        const newProblems = problems.filter((x, i) => {
+          if (i > p && x.data.id === problems[p].data.id) {
+            count++
+            return false
+          }
+          return true
+        })
+        setProgress((progress) => {
+          return progress + ((1 - progress) * count) / (problems.length - p)
+        })
+        return newProblems
       })
       setDisabled((disabled) => disabled.concat(problems[p].data.id))
       setPointer((p) => p + 1)

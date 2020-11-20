@@ -10,8 +10,6 @@ import styles from './Boundary.module.scss'
 export type BoundaryProps = ApiClientProps & {
   children?: ReactNode
   global?: boolean
-  // Needed only for global
-  applyClassName?: (className: string) => unknown
 }
 
 declare const Ya: any
@@ -29,8 +27,8 @@ class Boundary extends React.Component<BoundaryProps> {
   }
 
   componentDidCatch(e: Error, info: ErrorInfo) {
-    if (this.props.global) {
-      this.props.applyClassName?.('p-0')
+    if (Config.IS_DEV) {
+      console.error(e)
     }
 
     let gaId, ymId

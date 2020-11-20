@@ -19,6 +19,7 @@ export enum UserAction {
   LOAD_APP_REQUEST = 'USER/LOAD_APP/REQUEST',
   LOAD_APP_SUCCESS = 'USER/LOAD_APP/SUCCESS',
   LOAD_APP_ERROR = 'USER/LOAD_APP/ERROR',
+  UPDATE_LESSONS = 'USER/UPDATE_LESSONS',
 
   LOGOUT = 'USER/LOGOUT',
   QUEUE_AUTH_METHOD = 'USER/QUEUE_AUTH_METHOD',
@@ -27,8 +28,12 @@ export enum UserAction {
 
 export type LoadAppSuccessPayload = {
   app: string
-  title: string
   icon: string
+  title: string
+  lessons: Lesson[]
+}
+export type UpdateLessonsPayload = {
+  app: string
   lessons: Lesson[]
 }
 
@@ -51,6 +56,9 @@ export const loadAppError = createAction<string>(UserAction.LOAD_APP_ERROR)
 export const loadAppSuccess = createAction<LoadAppSuccessPayload>(
   UserAction.LOAD_APP_SUCCESS,
 )
+export const updateLessons = createAction<UpdateLessonsPayload>(
+  UserAction.UPDATE_LESSONS,
+)
 
 export const requestAuthMethod = createAction<AuthorizedMethodInternal<any>>(
   UserAction.REQUEST_AUTH_METHOD,
@@ -62,10 +70,10 @@ export const executeAuthorizedMethod = <T>(
   method: AuthorizedMethod<T>,
 ): ThunkAction<Promise<T>> => {
   return async (dispatch) =>
-    new Promise((resolve) =>
+    new Promise((resolve, reject) =>
       dispatch(
         requestAuthMethod((token, id) =>
-          method(token, id, dispatch).then(resolve),
+          method(token, id, dispatch).then(resolve).catch(reject),
         ),
       ),
     )

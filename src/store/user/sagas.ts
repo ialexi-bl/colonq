@@ -40,7 +40,6 @@ function* updateToken() {
     const { data }: ApiResponse.Success<ApiResponse.Auth.Token> = yield call(
       UserApi.fetchToken,
     )
-    yield put(authenticateSuccess(data))
 
     const methods: AuthorizedMethodInternal<any>[] = yield select(
       (state: AppState) => state.user.methodsQueue,
@@ -48,6 +47,8 @@ function* updateToken() {
     methods.forEach((method) => {
       method(data.token, data.id)
     })
+
+    yield put(authenticateSuccess(data))
   } catch (e) {
     if (e instanceof HttpError) {
       const name: string = yield call(e.getApiName)

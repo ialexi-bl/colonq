@@ -1,7 +1,7 @@
 import 'styles/index.scss'
-import { Wrapper } from 'components/Wrapper'
 import React from 'react'
 import ShapesManager from 'components/ShapesManager'
+import Wrapper from 'components/Wrapper'
 
 const styled = { div: (a: any) => a[0] }
 const styles = styled.div`
@@ -32,7 +32,7 @@ const Decorator = ({ children }: HTMLProps.div) => {
     el.remove()
 
   return (
-    <Wrapper applyClassName={() => {}}>
+    <Wrapper>
       <ShapesManager />
       <style>{styles}</style>
       {children}

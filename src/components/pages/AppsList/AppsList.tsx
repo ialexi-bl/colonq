@@ -1,43 +1,46 @@
 import { AppState } from 'store/types'
+import { Elevation } from 'config/view'
 import { Fal } from 'components/shared/Fab'
+import { RouteComponentProps, app as appRoute, appsChoice } from 'config/routes'
 import { ScrollablePage } from 'components/shared/Page'
 import { User, loadApps } from 'store/user'
-import { app as appRoute, appsChoice, appsList } from 'config/routes'
-import { closeLoading, openLoading } from 'store/view'
 import { push } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
+import Edit from 'components/icons/Edit'
 import PageTitle from 'components/shared/PageTitle'
-import PracticeIcon from 'components/icons/Practice'
 import React, { useEffect } from 'react'
 import ThemeActionItem from 'components/shared/ThemeActionItem'
+import useElevation from 'hooks/use-elevation'
 import useIsAuthenticated from 'hooks/use-is-authenticated'
 import useItemsToggler from 'hooks/use-items-toggler'
 
-export default function AppsList() {
-  const [visible, toggleVisible] = useItemsToggler()
+export default function AppsList({
+  visible,
+  setProgress,
+}: RouteComponentProps) {
+  const [visibleItems, toggleVisible] = useItemsToggler()
   const dispatch = useDispatch()
   const user = useSelector((state: AppState) => state.user as User)
 
   useEffect(() => {
-    if (user.appsStatus !== 'loaded') {
-      dispatch(openLoading('apps-list'))
-      dispatch(loadApps())
-    }
+    if (user.appsStatus !== 'loaded') dispatch(loadApps())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useElevation(Elevation.appsList)
   useEffect(() => {
     if (user.appsStatus === 'loaded' && !user.appsList.length) {
       dispatch(push(appsChoice()))
     }
-    if (user.appsStatus !== 'loading') {
-      dispatch(closeLoading('apps-list'))
+    if (user.appsStatus === 'loaded' || user.appsStatus === 'error') {
+      setProgress(100)
     }
-  }, [dispatch, user.appsList.length, user.appsStatus])
+  }, [dispatch, setProgress, user])
 
-  if (!useIsAuthenticated() || !user.categories.length) return null
+  if (!useIsAuthenticated() || !visible || !user.categories.length) return null
 
   return (
-    <ScrollablePage>
+    <ScrollablePage routeElevation={Elevation.appsList}>
       <PageTitle>Темы</PageTitle>
       <p className={'px-4 mb-12'}>Нажми на тему, чтобы начать занятие</p>
 
@@ -49,11 +52,11 @@ export default function AppsList() {
               {category.apps.map((app, j) => {
                 return (
                   <ThemeActionItem
-                    i={i + j}
                     key={app.id}
                     icon={app.icon}
                     title={app.title}
-                    expanded={app.id in visible}
+                    progress={app.score / 100}
+                    expanded={app.id in visibleItems}
                     className={'mb-6'}
                     toggleVisible={() => toggleVisible(app.id)}
                     actions={[
@@ -83,7 +86,7 @@ export default function AppsList() {
           )
         })}
       </div>
-      <Fal to={appsList()} icon={<PracticeIcon />} />
+      <Fal to={appsChoice()} icon={<Edit />} />
     </ScrollablePage>
   )
 }

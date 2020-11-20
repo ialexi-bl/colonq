@@ -1,14 +1,20 @@
-import AccentsSession from './AccentsSession'
-import ProblemsProvider from 'apps/shared/ProblemsProvider'
+import { AccentWord, AccentsProblem } from './AccentWord'
+import { RouteComponentProps } from 'config/routes'
 import React from 'react'
+import WordsSessionPage from 'apps/shared/words/SessionPage'
 
-export default function Session({ lesson }: { lesson: string }) {
-  console.log('Session rendering', lesson)
+export default function Session({
+  lesson: lessonName,
+  visible,
+  setProgress,
+}: RouteComponentProps & { lesson: string }) {
   return (
-    <ProblemsProvider
+    <WordsSessionPage<AccentsProblem>
       app={'russian/accents'}
-      lesson={lesson}
-      consumer={AccentsSession}
+      lesson={lessonName}
+      visible={visible}
+      wordView={AccentWord}
+      setProgress={setProgress}
     />
   )
 }

@@ -1,7 +1,6 @@
-import { AccentsProblem } from './AccentsSession'
 import { TwoLatestDisplayViewProps } from 'components/apps/TwoLatestDisplay'
 import LetterButton from 'components/shared/LetterButton'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './Accents.module.scss'
 
 export const vowels = {
@@ -16,6 +15,11 @@ export const vowels = {
   у: true,
   ю: true,
 }
+export type AccentsProblem = {
+  problem: string
+  answer: number
+  id: string
+}
 
 export const AccentWord = function AccentWord({
   item,
@@ -24,6 +28,26 @@ export const AccentWord = function AccentWord({
 }: TwoLatestDisplayViewProps<AccentsProblem, (answer: number) => unknown>) {
   const [answer, setAnswer] = useState(-1)
   const answered = answer >= 0
+
+  // Adding ability to answer pressing number buttons on keyboard
+  useEffect(() => {
+    if (answered) return
+
+    const vowelsIndexes: number[] = getVowelsIndexes(item.problem)
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.repeat || isNaN(+e.key)) return
+      const number = +e.key || 10
+
+      if (number > 0 && number <= vowelsIndexes.length) {
+        console.log(number, vowelsIndexes[number - 1])
+        setAnswer(vowelsIndexes[number - 1])
+        next(vowelsIndexes[number - 1])
+      }
+    }
+
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [answered, item.problem, next])
 
   let skip = false
   return (
@@ -45,6 +69,7 @@ export const AccentWord = function AccentWord({
         }
 
         const isAnswer = item.answer === i
+
         return (
           <LetterButton
             key={`${i}-${letter}`}
@@ -71,4 +96,15 @@ export const AccentWord = function AccentWord({
       })}
     </div>
   )
+}
+
+function getVowelsIndexes(word: string) {
+  const result: number[] = []
+  let brackets = false
+  word.split('').forEach((letter, i) => {
+    if (letter === '(') brackets = true
+    else if (letter === ')') brackets = false
+    else if (!brackets && letter in vowels) result.push(i)
+  })
+  return result
 }
