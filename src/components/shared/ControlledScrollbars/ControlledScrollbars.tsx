@@ -11,6 +11,7 @@ export const ScrollContext = createContext({} as ScrollTarget)
 
 export default function ControlledScrollbars({
   children,
+  className,
   ...props
 }: ControlledScrollbarsProps) {
   const [context] = useState(() => new ScrollTarget())

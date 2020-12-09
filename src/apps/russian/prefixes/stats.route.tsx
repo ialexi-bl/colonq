@@ -1,13 +1,11 @@
 import { RouteComponentProps } from 'config/routes'
-import LessonsList from 'apps/shared/LessonsList'
-import Prefixes from 'components/icons/dynamic/russian/prefixes'
 import React from 'react'
+import WordsLessonsList from 'apps/shared/words/LessonsList/WordsLessonsList'
 
 export default function ListRoute(controls: RouteComponentProps) {
   return (
-    <LessonsList
+    <WordsLessonsList
       app={'russian/prefixes'}
-      icon={<Prefixes />}
       title={'Приставки и правописание Ъ и Ь'}
       {...controls}
     />

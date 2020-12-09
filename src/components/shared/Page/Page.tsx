@@ -11,7 +11,14 @@ export type PageProps = HTMLProps.div & ElevationProps
 
 const Page = ({ className, routeElevation, ...props }: PageProps) => (
   <div
-    className={cn(styles.Page, className)}
+    className={cn(
+      styles.Page,
+      // pt-16 is for navigation
+      // container cannot be used here because some apps need full width blocks
+      // For the same reason background is not set
+      'h-full relative md:pt-16 overflow-hidden',
+      className,
+    )}
     style={{ zIndex: routeElevation }}
     {...props}
   />

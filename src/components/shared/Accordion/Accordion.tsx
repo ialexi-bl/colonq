@@ -31,7 +31,7 @@ export default function Accordion({
         ref={ref}
         style={{ height }}
       >
-        {/* Padding is visible work for height: 0 so emulating it with extra div */}
+        {/* Padding is visible when open for height: 0 so emulating it with extra div */}
         <div className={'h-2'} />
         {details}
       </div>

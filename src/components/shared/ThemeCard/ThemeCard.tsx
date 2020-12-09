@@ -8,6 +8,7 @@ export type ThemeCardProps = HTMLProps.div & {
   progress?: number
   disabled?: boolean
   variant?: 1 | 2 | 3 | 4
+  detail?: string
   title: string
   icon: React.ReactNode
 }
@@ -15,12 +16,13 @@ export type ThemeCardProps = HTMLProps.div & {
 export default function ThemeCard({
   icon,
   title,
+  detail,
   disabled,
   className,
   variant = 1,
   progress = 1,
-  onIconClick,
   onTextClick,
+  onIconClick,
   ...props
 }: ThemeCardProps) {
   return (
@@ -32,15 +34,43 @@ export default function ThemeCard({
         variant={variant}
         icon={icon}
       />
-      <h3
-        onClick={onTextClick}
-        className={cn(
-          'ml-2 flex-1 text-center text-2xl duration-100',
-          disabled && 'text-disabled-100',
-        )}
-      >
-        {title}
-      </h3>
+      {detail ? (
+        <div className={'flex-1 flex flex-col align-center'}>
+          <Title className={'mb-2'} onClick={onTextClick} disabled={disabled}>
+            {title}
+          </Title>
+          <p
+            className={cn(
+              'text-center uppercase text-sm',
+              disabled && 'text-disabled-100',
+            )}
+          >
+            {detail}
+          </p>
+        </div>
+      ) : (
+        <Title className={'flex-1'} onClick={onTextClick} disabled={disabled}>
+          {title}
+        </Title>
+      )}
     </div>
   )
 }
+
+const Title = ({
+  children,
+  disabled,
+  className,
+  ...props
+}: { disabled?: boolean } & HTMLProps.heading) => (
+  <h3
+    className={cn(
+      className,
+      'ml-2 text-center text-2xl duration-100',
+      disabled && 'text-disabled-100',
+    )}
+    {...props}
+  >
+    {children}
+  </h3>
+)

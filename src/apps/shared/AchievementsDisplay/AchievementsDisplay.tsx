@@ -1,6 +1,4 @@
 import { ApiResponse } from 'services/api/config'
-import { closeLoading, openLoading } from 'store/view'
-import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 import Bubble from 'components/shared/Bubble'
 import Button from 'components/shared/Button'
@@ -21,7 +19,6 @@ export default function AchievementsDisplay({
 }: AchievementsDisplayProps) {
   const { lessons, updatedLessons, unlockedLessons } = response
   const hrVariant = useMemo(() => (Math.floor(Math.random() * 2) + 1) as 1, [])
-  const dispatch = useDispatch()
   const history = useHistory()
   const [loaded, setLoaded] = useState(false)
 
@@ -34,13 +31,11 @@ export default function AchievementsDisplay({
   }, [lessons])
 
   useEffect(() => {
-    dispatch(openLoading('achievements-display'))
     const icons: Record<string, true> = {}
     updatedLessons.forEach(({ id }) => (icons[lessonsObj[id].icon] = true))
     unlockedLessons.forEach((id) => (icons[lessonsObj[id].icon] = true))
 
     preloadIcons(Object.keys(icons)).then(() => {
-      dispatch(closeLoading('achievements-display'))
       setLoaded(true)
     })
     // Loading icons only once

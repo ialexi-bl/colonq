@@ -53,7 +53,7 @@ export default function useTwoLatestProblemControls<
           return progress + (1 - progress) / (problems.length - p)
         })
       }
-      console.log(problems)
+
       setAnswers((answers) =>
         answers.concat({
           id: problems[p].data.id,

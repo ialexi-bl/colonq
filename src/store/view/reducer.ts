@@ -18,8 +18,8 @@ const initialState: ViewState = {
   loading: ['init'],
   notification: null,
   navigationVisible: true,
-  currentElevation: Infinity,
-  previousElevation: Infinity,
+  currentElevation: { value: Infinity, id: '' },
+  previousElevation: { value: Infinity, id: '' },
 }
 
 export default createReducer<ViewState>(
@@ -37,11 +37,14 @@ export default createReducer<ViewState>(
       loading: state.loading.filter((x) => x in { router: 1, init: 1 }),
     }),
 
-    [String(setElevation)]: (state, z: number) => ({
-      ...state,
-      previousElevation: state.currentElevation,
-      currentElevation: z,
-    }),
+    [String(setElevation)]: (state, elevation) => {
+      elevation.id ||= ''
+      return {
+        ...state,
+        previousElevation: state.currentElevation,
+        currentElevation: elevation,
+      }
+    },
 
     [String(showNavigation)]: (state) => ({
       ...state,

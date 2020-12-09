@@ -1,29 +1,15 @@
 @use 'styles/mixins/transition';
 
 .Notification {
-  composes: text-light z-notification from global;
-
-  padding: 1.5em 2em;
-  font-size: 1.2rem;
-  box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.4);
-  background: theme('colors.primary.900');
-  transition: transform 300ms;
-  line-height: 120%;
-
-  position: fixed;
-  bottom: 3rem;
-  right: 0;
-  left: 0;
-
-  @include transition.self(notification, (exit, enter-to, appear-to)) {
+  @include transition.self(notification, (exit)) {
     transform: translateY(0);
   }
   @include transition.self(notification, (exit-to, from)) {
     transform: translateY(100%);
   }
-}
-.error {
-  background: theme('colors.error.default');
+  @include transition.self(notification, (enter-to, appear-to)) {
+    transform: translateY(0);
+  }
 }
 
 .DismissButton {

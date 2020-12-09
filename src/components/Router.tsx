@@ -24,7 +24,11 @@ const REAL_TIMEOUT = {
   enter: ROUTE_TRANSITION_DURATION,
 }
 declare const gtag: any
-
+/**
+ * Displays routes, manages how they are loaded and shown,
+ * displays progress bar and provides classes for routes
+ * transitions
+ */
 export default function Router({
   closeInitialLoading,
 }: {
@@ -38,6 +42,8 @@ export default function Router({
     progress,
     loading,
     visible,
+    realKey,
+    visibleKey,
   } = useLocationControls(realLocation)
 
   useEffect(() => {
@@ -56,7 +62,7 @@ export default function Router({
   return (
     <>
       <LoadingBar visible={loading} progress={progress / 100} />
-      <div
+      <main
         id={'animation-controller'}
         className={cn(
           'w-full h-full',
@@ -64,9 +70,15 @@ export default function Router({
         )}
       >
         <TransitionGroup component={null}>
+          {/*  NOTE: verification is needed that using location key here 
+          doesn't lead to any errors. Pathname cannot be used here because
+          key should be unique for each app rerender otherwise there can be a
+          "stuck" position when the route that has just been left is returned
+          to and it doesn't rerender when it should, so it doesn't set progress
+          to 100 and the app does nothing */}
           <CSSTransition
             enter={false}
-            key={visibleLocation.pathname}
+            key={visibleKey}
             timeout={VISIBLE_TIMEOUT}
             classNames={ROUTE_TRANSITION_CLASSNAME}
           >
@@ -78,8 +90,9 @@ export default function Router({
           </CSSTransition>
           {visibleLocation !== realLocation && (
             <CSSTransition
+              // Here as well
+              key={realKey}
               exit={false}
-              key={realLocation.pathname}
               timeout={REAL_TIMEOUT}
               classNames={ROUTE_TRANSITION_CLASSNAME}
             >
@@ -91,12 +104,15 @@ export default function Router({
             </CSSTransition>
           )}
         </TransitionGroup>
-      </div>
+      </main>
     </>
   )
 }
 
-function Routes({
+/**
+ * Displays all app routes and manages their loading process
+ */
+const Routes = function Routes({
   location,
   ...controls
 }: { location: Location } & RouteComponentProps) {
@@ -109,9 +125,6 @@ function Routes({
             key={route.name}
             path={route.path}
             render={(data) => {
-              // TODO: problem: for the same routes with multiple
-              // components that can be loaded like for apps, this
-              // loads the same after the first render because object is the same
               const key = route.getKey?.(data) || 'default'
               route._importStarted ||= {}
               route._imported ||= {}
@@ -121,24 +134,41 @@ function Routes({
                 return <Component {...controls} {...data} />
               }
               if (!route._importStarted[key]) {
+                // Preventing route from being imported multiple times
                 route._importStarted[key] = true
-                route.getComponent(data).then((m) => {
-                  route._imported![key] = m.default
-                  controls.setProgress(IMPORTED as any)
-                })
+                route
+                  .getComponent(data)
+                  .then((m) => {
+                    route._imported![key] = m.default
+                    controls.setProgress('_imported' as any)
+                  })
+                  // TODO: handle
+                  .catch(console.error)
               }
               return null
             }}
           />
         ))}
-        <Route component={NotFound} />
+        <Route render={() => <NotFound {...controls} />} />
       </Switch>
     </Boundary>
   )
 }
 
-const IMPORTED: unique symbol = Symbol('imported')
-function useLocationControls(realLocation: Location) {
+const routerKey: unique symbol =
+  typeof Symbol === 'undefined' ? ('__routerKey' as any) : Symbol('routerKey')
+type ExtendedLocation = Location & { [routerKey]?: number }
+
+/**
+ * Controls how the routes are displayed: returns what
+ * route is visible now, what is the next route to be rendered,
+ * what is the loading progress and a function to control this progress
+ * @param realLocation
+ */
+function useLocationControls(realLocation: ExtendedLocation) {
+  if (!(routerKey in realLocation)) {
+    realLocation[routerKey] = ~~(Math.random() * 1e4)
+  }
   // Progress may never be less than 10
   const progress = useRef(10)
   const firstRenderDone = useRef(false)
@@ -146,8 +176,8 @@ function useLocationControls(realLocation: Location) {
   const visibleLocation = useRef(realLocation)
   const previousLocation = usePrevious(realLocation)
   const setProgress = useCallback(
-    (value: number | typeof IMPORTED) => {
-      if (value === IMPORTED) {
+    (value: number | '_imported') => {
+      if (value === '_imported') {
         progress.current = 10 + 40
       } else if (progress.current !== value) {
         progress.current = 10 + 40 + value / 2
@@ -157,8 +187,7 @@ function useLocationControls(realLocation: Location) {
     [forceUpdate],
   )
 
-  console.log('progress:', progress.current)
-  if (previousLocation !== realLocation) {
+  if (previousLocation.pathname !== realLocation.pathname) {
     progress.current = 10
   }
   if (progress.current >= 100) {
@@ -172,6 +201,8 @@ function useLocationControls(realLocation: Location) {
     visible: progress.current >= 100,
     loading: visibleLocation.current !== realLocation,
     firstRenderDone: firstRenderDone.current,
+    visibleKey: visibleLocation.current[routerKey]!,
+    realKey: realLocation[routerKey]!,
     setProgress,
   }
 }

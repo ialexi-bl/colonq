@@ -1,5 +1,4 @@
 import { ApiResponse } from 'services/api/config'
-import { Elevation } from 'config/view'
 import { MixedDispatch } from 'store/types'
 import { ProblemWithAnswer, WordsNext } from './types'
 import { RouteComponentProps, appsList } from 'config/routes'
@@ -14,12 +13,10 @@ import { useDispatch } from 'react-redux'
 import AchievementsDisplay from 'apps/shared/AchievementsDisplay'
 import Exit from 'components/icons/Exit'
 import Hide from 'components/icons/Hide'
-import Page from 'components/shared/Page'
 import ProgressBar from 'apps/shared/ProgressBar'
 import React, { ComponentType, useEffect, useState } from 'react'
 import SessionApi from 'services/api/session'
 import cn from 'clsx'
-import useElevation from 'hooks/use-elevation'
 import useHideNavigation from 'hooks/use-hide-navigation'
 import useTwoLatestProblemControls from 'apps/hooks/use-two-latest-problem-controls'
 
@@ -32,7 +29,6 @@ export type AccentsSessionProps<
 }
 
 const verify = (problem: ProblemWithAnswer, answer: number | string) => {
-  console.log(problem, answer)
   return problem.answer === answer
 }
 
@@ -59,9 +55,7 @@ export default function WordsSession<TProblem extends ProblemWithAnswer>({
   ] = useState<ApiResponse.Session.Submit | null>(null)
   const dispatch = useDispatch<MixedDispatch>()
 
-  useElevation(Elevation.session)
   useHideNavigation()
-
   useEffect(() => {
     if (!done) return
 
@@ -85,10 +79,8 @@ export default function WordsSession<TProblem extends ProblemWithAnswer>({
 
   if (!visible) return null
   return (
-    <Page
-      routeElevation={Elevation.session}
-      className={'flex flex-col overflow-hidden h-0 route-overlay'}
-    >
+    // useElevation is called in wrapping component
+    <div className={'flex flex-col overflow-hidden h-full'}>
       <ProgressBar progress={progress} />
       <div className={'flex-1'}>
         <TwoLatestDisplay<TProblem, WordsNext>
@@ -116,6 +108,6 @@ export default function WordsSession<TProblem extends ProblemWithAnswer>({
           <AchievementsDisplay delay={500} response={submitResponse} />
         )}
       </div>
-    </Page>
+    </div>
   )
 }

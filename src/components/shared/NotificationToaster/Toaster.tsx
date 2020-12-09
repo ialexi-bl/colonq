@@ -34,7 +34,7 @@ export default function NotificationToaster() {
   }, [dispatch, notification])
 
   return (
-    <TransitionGroup component={null}>
+    <TransitionGroup>
       {notification && (
         <CSSTransition
           timeout={300}

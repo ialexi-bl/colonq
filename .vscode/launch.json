@@ -9,7 +9,8 @@
       "port": 9222,
       "request": "attach",
       "type": "pwa-msedge",
-      "webRoot": "${workspaceFolder}"
+      "webRoot": "${workspaceFolder}",
+      "trace": true
     }
   ]
 }

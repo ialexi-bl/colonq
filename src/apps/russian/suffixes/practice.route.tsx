@@ -6,14 +6,13 @@ import ChoicePhrase, {
 import React from 'react'
 import WordsSessionPage from 'apps/shared/words/SessionPage'
 
-export default function Session({ visible, setProgress }: RouteComponentProps) {
+export default function Session(controls: RouteComponentProps) {
   return (
     <WordsSessionPage<ChoicePhraseProblem>
       app={'russian/suffixes'}
       lesson={PRACTICE}
-      visible={visible}
       wordView={ChoicePhrase}
-      setProgress={setProgress}
+      {...controls}
     />
   )
 }

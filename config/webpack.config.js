@@ -6,6 +6,7 @@ const webpack = require('webpack')
 const resolve = require('resolve')
 const PnpWebpackPlugin = require('pnp-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const PreloadFontsPlugin = require('./plugins/PreloadFontsPlugin')
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin')
 const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin')
 const TerserPlugin = require('terser-webpack-plugin')
@@ -614,6 +615,7 @@ module.exports = function (webpackEnv) {
           filename: 'static/css/[name].[contenthash:8].css',
           chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
         }),
+      isEnvProduction && new PreloadFontsPlugin(),
       // Generate an asset manifest file with the following content:
       // - "files" key: Mapping of all asset filenames to their corresponding
       //   output file so that tools can pick it up without having to parse
@@ -663,6 +665,12 @@ module.exports = function (webpackEnv) {
             new RegExp('/[^/?]+\\.[^/]+$'),
           ],
         }),
+      /* 
+        new WorkboxWebpackPlugin.InjectManifest({
+          swSrc: './src/sw.js',
+          swDest: 'service-worker.js'
+        })
+       */
       // TypeScript type checking
       useTypeScript &&
         new ForkTsCheckerWebpackPlugin({

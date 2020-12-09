@@ -6,6 +6,7 @@ import {
   UserState,
   authenticate,
 } from 'store/user'
+import { UnauthenticatedError } from 'services/errors'
 import { call, put, select, take } from 'redux-saga/effects'
 
 export function* executeAuthorizedMethod(method: AuthorizedMethod<any>) {
@@ -13,6 +14,7 @@ export function* executeAuthorizedMethod(method: AuthorizedMethod<any>) {
 
   if (!user.token || user.tokenExpires - Date.now() < 500) {
     yield put(authenticate())
+    console.log('awaiting auth')
     const { type } = yield take([
       UserAction.AUTHENTICATE_SUCCESS,
       UserAction.AUTHENTICATE_ERROR,
@@ -20,10 +22,7 @@ export function* executeAuthorizedMethod(method: AuthorizedMethod<any>) {
     ])
 
     if (type !== UserAction.AUTHENTICATE_SUCCESS) {
-      // TODO: check if throwing error breaks something
-      throw new Error(
-        `Couldn't perform request, because user is not authenticated`,
-      )
+      throw new UnauthenticatedError()
     }
     user = (yield select((state: AppState) => state.user)) as User
   }

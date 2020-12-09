@@ -25,6 +25,7 @@ declare namespace HTMLProps {
   type hr = React.HTMLAttributes<HTMLHRElement>
   type a = React.AnchorHTMLAttributes<HTMLAnchorElement>
 }
+type BasicProps = { className?: string; children?: React.ReactNode }
 type Childfree<T> = Omit<T, 'children'>
 
 interface Response {
@@ -86,9 +87,9 @@ declare module '*.shape.svg' {
 declare module '*.svg' {
   import * as React from 'react'
 
-  export const ReactComponent: React.FunctionComponent<React.SVGProps<
-    SVGSVGElement
-  >>
+  export const ReactComponent: React.FunctionComponent<
+    React.SVGProps<SVGSVGElement>
+  >
 
   const src: string
   export default src

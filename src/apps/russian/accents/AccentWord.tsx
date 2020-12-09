@@ -39,7 +39,6 @@ export const AccentWord = function AccentWord({
       const number = +e.key || 10
 
       if (number > 0 && number <= vowelsIndexes.length) {
-        console.log(number, vowelsIndexes[number - 1])
         setAnswer(vowelsIndexes[number - 1])
         next(vowelsIndexes[number - 1])
       }

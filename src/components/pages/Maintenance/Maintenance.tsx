@@ -1,12 +1,12 @@
-import { PageContainer } from 'components/shared/Page'
+import Page from 'components/shared/Page'
 import React from 'react'
 import TitleLine from 'components/shared/TitleLine'
 
 const Maintenance = () => (
-  <PageContainer>
+  <Page>
     <TitleLine>
       <p>Сайт на техобслуживании</p>
     </TitleLine>
-  </PageContainer>
+  </Page>
 )
 export default Maintenance

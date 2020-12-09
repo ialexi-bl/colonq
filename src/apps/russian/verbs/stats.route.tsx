@@ -1,13 +1,11 @@
 import { RouteComponentProps } from 'config/routes'
-import LessonsList from 'apps/shared/LessonsList'
 import React from 'react'
-import Verbs from 'components/icons/dynamic/russian/verbs'
+import WordsLessonsList from 'apps/shared/words/LessonsList/WordsLessonsList'
 
 export default function ListRoute(controls: RouteComponentProps) {
   return (
-    <LessonsList
+    <WordsLessonsList
       app={'russian/verbs'}
-      icon={<Verbs />}
       title={'Окончания глаголов и суффиксы причастий'}
       {...controls}
     />

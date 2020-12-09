@@ -46,7 +46,6 @@ export function TwoLatestDisplay<TItem, TNext extends Function>({
                 prevHeight = e.clientHeight * scale
               }
             } else if (item === previous) {
-              console.log(prevHeight)
               if (transformed[item.id] !== 'prev') {
                 transformed[item.id] = 'prev'
                 e.style.transform = `translateY(${

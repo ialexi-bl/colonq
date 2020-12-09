@@ -8,7 +8,8 @@ const { exec } = require('child_process')
 argsParser
   .option('user', 'FTP user name', process.env.FTP_USERNAME)
   .option('host', 'FTP host', process.env.FTP_HOST)
-  .option('port', 'FTP port', 22)
+  .option('port', 'FTP port', 21)
+  .option('deploy-only', 'True to build react project before deploying', false)
   .option('remoteRoot', 'Deployment directory', process.env.FTP_REMOTE_ROOT)
 const args = argsParser.parse(process.argv)
 
@@ -34,8 +35,16 @@ function deploy() {
     },
   )
 
-  console.log('Building...')
-  exec('npm run build', (err) => {
+  if (args.deployOnly) proceed()
+  else {
+    console.log('Building...')
+    exec('npm run build', (err) => {
+      if (err) return console.error(err)
+      proceed()
+    })
+  }
+
+  function proceed(err) {
     if (err) {
       console.error(err)
       return
@@ -43,12 +52,17 @@ function deploy() {
 
     console.log('Uploading...')
     const ftpDeploy = new FtpDeploy()
+    ftpDeploy.on('uploading', console.log)
+    ftpDeploy.on('log', console.log)
+    ftpDeploy.on('upload-error', console.error)
+
     ftpDeploy
       .deploy({
         password,
         user: args.user,
         host: args.host,
         port: args.port,
+        deleteRemote: true,
         localRoot: resolve(__dirname, 'build'),
         remoteRoot: args.remoteRoot,
         include: ['*'],
@@ -58,5 +72,5 @@ function deploy() {
         console.log(`Done in ${(Date.now() - time) / 1000}s`)
       })
       .catch(console.error)
-  })
+  }
 }

@@ -14,22 +14,21 @@ const NotFound = ({
   setProgress?: RouteComponentProps['setProgress']
 }) => (
   useElevation(Elevation.notFound),
-  useEffect(() => {
-    setProgress?.(100)
-  }, [setProgress]),
+  useEffect(() => setProgress?.(100), [setProgress]),
   (
     <Page
       routeElevation={Elevation.notFound}
-      className={
-        'flex flex-col md:flex-row-reverse justify-center items-center route-overlay'
-      }
+      className={cn(
+        'flex flex-col md:flex-row-reverse justify-center items-center',
+        'route-overlay bg-page',
+      )}
     >
       <div className={'mb-24'}>
         <div className={'flex flex-col text-center mb-8'}>
           <h1 className={'text-4xl mb-2'}>Такой страницы нет</h1>
           <p>ColonQ в недоумении</p>
         </div>
-        <Logo className={cn(styles.Monster, 'mx-6 w-64 h-64')} />
+        <Logo className={cn(styles.Monster, 'mx-auto w-48 h-48')} />
       </div>
       <LinkButton to={appsList()} className={'min-w-64'}>
         На главную

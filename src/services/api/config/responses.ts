@@ -130,5 +130,41 @@ declare namespace ApiResponse {
       lessons: User.LessonDescription[]
     }
   }
+
+  export namespace Settings {
+    export type Get = Setting[]
+    export type Change = null
+
+    export type Setting = Toggle | ToggleList
+    export type Toggle = {
+      id: string
+      type: 'toggle'
+      label: string
+      value: boolean
+    }
+
+    export type ToggleList = {
+      id: string
+      type: 'list'
+      title: string
+      items: TogglelistGroup[]
+      virtualize?: boolean
+      description?: string
+    }
+    export type TogglelistGroup = {
+      id: string
+      type: 'group'
+      label: string
+      value: boolean
+      disabled?: boolean
+      items: ToggleListItem[]
+    }
+    export type ToggleListItem = {
+      id: string
+      type: 'item'
+      label: string
+      value: boolean
+    }
+  }
 }
 export default ApiResponse

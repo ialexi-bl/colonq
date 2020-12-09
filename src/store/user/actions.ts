@@ -72,9 +72,11 @@ export const executeAuthorizedMethod = <T>(
   return async (dispatch) =>
     new Promise((resolve, reject) =>
       dispatch(
-        requestAuthMethod((token, id) =>
-          method(token, id, dispatch).then(resolve).catch(reject),
-        ),
+        requestAuthMethod({
+          throw: reject,
+          call: (token, id) =>
+            method(token, id, dispatch).then(resolve).catch(reject),
+        }),
       ),
     )
 }

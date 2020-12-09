@@ -47,7 +47,7 @@ export default function ErrorMessage({
         <div
           key={text(previous)}
           className={cn(
-            'font-bold absolute top-0 inset-x-0',
+            'absolute top-0 inset-x-0',
             styles.ErrorMessage,
             styles.hidden,
             color(previous),
@@ -59,7 +59,7 @@ export default function ErrorMessage({
       {message && (
         <div
           key={text(message)}
-          className={cn('font-bold', styles.ErrorMessage, color(message))}
+          className={cn(styles.ErrorMessage, color(message))}
         >
           {text(message)}
         </div>

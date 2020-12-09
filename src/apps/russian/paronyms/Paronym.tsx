@@ -22,7 +22,7 @@ export const Paronym = function Paronym({
     value.trim().toLowerCase() === (item.answer as any).toLowerCase()
 
   return (
-    <div className={'text-center text-xl leading-8 px-1'}>
+    <div className={'text-center text-xl leading-relaxed px-1'}>
       {start}
       <Input
         size={(item.answer as any).length + 4}

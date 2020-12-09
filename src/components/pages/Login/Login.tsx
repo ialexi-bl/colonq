@@ -2,6 +2,7 @@ import { ApiErrorName } from 'services/api/config'
 import { CUTE_FACE, Elevation } from 'config/view'
 import { FormikHelpers, useFormik } from 'formik'
 import { HttpError } from 'services/errors'
+import { LinkButton } from 'components/shared/Button'
 import { MixedDispatch } from 'store/types'
 import { RouteComponentProps, appsList, register } from 'config/routes'
 import { UserApi } from 'services/api'
@@ -9,16 +10,15 @@ import { notifyErrorObject } from 'store/view'
 import { push } from 'connected-react-router'
 import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router'
-import Button, { LinkButton } from 'components/shared/Button'
 import ErrorMessage from 'components/form/ErrorMessage'
 import Input from 'components/form/Input'
-import Loading from 'components/shared/Loading'
+import LoadingButton from 'components/shared/LoadingButton'
 import Page from 'components/shared/Page'
 import PageTitle from 'components/shared/PageTitle'
 import React, { useEffect, useState } from 'react'
 import SocialLoginButton from 'components/form/SocialLoginButton'
 import User from 'components/icons/User'
-import cn from 'clsx'
+import useDevUpdateTracker from 'hooks/use-dev-update-tracker'
 import useIsGuest from 'hooks/use-is-guest'
 
 type FormValues = {
@@ -31,10 +31,9 @@ export default function Login({ setProgress }: RouteComponentProps) {
   const dispatch = useDispatch<MixedDispatch>()
   const { email, password } = location.state || {}
   const [loading, setLoading] = useState(false)
+  useDevUpdateTracker('login', { setProgress })
 
-  useEffect(() => {
-    setProgress(100)
-  }, [setProgress])
+  useEffect(() => setProgress(100), [setProgress])
 
   const login = async (
     values: FormValues,
@@ -81,10 +80,7 @@ export default function Login({ setProgress }: RouteComponentProps) {
 
   const autofocusPassword = formik.values.login !== ''
   return (
-    <Page
-      routeElevation={Elevation.login}
-      className={'bg-route -route-translate-x'}
-    >
+    <Page routeElevation={Elevation.login} className={'bg-route route-left'}>
       <PageTitle icon={<User />}>Вход</PageTitle>
 
       <div className={'max-w-xl mx-auto px-4 overflow-hidden'}>
@@ -94,6 +90,7 @@ export default function Login({ setProgress }: RouteComponentProps) {
             <Input
               readOnly={loading}
               autoFocus={!autofocusPassword}
+              className={'w-full'}
               state={getInputState(formik, 'login')}
               {...formik.getFieldProps('login')}
             />
@@ -106,6 +103,7 @@ export default function Login({ setProgress }: RouteComponentProps) {
               variant={3}
               autoFocus={autofocusPassword}
               readOnly={loading}
+              className={'w-full'}
               state={getInputState(formik, 'password')}
               {...formik.getFieldProps('password')}
             />
@@ -121,35 +119,19 @@ export default function Login({ setProgress }: RouteComponentProps) {
             />
             <ErrorMessage message={formik.status} />
           </label>
-          <div className={'flex items-center'}>
-            <div className={'w-12 max-w-sm ml-auto'} />
-            <Button
-              type={'submit'}
-              className={'text-center min-w-64'}
-              disabled={loading || Object.keys(formik.errors).length > 0}
-              variant={3}
-            >
-              Продолжить
-            </Button>
-            <Loading
-              className={cn(
-                'h-8 w-8 ml-4 inline-block mr-auto duration-100',
-                loading ? 'opacity-100' : 'opacity-0',
-              )}
-            />
-          </div>
+          <LoadingButton
+            type={'submit'}
+            variant={3}
+            loading={loading}
+            disabled={Object.keys(formik.errors).length > 0}
+          >
+            Войти
+          </LoadingButton>
         </form>
 
         <div className={'my-16 text-center text-xl'}>ИЛИ</div>
 
         <div className={'flex flex-col items-center'}>
-          <LinkButton
-            className={'mb-2 block text-lg max-w-sm w-full'}
-            to={register()}
-            secondary
-          >
-            Зарегистрироваться
-          </LinkButton>
           <SocialLoginButton
             provider={'google'}
             disabled={loading}
@@ -160,8 +142,15 @@ export default function Login({ setProgress }: RouteComponentProps) {
             disabled={loading}
             provider={'vk'}
             type={'login'}
-            className={'max-w-sm w-full'}
+            className={'mb-2 max-w-sm w-full'}
           />
+          <LinkButton
+            className={'mb-2 block text-lg max-w-sm w-full'}
+            to={register()}
+            secondary
+          >
+            Зарегистрироваться
+          </LinkButton>
         </div>
       </div>
     </Page>

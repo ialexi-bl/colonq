@@ -6,9 +6,8 @@ export default class GeneralApi {
 
   public static log(data: object) {
     // TODO: maybe authorize
-    return () =>
-      Api.post<null>(Endpoint.general.log, {
-        json: data,
-      })
+    return Api.post<null>(Endpoint.general.log, {
+      json: data,
+    })
   }
 }

@@ -9,12 +9,12 @@ import { useEffect } from 'react'
  * @param redirect - Redirect path
  * @returns - Whether the page should be displayed
  */
-export default function useIsAuthenticated(redirect = login()) {
+export default function useIsAuthenticated(redirect: string | false = login()) {
   const dispatch = useDispatch()
   const { status, token } = useSelector((state: AppState) => state.user)
 
   useEffect(() => {
-    if (status === 'unauthenticated') {
+    if (redirect && status === 'unauthenticated') {
       dispatch(replace(redirect))
     }
   }, [dispatch, redirect, status])

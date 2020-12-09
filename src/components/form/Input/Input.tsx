@@ -1,11 +1,11 @@
-import React, { forwardRef } from 'react'
+import React, { memo } from 'react'
 import cn from 'clsx'
 import paths from './inputs.shape.svg'
 import styles from './Input.module.scss'
 import useClipShape from 'hooks/use-clip-shape'
 
 export type InputProps = HTMLProps.input & {
-  state?: null | 'valid' | 'invalid'
+  state?: null | 'valid' | 'invalid' | 'warning'
   variant?: 1 | 2 | 3
 }
 
@@ -14,30 +14,31 @@ export type InputProps = HTMLProps.input & {
  * parameter to onChange
  * @param {InputProps} props
  */
-const Input = forwardRef<HTMLInputElement, InputProps>(
-  (
-    { className, state, formNoValidate, readOnly, variant = 1, ...props },
-    ref,
-  ) => {
-    useClipShape('input', paths)
+const Input = memo(function Input({
+  className,
+  state,
+  formNoValidate,
+  readOnly,
+  variant = 1,
+  ...props
+}: InputProps) {
+  useClipShape('input', paths)
 
-    return (
-      <input
-        ref={ref}
-        type={'text'}
-        readOnly={readOnly}
-        tabIndex={0}
-        className={cn(
-          'py-4 px-6 outline-none',
-          className,
-          styles.Input,
-          styles[`variant-${variant}`],
-          readOnly && styles.readonly,
-          state && styles[state],
-        )}
-        {...props}
-      />
-    )
-  },
-)
+  return (
+    <input
+      type={'text'}
+      readOnly={readOnly}
+      tabIndex={0}
+      className={cn(
+        'py-4 px-6 outline-none',
+        className,
+        styles.Input,
+        styles[`variant-${variant}`],
+        readOnly && styles.readonly,
+        state && styles[state],
+      )}
+      {...props}
+    />
+  )
+})
 export default Input

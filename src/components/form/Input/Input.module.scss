@@ -29,14 +29,21 @@ $placeholder-color: #888;
   }
 }
 
+@mixin border($color) {
+  box-shadow: inset 0 -8px $color;
+}
+
 .invalid {
-  box-shadow: inset 0 -8px theme('colors.error.default');
+  @include border(theme('colors.error.default'));
 }
 .valid {
-  box-shadow: inset 0 -8px theme('colors.correct.default');
+  @include border(theme('colors.correct.default'));
+}
+.warning {
+  @include border(theme('colors.warning.default'));
 }
 .readonly {
-  box-shadow: inset 0 -8px theme('colors.disabled.700');
+  @include border(theme('colors.disabled.700'));
 }
 
 .variant-1 {

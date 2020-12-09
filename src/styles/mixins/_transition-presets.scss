@@ -1,4 +1,4 @@
-@use 'styles/mixins/route-transition';
+@use './route-transition';
 
 // * NOTE: entering is done via animation, because
 // * if transition is used, routes are not animated

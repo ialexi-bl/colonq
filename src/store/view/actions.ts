@@ -17,7 +17,10 @@ export enum ViewAction {
   CLOSE_NOTIFICATION = 'VIEW/CLOSE_NOTIFICATION',
 }
 
-export const setElevation = createAction<number>(ViewAction.SET_ELEVATION)
+export const setElevation = createAction<{
+  value: number
+  id?: number | string
+}>(ViewAction.SET_ELEVATION)
 
 export const openLoading = createAction<string>(ViewAction.OPEN_LOADING)
 export const closeLoading = createAction<string>(ViewAction.CLOSE_LOADING)
@@ -44,6 +47,8 @@ export const notifyErrorObject = (e: Error): ThunkAction<void> => (
 ) => {
   if (e instanceof HttpError) {
     dispatch(notifyHttpError(e))
+  } else if (e.name === 'TypeError' && e.message === 'Failed to fetch') {
+    dispatch(notifyError(LangErrors.network))
   } else {
     if (Config.IS_DEV) console.error(e)
     dispatch(notifyError(LangErrors.unknown))

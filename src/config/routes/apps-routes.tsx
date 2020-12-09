@@ -4,17 +4,17 @@ import NotFound from 'components/pages/NotFound'
 import React from 'react'
 
 const getKey: RouteOptions['getKey'] = ({ match: { params } }) =>
-  `${params.category}/${params.name}`
+  `${params.category}/${params.name}/${params.lesson || ''}`
 const appsRoutes: RouteOptions[] = [
   {
     getKey,
-    path: '/app/:category/:name/list',
+    path: '/app/:category/:name/stats',
     name: 'appList',
     getComponent: ({
       match: {
         params: { category, name },
       },
-    }) => importAppComponent(category, name, 'list'),
+    }) => importAppComponent(category, name, 'stats'),
   },
   {
     getKey,

@@ -1,88 +1,50 @@
-import { App, loadApp } from 'store/user'
-import { AppState } from 'store/types'
-import { Elevation } from 'config/view'
-import { RouteComponentProps, app as appRoute } from 'config/routes'
-import { ScrollablePage } from 'components/shared/Page'
+import { Lesson } from 'store/user'
+import { app as appRoute } from 'config/routes'
 import { push } from 'connected-react-router'
-import { useDispatch, useSelector } from 'react-redux'
-import { useElevationClassnames } from 'hooks/use-elevation'
+import { useDispatch } from 'react-redux'
 import { withAuth } from 'components/shared/EnsureAuthenticated'
-import PageTitle from 'components/shared/PageTitle'
-import React, { ReactNode, useEffect } from 'react'
-import ThemeActionItem from 'components/shared/ThemeActionItem'
-import useItemsToggler from 'hooks/use-items-toggler'
+import DynamicIcon from 'components/icons/DynamicIcon'
+import React from 'react'
+import ThemeCard from 'components/shared/ThemeCard'
 
-export type LessonsListProps = RouteComponentProps & {
+export type LessonsListProps = {
+  lessons: Lesson[]
   app: string
-  icon?: ReactNode
-  title: string
 }
-function LessonsList({
-  icon,
-  title,
-  visible,
-  setProgress,
-  app: appName,
-}: LessonsListProps) {
+
+function LessonsList({ lessons, app: appName }: LessonsListProps) {
   const dispatch = useDispatch()
-  const [visibleItems, toggleVisible] = useItemsToggler()
-  const elevationCn = useElevationClassnames(Elevation.lessonsList)
-  const app = useSelector<AppState, App | undefined>(
-    (state) => state.user.apps[appName],
-  )
 
-  useEffect(() => {
-    if (!app || app.status !== 'loaded') {
-      dispatch(loadApp(appName))
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [appName])
-  useEffect(() => {
-    if (app?.status === 'loaded') {
-      setProgress(100)
-    }
-  }, [app?.status, setProgress])
-
-  if (!visible || !app || app.status !== 'loaded') return null
+  // TODO: add labels if there are no problems
   return (
-    <ScrollablePage
-      routeElevation={Elevation.lessonsList}
-      className={elevationCn}
-    >
-      <PageTitle icon={icon}>{title}</PageTitle>
-
-      <div className={'px-4 mt-4'}>
-        {app.lessons.map((lesson, i) => (
-          <ThemeActionItem
-            i={i}
+    <div className={'px-4 mt-4 pb-64'}>
+      {lessons.map((lesson, i) => {
+        const disabled = !lesson.unlocked || lesson.empty
+        return (
+          <ThemeCard
+            variant={((i % 4) + 1) as 1}
             key={lesson.id}
-            icon={lesson.icon}
+            icon={<DynamicIcon icon={lesson.icon} />}
             title={lesson.title}
+            detail={detail(lesson)}
             progress={lesson.score / 100}
-            disabled={!lesson.unlocked}
-            expanded={lesson.id in visibleItems}
+            disabled={disabled}
             className={'mb-2'}
-            toggleVisible={
-              lesson.unlocked ? () => toggleVisible(lesson.id) : undefined
+            onClick={() =>
+              !disabled &&
+              dispatch(
+                push(appRoute(appName, `lesson/${lesson.id}`), {
+                  redirect: appRoute(appName, 'stats'),
+                }),
+              )
             }
-            actions={[
-              {
-                id: 0,
-                label: 'Начать занятие',
-                primary: true,
-                action: () =>
-                  dispatch(
-                    push(appRoute(appName, `lesson/${lesson.id}`), {
-                      redirect: appRoute(appName, 'list'),
-                    }),
-                  ),
-              },
-            ]}
           />
-        ))}
-      </div>
-    </ScrollablePage>
+        )
+      })}
+    </div>
   )
 }
+const detail = (lesson: Lesson) =>
+  lesson.empty ? 'Нет заданий' : !lesson.unlocked ? 'Заблокировано' : ''
 
 export default withAuth(LessonsList)

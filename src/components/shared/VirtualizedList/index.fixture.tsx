@@ -16,7 +16,7 @@ const getCount = (data: Data, groupIndex: number) => {
   return groupIndex < 0 ? data.length : data[groupIndex].items.length
 }
 
-export default () => {
+export default function VirtualizedListFixture() {
   return (
     <ControlledScrollbars>
       <Styles />

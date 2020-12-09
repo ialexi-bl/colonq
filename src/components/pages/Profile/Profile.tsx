@@ -1,10 +1,12 @@
 import { AppState } from 'store/types'
+import { Elevation } from 'config/view'
 import { RouteComponentProps } from 'config/routes'
 import { ScrollablePage } from 'components/shared/Page'
 import { UserApi } from 'services/api'
 import { User as UserType, unauthenticate } from 'store/user'
 import { notifyInfo } from 'store/view'
 import { useDispatch, useSelector } from 'react-redux'
+import { useSameElevationClassnames } from 'hooks/use-elevation'
 import Button from 'components/shared/Button'
 import InfoItem from 'components/shared/InfoItem'
 import LangNotifications from 'lang/notifications.json'
@@ -30,10 +32,15 @@ export default function Profile({ setProgress }: RouteComponentProps) {
     setProgress(100)
   }, [setProgress])
 
+  const className = useSameElevationClassnames(
+    Elevation.profile,
+    'route-enter-right',
+    'route-exit-right',
+  )
   if (!useIsAuthenticated()) return null
 
   return (
-    <ScrollablePage>
+    <ScrollablePage routeElevation={Elevation.profile} className={className}>
       <PageTitle icon={<User />}>Профиль</PageTitle>
       <div className={'px-4'}>
         <InfoItem className={'mb-4'} label={'Имя пользователя'} value={name} />

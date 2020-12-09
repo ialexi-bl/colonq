@@ -1,91 +1,100 @@
 @use './mixins/transition-presets';
+@use 'sass:string';
 
-// @layer utilities {
-.route-opacity,
-.route-enter-opacity {
-  @include transition-presets.opacity-start;
+// All transitions class names are of form
+// route-{name}, route-enter-{name}, route-exit-{name}
+
+@function get-selector($names, $postfixes) {
+  $selector: '';
+  @each $name in $names {
+    @each $postfix in $postfixes {
+      $selector: $selector + ', .' + $postfix + '-' + $name;
+    }
+  }
+  @return string.slice($selector, 2);
 }
-.route-opacity,
-.route-exit-opacity {
-  @include transition-presets.opacity-end;
+
+@mixin enter-class-name($names...) {
+  $selector: get-selector($names, (route, route-enter));
+  #{$selector} {
+    @content;
+  }
 }
-.bg-page,
-.route-overlay,
-.route-exit-overlay,
-.route-enter-overlay {
+@mixin exit-class-name($names...) {
+  $selector: get-selector($names, (route, route-exit));
+  #{$selector} {
+    @content;
+  }
+}
+
+.bg-page {
   background: theme('colors.secondary.1000');
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 }
+@include enter-class-name(opacity) {
+  @include transition-presets.opacity-start;
+}
+@include exit-class-name(opacity) {
+  @include transition-presets.opacity-end;
+}
 
-.route-enter-translate-x,
-.route-enter-overlay,
-.route-translate-x,
-.route-overlay {
+@include enter-class-name(right, overlay) {
   @include transition-presets.right-start;
 }
-.-route-enter-translate-x,
-.-route-translate-x {
+@include enter-class-name(left) {
   @include transition-presets.left-start;
 }
-.route-enter-translate-y,
-.route-translate-y {
+@include enter-class-name(down) {
   @include transition-presets.down-start;
 }
-.-route-enter-translate-y,
-.-route-translate-y {
+@include enter-class-name(up) {
   @include transition-presets.up-start;
 }
 
-.route-exit-translate-x,
-.route-exit-overlay,
-.route-translate-x,
-.route-overlay {
+@include exit-class-name(right, overlay) {
   @include transition-presets.right-end;
 }
-.-route-exit-translate-x,
-.-route-translate-x {
+@include exit-class-name(left) {
   @include transition-presets.left-end;
 }
-.route-exit-translate-y,
-.route-translate-y {
+@include exit-class-name(down) {
   @include transition-presets.down-end;
 }
-.-route-exit-translate-y,
-.-route-translate-y {
+@include exit-class-name(up) {
   @include transition-presets.up-end;
 }
 
-.route-translate-x.route-opacity,
-.route-enter-translate-x.route-enter-opacity {
+// TODO: probably delete these
+.route-right.route-opacity,
+.route-enter-right.route-enter-opacity {
   @include transition-presets.right-opacity-start;
 }
-.-route-translate-x.route-opacity,
-.-route-enter-translate-x.route-enter-opacity {
+.route-left.route-opacity,
+.route-enter-left.route-enter-opacity {
   @include transition-presets.left-opacity-start;
 }
-.route-translate-y.route-opacity,
-.route-enter-translate-y.route-enter-opacity {
+.route-down.route-opacity,
+.route-enter-down.route-enter-opacity {
   @include transition-presets.down-opacity-start;
 }
-.-route-translate-y.route-opacity,
-.-route-enter-translate-y.route-enter-opacity {
+.route-up.route-opacity,
+.route-enter-up.route-enter-opacity {
   @include transition-presets.up-opacity-start;
 }
 
-.route-translate-x.route-opacity,
-.route-exit-translate-x.route-exit-opacity {
+.route-right.route-opacity,
+.route-exit-right.route-exit-opacity {
   @include transition-presets.right-opacity-end;
 }
-.-route-translate-x.route-opacity,
-.-route-exit-translate-x.route-exit-opacity {
+.route-left.route-opacity,
+.route-exit-left.route-exit-opacity {
   @include transition-presets.left-opacity-end;
 }
-.route-translate-y.route-opacity,
-.route-exit-translate-y.route-exit-opacity {
+.route-down.route-opacity,
+.route-exit-down.route-exit-opacity {
   @include transition-presets.down-opacity-end;
 }
-.-route-translate-y.route-opacity,
-.-route-exit-translate-y.route-exit-opacity {
+.route-up.route-opacity,
+.route-exit-up.route-exit-opacity {
   @include transition-presets.up-opacity-end;
 }
-// }

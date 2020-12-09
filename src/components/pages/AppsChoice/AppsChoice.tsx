@@ -8,6 +8,7 @@ import { executeAuthorizedMethod } from 'store/user'
 import { notifyErrorObject } from 'store/view'
 import { push } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
+import { useLocation } from 'react-router'
 import Accordion from 'components/shared/Accordion/Accordion'
 import Continue from 'components/icons/Continue'
 import DynamicIcon from 'components/icons/DynamicIcon'
@@ -20,11 +21,20 @@ import useElevation from 'hooks/use-elevation'
 import useIsAuthenticated from 'hooks/use-is-authenticated'
 import useItemsToggler from 'hooks/use-items-toggler'
 
+/**
+ * Displays page for selecting apps.
+ * This component can read `noBack` boolean value from history state,
+ * which disables "back" button on the page. Main reason - to prevent
+ * user that didn't choose any apps from returning to screen that cannot
+ * display anything because apps aren't chosen
+ * @param props
+ */
 export default function AppsChoice({
   visible,
   setProgress,
 }: RouteComponentProps) {
   const dispatch = useDispatch<MixedDispatch>()
+  const location = useLocation<{ noBack?: boolean } | undefined>()
   const user = useSelector((state: AppState) => state.user)
 
   const [categories, setCategories] = useState<
@@ -71,15 +81,17 @@ export default function AppsChoice({
   return (
     <ScrollablePage
       routeElevation={Elevation.appsChoice}
-      className={'route-overlay'}
+      className={'route-overlay bg-page'}
     >
-      <PageTitle>Выбор тем</PageTitle>
+      <PageTitle disableBackButton={location.state?.noBack}>
+        Выбор тем
+      </PageTitle>
       <p className={'px-4 mb-2'}>
-        Выбери темы, по которым ты хочешь заниматься. Их можно будет добавить и
-        убрать позже.
+        Выбери темы, которые тебы интересуют. Их можно будет добавить и убрать
+        позже.
       </p>
       <p className={'px-4 mb-12'}>
-        Нажми на название темы, чтобы посмотреть описание, и на иконку, чтобы
+        Нажми на название темы, чтобы посмотреть описание, или на иконку, чтобы
         включить или вылючить её.
       </p>
       <div className={'px-4 pb-64'}>

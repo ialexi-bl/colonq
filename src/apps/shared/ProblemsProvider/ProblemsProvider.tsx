@@ -1,7 +1,4 @@
-import { ApiErrorName } from 'services/api/config'
 import AppError from 'apps/shared/AppError'
-import AppLocked from '../AppLocked'
-import NotFound from 'components/pages/NotFound'
 import React from 'react'
 import useLesson, { LessonType } from 'apps/hooks/use-lesson'
 
@@ -26,12 +23,8 @@ export default function ProblemsProvider<TProblem>({
       return <Component problems={lesson.problems} />
     case 'loading':
       return null
-    case ApiErrorName.NOT_FOUND:
-      // TODO: be more precise
-      return <NotFound />
-    case ApiErrorName.FORBIDDEN:
-      return <AppLocked />
-    default:
+    // TODO: fix
+    case 'error':
       return <AppError id={app} />
   }
 }

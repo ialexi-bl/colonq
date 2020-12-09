@@ -3,7 +3,7 @@ import { AppState } from 'store/types'
 import { AppsApi, UserApi } from 'services/api'
 import { AuthorizedMethodInternal, UserState } from './types'
 import { Channel, Task } from 'redux-saga'
-import { HttpError } from 'services/errors'
+import { ColonqError, HttpError } from 'services/errors'
 import {
   UserAction,
   authenticate,
@@ -44,10 +44,7 @@ function* updateToken() {
     const methods: AuthorizedMethodInternal<any>[] = yield select(
       (state: AppState) => state.user.methodsQueue,
     )
-    methods.forEach((method) => {
-      method(data.token, data.id)
-    })
-
+    methods.forEach((method) => method.call(data.token, data.id))
     yield put(authenticateSuccess(data))
   } catch (e) {
     if (e instanceof HttpError) {
@@ -58,9 +55,14 @@ function* updateToken() {
         return
       }
     }
-    console.error(e)
+
     yield put(authenticateError())
     yield put(notifyErrorObject(e) as any)
+
+    const methods: AuthorizedMethodInternal<any>[] = yield select(
+      (state: AppState) => state.user.methodsQueue,
+    )
+    methods.forEach((method) => method.throw(e))
   }
 }
 
@@ -72,9 +74,10 @@ function* loadApps() {
     )
     yield put(loadAppsSuccess(data.categories))
   } catch (e) {
-    console.error(e)
     yield put(loadAppsError())
-    yield put(notifyErrorObject(e) as any)
+    if (!(e instanceof ColonqError)) {
+      yield put(notifyErrorObject(e) as any)
+    }
   }
 }
 
@@ -88,7 +91,9 @@ function* loadApp(app: string) {
   } catch (e) {
     console.error(e)
     yield put(loadAppError(app))
-    yield put(notifyErrorObject(e) as any)
+    if (!(e instanceof ColonqError)) {
+      yield put(notifyErrorObject(e) as any)
+    }
   }
 }
 
@@ -99,12 +104,14 @@ function* requestAuthMethod({
 }) {
   const user: UserState = yield select((state: AppState) => state.user)
 
+  // NOTE: this actually sends request for token till the end of times
+  // for some reason but i'm not sure if it's bad and should be fixed, leaving for now
   if (
     user.status !== 'loading' &&
     user.token &&
     user.tokenExpires - Date.now() > 500
   ) {
-    payload(user.token, user.id)
+    payload.call(user.token, user.id)
   } else {
     yield put(queueAuthMethod(payload))
     yield put(authenticate())

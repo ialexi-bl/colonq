@@ -1,13 +1,12 @@
-import { ApiClientProps, withApiClient } from 'hooks/use-api-client'
 import { CUTE_FACE } from 'config/view'
-import { PageContainer } from 'components/shared/Page'
 import Config from 'config'
 import GeneralApi from 'services/api/general'
+import Page from 'components/shared/Page'
 import React, { ErrorInfo, ReactNode } from 'react'
 import TitleLine from 'components/shared/TitleLine'
 import styles from './Boundary.module.scss'
 
-export type BoundaryProps = ApiClientProps & {
+export type BoundaryProps = {
   children?: ReactNode
   global?: boolean
 }
@@ -42,18 +41,14 @@ class Boundary extends React.Component<BoundaryProps> {
     /* eslint-enable no-undef */
 
     // TODO: check if this needs to be authorized
-    this.props
-      .execute(
-        GeneralApi.log({
-          type: 'page',
-          gaId,
-          ymId,
-          name: e.name,
-          message: e.message,
-          stack: `${e.stack}\nComponents stack: ${info.componentStack}`,
-        }),
-      )
-      .catch(() => {})
+    GeneralApi.log({
+      type: 'page',
+      gaId,
+      ymId,
+      name: e.name,
+      message: e.message,
+      stack: `${e.stack}\nComponents stack: ${info.componentStack}`,
+    }).catch(() => {})
   }
 
   render() {
@@ -62,7 +57,7 @@ class Boundary extends React.Component<BoundaryProps> {
     }
 
     return (
-      <PageContainer className={styles.Boundary}>
+      <Page className={styles.Boundary}>
         <TitleLine>
           ERROR
           <p className={styles.Subtitle}>
@@ -70,8 +65,8 @@ class Boundary extends React.Component<BoundaryProps> {
             получится - вернись позже. Всё обязательно заработает
           </p>
         </TitleLine>
-      </PageContainer>
+      </Page>
     )
   }
 }
-export default withApiClient<BoundaryProps>(Boundary)
+export default Boundary

@@ -36,6 +36,14 @@ namespace Endpoint {
   }
 
   /**
+   * Apps settings
+   */
+  export const settings = {
+    get: (app: string) => `settings/${app}`,
+    set: (app: string) => `settings/${app}`,
+  }
+
+  /**
    * User data
    */
   export const user = {
@@ -105,7 +113,7 @@ namespace Endpoint {
   ) {
     // TODO: change to normal url for production
     const uri =
-      provider === 'google'
+      provider === 'google' && Config.IS_DEV
         ? 'https://aaaaaaaaaaaaaaaaaaaaaaaaa.com/auth'
         : redirectUri
     return createUrl(

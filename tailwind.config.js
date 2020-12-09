@@ -45,7 +45,7 @@ module.exports = {
           active: '#991616',
         },
         warning: {
-          default: '#f8d979',
+          default: '#ccbc38',
         },
         transparent: {
           default: 'transparent',
@@ -76,9 +76,9 @@ module.exports = {
         12: '3rem',
       },
       zIndex: {
-        navigation: 600,
-        notification: 590,
-        loading: 580,
+        loading: 600,
+        navigation: 590,
+        notification: 580,
       },
     },
   },

@@ -12,7 +12,6 @@ import {
   notifyError,
   notifyErrorObject,
   notifyInfo,
-  openLoading,
 } from 'store/view'
 import { executeAuthorizedMethod } from 'store/user'
 import { getTokenField } from 'util/jwt'
@@ -35,6 +34,8 @@ type Status =
       emailSent?: boolean
     }
 
+// TODO: when entering account sometimes there is a message
+// TODO: "unable to enter twice" this should be fixed
 export default function Auth() {
   const dispatch = useDispatch<MixedDispatch>()
   const location = useLocation()
@@ -47,7 +48,6 @@ export default function Auth() {
     if (processed.current || authStatus === 'loading') return
     processed.current = true
 
-    dispatch(openLoading('auth'))
     dispatch(process(authStatus === 'authenticated', params)).then((status) => {
       dispatch(closeLoading('auth'))
       if (status) setStatus(status)
@@ -147,6 +147,8 @@ function processAction(
     return null
   }
 }
+// TODO: maybe show some link when there is no user with such account
+// when logging in with oauth, because for now it's not clear what to do
 function processSocialLogin(
   authenticated: boolean,
   search: URLSearchParams,

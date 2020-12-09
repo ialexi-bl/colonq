@@ -1,13 +1,11 @@
 import { RouteComponentProps } from 'config/routes'
-import LessonsList from 'apps/shared/LessonsList'
-import Paronyms from 'components/icons/dynamic/russian/paronyms'
 import React from 'react'
+import WordsLessonsList from 'apps/shared/words/LessonsList/WordsLessonsList'
 
 export default function ListRoute(controls: RouteComponentProps) {
   return (
-    <LessonsList
+    <WordsLessonsList
       app={'russian/paronyms'}
-      icon={<Paronyms />}
       title={'Паронимы'}
       {...controls}
     />

@@ -39,25 +39,28 @@ export type EmptyUser = {
 
 export type AppsState = {
   appsStatus: 'none' | 'loading' | 'error' | 'loaded'
-  categories: {
-    id: string
-    title: string
-    apps: PlainApp[]
-  }[]
+  categories: Category[]
   // TODO: remove this field if it's not needed anywhere
   appsList: string[]
   apps: Apps
 }
 
-export type AuthorizedMethodInternal<T> = (
-  token: string,
-  id: string,
-) => Promise<T>
+export type AuthorizedMethodInternal<T> = {
+  call: (token: string, id: string) => Promise<T>
+  throw: (error: Error) => void
+}
 export type AuthorizedMethod<T> = (
   token: string,
   id: string,
   dispatch: MixedDispatch,
 ) => Promise<T>
+
+export type Category = {
+  id: string
+  title: string
+  apps: PlainApp[]
+}
+
 export type Apps = Record<string, App>
 export type App = PlainApp &
   (
@@ -82,6 +85,7 @@ export type Lesson = {
   icon: string
   score: number
   title: string
+  empty?: boolean
   unlocked: boolean
 }
 

@@ -1,3 +1,3 @@
-export * from './Page'
-export { default } from './Page'
+export * from './WordsSessionPage'
+export { default } from './WordsSessionPage'
 export * from './types'
