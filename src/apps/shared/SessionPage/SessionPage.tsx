@@ -1,30 +1,31 @@
 import { Elevation } from 'config/view'
-import { ProblemWithAnswer, WordsNext } from './types'
 import { RouteComponentProps } from 'config/routes'
-import { TwoLatestDisplayViewProps } from 'components/apps/TwoLatestDisplay'
-import AppError from 'apps/shared/AppError'
+import AppError from '../AppError'
 import Page from 'components/shared/Page'
-import React, { ComponentType, useEffect } from 'react'
-import WordsSession from './WordsSession'
+import React, { ReactNode, useEffect } from 'react'
 import useElevation from 'hooks/use-elevation'
 import useIsAuthenticated from 'hooks/use-is-authenticated'
 import useLesson, { PRACTICE } from 'apps/hooks/use-lesson'
 
-export type SessionProps<
+export type ProblemWithAnswer = {
+  id: string
+  answer: string | number
+}
+export type SessionPageProps<
   TProblem extends ProblemWithAnswer
 > = RouteComponentProps & {
-  wordView: ComponentType<TwoLatestDisplayViewProps<TProblem, WordsNext>>
+  render: (problems: TProblem[]) => ReactNode
   lesson: string | typeof PRACTICE
   app: string
 }
 
-export default function WordsSessionPage<TProblem extends ProblemWithAnswer>({
+export default function SessionPage<TProblem extends ProblemWithAnswer>({
   lesson: lessonName,
   setProgress,
-  wordView,
   visible,
+  render,
   app,
-}: SessionProps<TProblem>) {
+}: SessionPageProps<TProblem>) {
   useElevation(Elevation.session)
   const lesson = useLesson<TProblem>(app, lessonName)
 
@@ -50,17 +51,7 @@ export default function WordsSessionPage<TProblem extends ProblemWithAnswer>({
     )
   }
 
-  return (
-    <Wrapper>
-      <WordsSession
-        app={app}
-        visible={visible}
-        wordView={wordView}
-        problems={lesson.problems}
-        setProgress={setProgress}
-      />
-    </Wrapper>
-  )
+  return <Wrapper>{render(lesson.problems)}</Wrapper>
 }
 
 const Wrapper = ({ children }: BasicProps) => (

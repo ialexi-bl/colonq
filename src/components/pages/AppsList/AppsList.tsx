@@ -12,7 +12,9 @@ import Edit from 'components/icons/Edit'
 import LoadingError from 'components/shared/LoadingError'
 import PageTitle from 'components/shared/PageTitle'
 import React, { useEffect } from 'react'
-import ThemeActionItem from 'components/shared/ThemeActionItem'
+import ThemeActionItem, {
+  ActionDescription,
+} from 'components/shared/ThemeActionItem'
 import useIsAuthenticated from 'hooks/use-is-authenticated'
 import useItemsToggler from 'hooks/use-items-toggler'
 import useWasTrue from 'hooks/use-was-true'
@@ -147,18 +149,18 @@ const AppItem = ({
           primary: true,
           label: 'Начать занятие',
           action: () => dispatch(push(appRoute(app.id, 'practice'))),
-        },
+        } as ActionDescription,
         {
           id: 1,
           label: 'Уроки & Статистика',
           action: () => dispatch(push(appRoute(app.id, 'stats'))),
         },
-        {
+        app.hasSettings && {
           id: 2,
           label: 'Настройки',
           action: () => dispatch(push(appRoute(app.id, 'settings'))),
         },
-      ]}
+      ].filter((x: any): x is ActionDescription => x)}
     />
   )
 }

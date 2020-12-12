@@ -3,20 +3,26 @@ import ChoicePhrase, {
   ChoicePhraseProblem,
 } from 'components/apps/words/ChoicePhrase'
 import React from 'react'
-import WordsSessionPage from 'apps/shared/words/SessionPage'
+import SessionPage from 'apps/shared/SessionPage'
+import WordsSessionPage from 'apps/shared/words/WordsSession'
 
+const APP = 'russian/verbs'
 export default function Session({
-  lesson: lessonName,
-  visible,
-  setProgress,
+  lesson,
+  ...controls
 }: RouteComponentProps & { lesson: string }) {
   return (
-    <WordsSessionPage<ChoicePhraseProblem>
-      app={'russian/verbs'}
-      lesson={lessonName}
-      visible={visible}
-      wordView={ChoicePhrase}
-      setProgress={setProgress}
+    <SessionPage<ChoicePhraseProblem>
+      app={APP}
+      lesson={lesson}
+      render={(problems) => (
+        <WordsSessionPage
+          app={APP}
+          problems={problems}
+          wordView={ChoicePhrase}
+        />
+      )}
+      {...controls}
     />
   )
 }

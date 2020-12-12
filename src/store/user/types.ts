@@ -78,6 +78,7 @@ export type PlainApp = {
   icon: string
   score: number
   title: string
+  hasSettings: boolean
 }
 
 export type Lesson = {

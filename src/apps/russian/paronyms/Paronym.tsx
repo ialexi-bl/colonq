@@ -1,5 +1,5 @@
 import { TwoLatestDisplayViewProps } from 'components/apps/TwoLatestDisplay'
-import { WordsNext } from 'apps/shared/words/SessionPage'
+import { WordsNext } from 'apps/shared/words/WordsSession'
 import Input from 'components/form/Input'
 import React, { useState } from 'react'
 
@@ -10,12 +10,15 @@ export type ParonymsProblem = {
   placeholder: string
 }
 
+export type ParonymProps = TwoLatestDisplayViewProps<ParonymsProblem> & {
+  next: WordsNext
+}
 export const Paronym = function Paronym({
   item,
   next,
   active,
   firstItem,
-}: TwoLatestDisplayViewProps<ParonymsProblem, WordsNext>) {
+}: ParonymProps) {
   const [value, setValue] = useState('')
   const [start, end] = item.problem.split('_')
   const isCorrect =

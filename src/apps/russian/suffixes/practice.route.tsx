@@ -4,14 +4,22 @@ import ChoicePhrase, {
   ChoicePhraseProblem,
 } from 'components/apps/words/ChoicePhrase'
 import React from 'react'
-import WordsSessionPage from 'apps/shared/words/SessionPage'
+import SessionPage from 'apps/shared/SessionPage'
+import WordsSessionPage from 'apps/shared/words/WordsSession'
 
+const APP = 'russian/suffixes'
 export default function Session(controls: RouteComponentProps) {
   return (
-    <WordsSessionPage<ChoicePhraseProblem>
-      app={'russian/suffixes'}
+    <SessionPage<ChoicePhraseProblem>
+      app={APP}
       lesson={PRACTICE}
-      wordView={ChoicePhrase}
+      render={(problems) => (
+        <WordsSessionPage
+          app={APP}
+          problems={problems}
+          wordView={ChoicePhrase}
+        />
+      )}
       {...controls}
     />
   )

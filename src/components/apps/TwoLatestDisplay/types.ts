@@ -1,8 +1,9 @@
-export type TwoLatestDisplayViewProps<TItem, TNext extends Function> = {
+import { ReactNode } from 'react'
+
+export type TwoLatestDisplayViewProps<TItem> = {
   firstItem: boolean
   active: boolean
   item: TItem
-  next: TNext
 }
 
 export type TwoLatestDisplayItem<TData> = {
@@ -15,9 +16,8 @@ export type TwoLatestItems<TData> = {
   prev1: Item<TData> | null
   prev2: Item<TData> | null
 }
-export type TwoLatestDisplayProps<TData, TNext extends Function> = {
-  component: React.ComponentType<TwoLatestDisplayViewProps<TData, TNext>>
-  next: TNext
+export type TwoLatestDisplayProps<TData> = {
+  render: (props: TwoLatestDisplayViewProps<TData>) => ReactNode
   current: TwoLatestDisplayItem<TData> | null
   previous: TwoLatestDisplayItem<TData> | null
   previous2: TwoLatestDisplayItem<TData> | null

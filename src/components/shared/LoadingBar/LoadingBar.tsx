@@ -31,9 +31,9 @@ export default function Loadingbar({
           clearInterval(interval)
           return 1
         }
-        return Math.min(p + Math.random() * 0.04, 0.9)
+        return Math.min(p + Math.random() * 0.02, 0.9)
       })
-    }, 1000)
+    }, 1500)
     return () => clearInterval(interval)
   }, [progress])
 

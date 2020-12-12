@@ -17,7 +17,7 @@ import React, { ReactNode, useEffect, useRef } from 'react'
 import ScrollIcon from 'components/icons/Scroll'
 import Scrollbars from 'react-custom-scrollbars'
 import Suffixes from 'components/icons/dynamic/russian/suffixes'
-import Trigonometry from 'components/icons/dynamic/maths/Trigonometry'
+import Trigonometry from 'components/icons/dynamic/math/sin'
 import cn from 'clsx'
 import styles from './Index.module.scss'
 

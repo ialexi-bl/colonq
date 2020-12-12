@@ -3,7 +3,7 @@ import { MixedDispatch } from 'store/types'
 import { executeAuthorizedMethod } from 'store/user'
 import { notifyErrorObject, notifyInfo } from 'store/view'
 import { useDispatch } from 'react-redux'
-import React, { ReactNode, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import SettingsApi from 'services/api/settings'
 import ToggleList from 'components/shared/ToggleList'
 import useSettingsControls, {

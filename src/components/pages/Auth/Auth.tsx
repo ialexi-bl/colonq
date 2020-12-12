@@ -34,6 +34,8 @@ type Status =
       emailSent?: boolean
     }
 
+// TODO: when finishes loading shows empty screen
+
 // TODO: when entering account sometimes there is a message
 // TODO: "unable to enter twice" this should be fixed
 export default function Auth() {

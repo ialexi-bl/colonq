@@ -36,8 +36,9 @@ export default () => {
               data: problems[(cur - 2) % 4],
             }
       }
-      next={() => setCur((cur) => cur + 1)}
-      component={ChoicePhrase}
+      render={(props) => (
+        <ChoicePhrase {...props} next={() => setCur((cur) => cur + 1)} />
+      )}
     />
   )
 }

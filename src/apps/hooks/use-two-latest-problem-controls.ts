@@ -6,17 +6,31 @@ export type Verify<TProblem, TAnswer> = (
   answer: TAnswer,
 ) => boolean
 
+/**
+ * Provides controls for two latest display: manages
+ * the order of items and functions to hide them and
+ * submit answers
+ * @param _problems - Initial set of problems from server (or a function that returns one)
+ * @param verify - Function that receives a problem and an answer and verifies if it's correct
+ * @param repeat - Function that gets a failed problem and creates its copy that will be shown to the user later
+ */
 export default function useTwoLatestProblemControls<
   TProblem extends { id: string },
   TAnswer
->(_problems: TProblem[], verify: Verify<TProblem, TAnswer>) {
+>(
+  _problems: TProblem[] | (() => TProblem[]),
+  verify: Verify<TProblem, TAnswer>,
+  repeat: (problem: TProblem) => TProblem = (x) => x,
+) {
   // p for pointer
   const [problems, setProblems] = useState<TwoLatestDisplayItem<TProblem>[]>(
     () =>
-      _problems.map((problem, i) => ({
-        id: `${problem.id}-${i}`,
-        data: problem,
-      })),
+      (typeof _problems === 'function' ? _problems() : _problems).map(
+        (problem, i) => ({
+          id: `${problem.id}-${i}`,
+          data: problem,
+        }),
+      ),
   )
   const [progress, setProgress] = useState(0)
   const [disabled, setDisabled] = useState<string[]>([])
@@ -35,13 +49,23 @@ export default function useTwoLatestProblemControls<
     current: p - +done in problems ? problems[p - +done] : null,
     previous: p - 1 - +done in problems ? problems[p - 1 - +done] : null,
     previous2: p - 2 - +done in problems ? problems[p - 2 - +done] : null,
+    editProblem: (value: TProblem | ((current: TProblem) => TProblem)) => {
+      setProblems((problems) => {
+        const newProblems = [...problems]
+        newProblems[p].data =
+          typeof value === 'function' ? value(newProblems[p].data) : value
+        return newProblems
+      })
+    },
     next: (answer: TAnswer) => {
+      console.log(answer)
       if (!verify(problems[p].data, answer)) {
         // Repeat problem and reduce progress on wrong answer
         setProgress((progress) => Math.max(0, progress - 0.03))
         setProblems((problems) => {
           return problems.concat({
-            ...problems[p],
+            hiding: problems[p].hiding,
+            data: repeat(problems[p].data),
             // Changing ID prevents TwoLatestDisplay from showing the same
             // problems twice if the problem is repeated
             id: `${problems[p].data.id}-${problems.length}`,

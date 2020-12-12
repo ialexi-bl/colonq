@@ -4,7 +4,7 @@ import { AppsApi, UserApi } from 'services/api'
 import { Elevation } from 'config/view'
 import { RouteComponentProps, appsList } from 'config/routes'
 import { ScrollablePage } from 'components/shared/Page'
-import { executeAuthorizedMethod } from 'store/user'
+import { executeAuthorizedMethod, loadApps } from 'store/user'
 import { notifyErrorObject } from 'store/view'
 import { push } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
@@ -41,17 +41,7 @@ export default function AppsChoice({
     null | ApiResponse.Apps.Category[]
   >(null)
   const [visibleItems, toggleVisible] = useItemsToggler()
-  const [chosen, toggle] = useItemsToggler(() => {
-    const chosen: Record<string, true> = {}
-    if (user.token) {
-      user.categories.forEach((category) => {
-        category.apps.forEach((app) => {
-          chosen[app.id] = true
-        })
-      })
-    }
-    return chosen
-  })
+  const [chosen, toggle] = useItemsToggler()
 
   const proceed = async () => {
     const apps = Object.keys(chosen)
@@ -66,12 +56,27 @@ export default function AppsChoice({
   }
 
   useEffect(() => {
+    if (user.appsStatus !== 'loaded') {
+      dispatch(loadApps())
+    }
     AppsApi.getAppsList().then((apps) => {
       setCategories(apps.data.categories)
       setProgress(100)
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+  useEffect(() => {
+    if (user.appsStatus !== 'loaded') return
+
+    const chosen: Record<string, true> = {}
+    user.categories.forEach((category) => {
+      category.apps.forEach((app) => {
+        chosen[app.id] = true
+      })
+    })
+    toggle(chosen)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [toggle, user.appsStatus])
   useElevation(Elevation.appsChoice)
 
   if (!useIsAuthenticated() || !visible || !categories) {
@@ -117,7 +122,6 @@ export default function AppsChoice({
                 }
                 details={
                   <TextContainer variant={((i % 3) + 1) as 1}>
-                    {/* TODO: send description */}
                     {app.description}
                   </TextContainer>
                 }

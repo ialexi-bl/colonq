@@ -31,6 +31,7 @@ export type LoadAppSuccessPayload = {
   icon: string
   title: string
   lessons: Lesson[]
+  hasSettings: boolean
 }
 export type UpdateLessonsPayload = {
   app: string

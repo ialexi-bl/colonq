@@ -1,3 +1,4 @@
+import EventTarget from '@ungap/event-target'
 import Scrollbars, { positionValues } from 'react-custom-scrollbars'
 
 export type ScrollEvent = CustomEvent<positionValues>

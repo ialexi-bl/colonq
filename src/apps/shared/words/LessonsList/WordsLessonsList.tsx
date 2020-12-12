@@ -75,7 +75,9 @@ export default function WordsLessonsList({
       <p className={'px-4 mb-4'}>Нажми на урок, чтобы начать практику</p>
 
       <LessonsList app={appName} lessons={app.lessons as Lesson[]} />
-      <Fal to={appRoute(appName, 'settings')} icon={<Settings />} />
+      {app.hasSettings && (
+        <Fal to={appRoute(appName, 'settings')} icon={<Settings />} />
+      )}
     </Wrapper>
   )
 }

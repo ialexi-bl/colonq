@@ -1,6 +1,6 @@
 import { InlineChoice } from 'components/shared/InlineChoice'
 import { TwoLatestDisplayViewProps } from 'components/apps/TwoLatestDisplay'
-import { WordsNext } from 'apps/shared/words/SessionPage'
+import { WordsNext } from 'apps/shared/words/WordsSession'
 import Config from 'config'
 import React, { useState } from 'react'
 
@@ -11,11 +11,14 @@ export type ChoicePhraseProblem = {
   options: string[]
 }
 
+export type ChoicePhraseProps = TwoLatestDisplayViewProps<ChoicePhraseProblem> & {
+  next: WordsNext
+}
 export default function ChoicePhrase({
   item,
   next,
   active,
-}: TwoLatestDisplayViewProps<ChoicePhraseProblem, WordsNext>) {
+}: ChoicePhraseProps) {
   const [answer, setAnswer] = useState(-1)
 
   const [before, after] = item.problem.split('_')

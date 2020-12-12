@@ -32,15 +32,17 @@ declare namespace ApiResponse {
     }
     export type AppDescription = {
       id: string
+      icon: string
       title: string
       score: number
-      icon: string
+      hasSettings: boolean
     }
 
     export type DetailedAppDescription = {
-      title: string
       icon: string
+      title: string
       lessons: LessonDescription[]
+      hasSettings: boolean
     }
     export type LessonDescription = {
       id: string

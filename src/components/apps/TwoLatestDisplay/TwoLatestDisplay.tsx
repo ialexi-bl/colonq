@@ -9,14 +9,14 @@ import styles from './TwoLatestDisplay.module.scss'
  * its way, when the next word comes, it disappears and so on
  * @param props
  */
-export function TwoLatestDisplay<TItem, TNext extends Function>({
-  next,
+export function TwoLatestDisplay<TItem>({
+  // next,
   current,
   previous,
   previous2,
   className,
-  component: Component,
-}: TwoLatestDisplayProps<TItem, TNext>) {
+  render,
+}: TwoLatestDisplayProps<TItem>) {
   const firstRender = useRef(true)
   const iter = [current, previous, previous2].filter(Boolean) as Item<TItem>[]
   const { current: transformed } = useRef<
@@ -60,16 +60,15 @@ export function TwoLatestDisplay<TItem, TNext extends Function>({
             }
           }}
         >
-          <Component
-            firstItem={(() => {
+          {render({
+            item: item.data,
+            active: item === current,
+            firstItem: (() => {
               const t = firstRender.current
               firstRender.current = false
               return t
-            })()}
-            active={item === current}
-            item={item.data}
-            next={next}
-          />
+            })(),
+          })}
         </div>
       ))}
     </div>

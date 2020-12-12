@@ -1,10 +1,17 @@
 import { useReducer } from 'react'
 
-const reducer = (chosen: Record<string, true>, app: string) => {
-  const newState = { ...chosen }
-  if (newState[app]) delete newState[app]
-  else newState[app] = true
-  return newState
+const reducer = (
+  chosen: Record<string, true>,
+  app: string | Record<string, true>,
+) => {
+  if (typeof app === 'string') {
+    const newState = { ...chosen }
+    if (newState[app]) delete newState[app]
+    else newState[app] = true
+    return newState
+  } else {
+    return { ...chosen, ...app }
+  }
 }
 
 /**

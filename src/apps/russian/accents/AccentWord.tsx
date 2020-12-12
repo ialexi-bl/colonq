@@ -1,4 +1,5 @@
 import { TwoLatestDisplayViewProps } from 'components/apps/TwoLatestDisplay'
+import { WordsNext } from 'apps/shared/words/WordsSession'
 import LetterButton from 'components/shared/LetterButton'
 import React, { useEffect, useState } from 'react'
 import styles from './Accents.module.scss'
@@ -21,11 +22,14 @@ export type AccentsProblem = {
   id: string
 }
 
+export type AccentWordProps = TwoLatestDisplayViewProps<AccentsProblem> & {
+  next: WordsNext
+}
 export const AccentWord = function AccentWord({
+  next,
   item,
   active,
-  next,
-}: TwoLatestDisplayViewProps<AccentsProblem, (answer: number) => unknown>) {
+}: AccentWordProps) {
   const [answer, setAnswer] = useState(-1)
   const answered = answer >= 0
 

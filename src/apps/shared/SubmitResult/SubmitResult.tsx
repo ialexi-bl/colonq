@@ -1,0 +1,20 @@
+import { ApiResponse } from 'services/api/config'
+import AchievementsDisplay from '../AchievementsDisplay'
+import React from 'react'
+import cn from 'clsx'
+
+export type SubmitResultProps = {
+  response: ApiResponse.Session.Submit | null
+}
+export default function SubmitResult({ response }: SubmitResultProps) {
+  return (
+    <div
+      className={cn(
+        'absolute inset-0 duration-500 transform bg-secondary-900',
+        !response && 'translate-y-full',
+      )}
+    >
+      {response && <AchievementsDisplay delay={500} response={response} />}
+    </div>
+  )
+}
