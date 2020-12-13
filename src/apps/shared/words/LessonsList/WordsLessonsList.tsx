@@ -5,12 +5,12 @@ import { Fal } from 'components/shared/Fab'
 import { RouteComponentProps, app as appRoute } from 'config/routes'
 import { ScrollablePage } from 'components/shared/Page'
 import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react';
 import { useElevationClassnames } from 'hooks/use-elevation'
 import Button from 'components/shared/Button'
 import LessonsList from 'apps/shared/LessonsList'
 import LoadingError from 'components/shared/LoadingError'
 import PageTitle from 'components/shared/PageTitle'
-import { useEffect } from 'react';
 import Settings from 'components/icons/Settings'
 import cn from 'clsx'
 import useWasTrue from 'hooks/use-was-true'

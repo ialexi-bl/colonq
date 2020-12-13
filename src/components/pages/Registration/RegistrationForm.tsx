@@ -6,8 +6,8 @@ import { notifyErrorObject } from 'store/view'
 import { push } from 'connected-react-router'
 import { useDispatch } from 'react-redux'
 import { useFormik } from 'formik'
-import LoadingButton from 'components/shared/LoadingButton'
 import { useRef, useState } from 'react';
+import LoadingButton from 'components/shared/LoadingButton'
 import RegistrationInput from './RegistrationInput'
 import cn from 'clsx'
 import validate, {

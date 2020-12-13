@@ -1,6 +1,7 @@
 import { AppState } from 'store/types'
 import { Elevation } from 'config/view'
 import { LinkButton } from 'components/shared/Button'
+import { ReactNode, useEffect, useRef } from 'react'
 import {
   RouteComponentProps,
   appsList,
@@ -13,7 +14,6 @@ import { useSelector } from 'react-redux'
 import Hr from 'components/shared/Hr'
 import LetterButton from 'components/shared/LetterButton'
 import NotificationIcon from 'components/icons/Notification'
-import { ReactNode, useEffect, useRef } from 'react';
 import ScrollIcon from 'components/icons/Scroll'
 import Scrollbars from 'react-custom-scrollbars'
 import Suffixes from 'components/icons/dynamic/russian/suffixes'

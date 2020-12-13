@@ -1,11 +1,11 @@
 import { ApiResponse } from 'services/api/config'
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router'
 import Bubble from 'components/shared/Bubble'
 import Button from 'components/shared/Button'
 import DynamicIcon, { preloadIcons } from 'components/icons/DynamicIcon'
 import FullscreenLoading from 'components/shared/GlobalLoading/FullscreenLoading'
 import Hr from 'components/shared/Hr'
-import { ReactNode, useEffect, useMemo, useState } from 'react';
 import useTween from 'hooks/use-tween'
 
 export type AchievementsDisplayProps = {

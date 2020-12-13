@@ -1,6 +1,6 @@
+import { memo } from 'react'
 import Accordion from '../Accordion'
 import Expand from 'components/icons/Expand'
-import { memo } from 'react';
 import Trapezoid from '../Trapezoid'
 import cn from 'clsx'
 import useToggle from 'hooks/use-toggle'

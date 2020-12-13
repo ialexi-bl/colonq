@@ -6,12 +6,12 @@ import { RouteComponentProps, app as appRoute, appsChoice } from 'config/routes'
 import { ScrollablePage } from 'components/shared/Page'
 import { push } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react';
 import { useElevationClassnames } from 'hooks/use-elevation'
 import Button from 'components/shared/Button'
 import Edit from 'components/icons/Edit'
 import LoadingError from 'components/shared/LoadingError'
 import PageTitle from 'components/shared/PageTitle'
-import { useEffect } from 'react';
 import ThemeActionItem, {
   ActionDescription,
 } from 'components/shared/ThemeActionItem'

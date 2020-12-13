@@ -134,28 +134,33 @@ const Routes = function Routes({
                 const Component = route._imported[key]
                 return <Component {...controls} {...data} />
               }
-              if (!route._importStarted[key]) {
+              if (route._importStarted[key]) {
+                return null
+              }
+
+              // This should be outside of "importPage" because
+              // if it's created inside, react treats it as a different
+              // component every time and rerenders error page
+              const ImportError = () => (
+                <LoadingErrorPage retry={importPage} {...controls} />
+              )
+              function importPage() {
                 // Preventing route from being imported multiple times
-                route._importStarted[key] = true
-                route
+                route._importStarted![key] = true
+                return route
                   .getComponent(data)
                   .catch(() => {
                     route._importStarted![key] = false
 
-                    const retry = () => {}
-                    return {
-                      default: () => (
-                        <LoadingErrorPage retry={retry} {...controls} />
-                      ),
-                    }
+                    return { default: ImportError }
                   })
                   .then((m) => {
+                    console.log('setting route._imported')
                     route._imported![key] = m.default
                     controls.setProgress('_imported' as any)
                   })
-                // TODO: handle
               }
-              return null
+              importPage()
             }}
           />
         ))}

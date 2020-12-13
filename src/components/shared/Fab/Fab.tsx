@@ -1,5 +1,5 @@
+import * as React from 'react'
 import { Link, LinkProps } from 'react-router-dom'
-import * as React from 'react';
 import cn from 'clsx'
 import shape from './Fab.shape.svg'
 import styles from './Fab.module.scss'

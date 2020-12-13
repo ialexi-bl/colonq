@@ -1,7 +1,7 @@
+import { ReactNode } from 'react'
 import { goBack } from 'connected-react-router'
 import { useDispatch } from 'react-redux'
 import Back from 'components/icons/Back'
-import { ReactNode } from 'react';
 import cn from 'clsx'
 
 export type PageTitleProps = Childfree<HTMLProps.heading> & {

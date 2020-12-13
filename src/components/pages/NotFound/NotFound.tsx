@@ -1,9 +1,9 @@
 import { Elevation } from 'config/view'
 import { LinkButton } from 'components/shared/Button'
 import { RouteComponentProps, appsList } from 'config/routes'
+import { useEffect } from 'react'
 import Logo from 'components/icons/Logo'
 import Page from 'components/shared/Page'
-import { useEffect } from 'react';
 import cn from 'clsx'
 import styles from './NotFound.module.scss'
 import useElevation from 'hooks/use-elevation'

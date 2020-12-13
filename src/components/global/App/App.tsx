@@ -1,11 +1,11 @@
 import { AppState } from 'store/types'
+import { useEffect, useReducer, useState } from 'react';
 import { useSelector } from 'react-redux'
 import GlobalLoading from 'components/shared/GlobalLoading'
 import Navigation from 'components/shared/Navigation'
 import NotificationToaster, {
   CookiesNotification,
 } from 'components/shared/NotificationToaster'
-import { useEffect, useReducer, useState } from 'react';
 import Router from '../Router'
 import ShapesManager from '../ShapesManager'
 

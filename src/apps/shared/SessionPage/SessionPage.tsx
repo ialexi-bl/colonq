@@ -1,8 +1,8 @@
 import { Elevation } from 'config/view'
+import { ReactNode, useEffect } from 'react'
 import { RouteComponentProps } from 'config/routes'
 import AppError from '../AppError'
 import Page from 'components/shared/Page'
-import { ReactNode, useEffect } from 'react';
 import useElevation from 'hooks/use-elevation'
 import useIsAuthenticated from 'hooks/use-is-authenticated'
 import useLesson, { PRACTICE } from 'apps/hooks/use-lesson'

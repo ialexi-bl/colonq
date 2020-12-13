@@ -1,10 +1,10 @@
+import { ComponentType } from 'react'
 import { ProblemWithAnswer } from 'apps/shared/SessionPage'
 import {
   TwoLatestDisplay,
   TwoLatestDisplayViewProps,
 } from 'components/apps/TwoLatestDisplay'
 import ProgressBar from 'apps/shared/ProgressBar'
-import { ComponentType } from 'react';
 import SessionControls, {
   SessionExit,
   SessionHide,

@@ -18,12 +18,12 @@ import { getTokenField } from 'util/jwt'
 import { login, profile } from 'config/routes'
 import { push, replace } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
+import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router'
 import EmailPrompt from './EmailPrompt'
 import LangErrors from 'lang/errors.json'
 import LangNotifications from 'lang/notifications.json'
 import NewPasswordPrompt from './NewPasswordPrompt'
-import { useEffect, useRef, useState } from 'react';
 
 type Status =
   | null
@@ -183,7 +183,6 @@ function processSocialLogin(
           notifyError('Чтобы связать аккаунт с социальной сетью, нужно войти'),
         )
         dispatch(replace(profile()))
-        // TODO: show notification about logging in
       } else if (
         action !== SocialVerificationAction.SOCIAL_LINK &&
         authenticated

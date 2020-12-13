@@ -1,8 +1,8 @@
 import { CUTE_FACE } from 'config/view'
+import { Component, ErrorInfo, ReactNode } from 'react'
 import Config from 'config'
 import GeneralApi from 'services/api/general'
 import Page from 'components/shared/Page'
-import { Component, ErrorInfo, ReactNode } from 'react';
 import TitleLine from 'components/shared/TitleLine'
 import styles from './Boundary.module.scss'
 

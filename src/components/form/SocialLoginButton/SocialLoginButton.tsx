@@ -1,7 +1,7 @@
+import * as React from 'react'
 import Config from 'config'
 import Endpoint from 'services/api/config/endpoints'
 import Google from 'components/icons/social/Google'
-import * as React from 'react';
 import Vk from 'components/icons/social/Vk'
 import cn from 'clsx'
 import paths from 'components/shared/Button/button.shape.svg'
