@@ -3,7 +3,7 @@ import { LinkButton } from 'components/shared/Button'
 import { RouteComponentProps, login } from 'config/routes'
 import { ScrollablePage } from 'components/shared/Page'
 import PageTitle from 'components/shared/PageTitle'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import RegistrationForm from './RegistrationForm'
 import SocialLoginButton from 'components/form/SocialLoginButton'
 import User from 'components/icons/User'

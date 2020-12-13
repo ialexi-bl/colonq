@@ -5,7 +5,6 @@ import { Provider } from 'react-redux'
 import { useValue } from 'react-cosmos/fixture'
 import Button from '../Button'
 import NotificationToaster from './Toaster'
-import React from 'react'
 import configureStore from 'redux-mock-store'
 
 const notification = (type: 'info' | 'error') => () => {

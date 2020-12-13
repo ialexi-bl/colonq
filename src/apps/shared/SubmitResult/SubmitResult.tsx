@@ -1,6 +1,5 @@
 import { ApiResponse } from 'services/api/config'
 import AchievementsDisplay from '../AchievementsDisplay'
-import React from 'react'
 import cn from 'clsx'
 
 export type SubmitResultProps = {

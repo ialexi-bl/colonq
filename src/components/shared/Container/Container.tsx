@@ -1,4 +1,3 @@
-import React from 'react'
 import cn from 'clsx'
 
 const Container = ({ className, ...props }: HTMLProps.div) => (

@@ -1,7 +1,7 @@
 import { TwoLatestDisplayViewProps } from 'components/apps/TwoLatestDisplay'
 import { WordsNext } from 'apps/shared/words/WordsSession'
 import LetterButton from 'components/shared/LetterButton'
-import React, { memo } from 'react'
+import { memo } from 'react';
 import TrigAnswer from './TrigAnswer'
 import TrigExpression, { Fraction } from './TrigExpression'
 import cn from 'clsx'

@@ -11,7 +11,7 @@ import Button from 'components/shared/Button'
 import InfoItem from 'components/shared/InfoItem'
 import LangNotifications from 'lang/notifications.json'
 import PageTitle from 'components/shared/PageTitle'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react';
 import SocialLoginButton from 'components/form/SocialLoginButton'
 import User from 'components/icons/User'
 import useIsAuthenticated from 'hooks/use-is-authenticated'

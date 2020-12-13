@@ -4,7 +4,6 @@ import { Location } from 'history'
 import { appsList, profile } from 'config/routes'
 import { useSelector } from 'react-redux'
 import List from 'components/icons/List'
-import React from 'react'
 import User from 'components/icons/User'
 import cn from 'clsx'
 

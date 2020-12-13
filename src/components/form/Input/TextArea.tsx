@@ -1,4 +1,5 @@
-import React, { TextareaHTMLAttributes } from 'react'
+import { TextareaHTMLAttributes } from 'react';
+import * as React from 'react';
 import cn from 'clsx'
 import styles from './Input.module.scss'
 

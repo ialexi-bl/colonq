@@ -1,7 +1,7 @@
 import { TwoLatestDisplayViewProps } from 'components/apps/TwoLatestDisplay'
 import { WordsNext } from 'apps/shared/words/WordsSession'
 import Input from 'components/form/Input'
-import React, { useState } from 'react'
+import { useState } from 'react';
 
 export type ParonymsProblem = {
   id: string

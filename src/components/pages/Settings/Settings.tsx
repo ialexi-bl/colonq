@@ -1,6 +1,5 @@
 import { ScrollablePage } from 'components/shared/Page'
 import Button from 'components/shared/Button'
-import React from 'react'
 import Toggle from 'components/form/Toggle'
 import cn from 'clsx'
 

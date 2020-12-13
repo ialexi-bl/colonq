@@ -1,6 +1,5 @@
 import { useValue } from 'react-cosmos/fixture'
 import Accents from 'components/icons/dynamic/russian/accents'
-import React from 'react'
 import ThemeCard from './ThemeCard'
 
 export default function ThemeCardFixture() {

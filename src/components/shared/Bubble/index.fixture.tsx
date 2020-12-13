@@ -1,7 +1,6 @@
 import { useValue } from 'react-cosmos/fixture'
 import Accents from 'components/icons/dynamic/russian/accents'
 import Bubble from './Bubble'
-import React from 'react'
 
 export default function BubbleFixture() {
   const [progress, setProgress] = useValue<number>('progress', {

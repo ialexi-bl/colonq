@@ -2,7 +2,6 @@
 import { Provider } from 'react-redux'
 import { useValue } from 'react-cosmos/fixture'
 import Button from '../Button'
-import React from 'react'
 import GlobalLoading from './FullscreenLoading'
 import configureStore from 'redux-mock-store'
 

@@ -3,7 +3,6 @@ import './styles/index.scss'
 import 'react-hot-loader'
 import * as serviceWorker from './service-worker'
 import App from 'components/global/App'
-import React from 'react'
 import ReactDOM from 'react-dom'
 import Wrapper from 'components/global/Wrapper'
 

@@ -4,7 +4,7 @@ import {
   TwoLatestDisplayViewProps,
 } from 'components/apps/TwoLatestDisplay'
 import ProgressBar from 'apps/shared/ProgressBar'
-import React, { ComponentType } from 'react'
+import { ComponentType } from 'react';
 import SessionControls, {
   SessionExit,
   SessionHide,

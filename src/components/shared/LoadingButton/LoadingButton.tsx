@@ -1,6 +1,5 @@
 import Button, { ButtonProps } from '../Button'
 import Loading from '../Loading'
-import React from 'react'
 import cn from 'clsx'
 
 export type LoadingButtonProps = ButtonProps & {

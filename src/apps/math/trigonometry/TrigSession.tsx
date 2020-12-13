@@ -1,6 +1,6 @@
 import { TwoLatestDisplay } from 'components/apps/TwoLatestDisplay'
 import ProgressBar from 'apps/shared/ProgressBar'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react';
 import SessionControls, { SessionExit } from 'apps/shared/SessionControls'
 import SubmitResult from 'apps/shared/SubmitResult'
 import TrigAnswer from './TrigAnswer'

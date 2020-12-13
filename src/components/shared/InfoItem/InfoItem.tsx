@@ -1,5 +1,3 @@
-import React from 'react'
-
 export type InfoItemProps = Childfree<HTMLProps.div> & {
   label: string
   value: string | null

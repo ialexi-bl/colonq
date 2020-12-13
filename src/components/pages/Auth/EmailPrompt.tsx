@@ -4,7 +4,6 @@ import ErrorMessage from 'components/form/ErrorMessage'
 import Input from 'components/form/Input'
 import Loading from 'components/shared/Loading'
 import Page from 'components/shared/Page'
-import React from 'react'
 import Regex from 'config/regex'
 import cn from 'clsx'
 

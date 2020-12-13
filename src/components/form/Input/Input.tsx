@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import { memo } from 'react';
 import cn from 'clsx'
 import paths from './inputs.shape.svg'
 import styles from './Input.module.scss'

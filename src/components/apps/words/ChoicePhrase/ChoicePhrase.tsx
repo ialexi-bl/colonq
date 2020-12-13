@@ -2,7 +2,7 @@ import { InlineChoice } from 'components/shared/InlineChoice'
 import { TwoLatestDisplayViewProps } from 'components/apps/TwoLatestDisplay'
 import { WordsNext } from 'apps/shared/words/WordsSession'
 import Config from 'config'
-import React, { useState } from 'react'
+import { useState } from 'react';
 
 export type ChoicePhraseProblem = {
   id: string

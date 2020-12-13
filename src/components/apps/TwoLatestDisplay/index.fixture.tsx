@@ -1,7 +1,6 @@
 import { TwoLatestDisplay } from './TwoLatestDisplay'
 import { useValue } from 'react-cosmos/fixture'
 import ChoicePhrase from '../words/ChoicePhrase'
-import React from 'react'
 
 const problems = [
   { id: '0', problem: 'транс_европейский', options: ['ъ', 'ь'], answer: 'ъ' },

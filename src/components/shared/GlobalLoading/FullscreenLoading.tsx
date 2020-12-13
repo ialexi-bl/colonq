@@ -1,6 +1,5 @@
 import { CSSTransition } from 'react-transition-group'
 import Loading from '../Loading'
-import React from 'react'
 import cn from 'clsx'
 import styles from './FullscreenLoading.module.scss'
 

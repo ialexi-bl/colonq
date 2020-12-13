@@ -1,6 +1,5 @@
 import { VirtualizedGroupProps, VirtualizedItemProps } from './types'
 import ControlledScrollbars from '../ControlledScrollbars'
-import React from 'react'
 import VirtualizedList from './VirtualizedList'
 import cn from 'clsx'
 

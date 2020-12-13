@@ -1,5 +1,5 @@
 import Bubble from '../Bubble'
-import React from 'react'
+import * as React from 'react';
 import cn from 'clsx'
 
 export type ThemeCardProps = HTMLProps.div & {

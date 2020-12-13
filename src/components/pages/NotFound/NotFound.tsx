@@ -3,7 +3,7 @@ import { LinkButton } from 'components/shared/Button'
 import { RouteComponentProps, appsList } from 'config/routes'
 import Logo from 'components/icons/Logo'
 import Page from 'components/shared/Page'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react';
 import cn from 'clsx'
 import styles from './NotFound.module.scss'
 import useElevation from 'hooks/use-elevation'

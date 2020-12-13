@@ -13,7 +13,8 @@ import { closeLoading } from 'store/view'
 import { useDispatch } from 'react-redux'
 import { useUpdateAppData } from 'hooks/app-data'
 import { useWords } from './use-words'
-import React, { ComponentType } from 'react'
+import { ComponentType } from 'react';
+import * as React from 'react';
 import WordsAppletManager from 'services/applets/WordsAppletManager'
 import cn from 'clsx'
 import styles from './WordsApplet.module.scss'

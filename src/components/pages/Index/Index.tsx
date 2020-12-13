@@ -13,7 +13,7 @@ import { useSelector } from 'react-redux'
 import Hr from 'components/shared/Hr'
 import LetterButton from 'components/shared/LetterButton'
 import NotificationIcon from 'components/icons/Notification'
-import React, { ReactNode, useEffect, useRef } from 'react'
+import { ReactNode, useEffect, useRef } from 'react';
 import ScrollIcon from 'components/icons/Scroll'
 import Scrollbars from 'react-custom-scrollbars'
 import Suffixes from 'components/icons/dynamic/russian/suffixes'

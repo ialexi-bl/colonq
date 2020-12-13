@@ -1,5 +1,5 @@
 import Logo from 'components/icons/Logo'
-import React, { memo } from 'react'
+import { memo } from 'react';
 import cn from 'clsx'
 import styles from './Loading.module.scss'
 

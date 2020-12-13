@@ -1,4 +1,3 @@
-import React from 'react'
 import cn from 'clsx'
 import styles from './ErrorMessage.module.scss'
 import useDifferentPrevious from 'hooks/use-different-previous'

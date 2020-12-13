@@ -1,4 +1,3 @@
-import React from 'react'
 import cn from 'clsx'
 import shapes from './Trapezoid.shape.svg'
 import styles from './Trapezoid.module.scss'

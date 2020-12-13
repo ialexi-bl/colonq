@@ -3,7 +3,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import { Notification } from './Notification'
 import { closeNotification } from 'store/view'
 import { useDispatch, useSelector } from 'react-redux'
-import React, { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react';
 
 const selector = (state: AppState) => state.view.notification
 

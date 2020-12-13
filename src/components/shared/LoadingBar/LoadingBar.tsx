@@ -1,5 +1,5 @@
 import { CSSTransition } from 'react-transition-group'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import cn from 'clsx'
 import paths from './loading-bar.shape.svg'
 import styles from './LoadingBar.module.scss'

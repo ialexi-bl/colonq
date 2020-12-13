@@ -1,5 +1,4 @@
 import Page from 'components/shared/Page'
-import React from 'react'
 import TitleLine from 'components/shared/TitleLine'
 
 const Maintenance = () => (

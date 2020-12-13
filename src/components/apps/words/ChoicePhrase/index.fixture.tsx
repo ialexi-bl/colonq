@@ -1,5 +1,4 @@
 import ChoicePhrase from './ChoicePhrase'
-import React from 'react'
 
 export default function ChoicePhraseFixture() {
   return (

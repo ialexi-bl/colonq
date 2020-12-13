@@ -14,7 +14,7 @@ import Continue from 'components/icons/Continue'
 import DynamicIcon from 'components/icons/DynamicIcon'
 import Fab from 'components/shared/Fab/Fab'
 import PageTitle from 'components/shared/PageTitle'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import TextContainer from 'components/shared/TextContainer'
 import ThemeCard from 'components/shared/ThemeCard'
 import useElevation from 'hooks/use-elevation'

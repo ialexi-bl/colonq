@@ -1,7 +1,7 @@
 import { RegistrationFormValues } from './validate'
 import ErrorMessage from 'components/form/ErrorMessage'
 import Input from 'components/form/Input'
-import React, { memo } from 'react'
+import { memo } from 'react';
 
 export type RegistrationInputProps = HTMLProps.input & {
   password?: boolean

@@ -1,4 +1,3 @@
-import React from 'react'
 import facebook from './Facebook.png'
 
 const Facebook = (props: Omit<HTMLProps.img, 'src' | 'alt'>) => (

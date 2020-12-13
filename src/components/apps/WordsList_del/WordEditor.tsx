@@ -5,7 +5,7 @@ import {
   Word,
   WordsEditAction,
 } from 'services/applets/WordsAppletManager/types'
-import React, { CSSProperties, ReactNode, forwardRef, memo } from 'react'
+import { CSSProperties, ReactNode, forwardRef, memo } from 'react';
 import cn from 'clsx'
 import styles from './WordsListEditor.module.scss'
 

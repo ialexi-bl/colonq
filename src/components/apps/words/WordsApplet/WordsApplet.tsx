@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react';
 import WordsAppletContext, { IWordsAppletContext } from './context'
 import WordsSession from './WordsSession'
 import WordsStartScreen from './WordsStartScreen'

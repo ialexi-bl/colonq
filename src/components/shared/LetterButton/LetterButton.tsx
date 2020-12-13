@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react';
 import cn from 'clsx'
 import paths from './letter-button.shape.svg'
 import styles from './LetterButton.module.scss'

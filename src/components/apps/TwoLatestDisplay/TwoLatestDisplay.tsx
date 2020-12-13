@@ -1,5 +1,5 @@
 import { Item, TwoLatestDisplayProps } from '.'
-import React, { useRef } from 'react'
+import { useRef } from 'react';
 import cn from 'clsx'
 import reduceFont from './scale-font'
 import styles from './TwoLatestDisplay.module.scss'

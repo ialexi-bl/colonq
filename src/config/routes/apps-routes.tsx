@@ -1,7 +1,6 @@
 import { RouteComponentProps, RouteOptions } from './types'
 import Config from 'config'
 import NotFound from 'components/pages/NotFound'
-import React from 'react'
 
 const getKey: RouteOptions['getKey'] = ({ match: { params } }) =>
   `${params.category}/${params.name}/${params.lesson || ''}`

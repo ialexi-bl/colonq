@@ -1,6 +1,5 @@
 import { VirtualizedGroupProps } from 'components/shared/VirtualizedList'
 import Checkbox from 'components/form/Checkbox'
-import React from 'react'
 import cn from 'clsx'
 import styles from './VirtualizedWord.module.scss'
 

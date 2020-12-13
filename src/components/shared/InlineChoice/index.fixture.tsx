@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useValue } from 'react-cosmos/fixture'
 import InlineChoice from './InlineChoice'
-import React from 'react'
 
 const options = ['пре', 'при', 'пра', 'про']
 

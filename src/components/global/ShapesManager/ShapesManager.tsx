@@ -1,7 +1,6 @@
 import { AppState } from 'store/types'
 import { ShapeSet } from 'store/shapes'
 import { useSelector } from 'react-redux'
-import React from 'react'
 
 export default function ShapesManager() {
   const shapes = useSelector((state: AppState) => state.shapes)

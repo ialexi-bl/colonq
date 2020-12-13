@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react';
 import SqrtIcon from 'components/icons/Sqrt'
 import TrigAnswer, { Expr } from './TrigAnswer'
 import cn from 'clsx'

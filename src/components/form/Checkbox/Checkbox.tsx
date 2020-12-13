@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react';
 import cn from 'clsx'
 import styles from './Checkbox.module.scss'
 

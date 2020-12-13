@@ -3,7 +3,6 @@ import { push } from 'connected-react-router'
 import { useDispatch } from 'react-redux'
 import Exit from 'components/icons/Exit'
 import Hide from 'components/icons/Hide'
-import React from 'react'
 import cn from 'clsx'
 
 export default function SessionControls({ className, children }: BasicProps) {

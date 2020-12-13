@@ -10,7 +10,7 @@ import Button from 'components/shared/Button'
 import LessonsList from 'apps/shared/LessonsList'
 import LoadingError from 'components/shared/LoadingError'
 import PageTitle from 'components/shared/PageTitle'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react';
 import Settings from 'components/icons/Settings'
 import cn from 'clsx'
 import useWasTrue from 'hooks/use-was-true'

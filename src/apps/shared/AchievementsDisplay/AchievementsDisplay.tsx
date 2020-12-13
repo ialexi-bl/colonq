@@ -5,7 +5,7 @@ import Button from 'components/shared/Button'
 import DynamicIcon, { preloadIcons } from 'components/icons/DynamicIcon'
 import FullscreenLoading from 'components/shared/GlobalLoading/FullscreenLoading'
 import Hr from 'components/shared/Hr'
-import React, { ReactNode, useEffect, useMemo, useState } from 'react'
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 import useTween from 'hooks/use-tween'
 
 export type AchievementsDisplayProps = {

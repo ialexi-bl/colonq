@@ -1,5 +1,4 @@
 import LetterButton from 'components/shared/LetterButton'
-import React from 'react'
 
 export type TrigKey =
   | '0'

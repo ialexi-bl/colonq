@@ -2,7 +2,6 @@ import { RouteComponentProps } from 'config/routes'
 import ChoicePhrase, {
   ChoicePhraseProblem,
 } from 'components/apps/words/ChoicePhrase'
-import React from 'react'
 import SessionPage from 'apps/shared/SessionPage'
 import WordsSessionPage from 'apps/shared/words/WordsSession'
 

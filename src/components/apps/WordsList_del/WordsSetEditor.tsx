@@ -4,7 +4,7 @@ import {
   WordsEditAction,
   WordsGroup,
 } from 'services/applets/WordsAppletManager/types'
-import React, { CSSProperties, forwardRef, memo } from 'react'
+import { CSSProperties, forwardRef, memo } from 'react';
 import styles from './WordsListEditor.module.scss'
 
 export type WordsSetEditorProps = {

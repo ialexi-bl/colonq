@@ -11,7 +11,7 @@ import Button from 'components/shared/Button'
 import Edit from 'components/icons/Edit'
 import LoadingError from 'components/shared/LoadingError'
 import PageTitle from 'components/shared/PageTitle'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react';
 import ThemeActionItem, {
   ActionDescription,
 } from 'components/shared/ThemeActionItem'

@@ -2,7 +2,6 @@
 import { noop } from 'util/noop'
 import { useValue } from 'react-cosmos/fixture'
 import ControlledScrollbars from 'components/shared/ControlledScrollbars'
-import React from 'react'
 import VirtualizedList from 'components/shared/VirtualizedList'
 import VirtualizedWordGroup from './VirtualizedWordGroup'
 import VirtualizedWordItem from './VirtualizedWordItem'

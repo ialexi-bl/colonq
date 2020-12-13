@@ -2,7 +2,7 @@ import { CUTE_FACE } from 'config/view'
 import Config from 'config'
 import GeneralApi from 'services/api/general'
 import Page from 'components/shared/Page'
-import React, { ErrorInfo, ReactNode } from 'react'
+import { Component, ErrorInfo, ReactNode } from 'react';
 import TitleLine from 'components/shared/TitleLine'
 import styles from './Boundary.module.scss'
 
@@ -14,7 +14,7 @@ export type BoundaryProps = {
 declare const Ya: any
 declare const ga: any
 
-class Boundary extends React.Component<BoundaryProps> {
+class Boundary extends Component<BoundaryProps> {
   public state = {
     hasError: false,
   }

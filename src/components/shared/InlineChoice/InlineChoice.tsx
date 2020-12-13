@@ -1,5 +1,4 @@
 import LetterButton from 'components/shared/LetterButton'
-import React from 'react'
 import getOptionsStyles from './get-options-styles'
 import styles from './InlineChoice.module.scss'
 

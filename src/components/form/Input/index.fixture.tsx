@@ -1,6 +1,5 @@
 import { TextArea } from './TextArea'
 import Input from './Input'
-import React from 'react'
 
 export default (
   <div

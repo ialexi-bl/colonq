@@ -7,7 +7,7 @@ import { push } from 'connected-react-router'
 import { useDispatch } from 'react-redux'
 import { useFormik } from 'formik'
 import LoadingButton from 'components/shared/LoadingButton'
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react';
 import RegistrationInput from './RegistrationInput'
 import cn from 'clsx'
 import validate, {

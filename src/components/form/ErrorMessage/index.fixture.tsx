@@ -2,7 +2,7 @@
 import { useValue } from 'react-cosmos/fixture'
 import ErrorMessage from './ErrorMessage'
 import Input from '../Input'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react';
 
 const messages = [
   null,

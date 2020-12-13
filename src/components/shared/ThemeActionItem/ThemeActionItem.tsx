@@ -1,7 +1,6 @@
 import Accordion from '../Accordion'
 import Button from '../Button'
 import DynamicIcon from 'components/icons/DynamicIcon'
-import React from 'react'
 import ThemeCard from '../ThemeCard'
 
 export type ActionDescription = {

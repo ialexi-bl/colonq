@@ -1,5 +1,4 @@
 import { Link, LinkProps } from 'react-router-dom'
-import React from 'react'
 import cn from 'clsx'
 import paths from './button.shape.svg'
 import styles from './Button.module.scss'

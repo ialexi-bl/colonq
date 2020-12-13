@@ -7,14 +7,8 @@ import {
   WordsGroup,
 } from 'services/applets/WordsAppletManager/types'
 import { WordsSetEditor } from './WordsSetEditor'
-import React, {
-  memo,
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react'
+import { memo, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import * as React from 'react';
 import styles from './WordsListEditor.module.scss'
 
 // TODO: split this mess into multiple modules

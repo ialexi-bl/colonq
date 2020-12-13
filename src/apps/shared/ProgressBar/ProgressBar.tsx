@@ -1,4 +1,3 @@
-import React from 'react'
 import cn from 'clsx'
 import paths from './progress-bar.shape.svg'
 import styles from './ProgressBar.module.scss'

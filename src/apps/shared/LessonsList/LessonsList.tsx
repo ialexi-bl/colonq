@@ -4,7 +4,6 @@ import { push } from 'connected-react-router'
 import { useDispatch } from 'react-redux'
 import { withAuth } from 'components/shared/EnsureAuthenticated'
 import DynamicIcon from 'components/icons/DynamicIcon'
-import React from 'react'
 import ThemeCard from 'components/shared/ThemeCard'
 
 export type LessonsListProps = {

@@ -1,7 +1,7 @@
 import { ViewType, VirtualizedListOptions } from './internal-types'
 import { noop } from 'util/noop'
 import { useVirtualizedViews } from './use-virtualized-views'
-import React, { useRef } from 'react'
+import { useRef } from 'react';
 import styles from './VirtualizedList.module.scss'
 
 /**

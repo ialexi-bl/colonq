@@ -3,7 +3,7 @@
 import { GetSettingsLabel } from '../WordsList_del/WordEditor'
 import { WordsList } from 'components/apps/WordsList_del'
 import { useEditAppData } from 'hooks/app-data'
-import React, { useState } from 'react'
+import { useState } from 'react';
 import WordsAppletManager from 'services/applets/WordsAppletManager'
 
 export function getWordSettings(

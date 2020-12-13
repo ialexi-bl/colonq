@@ -1,5 +1,6 @@
 import Config from 'config'
-import React, { Suspense, lazy } from 'react'
+import { Suspense, lazy } from 'react';
+import * as React from 'react';
 
 const cache: Record<string, React.ComponentType<HTMLProps.svg>> = {}
 export type DynamicIconProps = HTMLProps.svg & {

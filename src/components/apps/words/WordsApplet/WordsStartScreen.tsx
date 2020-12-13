@@ -2,7 +2,7 @@ import { CSSTransition } from 'react-transition-group'
 import Button from 'components/shared/Button'
 import ControlledScrollbars from 'components/shared/ControlledScrollbars'
 import PageTitle from 'components/shared/PageTitle'
-import React, { useContext } from 'react'
+import { useContext } from 'react';
 import WordsAppletContext from './context'
 import cn from 'clsx'
 import styles from './WordsApplet.module.scss'

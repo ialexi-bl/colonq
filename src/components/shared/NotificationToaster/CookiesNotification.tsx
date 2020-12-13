@@ -1,6 +1,6 @@
 import { CSSTransition } from 'react-transition-group'
 import { Notification } from './Notification'
-import React, { useState } from 'react'
+import { useState } from 'react';
 
 export function CookiesNotification() {
   const [shown, setShown] = useState(() => {

@@ -1,6 +1,5 @@
 import { NotificationType } from 'store/view'
 import Close from 'components/icons/Close'
-import React from 'react'
 import cn from 'clsx'
 import styles from './Notification.module.scss'
 

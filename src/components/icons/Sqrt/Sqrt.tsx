@@ -1,5 +1,3 @@
-import React from 'react'
-
 export type SqrtIconProps = HTMLProps.svg
 export default function SqrtIcon({ children, ...props }: SqrtIconProps) {
   return (

@@ -1,5 +1,4 @@
 import Button from 'components/shared/Button'
-import React from 'react'
 
 const onClick = () => alert("I'm working")
 

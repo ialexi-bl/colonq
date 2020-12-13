@@ -7,13 +7,8 @@ import {
 } from 'services/applets/WordsAppletManager/types'
 import { WordEditor } from './WordEditor'
 import Fuse from 'fuse.js'
-import React, {
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import * as React from 'react';
 import flatMap from 'lodash/flatMap'
 
 export type SearchWord = {

@@ -2,7 +2,6 @@ import {
   VirtualizedGroupProps,
   VirtualizedItemProps,
 } from 'components/shared/VirtualizedList'
-import React from 'react'
 import VirtualizedWordGroup from './VirtualizedWordGroup'
 import VirtualizedWordItem from './VirtualizedWordItem'
 

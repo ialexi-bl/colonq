@@ -8,7 +8,6 @@ import Button, { LinkButton } from 'components/shared/Button'
 import Config from 'config'
 import LoadingButton from 'components/shared/LoadingButton'
 import LoadingError from 'components/shared/LoadingError/LoadingError'
-import React from 'react'
 
 export type AppErrorName = 'no-problems' | 'locked' | 'unknown'
 export type AppErrorProps = {

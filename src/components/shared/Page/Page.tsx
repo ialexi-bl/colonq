@@ -1,6 +1,6 @@
 import { ScrollbarProps, Scrollbars } from 'react-custom-scrollbars'
 import { renderScrollThumb, renderScrollTrack } from '../render-scroll'
-import React, { forwardRef } from 'react'
+import { forwardRef } from 'react';
 import cn from 'clsx'
 import styles from './Page.module.scss'
 

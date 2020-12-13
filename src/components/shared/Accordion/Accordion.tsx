@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react';
+import * as React from 'react';
 
 export type AccordionProps = Childfree<HTMLProps.div> & {
   summary: React.ReactNode

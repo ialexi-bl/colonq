@@ -1,7 +1,7 @@
 import { TwoLatestDisplayViewProps } from 'components/apps/TwoLatestDisplay'
 import { WordsNext } from 'apps/shared/words/WordsSession'
 import LetterButton from 'components/shared/LetterButton'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import styles from './Accents.module.scss'
 
 export const vowels = {

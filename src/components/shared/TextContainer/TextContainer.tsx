@@ -1,4 +1,3 @@
-import React from 'react'
 import Trapezoid from '../Trapezoid/Trapezoid'
 import cn from 'clsx'
 import styles from './TextContainer.module.scss'

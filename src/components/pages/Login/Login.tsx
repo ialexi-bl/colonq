@@ -15,7 +15,7 @@ import Input from 'components/form/Input'
 import LoadingButton from 'components/shared/LoadingButton'
 import Page from 'components/shared/Page'
 import PageTitle from 'components/shared/PageTitle'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import SocialLoginButton from 'components/form/SocialLoginButton'
 import User from 'components/icons/User'
 import useDevUpdateTracker from 'hooks/use-dev-update-tracker'
@@ -154,7 +154,7 @@ export default function Login({ setProgress }: RouteComponentProps) {
         </div>
       </div>
     </Page>
-  )
+  );
 }
 
 const getInputState = (formik: any, field: keyof FormValues) =>

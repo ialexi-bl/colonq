@@ -23,7 +23,7 @@ import EmailPrompt from './EmailPrompt'
 import LangErrors from 'lang/errors.json'
 import LangNotifications from 'lang/notifications.json'
 import NewPasswordPrompt from './NewPasswordPrompt'
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react';
 
 type Status =
   | null

@@ -1,6 +1,5 @@
 import { AccentWord, AccentsProblem } from './AccentWord'
 import { RouteComponentProps } from 'config/routes'
-import React from 'react'
 import SessionPage from 'apps/shared/SessionPage'
 import WordsSessionPage from 'apps/shared/words/WordsSession'
 

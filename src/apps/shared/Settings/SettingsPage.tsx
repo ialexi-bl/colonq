@@ -6,7 +6,7 @@ import { useElevationClassnames } from 'hooks/use-elevation'
 import AppError from '../AppError'
 import List from 'components/icons/List'
 import PageTitle from 'components/shared/PageTitle'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react';
 import Settings from './Settings'
 import cn from 'clsx'
 import useSettings from './use-settings'
