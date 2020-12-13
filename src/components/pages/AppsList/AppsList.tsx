@@ -15,6 +15,7 @@ import React, { useEffect } from 'react'
 import ThemeActionItem, {
   ActionDescription,
 } from 'components/shared/ThemeActionItem'
+import cn from 'clsx'
 import useIsAuthenticated from 'hooks/use-is-authenticated'
 import useItemsToggler from 'hooks/use-items-toggler'
 import useWasTrue from 'hooks/use-was-true'
@@ -96,7 +97,10 @@ export default function AppsList({
 // =======================
 
 const Wrapper = ({ className, children }: BasicProps) => (
-  <ScrollablePage routeElevation={Elevation.appsList} className={className}>
+  <ScrollablePage
+    routeElevation={Elevation.appsList}
+    className={cn('bg-page', className)}
+  >
     <PageTitle disableBackButton>Темы</PageTitle>
     {children}
   </ScrollablePage>

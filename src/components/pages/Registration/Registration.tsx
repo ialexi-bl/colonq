@@ -17,7 +17,7 @@ export default function Registration({ setProgress }: RouteComponentProps) {
   return (
     <ScrollablePage
       routeElevation={Elevation.registration}
-      className={'bg-route route-right'}
+      className={'bg-page route-right'}
     >
       <PageTitle icon={<User />}>Регистрация</PageTitle>
 

@@ -6,10 +6,11 @@ import {
 } from 'config/view'
 import { Route, Switch, useLocation } from 'react-router-dom'
 import { RouteComponentProps, routesArray } from 'config/routes'
-import Boundary from './pages/Boundary'
+import Boundary from '../../pages/Boundary'
 import Config from 'config'
-import LoadingBar from './shared/LoadingBar'
-import NotFound from './pages/NotFound'
+import LoadingBar from '../../shared/LoadingBar'
+import LoadingErrorPage from './LoadingErrorPage'
+import NotFound from 'components/pages/NotFound'
 import React, { useCallback, useEffect, useRef } from 'react'
 import cn from 'clsx'
 import useForceUpdate from 'hooks/use-force-update'
@@ -138,12 +139,21 @@ const Routes = function Routes({
                 route._importStarted[key] = true
                 route
                   .getComponent(data)
+                  .catch(() => {
+                    route._importStarted![key] = false
+
+                    const retry = () => {}
+                    return {
+                      default: () => (
+                        <LoadingErrorPage retry={retry} {...controls} />
+                      ),
+                    }
+                  })
                   .then((m) => {
                     route._imported![key] = m.default
                     controls.setProgress('_imported' as any)
                   })
-                  // TODO: handle
-                  .catch(console.error)
+                // TODO: handle
               }
               return null
             }}

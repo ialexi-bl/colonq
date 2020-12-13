@@ -2,9 +2,8 @@ import { ConnectedRouter } from 'connected-react-router'
 import { Provider as ReduxProvider } from 'react-redux'
 import { history, store } from 'store'
 import { hot } from 'react-hot-loader/root'
-import Boundary from './pages/Boundary'
+import Boundary from 'components/pages/Boundary'
 import React, { ReactNode } from 'react'
-
 
 const Wrapper = hot(function Wrapper({ children }: { children?: ReactNode }) {
   return (

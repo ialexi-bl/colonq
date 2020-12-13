@@ -15,7 +15,6 @@ export type LessonsListProps = {
 function LessonsList({ lessons, app: appName }: LessonsListProps) {
   const dispatch = useDispatch()
 
-  // TODO: add labels if there are no problems
   return (
     <div className={'px-4 mt-4 pb-64'}>
       {lessons.map((lesson, i) => {

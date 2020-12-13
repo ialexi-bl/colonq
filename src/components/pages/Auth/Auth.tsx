@@ -6,7 +6,7 @@ import {
 import { AppState, MixedDispatch, ThunkAction } from 'store/types'
 import { HttpError } from 'services/errors'
 import { UserApi } from 'services/api'
-import { appsList, login, profile } from 'config/routes'
+import { capitalize } from 'util/capitalize'
 import {
   closeLoading,
   notifyError,
@@ -15,6 +15,7 @@ import {
 } from 'store/view'
 import { executeAuthorizedMethod } from 'store/user'
 import { getTokenField } from 'util/jwt'
+import { login, profile } from 'config/routes'
 import { push, replace } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router'
@@ -33,8 +34,6 @@ type Status =
       loading?: boolean
       emailSent?: boolean
     }
-
-// TODO: when finishes loading shows empty screen
 
 // TODO: when entering account sometimes there is a message
 // TODO: "unable to enter twice" this should be fixed
@@ -115,7 +114,7 @@ function processAction(
 
           dispatch(notifyInfo(LangNotifications.emailVerified))
           if (authenticated) {
-            dispatch(replace(appsList()))
+            dispatch(replace(profile()))
           } else {
             dispatch(replace(login(), { email: getTokenField(token, 'email') }))
           }
@@ -131,20 +130,20 @@ function processAction(
           await dispatch(
             executeAuthorizedMethod(UserApi.submitChangeEmail(token)),
           )
-          dispatch(replace(appsList()))
+          dispatch(replace(profile()))
           return null
         }
         case VerificationAction.RESTORE_PASSWORD: {
           return { action: 'prompt-password' }
         }
         default: {
-          dispatch(replace(authenticated ? appsList() : login()))
+          dispatch(replace(authenticated ? profile() : login()))
           return null
         }
       }
     } catch (e) {
       dispatch(notifyErrorObject(e))
-      dispatch(replace(authenticated ? appsList() : login()))
+      dispatch(replace(authenticated ? profile() : login()))
     }
     return null
   }
@@ -166,7 +165,7 @@ function processSocialLogin(
           search.entries(),
         )}"`,
       )
-      dispatch(replace(authenticated ? appsList() : login()))
+      dispatch(replace(authenticated ? profile() : login()))
       return null
     }
 
@@ -183,7 +182,7 @@ function processSocialLogin(
         dispatch(
           notifyError('Чтобы связать аккаунт с социальной сетью, нужно войти'),
         )
-        dispatch(replace(appsList()))
+        dispatch(replace(profile()))
         // TODO: show notification about logging in
       } else if (
         action !== SocialVerificationAction.SOCIAL_LINK &&
@@ -191,7 +190,7 @@ function processSocialLogin(
       ) {
         // TODO: maybe move to language pack
         dispatch(notifyError('Нельзя войти дважды'))
-        dispatch(replace(appsList()))
+        dispatch(replace(profile()))
       } else {
         if (action === SocialVerificationAction.SOCIAL_LINK) {
           const method = ({
@@ -201,6 +200,13 @@ function processSocialLogin(
 
           await dispatch(
             executeAuthorizedMethod(UserApi[method](code, redirectUri)),
+          )
+          dispatch(
+            notifyInfo(
+              `Аккаунт связан, теперьты можешь заходить используя ${capitalize(
+                provider,
+              )}`,
+            ),
           )
         } else {
           const method = ({
@@ -216,8 +222,9 @@ function processSocialLogin(
 
           // If this method doesn't throw error, user will be authenticated
           await dispatch(UserApi[method](code, redirectUri))
+          dispatch(notifyInfo('Регистрация закончилась, осталось только войти'))
         }
-        dispatch(replace(appsList()))
+        dispatch(replace(profile()))
 
         return null
       }
@@ -233,7 +240,7 @@ function processSocialLogin(
       }
 
       dispatch(notifyErrorObject(e))
-      dispatch(replace(authenticated ? appsList() : login()))
+      dispatch(replace(authenticated ? profile() : login()))
     }
 
     return null
@@ -252,8 +259,8 @@ function submitNewPassword(
       dispatch(notifyInfo('Пароль изменён'))
       dispatch(push(profile()))
     } catch (e) {
-      // TODO: maybe change route?
       dispatch(notifyErrorObject(e))
+      dispatch(push(profile()))
     }
   }
 }
@@ -267,7 +274,7 @@ function submitMissingEmail(
     // logic to handle missing email not only for vk but for every one
     try {
       await dispatch(UserApi.registerVkEmail(token, email))
-      dispatch(push(appsList()))
+      dispatch(push(profile()))
 
       return true
     } catch (e) {

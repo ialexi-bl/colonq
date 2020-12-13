@@ -80,7 +80,7 @@ export default function Login({ setProgress }: RouteComponentProps) {
 
   const autofocusPassword = formik.values.login !== ''
   return (
-    <Page routeElevation={Elevation.login} className={'bg-route route-left'}>
+    <Page routeElevation={Elevation.login} className={'bg-page route-left'}>
       <PageTitle icon={<User />}>Вход</PageTitle>
 
       <div className={'max-w-xl mx-auto px-4 overflow-hidden'}>

@@ -1,13 +1,13 @@
 import { AppState } from 'store/types'
 import { useSelector } from 'react-redux'
-import GlobalLoading from './shared/GlobalLoading'
-import Navigation from './shared/Navigation'
+import GlobalLoading from 'components/shared/GlobalLoading'
+import Navigation from 'components/shared/Navigation'
 import NotificationToaster, {
   CookiesNotification,
-} from './shared/NotificationToaster'
+} from 'components/shared/NotificationToaster'
 import React, { useEffect, useReducer, useState } from 'react'
-import Router from './Router'
-import ShapesManager from './ShapesManager'
+import Router from '../Router'
+import ShapesManager from '../ShapesManager'
 
 const getMaintenanceComponent = () =>
   import('components/pages/Maintenance').then((x) => x.Maintenance)
