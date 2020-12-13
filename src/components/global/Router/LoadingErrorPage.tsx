@@ -10,5 +10,5 @@ export default function LoadingErrorPage({
   setProgress,
 }: LoadingErrorPageProps) {
   useEffect(() => setProgress(100), [setProgress])
-  return <LoadingError />
+  return <LoadingError title={'abc'} />
 }

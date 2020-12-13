@@ -16,7 +16,7 @@
     "sourceMap": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react",
+    "jsx": "react-jsxdev",
     "baseUrl": "./src"
   },
   "include": ["src"]

@@ -1,7 +1,7 @@
 import 'styles/index.scss'
 import React from 'react'
 import ShapesManager from 'components/global/ShapesManager/ShapesManager'
-import Wrapper from 'components/Wrapper'
+import Wrapper from 'components/global/Wrapper'
 
 const styled = { div: (a: any) => a[0] }
 const styles = styled.div`
