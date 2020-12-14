@@ -1,4 +1,4 @@
-import { TwoLatestDisplayViewProps } from 'components/apps/TwoLatestDisplay'
+import { TwoLatestDisplayViewProps } from 'components/shared/TwoLatestDisplay'
 import { WordsNext } from 'apps/shared/words/WordsSession'
 import { useEffect, useState } from 'react'
 import LetterButton from 'components/shared/LetterButton'

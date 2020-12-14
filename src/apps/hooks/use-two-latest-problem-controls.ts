@@ -1,4 +1,4 @@
-import { TwoLatestDisplayItem } from 'components/apps/TwoLatestDisplay'
+import { TwoLatestDisplayItem } from 'components/shared/TwoLatestDisplay'
 import { useState } from 'react'
 
 export type Verify<TProblem, TAnswer> = (

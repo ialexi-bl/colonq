@@ -1,7 +1,7 @@
 import { RouteComponentProps } from 'config/routes'
 import ChoicePhrase, {
   ChoicePhraseProblem,
-} from 'components/apps/words/ChoicePhrase'
+} from 'apps/shared/words/ChoicePhrase'
 import SessionPage from 'apps/shared/SessionPage'
 import WordsSessionPage from 'apps/shared/words/WordsSession'
 

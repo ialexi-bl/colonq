@@ -1,4 +1,4 @@
-import { TwoLatestDisplay } from 'components/apps/TwoLatestDisplay'
+import { TwoLatestDisplay } from 'components/shared/TwoLatestDisplay'
 import { useEffect } from 'react'
 import ProgressBar from 'apps/shared/ProgressBar'
 import SessionControls, { SessionExit } from 'apps/shared/SessionControls'

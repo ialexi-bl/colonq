@@ -1,9 +1,10 @@
 import { ViewType, VirtualizedListOptions } from './internal-types'
 import { noop } from 'util/noop'
+import { useRef } from 'react'
 import { useVirtualizedViews } from './use-virtualized-views'
-import { useRef } from 'react';
 import styles from './VirtualizedList.module.scss'
 
+// TODO: probably delete this
 /**
  * Virtualized list that supports nested elements.
  * All styles must be provided by user of the virtualized list
@@ -11,6 +12,7 @@ import styles from './VirtualizedList.module.scss'
  * when a group is expanded, as well as styles when item disappears and
  * transition for `transform` property that moves items
  * @param props
+ * @deprecated
  */
 export default function VirtualizedList<TData, TAction>(
   options: VirtualizedListOptions<TData, TAction>,

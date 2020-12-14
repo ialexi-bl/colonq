@@ -1,10 +1,11 @@
 import { useFormik } from 'formik'
-import Button from 'components/shared/Button'
 import ErrorMessage from 'components/form/ErrorMessage'
 import Input from 'components/form/Input'
-import Loading from 'components/shared/Loading'
+import LoadingButton from 'components/shared/LoadingButton'
 import Page from 'components/shared/Page'
+import PageTitle from 'components/shared/PageTitle'
 import Regex from 'config/regex'
+import User from 'components/icons/User'
 import cn from 'clsx'
 
 type FormValues = { email: string }
@@ -26,14 +27,20 @@ export default function EmailPrompt({
 
   return (
     <Page className={'px-4'}>
+      <PageTitle icon={<User />}>Ввод почты</PageTitle>
       {/* TODO: add icon and title */}
       <div className={'max-w-xl mx-auto relative'}>
         <form
+          onSubmit={formik.handleSubmit}
           className={cn(
             'duration-500 transform',
             emailSent && 'translate-x-full opacity-0',
           )}
         >
+          <p>
+            Социальная сеть не предоставила твой адрес электронной почты,
+            поэтому его нужно ввести вручную
+          </p>
           {/* TODO: maybe make one component with form and 
       notification and use here and in registration */}
           <label className={'block mb-4'}>
@@ -54,14 +61,14 @@ export default function EmailPrompt({
             />
           </label>
           <div className={'text-center'}>
-            <Button
-              className={'text-center min-w-64'}
-              disabled={loading}
+            <LoadingButton
+              disabled={loading || !!formik.errors.email}
+              loading={loading}
               variant={3}
+              type={'submit'}
             >
-              {/* TODO: check what if this loading looks fine */}
-              {loading ? <Loading /> : 'Продолжить'}
-            </Button>
+              Продолжить
+            </LoadingButton>
           </div>
         </form>
         <div

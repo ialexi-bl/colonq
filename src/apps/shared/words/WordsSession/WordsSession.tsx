@@ -3,7 +3,7 @@ import { ProblemWithAnswer } from 'apps/shared/SessionPage'
 import {
   TwoLatestDisplay,
   TwoLatestDisplayViewProps,
-} from 'components/apps/TwoLatestDisplay'
+} from 'components/shared/TwoLatestDisplay'
 import ProgressBar from 'apps/shared/ProgressBar'
 import SessionControls, {
   SessionExit,
