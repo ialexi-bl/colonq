@@ -114,6 +114,11 @@ function* requestAuthMethod({
     payload.call(user.token, user.id)
   } else {
     yield put(queueAuthMethod(payload))
+    // If initial token fetch fails and there are some
+    // methods queued while it's going on, this causes
+    // duplicate request. It's not that it breaks something
+    // but it's not nice so
+    // TODO: fix duplicate request
     yield put(authenticate())
   }
 }

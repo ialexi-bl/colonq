@@ -6,9 +6,6 @@ type FormValues = {
   newPasswordRepeat: string
   currentPassword: string
 }
-// export type PasswordFormProps = {
-
-// }
 export default function PasswordForm() {
   const formik = useFormik<FormValues>({
     initialValues: {

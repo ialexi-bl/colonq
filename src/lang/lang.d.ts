@@ -19,7 +19,6 @@ declare module 'lang/errors.json' {
 
 declare module 'lang/notifications.json' {
   const LangNotifications: {
-    emailVerified: string
     noEmail: string
     logout: string
     signin: string

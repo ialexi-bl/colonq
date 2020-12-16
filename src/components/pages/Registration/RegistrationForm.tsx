@@ -9,6 +9,7 @@ import { useFormik } from 'formik'
 import { useRef, useState } from 'react'
 import CompoundInput from 'components/shared/CompoundInput'
 import LoadingButton from 'components/shared/LoadingButton'
+import Slider from 'components/shared/Slider/Slider'
 import cn from 'clsx'
 import validate, {
   RegistrationFormValues,
@@ -77,85 +78,83 @@ export default function RegistrationForm({
 
   const loading = status === 'loading'
   return (
-    <div className={'relative w-full overflow-hidden'}>
-      {/* Registration form */}
-      <form
-        className={cn(
-          'duration-500 transform',
-          status === 'verify-email' && '-translate-x-full opacity-0',
-        )}
-        onSubmit={formik.handleSubmit}
-      >
-        <CompoundInput
-          name={'username'}
-          title={'Имя пользователя'}
-          meta={formik.getFieldMeta('username')}
-          props={formik.getFieldProps('username')}
-          loading={loading}
-          variant={2}
-        />
-        <CompoundInput
-          name={'email'}
-          title={'Email'}
-          meta={formik.getFieldMeta('email')}
-          props={formik.getFieldProps('email')}
-          loading={loading}
-          variant={1}
-          onFocus={() => {
-            temp.current.blur = false
-          }}
-          onBlur={(e) => {
-            temp.current.blur = true
-            formik.handleBlur(e)
-          }}
-        />
-        <CompoundInput
-          name={'password'}
-          title={'Пароль'}
-          loading={loading}
-          meta={formik.getFieldMeta('password')}
-          props={formik.getFieldProps('password')}
-          variant={3}
-          password
-        />
-        <CompoundInput
-          name={'passwordRepeat'}
-          title={'Повтори пароль'}
-          meta={formik.getFieldMeta('passwordRepeat')}
-          props={formik.getFieldProps('passwordRepeat')}
-          loading={loading}
-          variant={2}
-          password
-        />
-
-        <LoadingButton
-          disabled={status !== null || Object.keys(formik.errors).length > 0}
-          loading={status === 'loading'}
-          variant={3}
-          type={'submit'}
+    <Slider
+      active={status === 'verify-email'}
+      className={'w-full'}
+      defaultView={
+        <form
+          className={cn(
+            'duration-500 transform',
+            status === 'verify-email' && '-translate-x-full opacity-0',
+          )}
+          onSubmit={formik.handleSubmit}
         >
-          Зарегестрироваться
-        </LoadingButton>
-      </form>
+          <CompoundInput
+            name={'username'}
+            title={'Имя пользователя'}
+            meta={formik.getFieldMeta('username')}
+            props={formik.getFieldProps('username')}
+            loading={loading}
+            variant={2}
+          />
+          <CompoundInput
+            name={'email'}
+            type={'email'}
+            title={'Email'}
+            meta={formik.getFieldMeta('email')}
+            props={formik.getFieldProps('email')}
+            loading={loading}
+            variant={1}
+            onFocus={() => {
+              temp.current.blur = false
+            }}
+            onBlur={(e) => {
+              temp.current.blur = true
+              formik.handleBlur(e)
+            }}
+          />
+          <CompoundInput
+            name={'password'}
+            title={'Пароль'}
+            loading={loading}
+            meta={formik.getFieldMeta('password')}
+            props={formik.getFieldProps('password')}
+            variant={3}
+            password
+          />
+          <CompoundInput
+            name={'passwordRepeat'}
+            title={'Повтори пароль'}
+            meta={formik.getFieldMeta('passwordRepeat')}
+            props={formik.getFieldProps('passwordRepeat')}
+            loading={loading}
+            variant={2}
+            password
+          />
 
-      {/* Prompt to verify email */}
-      <div
-        className={cn(
-          'absolute inset-0 flex flex-col justify-center',
-          'duration-500 transform',
-          status !== 'verify-email' && 'translate-x-full opacity-0',
-        )}
-      >
-        <h2 className={'text-4xl mb-4'}>Подтвеждение почты</h2>
-        <p className={'leading-6 mb-8'}>
-          На адрес <strong>{formik.values.email}</strong> должно прийти письмо с
-          ссылкой для подтверждения почты. Перейди по ней, чтобы завершить
-          регистрацию.
-        </p>
-        <LinkButton className={'max-w-xs min-w-48 mx-auto'} to={index()}>
-          На главную
-        </LinkButton>
-      </div>
-    </div>
+          <LoadingButton
+            disabled={status !== null || Object.keys(formik.errors).length > 0}
+            loading={status === 'loading'}
+            variant={3}
+            type={'submit'}
+          >
+            Зарегестрироваться
+          </LoadingButton>
+        </form>
+      }
+      extraView={
+        <div className={'flex flex-col justify-center'}>
+          <h2 className={'text-4xl mb-4'}>Подтвеждение почты</h2>
+          <p className={'leading-6 mb-8'}>
+            На адрес <strong>{formik.values.email}</strong> должно прийти письмо
+            с ссылкой для подтверждения почты. Перейди по ней, чтобы завершить
+            регистрацию.
+          </p>
+          <LinkButton className={'max-w-xs min-w-48 mx-auto'} to={index()}>
+            На главную
+          </LinkButton>
+        </div>
+      }
+    />
   )
 }

@@ -1,4 +1,4 @@
-import { SocialVerificationAction } from 'services/api/config'
+import { SocialAction } from 'services/api/config'
 import { createUrl } from 'util/create-url'
 import { joinUrl } from 'util/join-url'
 import Config from 'config'
@@ -79,7 +79,7 @@ namespace Endpoint {
     token: 'auth/token',
     logout: 'auth/logout',
     verifyEmail: 'auth/verify-email',
-    restorePassword: 'auth/restore-password',
+    resetPassword: 'auth/reset-password',
 
     register: 'auth/register',
     registerGoogle: 'auth/google/register',
@@ -99,6 +99,8 @@ namespace Endpoint {
    * Redirect addresses for social login
    */
   export const oauth = {
+    editPasswordGoogle: socialUrl('google', 'editPassword'),
+    editPasswordVk: socialUrl('vk', 'editPassword'),
     registerGoogle: socialUrl('google', 'register'),
     registerVk: socialUrl('vk', 'register'),
     loginGoogle: socialUrl('google', 'login'),
@@ -109,7 +111,7 @@ namespace Endpoint {
 
   function socialUrl(
     provider: 'vk' | 'google',
-    type: 'login' | 'register' | 'link',
+    type: 'login' | 'register' | 'link' | 'editPassword',
   ) {
     // TODO: change to normal url for production
     const uri =
@@ -133,9 +135,10 @@ namespace Endpoint {
           provider,
           redirectUri: uri,
           action: {
-            link: SocialVerificationAction.SOCIAL_LINK,
-            login: SocialVerificationAction.SOCIAL_LOGIN,
-            register: SocialVerificationAction.SOCIAL_REGISTER,
+            link: SocialAction.SOCIAL_LINK,
+            login: SocialAction.SOCIAL_LOGIN,
+            register: SocialAction.SOCIAL_REGISTER,
+            editPassword: SocialAction.SOCIAL_EDIT_PASSWORD,
           }[type],
         }),
       },

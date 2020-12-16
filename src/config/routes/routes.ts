@@ -1,4 +1,5 @@
 import { RouteOptions, Routes } from './types'
+import Config from 'config'
 import appsRoutes from './apps-routes'
 
 export const routesArray: RouteOptions[] = [
@@ -52,14 +53,23 @@ export const routesArray: RouteOptions[] = [
     name: 'register',
     getComponent: () => import('components/pages/Registration'),
   },
+  {
+    path: '/password/reset',
+    name: 'resetPassword',
+    getComponent: () => import('components/pages/ResetPassword'),
+  },
   ...appsRoutes,
 ]
 
 export const routes: Routes = {}
 for (const route of routesArray) {
+  if (Config.IS_DEV && (route.name in routes || route.path in routes)) {
+    console.warn(`Duplicate name or path "${route.name}: ${route.path}"`)
+  }
   routes[route.name] = routes[route.path] = route
 }
 
+export const resetPassword = () => routes.resetPassword.path
 export const editPassword = () => routes.editPassword.path
 export const verifyEmail = () => routes.verifyEmail.path
 export const appsChoice = () => routes.appsChoice.path

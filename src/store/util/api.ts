@@ -14,7 +14,6 @@ export function* executeAuthorizedMethod(method: AuthorizedMethod<any>) {
 
   if (!user.token || user.tokenExpires - Date.now() < 500) {
     yield put(authenticate())
-    console.log('awaiting auth')
     const { type } = yield take([
       UserAction.AUTHENTICATE_SUCCESS,
       UserAction.AUTHENTICATE_ERROR,

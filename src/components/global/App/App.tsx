@@ -1,5 +1,5 @@
 import { AppState } from 'store/types'
-import { useEffect, useReducer, useState } from 'react';
+import { useEffect, useReducer, useState } from 'react'
 import { useSelector } from 'react-redux'
 import GlobalLoading from 'components/shared/GlobalLoading'
 import Navigation from 'components/shared/Navigation'

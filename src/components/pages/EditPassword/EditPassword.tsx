@@ -10,16 +10,16 @@ import Button from 'components/shared/Button'
 import LoadingError from 'components/shared/LoadingError'
 import Page from 'components/shared/Page'
 import PageTitle from 'components/shared/PageTitle'
+import PasswordForm from './PasswordForm'
+import SocialLoginButton from 'components/form/SocialLoginButton'
 import User from 'components/icons/User'
 import useElevation from 'hooks/use-elevation'
 import useIsAuthenticated from 'hooks/use-is-authenticated'
-import useWasTrue from 'hooks/use-was-true'
 
 type UpdateOptions = ApiResponse.User.PasswordUpdateOption[] | false | null
 export default function EditPassword({ setProgress }: RouteComponentProps) {
   const dispatch = useDispatch<MixedDispatch>()
   const [updateOptions, setUpdateOptions] = useState<UpdateOptions>(null)
-  const hadError = useWasTrue(updateOptions === false)
 
   const load = () => {
     setUpdateOptions(null)
@@ -39,7 +39,7 @@ export default function EditPassword({ setProgress }: RouteComponentProps) {
   useElevation(Elevation.editUserData)
   if (!useIsAuthenticated()) return null
 
-  if (updateOptions === false || (!updateOptions && hadError)) {
+  if (!updateOptions) {
     return (
       <Wrapper>
         <LoadingError
@@ -59,7 +59,46 @@ export default function EditPassword({ setProgress }: RouteComponentProps) {
     )
   }
 
-  return <Wrapper></Wrapper>
+  const hasPassword = updateOptions.includes('password')
+  const hasSocial = !hasPassword || updateOptions.length > 1
+  return (
+    <Wrapper>
+      {hasPassword && (
+        <>
+          <p>Ты можешь изменить пароль традиционным методом</p>
+          <PasswordForm />
+        </>
+      )}
+      {hasSocial && <div className={'my-16 text-center text-xl'}>ИЛИ</div>}
+      {!hasPassword && (
+        <p>
+          Твой профиль был зарегистирирован с помощью социальной сети, поэтому у
+          него нет пароля. Если ты хочешь установить его, войди с её помощью ещё
+          раз, после чего появится поле для его установки:
+        </p>
+      )}
+      {hasPassword && (
+        <p>
+          Можно войти с помощью социальной сети, после чего ты увидишь поле для
+          изменения пароля
+        </p>
+      )}
+      {hasSocial && (
+        <>
+          <SocialLoginButton
+            type={'editPassword'}
+            provider={'google'}
+            className={'mb-2 max-w-sm w-full'}
+          />
+          <SocialLoginButton
+            type={'editPassword'}
+            provider={'vk'}
+            className={'mb-2 max-w-sm w-full'}
+          />
+        </>
+      )}
+    </Wrapper>
+  )
 }
 
 const Wrapper = ({ children }: BasicProps) => (

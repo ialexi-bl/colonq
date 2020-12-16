@@ -14,7 +14,7 @@
     "no-undef": "off",
     "no-unused-expressions": "off",
     "no-debugger": "warn",
-    "no-unused-vars": "warn",
+    "no-unused-vars": "off",
     "no-useless-constructor": "off",
     "no-dupe-class-members": "off",
     "spaced-comment": "warn",
@@ -29,6 +29,7 @@
     "react/jsx-key": ["warn", { "checkFragmentShorthand": true }],
     "react/jsx-curly-brace-presence": ["warn", { "props": "always" }],
 
+    "@typescript-eslint/no-unused-vars": "warn",
     "@typescript-eslint/no-useless-constructor": "error",
     "@typescript-eslint/member-ordering": "warn",
     "@typescript-eslint/no-unused-expressions": [

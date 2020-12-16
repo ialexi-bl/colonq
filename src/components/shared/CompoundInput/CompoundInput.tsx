@@ -7,6 +7,7 @@ import cn from 'clsx'
 export type CompoundInputProps = HTMLProps.input & {
   password?: boolean
   loading?: boolean
+  warning?: string | false | null | undefined
   variant?: 1 | 2 | 3
   title: string
   props: FieldInputProps<string>
@@ -18,6 +19,7 @@ const CompoundInput = memo(
     className,
     password,
     loading,
+    warning,
     variant,
     meta,
     title,
@@ -37,7 +39,13 @@ const CompoundInput = memo(
         {...props}
         {...rest}
       />
-      <ErrorMessage message={getErrorMessage(meta)} />
+      <ErrorMessage
+        message={
+          getErrorMessage(meta) ||
+          (warning && { type: 'warning', text: warning }) ||
+          null
+        }
+      />
     </label>
   ),
 )

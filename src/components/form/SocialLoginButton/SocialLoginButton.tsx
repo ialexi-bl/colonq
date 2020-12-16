@@ -11,7 +11,7 @@ import useClipShape from 'hooks/use-clip-shape'
 export type SocialLoginButtonProps = Omit<HTMLProps.a, 'href'> & {
   provider: Config.SupportedProvider
   disabled?: boolean
-  type: 'login' | 'register' | 'link'
+  type: 'login' | 'register' | 'link' | 'editPassword'
 }
 
 const endpoint = {
@@ -26,6 +26,10 @@ const endpoint = {
   link: {
     vk: Endpoint.oauth.linkVk,
     google: Endpoint.oauth.linkGoogle,
+  },
+  editPassword: {
+    vk: Endpoint.oauth.editPasswordVk,
+    google: Endpoint.oauth.editPasswordGoogle,
   },
 }
 /**
@@ -57,13 +61,12 @@ export default function SocialLoginButton({
       {...props}
     >
       <Icon className={'w-6 h-6 mr-2'} />
-      {
-        {
-          login: 'Войти через ',
-          register: 'Зарегистрироваться с ',
-          link: 'Связать с ',
-        }[type]
-      }
+      {{
+        link: 'Связать с',
+        login: 'Войти через',
+        register: 'Зарегистрироваться с',
+        editPassword: 'Изменить пароль с',
+      }[type] + ' '}
       {labels[provider]}
     </a>
   )

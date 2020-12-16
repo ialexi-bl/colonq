@@ -17,7 +17,6 @@ import Page from 'components/shared/Page'
 import PageTitle from 'components/shared/PageTitle'
 import SocialLoginButton from 'components/form/SocialLoginButton'
 import User from 'components/icons/User'
-import useDevUpdateTracker from 'hooks/use-dev-update-tracker'
 import useIsGuest from 'hooks/use-is-guest'
 
 type FormValues = {
@@ -30,7 +29,6 @@ export default function Login({ setProgress }: RouteComponentProps) {
   const dispatch = useDispatch<MixedDispatch>()
   const { email, password } = location.state || {}
   const [loading, setLoading] = useState(false)
-  useDevUpdateTracker('login', { setProgress })
 
   useEffect(() => setProgress(100), [setProgress])
 
@@ -91,33 +89,27 @@ export default function Login({ setProgress }: RouteComponentProps) {
       <div className={'max-w-xl mx-auto px-4 overflow-hidden'}>
         <form onSubmit={formik.handleSubmit}>
           <CompoundInput
-            name={'login'}
-            title={'Email или имя пользователя'}
-            meta={formik.getFieldMeta('login')}
-            props={formik.getFieldProps('login')}
             autoFocus={!autofocusPassword}
             loading={loading}
             variant={2}
+            title={'Email или имя пользователя'}
+            props={formik.getFieldProps('login')}
+            name={'login'}
+            meta={formik.getFieldMeta('login')}
           />
           <CompoundInput
-            name={'password'}
-            title={'Пароль'}
-            meta={formik.getFieldMeta('password')}
-            props={formik.getFieldProps('password')}
-            loading={loading}
             autoFocus={autofocusPassword}
+            loading={loading}
             variant={3}
+            props={formik.getFieldProps('password')}
+            title={'Пароль'}
+            name={'password'}
+            meta={formik.getFieldMeta('password')}
+            warning={
+              /(^\s+)|(\s+$)/.test(formik.values.password) &&
+              'Пароль содержит пробелы в начале или в конце. Исправь, если они оказались там случайно'
+            }
           />
-          {/* <ErrorMessage
-              message={
-                /(^\s+)|(\s+$)/.test(formik.values.password) && {
-                  type: 'warning',
-                  // TODO: maybe move to language files
-                  text:
-                    'Пароль содержит пробелы в начале или в конце. Исправь, если они оказались там случайно',
-                }
-              }
-            /> */}
           <LoadingButton
             type={'submit'}
             variant={3}
@@ -130,7 +122,7 @@ export default function Login({ setProgress }: RouteComponentProps) {
 
         <div className={'my-16 text-center text-xl'}>ИЛИ</div>
 
-        <div className={'flex flex-col items-center'}>
+        <div className={'flex flex-col items-center text-lg'}>
           <SocialLoginButton
             provider={'google'}
             disabled={loading}
@@ -144,9 +136,17 @@ export default function Login({ setProgress }: RouteComponentProps) {
             className={'mb-2 max-w-sm w-full'}
           />
           <LinkButton
-            className={'mb-2 block text-lg max-w-sm w-full'}
+            className={'mb-2 block max-w-sm w-full'}
             to={register()}
             secondary
+          >
+            Восстановить пароль
+          </LinkButton>
+          <LinkButton
+            secondary
+            className={'mb-2 block max-w-sm w-full'}
+            variant={2}
+            to={register()}
           >
             Зарегистрироваться
           </LinkButton>

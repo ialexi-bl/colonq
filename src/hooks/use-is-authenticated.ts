@@ -1,6 +1,6 @@
 import { AppState } from 'store/types'
 import { login } from 'config/routes'
-import { replace } from 'connected-react-router'
+import { push } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 
@@ -14,10 +14,11 @@ export default function useIsAuthenticated(redirect: string | false = login()) {
   const { status, token } = useSelector((state: AppState) => state.user)
 
   useEffect(() => {
-    if (redirect && status === 'unauthenticated') {
-      dispatch(replace(redirect))
+    if (redirect && status !== 'loading' && !token) {
+      dispatch(push(redirect, { redirectedFromFailedAuth: status === 'error' }))
     }
-  }, [dispatch, redirect, status])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, redirect, status, token])
 
   return token !== null
 }

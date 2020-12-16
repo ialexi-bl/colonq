@@ -19,7 +19,7 @@ const notification = (type: 'info' | 'error') => () => {
   )
 }
 
-export default {
+const fixture = {
   Notification: notification('info'),
   'Error Notification': notification('error'),
   'Notification Toaster': () => {
@@ -70,3 +70,4 @@ export default {
     )
   },
 }
+export default fixture

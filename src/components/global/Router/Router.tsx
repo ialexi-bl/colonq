@@ -1,20 +1,18 @@
+import { AppState } from 'store/types'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
-import { Location } from 'history'
 import {
   ROUTE_TRANSITION_CLASSNAME,
   ROUTE_TRANSITION_DURATION,
 } from 'config/view'
-import { Route, Switch, useLocation } from 'react-router-dom'
-import { RouteComponentProps, routesArray } from 'config/routes'
-import { useCallback, useEffect, useRef } from 'react'
-import Boundary from '../../pages/Boundary'
+import { goBack } from 'connected-react-router'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import Config from 'config'
 import LoadingBar from '../../shared/LoadingBar'
-import LoadingErrorPage from './LoadingErrorPage'
-import NotFound from 'components/pages/NotFound'
+import Routes from './Routes'
 import cn from 'clsx'
-import useForceUpdate from 'hooks/use-force-update'
-import usePrevious from 'hooks/use-previous'
+import useLocationControls from './use-location-controls'
 
 const VISIBLE_TIMEOUT = {
   exit: ROUTE_TRANSITION_DURATION,
@@ -35,7 +33,9 @@ export default function Router({
 }: {
   closeInitialLoading: () => void
 }) {
-  const realLocation = useLocation()
+  const status = useSelector((state: AppState) => state.user.status)
+  const dispatch = useDispatch()
+  const realLocation = useLocation<{ redirectedFromFailedAuth?: boolean }>()
   const {
     visibleLocation,
     setProgress,
@@ -54,11 +54,24 @@ export default function Router({
       })
     }
   }, [realLocation.pathname])
+
   useEffect(() => {
-    if (visible && firstRenderDone) {
-      closeInitialLoading()
-    }
+    if (visible && firstRenderDone) closeInitialLoading()
   }, [closeInitialLoading, firstRenderDone, visible])
+
+  // Redirecting user to previous page if this one
+  // was opened because user was authorized but had
+  // problems with internet and was redirected to
+  // login page
+  useEffect(() => {
+    if (
+      status === 'authenticated' &&
+      realLocation.state?.redirectedFromFailedAuth
+    ) {
+      dispatch(goBack())
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [realLocation])
 
   return (
     <>
@@ -71,12 +84,6 @@ export default function Router({
         )}
       >
         <TransitionGroup component={null}>
-          {/*  NOTE: verification is needed that using location key here 
-          doesn't lead to any errors. Pathname cannot be used here because
-          key should be unique for each app rerender otherwise there can be a
-          "stuck" position when the route that has just been left is returned
-          to and it doesn't rerender when it should, so it doesn't set progress
-          to 100 and the app does nothing */}
           <CSSTransition
             enter={false}
             key={visibleKey}
@@ -108,121 +115,4 @@ export default function Router({
       </main>
     </>
   )
-}
-
-/**
- * Displays all app routes and manages their loading process
- */
-const Routes = function Routes({
-  location,
-  ...controls
-}: { location: Location } & RouteComponentProps) {
-  return (
-    <Boundary>
-      <Switch location={location}>
-        {routesArray.map((route) => (
-          <Route
-            exact
-            key={route.name}
-            path={route.path}
-            render={(data) => {
-              const key = route.getKey?.(data) || 'default'
-              route._importStarted ||= {}
-              route._imported ||= {}
-
-              if (route._imported[key]) {
-                const Component = route._imported[key]
-                return <Component {...controls} {...data} />
-              }
-              if (route._importStarted[key]) {
-                return null
-              }
-
-              // This should be outside of "importPage" because
-              // if it's created inside, react treats it as a different
-              // component every time and rerenders error page
-              const ImportError = () => (
-                <LoadingErrorPage retry={importPage} {...controls} />
-              )
-              function importPage() {
-                // Preventing route from being imported multiple times
-                route._importStarted![key] = true
-                return route
-                  .getComponent(data)
-                  .catch(() => {
-                    route._importStarted![key] = false
-
-                    return { default: ImportError, NO_LOADING_REQUIRED: false }
-                  })
-                  .then((m) => {
-                    route._imported![key] = m.default
-                    controls.setProgress('_imported' as any)
-                  })
-              }
-              importPage()
-            }}
-          />
-        ))}
-        <Route render={() => <NotFound {...controls} />} />
-      </Switch>
-    </Boundary>
-  )
-}
-
-const routerKey: unique symbol =
-  typeof Symbol === 'undefined' ? ('__routerKey' as any) : Symbol('routerKey')
-type ExtendedLocation = Location & { [routerKey]?: number }
-
-/**
- * Controls how the routes are displayed: returns what
- * route is visible now, what is the next route to be rendered,
- * what is the loading progress and a function to control this progress
- * @param realLocation
- */
-function useLocationControls(realLocation: ExtendedLocation) {
-  if (!(routerKey in realLocation)) {
-    realLocation[routerKey] = ~~(Math.random() * 1e4)
-  }
-  // Progress may never be less than 10
-  const progress = useRef(10)
-  const firstRenderDone = useRef(false)
-  const forceUpdate = useForceUpdate()
-  const visibleLocation = useRef(realLocation)
-  const previousLocation = usePrevious(realLocation)
-  const setProgress = useCallback(
-    (value: number | '_imported') => {
-      if (value === '_imported') {
-        progress.current = 10 + 40
-      } else if (progress.current !== value) {
-        progress.current = 10 + 40 + value / 2
-      }
-      forceUpdate()
-    },
-    [forceUpdate],
-  )
-
-  if (previousLocation.pathname !== realLocation.pathname) {
-    progress.current = 10
-  }
-  // Prevents rerendering when location object is changed but pages is not
-  else if (previousLocation !== realLocation) {
-    realLocation[routerKey] = visibleLocation.current[routerKey]
-    visibleLocation.current = realLocation
-  }
-
-  if (progress.current >= 100) {
-    firstRenderDone.current = true
-    visibleLocation.current = realLocation
-  }
-
-  return {
-    visibleLocation: visibleLocation.current,
-    progress: progress.current,
-    visible: progress.current >= 100,
-    loading: visibleLocation.current !== realLocation,
-    firstRenderDone: firstRenderDone.current,
-    visibleKey: visibleLocation.current[routerKey]!,
-    realKey: realLocation[routerKey]!,
-    setProgress,
-  }
 }

@@ -13,7 +13,9 @@ export default function Navigation() {
   const visible = useSelector((state: AppState) => state.view.navigationVisible)
   const status = useSelector((state: AppState) => state.user.status)
 
-  if (status === 'unauthenticated') return null
+  if (status in { unauthenticated: 1, error: 1 }) {
+    return null
+  }
 
   return (
     <nav

@@ -1,9 +1,10 @@
 import { useFormik } from 'formik'
-import Button from 'components/shared/Button'
-import ErrorMessage from 'components/form/ErrorMessage'
-import Input from 'components/form/Input'
-import Loading from 'components/shared/Loading'
+import CompoundInput from 'components/shared/CompoundInput'
+import LoadingButton from 'components/shared/LoadingButton'
 import Page from 'components/shared/Page'
+import PageTitle from 'components/shared/PageTitle'
+import User from 'components/icons/User'
+import Validate from 'services/validation'
 
 type FormValues = {
   password: string
@@ -11,71 +12,58 @@ type FormValues = {
 }
 
 export default function NewPasswordPrompt({
-  onSubmit,
-  loading,
+  submit,
 }: {
-  onSubmit: (password: string) => void
-  loading?: boolean
+  submit: (password: string) => Promise<boolean>
 }) {
   const formik = useFormik<FormValues>({
     initialValues: { password: '', passwordRepeat: '' },
-    onSubmit: ({ password }) => onSubmit(password),
+    onSubmit: ({ password }) => {
+      formik.setStatus('loading')
+      submit(password).then(() => formik.setStatus(null))
+    },
     validate,
   })
 
+  const loading = formik.status === 'loading'
   return (
     <Page className={'px-4'}>
-      {/* TODO: add icon and title */}
-      <form className={'max-w-xl mx-auto'}>
-        <label className={'block mb-4'}>
-          <span className={'mb-1'}>Новый пароль</span>
-          <Input
-            disabled={loading}
-            state={getInputState(formik, 'password')}
-            {...formik.getFieldProps('password')}
-          />
-          <ErrorMessage
-            message={formik.touched.password && formik.errors.password}
-          />
-        </label>
-        <label className={'block mb-4'}>
-          <span className={'mb-1'}>Повтори пароль</span>
-          <Input
-            disabled={loading}
-            state={getInputState(formik, 'passwordRepeat')}
-            {...formik.getFieldProps('passwordRepeat')}
-          />
-          <ErrorMessage
-            message={formik.touched.password && formik.errors.password}
-          />
-        </label>
-        <div className={'text-center'}>
-          <Button
-            className={'text-center min-w-64'}
-            disabled={loading}
-            variant={3}
-          >
-            {/* TODO: check what if this loading looks fine */}
-            {loading ? <Loading /> : 'Продолжить'}
-          </Button>
-        </div>
+      <PageTitle icon={<User />}>Изменение пароля</PageTitle>
+      <form onSubmit={formik.handleSubmit}>
+        <CompoundInput
+          name={'password'}
+          type={'password'}
+          meta={formik.getFieldMeta('password')}
+          props={formik.getFieldProps('password')}
+          title={'Новый пароль'}
+          variant={2}
+        />
+        <CompoundInput
+          name={'passwordRepeat'}
+          type={'passwordRepeat'}
+          meta={formik.getFieldMeta('passwordRepeat')}
+          props={formik.getFieldProps('passwordRepeat')}
+          title={'Повтори пароль'}
+          variant={3}
+        />
+        <LoadingButton
+          disabled={Object.keys(formik.errors).length > 0}
+          loading={loading}
+          variant={3}
+          type={'submit'}
+        >
+          Продолжить
+        </LoadingButton>
       </form>
     </Page>
   )
 }
 
-const getInputState = (formik: any, field: keyof FormValues) =>
-  formik.touched[field] ? (formik.errors[field] ? 'invalid' : 'valid') : null
 function validate(values: FormValues) {
   const errors: Partial<FormValues> = {}
 
-  if (!values.password) {
-    errors.password = 'Введи пароль'
-  } else if (values.password.length < 8) {
-    errors.password = 'Пароль должен быть не короче 8 символов'
-  } else if (values.password.length > 128) {
-    errors.password = 'Пароль должен быть не длиннее 128 символов'
-  }
+  const vpassword = Validate.password(values.password)
+  if (vpassword) errors.password = vpassword
 
   if (!values.passwordRepeat) {
     errors.passwordRepeat = 'Нужно подтвердить пароль'

@@ -19,5 +19,5 @@ export default function useIsGuest(redirect = appsList()) {
     }
   }, [dispatch, redirect, token])
 
-  return status === 'unauthenticated'
+  return status in { unauthenticated: 1, error: 1 }
 }

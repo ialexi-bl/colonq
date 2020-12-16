@@ -1,13 +1,13 @@
-enum VerificationAction {
+enum EmailAction {
   VERIFY_EMAIL = 'verify-email',
   UPDATE_EMAIL = 'update-email',
-  RESTORE_PASSWORD = 'restore-password',
+  RESET_PASSWORD = 'reset-password',
 }
-export default VerificationAction
+export default EmailAction
 
-export enum SocialVerificationAction {
+export enum SocialAction {
+  SOCIAL_EDIT_PASSWORD = 'edit-password',
   SOCIAL_REGISTER = 'register',
-  SOCIAL_PASSWORD = 'password',
   SOCIAL_LOGIN = 'login',
   SOCIAL_LINK = 'link',
 }

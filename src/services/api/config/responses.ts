@@ -117,7 +117,7 @@ declare namespace ApiResponse {
     }
 
     export type Logout = null
-    export type RestorePassword = null
+    export type ResetPassword = null
   }
 
   export namespace Session {

@@ -159,17 +159,17 @@ export default class UserApi {
     )
   }
 
-  public static requestRestorePassword(login: string) {
-    return Api.post<ApiResponse.Auth.RestorePassword>(
-      Endpoint.auth.restorePassword,
+  public static requestResetPassword(login: string) {
+    return Api.post<ApiResponse.Auth.ResetPassword>(
+      Endpoint.auth.resetPassword,
       { json: { login } },
     )
   }
 
   // TODO: verify token before asking password
-  public static submitRestorePassword(token: string, password: string) {
-    return Api.post<ApiResponse.Auth.RestorePassword>(
-      Endpoint.auth.restorePassword,
+  public static submitResetPassword(token: string, password: string) {
+    return Api.post<ApiResponse.Auth.ResetPassword>(
+      Endpoint.auth.resetPassword,
       { json: { token, password } },
     )
   }
