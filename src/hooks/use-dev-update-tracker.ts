@@ -1,13 +1,30 @@
 import { useEffect, useRef } from 'react'
+import Config from 'config'
 
-export default function useDevUpdateTracker(name: string, props: any) {
+/**
+ * Displays which variables changed since last render
+ * @param name - Component name that will be shown in console
+ * @param props
+ */
+export default function useDevUpdateTracker(props: Record<string, any>): void
+export default function useDevUpdateTracker(
+  name: string,
+  props: Record<string, any>,
+): void
+export default function useDevUpdateTracker(name: any, props?: any): void {
   const previousProps = useRef<any>()
+
+  if (!props) {
+    props = name
+    name = 'default'
+  }
 
   useEffect(() => {
     console.debug("! Update tracker used, don't forget to delete in production")
   }, [])
-  // useEffect(() => {
-  if (previousProps.current) {
+  if (Config.IS_PROD) {
+    console.error('Dev update tracker used in production')
+  } else if (previousProps.current) {
     const allKeys = Object.keys({ ...previousProps.current, ...props })
     const changesObj: any = {}
 
@@ -26,5 +43,4 @@ export default function useDevUpdateTracker(name: string, props: any) {
   }
 
   previousProps.current = props
-  // })
 }

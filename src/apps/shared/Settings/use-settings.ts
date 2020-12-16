@@ -19,7 +19,7 @@ type Result =
       retry: () => void
     }
 
-// TODO: maybe extract this hook and useLesson to something more general
+// TODO: (later) maybe extract this hook and useLesson to something more general
 export default function useSettings(app: string): Result {
   const dispatch = useDispatch<MixedDispatch>()
   const [status, setStatus] = useState<Status>('loading')

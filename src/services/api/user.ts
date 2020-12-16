@@ -166,7 +166,7 @@ export default class UserApi {
     )
   }
 
-  // TODO: verify token before asking password
+  // TODO: (later) verify token before asking password
   public static submitResetPassword(token: string, password: string) {
     return Api.post<ApiResponse.Auth.ResetPassword>(
       Endpoint.auth.resetPassword,

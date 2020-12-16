@@ -1,8 +1,10 @@
 @use './route-transition';
 
-// * NOTE: entering is done via animation, because
-// * if transition is used, routes are not animated
-// * after loading
+// Entering transitions are done via animation, because
+// if transition is used, routes are not animated
+// after loading
+// NOTE: This was the initial reason but now after implementing
+// new routes behaviour this may be revisited
 
 // Animations
 @keyframes opacity-enter {
@@ -123,66 +125,4 @@ $dir-opacity-offset: 5rem;
 @mixin left {
   @include left-start;
   @include left-end;
-}
-
-@mixin dir-opacity($x, $y: 0) {
-  // Enter via animation, not transition
-  @include route-transition.descendant-no-module(/* enter-active,  */ exit) {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  @include route-transition.descendant-no-module(exit-active) {
-    opacity: 0;
-    transform: translate($x, $y);
-    transition-property: opacity, transform !important;
-    transition-duration: theme('transitionDuration.route') !important;
-  }
-}
-@mixin up-opacity-start {
-  #animation-controller:not(.no-animation-start) & {
-    animation: up-opacity-enter theme('transitionDuration.route');
-  }
-}
-@mixin up-opacity-end {
-  @include dir-opacity(0, -$dir-opacity-offset);
-}
-@mixin up-opacity {
-  @include up-opacity-start;
-  @include up-opacity-end;
-}
-@mixin down-opacity-start {
-  #animation-controller:not(.no-animation-start) & {
-    animation: down-opacity-enter theme('transitionDuration.route');
-  }
-}
-@mixin down-opacity-end {
-  @include dir-opacity(0, $dir-opacity-offset);
-}
-@mixin down-opacity {
-  @include down-opacity-start;
-  @include down-opacity-end;
-}
-@mixin right-opacity-start {
-  #animation-controller:not(.no-animation-start) & {
-    animation: right-opacity-enter theme('transitionDuration.route');
-  }
-}
-@mixin right-opacity-end {
-  @include dir-opacity($dir-opacity-offset);
-}
-@mixin right-opacity {
-  @include right-opacity-start;
-  @include right-opacity-end;
-}
-@mixin left-opacity-start {
-  #animation-controller:not(.no-animation-start) & {
-    animation: left-opacity-enter theme('transitionDuration.route');
-  }
-}
-@mixin left-opacity-end {
-  @include dir-opacity(-$dir-opacity-offset);
-}
-@mixin left-opacity {
-  @include left-opacity-start;
-  @include left-opacity-end;
 }

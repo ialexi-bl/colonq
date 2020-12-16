@@ -24,14 +24,8 @@ namespace Endpoint {
    * Apps session API endpoints
    */
   export const session = {
-    // TODO: add endpoints
-    lesson: (app: string, lesson: string) => {
-      return `session/${app}/${lesson}`
-    },
-    appPractice: (app: string) => {
-      return `session/${app}/practice`
-    },
-    practice: () => `session/practice`,
+    lesson: (app: string, lesson: string) => `session/${app}/${lesson}`,
+    appPractice: (app: string) => `session/${app}/practice`,
     submitAnswers: (app: string) => `session/${app}/answer`,
   }
 
@@ -113,7 +107,6 @@ namespace Endpoint {
     provider: 'vk' | 'google',
     type: 'login' | 'register' | 'link' | 'editPassword',
   ) {
-    // TODO: change to normal url for production
     const uri =
       provider === 'google' && Config.IS_DEV
         ? 'https://aaaaaaaaaaaaaaaaaaaaaaaaa.com/auth'

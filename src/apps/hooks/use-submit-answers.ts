@@ -10,10 +10,23 @@ import { useEffect, useState } from 'react'
 import SessionApi from 'services/api/session'
 
 const emptyArray: string[] = []
+
+/**
+ * Handles answers submission
+ * NOTE: last three parameters for now come from
+ * `useTwoLatestProblemControls` hook but a similar
+ * one may be used in future
+ * @param app - App id
+ * @param done - true if session has been finished
+ * @param answers - Answers list
+ * @param disabled - Disabled problems IDs
+ */
 export default function useSubmitAnswers(
   app: string,
   done: boolean,
   answers: ProblemWithAnswer[],
+  // empty array is from constant to prevent `useEffect`
+  // from firing every time new array is created
   disabled: string[] = emptyArray,
 ) {
   const dispatch = useDispatch<MixedDispatch>()

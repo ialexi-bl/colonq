@@ -1,7 +1,16 @@
 import { useEffect, useState } from 'react'
 
-// From usehooks.com
-export default function useTween(enabled: boolean, duration = 200, delay = 0) {
+/**
+ * Tweens from 0 to 1
+ * @param enabled - true if tween should start
+ * @param duration
+ * @param delay
+ */
+export default function useTween(
+  enabled: boolean,
+  duration = 200,
+  delay = 0,
+): number {
   const [elapsed, setTime] = useState(0)
 
   useEffect(() => {

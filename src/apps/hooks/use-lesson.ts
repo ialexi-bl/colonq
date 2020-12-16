@@ -28,9 +28,16 @@ type Result<TProblem> =
       retry: () => void
     }
 
-export const PRACTICE: unique symbol = Symbol('practice')
+export const PRACTICE: unique symbol =
+  typeof Symbol === 'undefined' ? ({} as any) : Symbol('practice')
 export type LessonType = string | typeof PRACTICE
 
+// TODO: extract to a more general hook
+/**
+ * Handles lesson fetching
+ * @param app - App id
+ * @param lesson - Lesson name (or PRACTICE symbol for practice)
+ */
 export default function useLesson<TProblem>(
   app: string,
   lesson: string | typeof PRACTICE,

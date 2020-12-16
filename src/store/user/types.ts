@@ -40,7 +40,6 @@ export type EmptyUser = {
 export type AppsState = {
   appsStatus: 'none' | 'loading' | 'error' | 'loaded'
   categories: Category[]
-  // TODO: remove this field if it's not needed anywhere
   appsList: string[]
   apps: Apps
 }

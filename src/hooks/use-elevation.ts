@@ -4,65 +4,57 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useRef } from 'react'
 import cn from 'clsx'
 
-// TODO: add in documentation that this **must** be called once per route
-export default function useElevation(elevation: number) {
+/**
+ * Sets current route elevation to manage which route
+ * should be above which one and set corresponding animations
+ * NOTE: this **must** only be called once per route, otherwise
+ * transitions will be messed up
+ * @param elevation
+ */
+export default function useElevation(elevation: number): void {
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(setElevation({ value: elevation }))
   }, [dispatch, elevation])
-
-  return useSelector((state: AppState) => state.view.previousElevation)
 }
-
-const getCnHook = (compare: (other: number, curr: number) => boolean) => {
-  return function useElevationCn(
-    elevation: number,
-    enterCn: string = 'route-enter-overlay',
-    exitCn: string = 'route-exit-overlay',
-  ) {
-    const id = useRef(Math.random())
-    const dispatch = useDispatch()
-
-    useEffect(() => {
-      dispatch(setElevation({ value: elevation, id: id.current }))
-    }, [dispatch, elevation])
-
-    const el = useSelector((state: AppState) => state.view)
-
-    return cn(
-      el.previousElevation.value === Infinity && enterCn,
-      el.previousElevation.id !== id.current &&
-        compare(el.previousElevation.value, elevation) &&
-        enterCn,
-      compare(el.currentElevation.value, elevation) && exitCn,
-    )
-  }
-}
-
-export const useAboveElevationClassnames = getCnHook((a, b) => a < b)
-export const useBelowElevationClassnames = getCnHook((a, b) => a > b)
-export const useSameElevationClassnames = getCnHook((a, b) => a === b)
 
 export type RouteTransitionClassName =
   | 'overlay'
-  | 'left'
-  | 'right'
-  | 'up'
-  | 'down'
   | 'opacity'
+  | 'right'
+  | 'left'
+  | 'down'
+  | 'up'
   | ''
 export type ElevationClassNames = {
   above?: RouteTransitionClassName
   below?: RouteTransitionClassName
   same?: RouteTransitionClassName
 }
+
+/**
+ * Sets route elevation to manage which route
+ * should be above which one and provides different
+ * classnames depending on relative position of two routes
+ *
+ * NOTE: this **must** only be called once per route, otherwise
+ * transitions will be messed up. Also `useElevation` must not
+ * be called if this hook is used
+ * @param elevation
+ * @param cns - List of classNames
+ */
 export function useElevationClassnames(
   elevation: number,
   cns: ElevationClassNames,
-) {
-  const id = useRef(Math.random())
+): string {
   const dispatch = useDispatch()
+  /**
+   * Unique ID used to manage class names for the same route
+   * rendered consequently with different parameters
+   */
+  const id = useRef(Math.random())
+  /** @name elevation */
   const el = useSelector((state: AppState) => state.view)
   /** Position of page relative to previous pages */
   const enterPos = useRef(compare(el.currentElevation.value, elevation))
@@ -72,7 +64,8 @@ export function useElevationClassnames(
   }, [dispatch, elevation])
 
   return el.previousElevation.value === Infinity
-    ? ''
+    ? // Prevent any animation on first render
+      ''
     : cn(
         enterPos.current in cns && `route-enter-${cns[enterPos.current]}`,
         el.currentElevation.value < elevation

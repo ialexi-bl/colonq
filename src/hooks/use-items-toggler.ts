@@ -1,9 +1,7 @@
 import { useReducer } from 'react'
 
-const reducer = (
-  chosen: Record<string, true>,
-  app: string | Record<string, true>,
-) => {
+type ToggleList = Record<string, true>
+const reducer = (chosen: ToggleList, app: string | ToggleList) => {
   if (typeof app === 'string') {
     const newState = { ...chosen }
     if (newState[app]) delete newState[app]
@@ -15,12 +13,14 @@ const reducer = (
 }
 
 /**
- * Returns object which has options that has been toggled on
- * and function to toggle particular items
+ * Provides a way to toggle multiple boolean values
+ * Returns an object whose keys are values which are
+ * turned on and a function to toggle on or multiple options at a time
  */
 export default function useItemsToggler(
-  initialize?: () => Record<string, true>,
-) {
-  // No idea why this doesn't type correctly
+  initialize?: () => ToggleList,
+): [ToggleList, (value: string | ToggleList) => void] {
+  // This has some issues without casting to any
+  // probably because `initialize` may be `undefined` or may not
   return useReducer(reducer, {}, initialize as any)
 }

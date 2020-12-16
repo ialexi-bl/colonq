@@ -63,38 +63,3 @@
 @include exit-class-name(up) {
   @include transition-presets.up-end;
 }
-
-// TODO: probably delete these
-.route-right.route-opacity,
-.route-enter-right.route-enter-opacity {
-  @include transition-presets.right-opacity-start;
-}
-.route-left.route-opacity,
-.route-enter-left.route-enter-opacity {
-  @include transition-presets.left-opacity-start;
-}
-.route-down.route-opacity,
-.route-enter-down.route-enter-opacity {
-  @include transition-presets.down-opacity-start;
-}
-.route-up.route-opacity,
-.route-enter-up.route-enter-opacity {
-  @include transition-presets.up-opacity-start;
-}
-
-.route-right.route-opacity,
-.route-exit-right.route-exit-opacity {
-  @include transition-presets.right-opacity-end;
-}
-.route-left.route-opacity,
-.route-exit-left.route-exit-opacity {
-  @include transition-presets.left-opacity-end;
-}
-.route-down.route-opacity,
-.route-exit-down.route-exit-opacity {
-  @include transition-presets.down-opacity-end;
-}
-.route-up.route-opacity,
-.route-exit-up.route-exit-opacity {
-  @include transition-presets.up-opacity-end;
-}

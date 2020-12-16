@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 
 /**
- * Returns "true" if predicate has ever been truthy
+ * Returns "true" if predicate has been truthy at least once
  * @param predicate
  */
 export default function useWasTrue(predicate: unknown): boolean {

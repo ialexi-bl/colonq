@@ -18,6 +18,8 @@
     "no-useless-constructor": "off",
     "no-dupe-class-members": "off",
     "spaced-comment": "warn",
+    "import/export": "off",
+    "no-redeclare": "off",
     "no-inner-declarations": "off",
     "no-sequences": "off",
     "no-use-before-define": "off",
@@ -29,6 +31,7 @@
     "react/jsx-key": ["warn", { "checkFragmentShorthand": true }],
     "react/jsx-curly-brace-presence": ["warn", { "props": "always" }],
 
+    "@typescript-eslint/no-redeclare": "error",
     "@typescript-eslint/no-unused-vars": "warn",
     "@typescript-eslint/no-useless-constructor": "error",
     "@typescript-eslint/member-ordering": "warn",

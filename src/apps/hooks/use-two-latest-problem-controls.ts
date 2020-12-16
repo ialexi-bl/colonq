@@ -10,9 +10,9 @@ export type Verify<TProblem, TAnswer> = (
  * Provides controls for two latest display: manages
  * the order of items and functions to hide them and
  * submit answers
- * @param _problems - Initial set of problems from server (or a function that returns one)
+ * @param _problems - Initial set of problems from server (or a function that synchronously returns one)
  * @param verify - Function that receives a problem and an answer and verifies if it's correct
- * @param repeat - Function that gets a failed problem and creates its copy that will be shown to the user later
+ * @param repeat - Function that gets a failed problem and creates its copy that will be shown to the user later. May be used to reset some data that could be mutated when problem was shown initially.
  */
 export default function useTwoLatestProblemControls<
   TProblem extends { id: string },

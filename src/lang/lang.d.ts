@@ -1,5 +1,5 @@
 declare module 'lang/errors.json' {
-  // TODO: delete all of that
+  // TODO: (later) delete all of that
 
   const LangErrors: {
     missingParameter: string
