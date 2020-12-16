@@ -11,8 +11,7 @@ import { push } from 'connected-react-router'
 import { useDispatch } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router'
-import ErrorMessage from 'components/form/ErrorMessage'
-import Input from 'components/form/Input'
+import CompoundInput from 'components/shared/CompoundInput'
 import LoadingButton from 'components/shared/LoadingButton'
 import Page from 'components/shared/Page'
 import PageTitle from 'components/shared/PageTitle'
@@ -71,6 +70,12 @@ export default function Login({ setProgress }: RouteComponentProps) {
       login: typeof email === 'string' ? email : '',
       password: typeof password === 'string' ? password : '',
     },
+    validate: ({ login, password }) => {
+      const errors: Partial<FormValues> = {}
+      if (!login) errors.login = 'Введи email или имя пользователя'
+      if (!password) errors.password = 'Введи пароль'
+      return errors
+    },
     onSubmit: login,
   })
 
@@ -85,29 +90,25 @@ export default function Login({ setProgress }: RouteComponentProps) {
 
       <div className={'max-w-xl mx-auto px-4 overflow-hidden'}>
         <form onSubmit={formik.handleSubmit}>
-          <label className={'block mb-4'}>
-            <span className={'mb-2'}>Email или имя пользователя</span>
-            <Input
-              readOnly={loading}
-              autoFocus={!autofocusPassword}
-              className={'w-full'}
-              state={getInputState(formik, 'login')}
-              {...formik.getFieldProps('login')}
-            />
-          </label>
-          <label className={'block mb-4'}>
-            <span className={'mb-2'}>Пароль</span>
-            <Input
-              // TODO: add ability to show password
-              type={'password'}
-              variant={3}
-              autoFocus={autofocusPassword}
-              readOnly={loading}
-              className={'w-full'}
-              state={getInputState(formik, 'password')}
-              {...formik.getFieldProps('password')}
-            />
-            <ErrorMessage
+          <CompoundInput
+            name={'login'}
+            title={'Email или имя пользователя'}
+            meta={formik.getFieldMeta('login')}
+            props={formik.getFieldProps('login')}
+            autoFocus={!autofocusPassword}
+            loading={loading}
+            variant={2}
+          />
+          <CompoundInput
+            name={'password'}
+            title={'Пароль'}
+            meta={formik.getFieldMeta('password')}
+            props={formik.getFieldProps('password')}
+            loading={loading}
+            autoFocus={autofocusPassword}
+            variant={3}
+          />
+          {/* <ErrorMessage
               message={
                 /(^\s+)|(\s+$)/.test(formik.values.password) && {
                   type: 'warning',
@@ -116,9 +117,7 @@ export default function Login({ setProgress }: RouteComponentProps) {
                     'Пароль содержит пробелы в начале или в конце. Исправь, если они оказались там случайно',
                 }
               }
-            />
-            <ErrorMessage message={formik.status} />
-          </label>
+            /> */}
           <LoadingButton
             type={'submit'}
             variant={3}
@@ -156,6 +155,3 @@ export default function Login({ setProgress }: RouteComponentProps) {
     </Page>
   )
 }
-
-const getInputState = (formik: any, field: keyof FormValues) =>
-  formik.touched[field] && formik.errors[field] ? 'invalid' : null

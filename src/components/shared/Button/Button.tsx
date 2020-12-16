@@ -54,13 +54,13 @@ const buttonClassNames = (
   disabled?: boolean,
 ) =>
   cn(
-    buttonCn,
     styles[`variant-${variant}`],
-    disabled ? disabledCn : secondary ? secondaryCn : primaryCn,
+    'py-4 px-6 duration-200 bg-cover bg-center bg-no-repeat cursor-pointer',
+    {
+      [`bg-secondary-200 focus:bg-secondary-400 ${styles.secondary}`]:
+        !disabled && secondary,
+      [`bg-primary-700 focus:bg-primary-900 ${styles.primary}`]:
+        !disabled && !secondary,
+      'bg-disabled-700': disabled,
+    },
   )
-
-const buttonCn =
-  'py-4 px-6 duration-200 bg-cover bg-center bg-no-repeat cursor-pointer'
-const primaryCn = `bg-primary-700 ${styles.primary}`
-const secondaryCn = `bg-secondary-200 ${styles.secondary}`
-const disabledCn = `bg-disabled-700`

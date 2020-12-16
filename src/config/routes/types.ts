@@ -8,12 +8,13 @@ export type Routes = {
 export type RouteOptions = {
   path: string
   name: string
-  authenticated?: boolean
 } & {
   getKey?: (data: ReactRouterComponentProps<any>) => string
   getComponent: (
     data: ReactRouterComponentProps<any>,
-  ) => Promise<{ default: RouteComponent }>
+  ) => Promise<{
+    default: RouteComponent
+  }>
   _importStarted?: Record<string, boolean>
   _imported?: Record<string, RouteComponent>
 }

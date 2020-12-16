@@ -152,10 +152,9 @@ const Routes = function Routes({
                   .catch(() => {
                     route._importStarted![key] = false
 
-                    return { default: ImportError }
+                    return { default: ImportError, NO_LOADING_REQUIRED: false }
                   })
                   .then((m) => {
-                    console.log('setting route._imported')
                     route._imported![key] = m.default
                     controls.setProgress('_imported' as any)
                   })
@@ -205,6 +204,12 @@ function useLocationControls(realLocation: ExtendedLocation) {
   if (previousLocation.pathname !== realLocation.pathname) {
     progress.current = 10
   }
+  // Prevents rerendering when location object is changed but pages is not
+  else if (previousLocation !== realLocation) {
+    realLocation[routerKey] = visibleLocation.current[routerKey]
+    visibleLocation.current = realLocation
+  }
+
   if (progress.current >= 100) {
     firstRenderDone.current = true
     visibleLocation.current = realLocation

@@ -245,7 +245,7 @@ export default class UserApi {
 
   public static getPasswordUpdateOptions() {
     return (token: string, id: string) =>
-      Api.get<ApiResponse.User.PasswordUpdateOption>(
+      Api.get<ApiResponse.User.GetPasswordUpdateOptions>(
         Endpoint.user.getPasswordUpdateOptions(id),
         { token },
       )

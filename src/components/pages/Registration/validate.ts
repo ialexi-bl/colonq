@@ -1,6 +1,5 @@
 import { UserApi } from 'services/api'
-import { dedupe } from 'util/array'
-import Regex from 'config/regex'
+import Validate from 'services/validation'
 
 export type RegistrationFormValues = {
   email: string
@@ -9,8 +8,11 @@ export type RegistrationFormValues = {
   passwordRepeat: string
 }
 export type TempValidationData = {
+  /** Indicates whether email field is blurred */
   blur: boolean
+  /** Timeout that is going to verify email */
   timer: null | number
+  /** Last email that has been validated */
   email?: string
 }
 
@@ -29,28 +31,11 @@ export default function validate(
   const errors: Partial<RegistrationFormValues> = {}
 
   // Validating user name
-  if (!values.username.trim()) {
-    errors.username = 'Введи имя пользователя'
-  } else if (values.username.length < 4) {
-    errors.username = 'Имя пользователя должно быть не короче 4 символов'
-  } else if (values.username.length > 64) {
-    errors.username = 'Имя пользователя должно быть не длиннее 64 символов'
-  } else if (!Regex.username.test(values.username)) {
-    const forbiddenChars = values.username.match(Regex.usernameForbiddenChars)!
+  const vusername = Validate.username(values.username)
+  if (vusername) errors.username = vusername
 
-    errors.username = `Нельзя использовать символы: ${dedupe(forbiddenChars)
-      .map((x) => `"${x}"`)
-      .join(', ')}`
-  }
-
-  // Validating password
-  if (!values.password) {
-    errors.password = 'Введи пароль'
-  } else if (values.password.length < 8) {
-    errors.password = 'Пароль должен быть не короче 8 символов'
-  } else if (values.password.length > 128) {
-    errors.password = 'Пароль должен быть не длиннее 128 символов'
-  }
+  const vpassword = Validate.password(values.password)
+  if (vpassword) errors.password = vpassword
 
   // Validating password verification
   if (!values.passwordRepeat) {
@@ -64,20 +49,28 @@ export default function validate(
     clearTimeout(temp.timer)
   }
 
-  if (!values.email.trim()) {
-    errors.email = 'Email нужен обязательно'
-  } else if (!Regex.email.test(values.email)) {
-    errors.email = 'Это недействительный email'
-  } else if (temp.email !== values.email) {
+  const vemail = Validate.emailFormat(values.email)
+  if (vemail) {
+    errors.email = vemail
+  }
+  // Verifying that email is not occupied
+  else if (temp.email !== values.email) {
     const msg = 'Этот email уже занят'
     const occupied = UserApi.isEmailOccupiedCache(values.email)
 
-    if (occupied === null) {
+    // Do not request if this email has already been checked
+    if (occupied === true) {
+      errors.email = msg
+    } else {
       errors.email = 'pending'
       temp.timer = window.setTimeout(
         () => {
           // TODO: maybe also see 400 errors returned from server as validation fail
           UserApi.isEmailOccupied(values.email).then((occupied) => {
+            // If temp.email has changed, it means
+            // that another email has been supplied
+            // while the request or timeout was working
+            // so current check should be dismissed
             if (temp.email !== values.email) return
 
             temp.timer = null
@@ -93,14 +86,19 @@ export default function validate(
             formik.setFieldError('email', msg)
           })
         },
+        // Validating immediately if field is blurred
         temp.blur ? 0 : 1000,
       )
-    } else if (occupied) {
-      errors.email = msg
     }
   } else if (formik.errors.email) {
+    // Keeping email error so that it doesn't get reset
+    // every time another field gets validated
     errors.email = formik.errors.email
   }
+  // Setting temp.email so that if a check that has been
+  // cancelled still proceeds, it doesn't set a message about
+  // an outdated email which should be taken care of by
+  // another check
   temp.email = values.email
 
   return errors

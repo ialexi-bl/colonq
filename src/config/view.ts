@@ -14,6 +14,7 @@ export namespace Elevation {
   export const appsSettings = 40
   export const lessonsList = 40
   export const appsChoice = 40
+  export const editUserData = 40
 
   export const appsList = 30
   export const profile = 30

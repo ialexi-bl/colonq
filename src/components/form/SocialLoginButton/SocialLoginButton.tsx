@@ -45,6 +45,7 @@ export default function SocialLoginButton({
 
   return (
     <a
+      tabIndex={disabled ? -1 : 0}
       onClick={disabled ? undefined : onClick}
       className={cn(
         'reset-link flex items-center duration-100 text-lg py-4 px-6 outline-none',

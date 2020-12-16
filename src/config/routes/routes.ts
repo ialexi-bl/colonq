@@ -35,19 +35,21 @@ export const routesArray: RouteOptions[] = [
   {
     path: '/profile',
     name: 'profile',
-    authenticated: true,
     getComponent: () => import('components/pages/Profile'),
+  },
+  {
+    path: '/profile/edit/password',
+    name: 'editPassword',
+    getComponent: () => import('components/pages/EditPassword'),
   },
   {
     path: '/login',
     name: 'login',
-    authenticated: false,
     getComponent: () => import('components/pages/Login'),
   },
   {
     path: '/register',
     name: 'register',
-    authenticated: false,
     getComponent: () => import('components/pages/Registration'),
   },
   ...appsRoutes,
@@ -58,6 +60,7 @@ for (const route of routesArray) {
   routes[route.name] = routes[route.path] = route
 }
 
+export const editPassword = () => routes.editPassword.path
 export const verifyEmail = () => routes.verifyEmail.path
 export const appsChoice = () => routes.appsChoice.path
 export const appsList = () => routes.appsList.path

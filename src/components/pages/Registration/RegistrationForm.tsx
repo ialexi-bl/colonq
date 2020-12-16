@@ -6,9 +6,9 @@ import { notifyErrorObject } from 'store/view'
 import { push } from 'connected-react-router'
 import { useDispatch } from 'react-redux'
 import { useFormik } from 'formik'
-import { useRef, useState } from 'react';
+import { useRef, useState } from 'react'
+import CompoundInput from 'components/shared/CompoundInput'
 import LoadingButton from 'components/shared/LoadingButton'
-import RegistrationInput from './RegistrationInput'
 import cn from 'clsx'
 import validate, {
   RegistrationFormValues,
@@ -86,17 +86,19 @@ export default function RegistrationForm({
         )}
         onSubmit={formik.handleSubmit}
       >
-        <RegistrationInput
+        <CompoundInput
           name={'username'}
           title={'Имя пользователя'}
-          formik={formik}
+          meta={formik.getFieldMeta('username')}
+          props={formik.getFieldProps('username')}
           loading={loading}
           variant={2}
         />
-        <RegistrationInput
+        <CompoundInput
           name={'email'}
           title={'Email'}
-          formik={formik}
+          meta={formik.getFieldMeta('email')}
+          props={formik.getFieldProps('email')}
           loading={loading}
           variant={1}
           onFocus={() => {
@@ -107,18 +109,20 @@ export default function RegistrationForm({
             formik.handleBlur(e)
           }}
         />
-        <RegistrationInput
+        <CompoundInput
           name={'password'}
           title={'Пароль'}
-          formik={formik}
           loading={loading}
+          meta={formik.getFieldMeta('password')}
+          props={formik.getFieldProps('password')}
           variant={3}
           password
         />
-        <RegistrationInput
+        <CompoundInput
           name={'passwordRepeat'}
           title={'Повтори пароль'}
-          formik={formik}
+          meta={formik.getFieldMeta('passwordRepeat')}
+          props={formik.getFieldProps('passwordRepeat')}
           loading={loading}
           variant={2}
           password

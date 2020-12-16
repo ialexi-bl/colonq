@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from 'react'
 import cn from 'clsx'
 
 export type LoadingErrorProps = {
@@ -17,7 +17,7 @@ export default function LoadingError({
     <div
       className={cn(
         className,
-        'px-8 pb-32 h-full flex flex-col items-center justify-center bg-page',
+        'px-8 pb-64 h-full flex flex-col items-center justify-center bg-page',
       )}
     >
       <h2 className={`text-2xl text-center ${detail ? 'pb-2' : 'pb-4'}`}>

@@ -1,13 +1,11 @@
-export type InfoItemProps = Childfree<HTMLProps.div> & {
+export type InfoItemProps = HTMLProps.div & {
   label: string
-  value: string | null
 }
 
-// TODO: Maybe delete?
-const InfoItem = ({ label, value, ...props }: InfoItemProps) => (
+const InfoItem = ({ label, children, ...props }: InfoItemProps) => (
   <div {...props}>
     <div className={'text-lg'}>{label}</div>
-    <div className={'pl-2 text-xl'}>{value}</div>
+    <div className={'px-2 text-xl'}>{children}</div>
   </div>
 )
 export default InfoItem
