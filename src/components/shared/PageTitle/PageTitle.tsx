@@ -5,18 +5,11 @@ import Back from 'components/icons/Back'
 import cn from 'clsx'
 
 export type PageTitleProps = Childfree<HTMLProps.heading> & {
-  disableBackButton?: boolean
   children: string
   icon?: ReactNode
 }
 
-const PageTitle = ({
-  children,
-  icon,
-  className,
-  disableBackButton,
-  ...props
-}: PageTitleProps) => {
+const PageTitle = ({ icon, children, className, ...props }: PageTitleProps) => {
   const dispatch = useDispatch()
 
   return (
@@ -24,7 +17,7 @@ const PageTitle = ({
       className={cn(className, 'py-2 px-4 text-4xl flex items-center my-6')}
       {...props}
     >
-      {(icon || !disableBackButton) && (
+      {icon !== null && (
         <span
           className={cn(icon ? 'h-12 w-12' : 'h-8 w-8', 'd-inline-block mr-4')}
         >

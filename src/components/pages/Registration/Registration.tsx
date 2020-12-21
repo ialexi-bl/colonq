@@ -7,13 +7,16 @@ import PageTitle from 'components/shared/PageTitle'
 import RegistrationForm from './RegistrationForm'
 import SocialLoginButton from 'components/form/SocialLoginButton'
 import User from 'components/icons/User'
+import useElevation from 'hooks/use-elevation'
 import useIsGuest from 'hooks/use-is-guest'
 
 export default function Registration({ setProgress }: RouteComponentProps) {
   useEffect(() => setProgress(100), [setProgress])
   const [loading, setLoading] = useState(false)
 
+  useElevation(Elevation.registration)
   if (!useIsGuest()) return null
+
   return (
     <ScrollablePage
       routeElevation={Elevation.registration}

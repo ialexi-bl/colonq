@@ -27,7 +27,7 @@ const client = ky.create({
 
         const status = error.status
         if (!(options.retry as RetryOptions).statusCodes!.includes(status)) {
-          return ky.stop as any
+          throw error
         }
       },
     ],

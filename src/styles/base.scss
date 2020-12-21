@@ -5,12 +5,14 @@
   width: 100%;
 }
 
+$track-width: 12px;
+$thumb-width: 10px;
 .scroll-thumb {
   $bg: rgba(255, 255, 255, 0.1);
   background: $bg;
   transition: background-color 100ms;
   border-radius: 4px;
-  width: 7px !important;
+  width: $thumb-width !important;
 
   &:hover {
     background-color: transparentize($color: $bg, $amount: 0.01);
@@ -20,7 +22,7 @@
   }
 }
 .scroll-track {
-  width: 10px !important;
+  width: $track-width !important;
   top: 2px;
   right: 0;
   bottom: 2px;

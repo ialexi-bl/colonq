@@ -3,7 +3,6 @@ import { Component, ErrorInfo, ReactNode } from 'react'
 import Config from 'config'
 import GeneralApi from 'services/api/general'
 import Page from 'components/shared/Page'
-import TitleLine from 'components/shared/TitleLine'
 import styles from './Boundary.module.scss'
 
 export type BoundaryProps = {
@@ -57,14 +56,13 @@ class Boundary extends Component<BoundaryProps> {
     }
 
     return (
+      // TODO: style
       <Page className={styles.Boundary}>
-        <TitleLine>
-          ERROR
-          <p className={styles.Subtitle}>
-            Что-то сломалось {CUTE_FACE}. Попробуй обновить страницу, если не
-            получится - вернись позже. Всё обязательно заработает
-          </p>
-        </TitleLine>
+        ERROR
+        <p className={styles.Subtitle}>
+          Что-то сломалось {CUTE_FACE}. Попробуй обновить страницу, если не
+          получится - вернись позже. Всё обязательно заработает
+        </p>
       </Page>
     )
   }

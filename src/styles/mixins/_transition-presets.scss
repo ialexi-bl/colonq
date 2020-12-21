@@ -56,12 +56,14 @@ $dir-opacity-offset: 5rem;
   }
 }
 @mixin opacity-end {
-  @include route-transition.descendant-no-module(exit) {
-    opacity: 1;
-  }
-  @include route-transition.descendant-no-module(exit-active) {
-    transition: opacity theme('transitionDuration.route') !important;
-    opacity: 0;
+  #animation-controller:not(.no-animation-end) & {
+    @include route-transition.descendant-no-module(exit) {
+      opacity: 1;
+    }
+    @include route-transition.descendant-no-module(exit-active) {
+      transition: opacity theme('transitionDuration.route') !important;
+      opacity: 0;
+    }
   }
 }
 @mixin opacity {
@@ -70,12 +72,14 @@ $dir-opacity-offset: 5rem;
 }
 
 @mixin dir-end($x, $y: 0) {
-  @include route-transition.descendant-no-module(/* enter-active,  */ exit) {
-    transform: translate(0);
-  }
-  @include route-transition.descendant-no-module(exit-active) {
-    transition: transform theme('transitionDuration.route') !important;
-    transform: translate($x, $y);
+  #animation-controller:not(.no-animation-end) & {
+    @include route-transition.descendant-no-module(/* enter-active,  */ exit) {
+      transform: translate(0);
+    }
+    @include route-transition.descendant-no-module(exit-active) {
+      transition: transform theme('transitionDuration.route') !important;
+      transform: translate($x, $y);
+    }
   }
 }
 @mixin up-start {

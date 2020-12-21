@@ -2,7 +2,7 @@ import { RouteComponentProps } from 'config/routes'
 import { useEffect } from 'react'
 import EmailPrompt from './EmailPrompt'
 import NewPasswordPrompt from './NewPasswordPrompt'
-import useAuthActionHandler from './useAuthActionHandler'
+import useAuthActionHandler from './use-auth-action-handler'
 
 export default function Auth({ setProgress }: RouteComponentProps) {
   const action = useAuthActionHandler()

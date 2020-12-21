@@ -17,7 +17,10 @@ import useElevation from 'hooks/use-elevation'
 import useIsAuthenticated from 'hooks/use-is-authenticated'
 
 type UpdateOptions = ApiResponse.User.PasswordUpdateOption[] | false | null
-export default function EditPassword({ setProgress }: RouteComponentProps) {
+export default function EditPassword({
+  setProgress,
+  visible,
+}: RouteComponentProps) {
   const dispatch = useDispatch<MixedDispatch>()
   const [updateOptions, setUpdateOptions] = useState<UpdateOptions>(null)
 
@@ -37,7 +40,7 @@ export default function EditPassword({ setProgress }: RouteComponentProps) {
   useEffect(load, [dispatch, setProgress])
 
   useElevation(Elevation.editUserData)
-  if (!useIsAuthenticated()) return null
+  if (!useIsAuthenticated() || !visible) return null
 
   if (!updateOptions) {
     return (
@@ -63,21 +66,16 @@ export default function EditPassword({ setProgress }: RouteComponentProps) {
   const hasSocial = !hasPassword || updateOptions.length > 1
   return (
     <Wrapper>
-      {hasPassword && (
-        <>
-          <p>Ты можешь изменить пароль традиционным методом</p>
-          <PasswordForm />
-        </>
-      )}
+      {hasPassword && <PasswordForm />}
       {hasSocial && <div className={'my-16 text-center text-xl'}>ИЛИ</div>}
-      {!hasPassword && (
+      {hasSocial && !hasPassword && (
         <p>
           Твой профиль был зарегистирирован с помощью социальной сети, поэтому у
           него нет пароля. Если ты хочешь установить его, войди с её помощью ещё
           раз, после чего появится поле для его установки:
         </p>
       )}
-      {hasPassword && (
+      {hasSocial && hasPassword && (
         <p>
           Можно войти с помощью социальной сети, после чего ты увидишь поле для
           изменения пароля
@@ -107,6 +105,6 @@ const Wrapper = ({ children }: BasicProps) => (
     className={'bg-page route-overlay'}
   >
     <PageTitle icon={<User />}>Изменение пароля</PageTitle>
-    {children}
+    <div className={'px-4'}>{children}</div>
   </Page>
 )

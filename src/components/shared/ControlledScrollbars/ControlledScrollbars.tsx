@@ -1,9 +1,9 @@
 import { ScrollTarget } from './ScrollTarget'
+import { createContext, useState } from 'react'
 import {
   renderScrollThumb,
   renderScrollTrack,
 } from 'components/shared/render-scroll'
-import { createContext, useState } from 'react';
 import Scrollbars, { ScrollbarProps } from 'react-custom-scrollbars'
 
 export type ControlledScrollbarsProps = Omit<ScrollbarProps, 'onScrollFrame'>

@@ -15,6 +15,9 @@ export enum ViewAction {
   NOTIFY_INFO = 'VIEW/NOTIFY_INFO',
   NOTIFY_ERROR = 'VIEW/NOTIFY_ERROR',
   CLOSE_NOTIFICATION = 'VIEW/CLOSE_NOTIFICATION',
+
+  ENABLE_ANIMATIONS = 'VIEW/ENABLE_ANIMATIONS',
+  DISABLE_ANIMATIONS = 'VIEW/DISABLE_ANIMATIONS',
 }
 
 export const setElevation = createAction<{
@@ -32,9 +35,13 @@ export const closePageSpecificLoading = createAction(
 export const showNavigation = createAction(ViewAction.SHOW_NAVIGATION)
 export const hideNavigation = createAction(ViewAction.HIDE_NAVIGATION)
 
+export const disableAnimations = createAction(ViewAction.DISABLE_ANIMATIONS)
+export const enableAnimations = createAction(ViewAction.ENABLE_ANIMATIONS)
+
 export const notifyInfo = createAction<string>(ViewAction.NOTIFY_INFO)
 export const notifyError = createAction<string>(ViewAction.NOTIFY_ERROR)
 export const closeNotification = createAction(ViewAction.CLOSE_NOTIFICATION)
+console.log(notifyInfo('Hello world, [link to login](/login)'))
 
 export const notifyHttpError = (error: HttpError): ThunkAction<void> => async (
   dispatch,

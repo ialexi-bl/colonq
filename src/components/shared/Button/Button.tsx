@@ -10,6 +10,7 @@ type CommonProps = {
 }
 export type ButtonProps = HTMLProps.button & CommonProps
 export type LinkButtonProps = LinkProps & CommonProps
+export type LinkButtonExternalProps = HTMLProps.a & CommonProps
 
 const Button = ({
   secondary,
@@ -38,6 +39,25 @@ export const LinkButton = ({
   useClipShape('button', paths),
   (
     <Link
+      className={cn(
+        className,
+        'text-center',
+        buttonClassNames(variant, secondary, false),
+      )}
+      {...props}
+    />
+  )
+)
+export const LinkButtonExternal = ({
+  secondary,
+  className,
+  variant = 1,
+  ...props
+}: LinkButtonExternalProps) => (
+  useClipShape('button', paths),
+  (
+    // eslint-disable-next-line jsx-a11y/anchor-has-content
+    <a
       className={cn(
         className,
         'text-center',

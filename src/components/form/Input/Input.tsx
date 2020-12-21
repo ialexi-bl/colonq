@@ -52,7 +52,7 @@ export const InvisibleInput = ({
     type={'text'}
     className={cn(
       className,
-      'outline-none p-2',
+      'outline-none p-2 rounded-none',
       props.readOnly && styles.readonly,
       styles.InvisibleInput,
       state && styles[state],

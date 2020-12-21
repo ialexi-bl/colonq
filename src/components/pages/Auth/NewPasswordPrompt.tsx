@@ -20,30 +20,30 @@ export default function NewPasswordPrompt({
     initialValues: { password: '', passwordRepeat: '' },
     onSubmit: ({ password }) => {
       formik.setStatus('loading')
-      submit(password).then(() => formik.setStatus(null))
+      submit(password).then((success) =>
+        formik.setStatus(success ? 'success' : null),
+      )
     },
     validate,
   })
 
   const loading = formik.status === 'loading'
   return (
-    <Page className={'px-4'}>
+    <Page>
       <PageTitle icon={<User />}>Изменение пароля</PageTitle>
-      <form onSubmit={formik.handleSubmit}>
+      <form className={'px-4'} onSubmit={formik.handleSubmit}>
         <CompoundInput
-          name={'password'}
           type={'password'}
           meta={formik.getFieldMeta('password')}
           props={formik.getFieldProps('password')}
-          title={'Новый пароль'}
+          label={'Новый пароль'}
           variant={2}
         />
         <CompoundInput
-          name={'passwordRepeat'}
-          type={'passwordRepeat'}
+          type={'password'}
           meta={formik.getFieldMeta('passwordRepeat')}
           props={formik.getFieldProps('passwordRepeat')}
-          title={'Повтори пароль'}
+          label={'Повтори пароль'}
           variant={3}
         />
         <LoadingButton

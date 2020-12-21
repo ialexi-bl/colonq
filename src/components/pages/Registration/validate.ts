@@ -14,6 +14,8 @@ export type TempValidationData = {
   timer: null | number
   /** Last email that has been validated */
   email?: string
+  /** Indicates if validation happens after submission */
+  submitting: boolean
 }
 
 /**
@@ -54,7 +56,7 @@ export default function validate(
     errors.email = vemail
   }
   // Verifying that email is not occupied
-  else if (temp.email !== values.email) {
+  else if (!temp.submitting && temp.email !== values.email) {
     const msg = 'Этот email уже занят'
     const occupied = UserApi.isEmailOccupiedCache(values.email)
 
@@ -65,7 +67,6 @@ export default function validate(
       errors.email = 'pending'
       temp.timer = window.setTimeout(
         () => {
-          // TODO: maybe also see 400 errors returned from server as validation fail
           UserApi.isEmailOccupied(values.email).then((occupied) => {
             // If temp.email has changed, it means
             // that another email has been supplied
@@ -90,7 +91,7 @@ export default function validate(
         temp.blur ? 0 : 1000,
       )
     }
-  } else if (formik.errors.email) {
+  } else if (!temp.submitting && formik.errors.email) {
     // Keeping email error so that it doesn't get reset
     // every time another field gets validated
     errors.email = formik.errors.email

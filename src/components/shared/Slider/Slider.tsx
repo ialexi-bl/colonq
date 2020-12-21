@@ -14,7 +14,9 @@ export default function Slider({
   active,
 }: SliderProps) {
   return (
-    <div className={cn(className, 'relative overflow-hidden')}>
+    // Full height is needed because when hidden content is taller
+    // than visible, it becomes cut
+    <div className={cn(className, 'h-full relative overflow-hidden')}>
       <div
         className={cn(
           'duration-500 transform',

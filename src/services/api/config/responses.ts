@@ -106,15 +106,11 @@ declare namespace ApiResponse {
     export type LoginGoogle = UserData
     export type LinkVk = UserData
     export type LinkGoogle = UserData
+    export type VerifyEmail = UserData
 
     type LinkCommon = { id: string }
     export type VkLink = LinkCommon
     export type GoogleLink = LinkCommon
-
-    export type VerifyEmail = {
-      id: string
-      emailVerified: boolean
-    }
 
     export type Logout = null
     export type ResetPassword = null

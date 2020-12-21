@@ -49,6 +49,12 @@ export default class UserApi {
     }
   }
 
+  public static resendEmail(id: string) {
+    return Api.post<null>(Endpoint.auth.resendEmail, {
+      json: { id },
+    })
+  }
+
   public static register(email: string, username: string, password: string) {
     return Api.post<ApiResponse.Auth.Registration>(Endpoint.auth.register, {
       json: { email, username, password },
@@ -76,11 +82,9 @@ export default class UserApi {
    * @param email
    */
   public static registerVkEmail(token: string, email: string) {
-    return Api.authenticate(() =>
-      Api.post<ApiResponse.Auth.RegistrationVk>(
-        Endpoint.auth.registerVkWithEmail,
-        { json: { token, email } },
-      ),
+    return Api.post<ApiResponse.Auth.RegistrationVk>(
+      Endpoint.auth.registerVkWithEmail,
+      { json: { token, email } },
     )
   }
 
@@ -169,15 +173,17 @@ export default class UserApi {
   // TODO: (later) verify token before asking password
   public static submitResetPassword(token: string, password: string) {
     return Api.post<ApiResponse.Auth.ResetPassword>(
-      Endpoint.auth.resetPassword,
+      Endpoint.auth.resetPasswordSubmit,
       { json: { token, password } },
     )
   }
 
   public static verifyEmail(token: string) {
-    return Api.post<ApiResponse.Auth.VerifyEmail>(Endpoint.auth.verifyEmail, {
-      json: { token },
-    })
+    return Api.authenticate(() =>
+      Api.post<ApiResponse.Auth.VerifyEmail>(Endpoint.auth.verifyEmail, {
+        json: { token },
+      }),
+    )
   }
 
   public static logout() {

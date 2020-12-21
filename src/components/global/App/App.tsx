@@ -8,6 +8,7 @@ import NotificationToaster, {
 } from 'components/shared/NotificationToaster'
 import Router from '../Router'
 import ShapesManager from '../ShapesManager'
+import useMediaTriggers from 'hooks/use-media-triggers'
 
 const getMaintenanceComponent = () =>
   import('components/pages/Maintenance').then((x) => x.Maintenance)
@@ -21,6 +22,7 @@ function App({ maintenance }: { maintenance?: boolean }) {
     () => () => null,
   )
 
+  useMediaTriggers()
   useEffect(() => {
     if (!maintenance) return
     getMaintenanceComponent().then((Component) => {

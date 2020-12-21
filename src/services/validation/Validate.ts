@@ -4,7 +4,7 @@ import Regex from 'config/regex'
 namespace Validate {
   export function emailFormat(email: string): string | null {
     if (!email.trim()) {
-      return 'Email нужен обязательно'
+      return 'Введи email'
     }
     if (!Regex.email.test(email)) {
       return 'Это недействительный email'

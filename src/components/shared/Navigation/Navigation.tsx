@@ -7,16 +7,24 @@ import { useSelector } from 'react-redux'
 import List from 'components/icons/List'
 import User from 'components/icons/User'
 import cn from 'clsx'
+import useWasTrue from 'hooks/use-was-true'
+
+export function useIsNavigationVisible() {
+  const status = useSelector((state: AppState) => state.user.status)
+  const visible = useSelector((state: AppState) => state.view.navigationVisible)
+  const loadedOnce = useWasTrue(status !== 'loading')
+
+  return (
+    visible &&
+    (status === 'authenticated' || (status === 'loading' && loadedOnce))
+  )
+}
 
 export default function Navigation() {
   const location = useLocation()
   const visible = useSelector((state: AppState) => state.view.navigationVisible)
-  const status = useSelector((state: AppState) => state.user.status)
 
-  if (status in { unauthenticated: 1, error: 1 }) {
-    return null
-  }
-
+  if (!useIsNavigationVisible()) return null
   return (
     <nav
       className={cn(
@@ -45,7 +53,7 @@ const NavLink = ({
   location: Location
   children: ReactNode
 }) => {
-  const isCurrentLocation = location.pathname.startsWith(to)
+  const isCurrentLocation = location.pathname === to
 
   if (isCurrentLocation) {
     return (

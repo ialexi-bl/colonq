@@ -169,7 +169,7 @@ export default function* userSaga() {
   while (true) {
     const channel: Channel<any> = yield actionChannel(
       ({ type }: { type: string }) => {
-        return type.startsWith('USER/') && !type.startsWith('USER/AUTHENTICATE')
+        return type.startsWith('USER/') && !/USER\/(UN)?AUTHENTICATE/.test(type)
       },
     )
 
@@ -194,6 +194,7 @@ export default function* userSaga() {
 
     // Executing actions that may have started while authentication way being performed
     yield takeEvery(channel, function* (a) {
+      console.log('Dispatching late action', a)
       yield put(a)
     })
     channel.close()

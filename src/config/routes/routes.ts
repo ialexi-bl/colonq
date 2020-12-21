@@ -29,6 +29,11 @@ export const routesArray: RouteOptions[] = [
     getComponent: () => import('components/pages/Auth'),
   },
   {
+    path: '/resend-email',
+    name: 'resendEmail',
+    getComponent: () => import('components/pages/ResendEmail'),
+  },
+  {
     path: '/feedback',
     name: 'feedback',
     getComponent: () => import('components/pages/Feedback'),

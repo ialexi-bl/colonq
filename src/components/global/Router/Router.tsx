@@ -33,8 +33,12 @@ export default function Router({
 }: {
   closeInitialLoading: () => void
 }) {
-  const status = useSelector((state: AppState) => state.user.status)
   const dispatch = useDispatch()
+  const status = useSelector((state: AppState) => state.user.status)
+  const animationsEnabled = useSelector(
+    (state: AppState) => state.view.animationsEnabled,
+  )
+
   const realLocation = useLocation<{ redirectedFromFailedAuth?: boolean }>()
   const {
     visibleLocation,
@@ -80,14 +84,16 @@ export default function Router({
         id={'animation-controller'}
         className={cn(
           'w-full h-full',
-          !firstRenderDone && 'no-animation-start',
+          (!firstRenderDone || !animationsEnabled) && 'no-animation-start',
+          !animationsEnabled && 'no-animation-end',
         )}
       >
         <TransitionGroup component={null}>
           <CSSTransition
-            enter={false}
             key={visibleKey}
-            timeout={VISIBLE_TIMEOUT}
+            exit={animationsEnabled}
+            enter={false}
+            timeout={animationsEnabled ? VISIBLE_TIMEOUT : 0}
             classNames={ROUTE_TRANSITION_CLASSNAME}
           >
             <Routes
@@ -101,7 +107,8 @@ export default function Router({
               // Here as well
               key={realKey}
               exit={false}
-              timeout={REAL_TIMEOUT}
+              enter={animationsEnabled}
+              timeout={animationsEnabled ? REAL_TIMEOUT : 0}
               classNames={ROUTE_TRANSITION_CLASSNAME}
             >
               <Routes

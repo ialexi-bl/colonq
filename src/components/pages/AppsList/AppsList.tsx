@@ -6,7 +6,7 @@ import { RouteComponentProps, app as appRoute, appsChoice } from 'config/routes'
 import { ScrollablePage } from 'components/shared/Page'
 import { push } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
-import { useEffect } from 'react';
+import { useEffect } from 'react'
 import { useElevationClassnames } from 'hooks/use-elevation'
 import Button from 'components/shared/Button'
 import Edit from 'components/icons/Edit'
@@ -101,7 +101,7 @@ const Wrapper = ({ className, children }: BasicProps) => (
     routeElevation={Elevation.appsList}
     className={cn('bg-page', className)}
   >
-    <PageTitle disableBackButton>Темы</PageTitle>
+    <PageTitle icon={null}>Темы</PageTitle>
     {children}
   </ScrollablePage>
 )

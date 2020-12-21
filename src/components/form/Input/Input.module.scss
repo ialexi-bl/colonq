@@ -53,13 +53,13 @@ $placeholder-color: #888;
 }
 
 .invalid {
-  @include border(theme('colors.error.default'));
+  @include border(theme('colors.error.DEFAULT'));
 }
 .valid {
-  @include border(theme('colors.correct.default'));
+  @include border(theme('colors.correct.DEFAULT'));
 }
 .warning {
-  @include border(theme('colors.warning.default'));
+  @include border(theme('colors.warning.DEFAULT'));
 }
 .readonly {
   @include border(theme('colors.disabled.700'));

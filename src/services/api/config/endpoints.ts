@@ -73,7 +73,9 @@ namespace Endpoint {
     token: 'auth/token',
     logout: 'auth/logout',
     verifyEmail: 'auth/verify-email',
+    resendEmail: 'auth/resend-email',
     resetPassword: 'auth/reset-password',
+    resetPasswordSubmit: 'auth/reset-password/submit',
 
     register: 'auth/register',
     registerGoogle: 'auth/google/register',
@@ -108,9 +110,9 @@ namespace Endpoint {
     type: 'login' | 'register' | 'link' | 'editPassword',
   ) {
     const uri =
-      provider === 'google' && Config.IS_DEV
-        ? 'https://aaaaaaaaaaaaaaaaaaaaaaaaa.com/auth'
-        : redirectUri
+      // provider === 'google' && Config.IS_DEV
+      // ? 'https://aaaaaaaaaaaaaaaaaaaaaaaaa.com/auth'
+      redirectUri
     return createUrl(
       { vk: VK_OAUTH_ENDPOINT, google: GOOGLE_OAUTH_ENPOINT }[provider],
       {

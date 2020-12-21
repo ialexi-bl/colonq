@@ -54,7 +54,7 @@ export default function FieldEditor({
     <form onSubmit={formik.handleSubmit}>
       <div className={'flex'}>
         <InvisibleInput
-          className={'flex-1'}
+          className={'flex-1 max-w-sm'}
           readOnly={formik.status === 'loading'}
           state={formik.errors.value ? 'invalid' : null}
           {...formik.getFieldProps('value')}
@@ -86,8 +86,8 @@ export default function FieldEditor({
       summary={form}
       details={
         <div className={'text-base'}>
-          Письмо с ссылкой для подтверждения отправлено на адрес "
-          {formik.values.value}". Перейди по ней, чтобы завершить смену адреса.
+          Письмо с ссылкой для подтверждения отправлено на этот адрес. Пока ты
+          не перейдёшь по ней, адрес не изменится
         </div>
       }
     />

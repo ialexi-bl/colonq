@@ -8,7 +8,7 @@ import { executeAuthorizedMethod, loadApps } from 'store/user'
 import { notifyErrorObject } from 'store/view'
 import { push } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router'
 import Accordion from 'components/shared/Accordion/Accordion'
 import Continue from 'components/icons/Continue'
@@ -88,7 +88,7 @@ export default function AppsChoice({
       routeElevation={Elevation.appsChoice}
       className={'route-overlay bg-page'}
     >
-      <PageTitle disableBackButton={location.state?.noBack}>
+      <PageTitle icon={location.state?.noBack ? null : undefined}>
         Выбор тем
       </PageTitle>
       <p className={'px-4 mb-2'}>

@@ -2,14 +2,14 @@ import { ApiErrorName, EmailAction, SocialAction } from 'services/api/config'
 import { AppState, MixedDispatch, ThunkAction } from 'store/types'
 import { HttpError } from 'services/errors'
 import { UserApi } from 'services/api'
+import { appsList, login, profile, register } from 'config/routes'
 import { capitalize } from 'util/capitalize'
 import { executeAuthorizedMethod } from 'store/user'
 import { getTokenField } from 'util/jwt'
-import { login, profile } from 'config/routes'
 import { notifyError, notifyErrorObject, notifyInfo } from 'store/view'
 import { push, replace } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router'
 
 export type AuthAction =
@@ -31,17 +31,24 @@ export default function useAuthActionHandler(): AuthAction {
   const location = useLocation()
   const dispatch = useDispatch<MixedDispatch>()
   const userStatus = useSelector((state: AppState) => state.user.status)
+  const processed = useRef(false)
   const [action, setAction] = useState<AuthAction>(null)
 
   useEffect(() => {
-    if (userStatus === 'loading') return
+    if (processed.current || userStatus === 'loading') return
+
+    processed.current = true
     const query = new URLSearchParams(location.search)
 
     const authed = userStatus === 'authenticated'
     if (query.has('action')) {
-      dispatch(processVerificationFromEmail(query, authed)).then(setAction)
+      dispatch(processVerificationFromEmail(query, authed)).then(
+        (a) => a && setAction(a),
+      )
     } else {
-      dispatch(processCallbackAction(query, authed)).then(setAction)
+      dispatch(processCallbackAction(query, authed)).then(
+        (a) => a && setAction(a),
+      )
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userStatus])
@@ -69,7 +76,7 @@ function processCallbackAction(
           query.entries(),
         )}"`,
       )
-      dispatch(replace(authenticated ? profile() : login()))
+      dispatch(replace(authenticated ? appsList() : login()))
       return null
     }
 
@@ -79,7 +86,7 @@ function processCallbackAction(
       dispatch(
         notifyError('Чтобы связать аккаунт с социальной сетью, нужно войти'),
       )
-      dispatch(replace(profile()))
+      dispatch(replace(login()))
       return null
     }
     if (
@@ -88,8 +95,9 @@ function processCallbackAction(
       ) &&
       authenticated
     ) {
-      dispatch(notifyError('Нельзя войти дважды'))
+      dispatch(notifyError('Вход уже выполнен'))
       dispatch(replace(profile()))
+      return null
     }
 
     try {
@@ -158,16 +166,24 @@ function processCallbackAction(
           }
 
           // Message doesn't need to be displayed here
-          dispatch(replace(profile()))
+          dispatch(replace(appsList()))
           break
         }
         default: {
-          dispatch(replace(authenticated ? profile() : login()))
+          dispatch(replace(authenticated ? appsList() : login()))
         }
       }
     } catch (e) {
       dispatch(notifyErrorObject(e))
-      dispatch(replace(authenticated ? profile() : login()))
+      dispatch(
+        replace(
+          authenticated
+            ? appsList()
+            : action === SocialAction.SOCIAL_REGISTER
+            ? register()
+            : login(),
+        ),
+      )
     }
 
     return null
@@ -194,7 +210,7 @@ function processVerificationFromEmail(
     try {
       switch (action) {
         case EmailAction.VERIFY_EMAIL: {
-          await UserApi.verifyEmail(token)
+          await dispatch(UserApi.verifyEmail(token))
 
           dispatch(notifyInfo('Адрес подтверждён, теперь ты можешь войти'))
           dispatch(
@@ -228,12 +244,12 @@ function processVerificationFromEmail(
           }
         }
         default: {
-          dispatch(replace(authenticated ? profile() : login()))
+          dispatch(replace(authenticated ? appsList() : login()))
         }
       }
     } catch (e) {
       dispatch(notifyErrorObject(e))
-      dispatch(replace(authenticated ? profile() : login()))
+      dispatch(replace(authenticated ? appsList() : login()))
     }
     return null
   }
@@ -281,6 +297,7 @@ function submitNewPassword(
           UserApi.setPasswordSocial(provider, code, redirectUri, password),
         ),
       )
+      dispatch(notifyInfo('Пароль изменён'))
       dispatch(push(profile()))
       return true
     } catch (e) {
@@ -303,8 +320,6 @@ function submitVkEmail(
   return async (dispatch) => {
     try {
       await UserApi.registerVkEmail(token, email)
-      dispatch(notifyInfo('Пароль изменён'))
-      dispatch(push(login()))
       return true
     } catch (e) {
       dispatch(notifyErrorObject(e))

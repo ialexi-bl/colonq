@@ -4,12 +4,16 @@ import ErrorMessage from 'components/form/ErrorMessage'
 import Input from 'components/form/Input'
 import cn from 'clsx'
 
-export type CompoundInputProps = HTMLProps.input & {
+export type CompoundInputProps = Omit<
+  HTMLProps.input,
+  // These ones must come from formik props
+  'name' | 'value'
+> & {
   password?: boolean
   loading?: boolean
   warning?: string | false | null | undefined
   variant?: 1 | 2 | 3
-  title: string
+  label: string
   props: FieldInputProps<string>
   meta: FieldMetaProps<string>
 }
@@ -21,14 +25,13 @@ const CompoundInput = memo(
     loading,
     warning,
     variant,
+    label,
     meta,
-    title,
-    name,
     props,
     ...rest
   }: CompoundInputProps) => (
     <label className={cn(className, 'block mb-4')}>
-      <span className={'mb-2'}>{title}</span>
+      <span className={'mb-2'}>{label}</span>
       <Input
         // TODO: add ability to show password
         className={'w-full'}

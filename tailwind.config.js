@@ -1,6 +1,7 @@
 module.exports = {
   purge: ['./src/**/*.html', './src/**/*.tsx', './src/**/*.scss'],
   theme: {
+    container: { center: true },
     extend: {
       colors: {
         disabled: {
@@ -35,20 +36,20 @@ module.exports = {
           1000: '#3a0065',
         },
         correct: {
-          default: '#19963c',
+          DEFAULT: '#19963c',
           active: '#158133',
           hover: '#20aa47',
         },
         error: {
-          default: '#ab1d1d',
+          DEFAULT: '#ab1d1d',
           hover: '#bb2424',
           active: '#991616',
         },
         warning: {
-          default: '#ccbc38',
+          DEFAULT: '#ccbc38',
         },
         transparent: {
-          default: 'transparent',
+          DEFAULT: 'transparent',
           active: 'rgba(0, 0, 0, 0.1)',
           hover: 'rgba(255, 255, 255, 0.03)',
         },
@@ -82,12 +83,16 @@ module.exports = {
       },
     },
   },
+  variants: {
+    extend: {
+      textColor: ['active'],
+    },
+  },
   future: {
     removeDeprecatedGapUtilities: true,
     purgeLayersByDefault: true,
     standardFontWeights: true,
     defaultLineHeights: true,
   },
-  variants: {},
   plugins: [],
 }

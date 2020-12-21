@@ -1,4 +1,6 @@
 import { useFormik } from 'formik'
+import CompoundInput from 'components/shared/CompoundInput'
+import LoadingButton from 'components/shared/LoadingButton'
 import Validate from 'services/validation'
 
 type FormValues = {
@@ -28,9 +30,44 @@ export default function PasswordForm() {
       } else if (newPasswordRepeat !== newPassword) {
         errors.newPasswordRepeat = 'Пароли не совпадают'
       }
+      return errors
     },
     onSubmit: () => {},
   })
 
-  return <form onSubmit={formik.handleSubmit}></form>
+  const loading = formik.status === 'loading'
+  return (
+    <form onSubmit={formik.handleSubmit}>
+      <CompoundInput
+        type={'password'}
+        meta={formik.getFieldMeta('currentPassword')}
+        props={formik.getFieldProps('currentPassword')}
+        label={'Текущий пароль'}
+        loading={loading}
+      />
+      <CompoundInput
+        type={'password'}
+        meta={formik.getFieldMeta('newPassword')}
+        props={formik.getFieldProps('newPassword')}
+        label={'Новый пароль'}
+        loading={loading}
+        variant={3}
+      />
+      <CompoundInput
+        type={'password'}
+        meta={formik.getFieldMeta('newPasswordRepeat')}
+        props={formik.getFieldProps('newPasswordRepeat')}
+        label={'Повтори новый пароль'}
+        loading={loading}
+        variant={2}
+      />
+      <LoadingButton
+        disabled={Object.keys(formik.errors).length > 0}
+        loading={loading}
+        type={'submit'}
+      >
+        Продолжить
+      </LoadingButton>
+    </form>
+  )
 }

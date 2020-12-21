@@ -1,11 +1,9 @@
 import Page from 'components/shared/Page'
-import TitleLine from 'components/shared/TitleLine'
 
 const Maintenance = () => (
+  // TODO: style
   <Page>
-    <TitleLine>
-      <p>Сайт на техобслуживании</p>
-    </TitleLine>
+    <p>Сайт на техобслуживании</p>
   </Page>
 )
 export default Maintenance

@@ -5,11 +5,11 @@
   transform: translate(0);
   z-index: 1;
 
-  @include route-transition.self(exit-to, exit-done) {
+  // @include route-transition.self(exit-to, exit-done) {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     overflow: hidden;
-  }
+  // }
 }

@@ -3,6 +3,8 @@ import {
   closeLoading,
   closeNotification,
   closePageSpecificLoading,
+  disableAnimations,
+  enableAnimations,
   hideNavigation,
   notifyError,
   notifyInfo,
@@ -11,6 +13,7 @@ import {
   showNavigation,
 } from './actions'
 import { createReducer } from 'store/util'
+import Preferences from 'util/preferences'
 
 const initialState: ViewState = {
   // Needed for `App` to check authentication
@@ -20,6 +23,7 @@ const initialState: ViewState = {
   navigationVisible: true,
   currentElevation: { value: Infinity, id: '' },
   previousElevation: { value: Infinity, id: '' },
+  animationsEnabled: Preferences.animationsEnabled(),
 }
 
 export default createReducer<ViewState>(
@@ -53,6 +57,15 @@ export default createReducer<ViewState>(
     [String(hideNavigation)]: (state) => ({
       ...state,
       navigationVisible: false,
+    }),
+
+    [String(enableAnimations)]: (state) => ({
+      ...state,
+      animationsEnabled: true,
+    }),
+    [String(disableAnimations)]: (state) => ({
+      ...state,
+      animationsEnabled: false,
     }),
 
     [String(notifyInfo)]: (state, text: string) => ({

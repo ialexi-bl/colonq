@@ -1,6 +1,7 @@
 import { ScrollbarProps, Scrollbars } from 'react-custom-scrollbars'
 import { forwardRef } from 'react'
 import { renderScrollThumb, renderScrollTrack } from '../render-scroll'
+import { useIsNavigationVisible } from '../Navigation'
 import cn from 'clsx'
 import styles from './Page.module.scss'
 
@@ -16,7 +17,8 @@ const Page = ({ className, routeElevation, ...props }: PageProps) => (
       // pt-16 is for navigation
       // container cannot be used here because some apps need full width blocks
       // For the same reason background is not set
-      'h-full relative md:pt-16 overflow-hidden',
+      'h-full relative overflow-hidden',
+      useIsNavigationVisible() && 'sm:pt-16',
       className,
     )}
     style={{ zIndex: routeElevation }}

@@ -1,3 +1,4 @@
+import TextWithLinks from 'components/shared/TextWithLinks/TextWithLinks'
 import cn from 'clsx'
 import styles from './ErrorMessage.module.scss'
 import useDifferentPrevious from 'hooks/use-different-previous'
@@ -36,7 +37,7 @@ export default function ErrorMessage({
   return (
     <div
       className={cn(
-        'overflow-hidden relative w-full',
+        'overflow-hidden relative w-full font-medium',
         className,
         styles.Container,
         message && styles.active,
@@ -52,7 +53,7 @@ export default function ErrorMessage({
             color(previous),
           )}
         >
-          {text(previous)}
+          <TextWithLinks>{text(previous)}</TextWithLinks>
         </div>
       )}
       {message && (
@@ -60,7 +61,7 @@ export default function ErrorMessage({
           key={text(message)}
           className={cn(styles.ErrorMessage, color(message))}
         >
-          {text(message)}
+          <TextWithLinks>{text(message)}</TextWithLinks>
         </div>
       )}
     </div>

@@ -1,9 +1,10 @@
 export interface ViewState {
   loading: string[]
   notification: null | NotificationDescription
+  currentElevation: ElevationState
   navigationVisible: boolean
   previousElevation: ElevationState
-  currentElevation: ElevationState
+  animationsEnabled: boolean
 }
 export type ElevationState = {
   value: number

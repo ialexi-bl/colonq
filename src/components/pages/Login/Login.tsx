@@ -4,19 +4,27 @@ import { FormikHelpers, useFormik } from 'formik'
 import { HttpError } from 'services/errors'
 import { LinkButton } from 'components/shared/Button'
 import { MixedDispatch } from 'store/types'
-import { RouteComponentProps, appsList, register } from 'config/routes'
+import {
+  RouteComponentProps,
+  appsList,
+  register,
+  resetPassword,
+} from 'config/routes'
+import { ScrollablePage } from 'components/shared/Page'
 import { UserApi } from 'services/api'
 import { notifyErrorObject } from 'store/view'
 import { push } from 'connected-react-router'
 import { useDispatch } from 'react-redux'
 import { useEffect, useState } from 'react'
+import { useElevationClassnames } from 'hooks/use-elevation'
 import { useLocation } from 'react-router'
 import CompoundInput from 'components/shared/CompoundInput'
+import ErrorMessage from 'components/form/ErrorMessage'
 import LoadingButton from 'components/shared/LoadingButton'
-import Page from 'components/shared/Page'
 import PageTitle from 'components/shared/PageTitle'
 import SocialLoginButton from 'components/form/SocialLoginButton'
 import User from 'components/icons/User'
+import cn from 'clsx'
 import useIsGuest from 'hooks/use-is-guest'
 
 type FormValues = {
@@ -34,10 +42,11 @@ export default function Login({ setProgress }: RouteComponentProps) {
 
   const login = async (
     values: FormValues,
-    formikBag: FormikHelpers<FormValues>,
+    formik: FormikHelpers<FormValues>,
   ) => {
     if (loading) return
     setLoading(true)
+    formik.setStatus(null)
 
     try {
       await dispatch(UserApi.login(values.login, values.password))
@@ -45,17 +54,7 @@ export default function Login({ setProgress }: RouteComponentProps) {
     } catch (e) {
       setLoading(false)
       if (e instanceof HttpError) {
-        const name = await e.getApiName()
-        if (name === ApiErrorName.BAD_CREDENTIALS) {
-          return formikBag.setStatus(
-            `Нет пользователя с таким логином и паролем ${CUTE_FACE}`,
-          )
-        }
-        if (name === ApiErrorName.UNPROCESSABLE_ENTITY) {
-          return formikBag.setStatus(
-            `Сначала нужно подтвердить адрес электронной почты`,
-          )
-        }
+        return formik.setStatus(await e.getApiMessage())
       }
 
       dispatch(notifyErrorObject(e))
@@ -65,8 +64,8 @@ export default function Login({ setProgress }: RouteComponentProps) {
   }
   const formik = useFormik<FormValues>({
     initialValues: {
-      login: typeof email === 'string' ? email : '',
-      password: typeof password === 'string' ? password : '',
+      login: typeof email === 'string' ? email : 'alex',
+      password: typeof password === 'string' ? password : 'sofia9841263',
     },
     validate: ({ login, password }) => {
       const errors: Partial<FormValues> = {}
@@ -76,6 +75,9 @@ export default function Login({ setProgress }: RouteComponentProps) {
     },
     onSubmit: login,
   })
+  const elevationCn = useElevationClassnames(Elevation.login, {
+    same: 'left',
+  })
 
   if (!useIsGuest()) {
     return null
@@ -83,18 +85,20 @@ export default function Login({ setProgress }: RouteComponentProps) {
 
   const autofocusPassword = formik.values.login !== ''
   return (
-    <Page routeElevation={Elevation.login} className={'bg-page route-left'}>
+    <ScrollablePage
+      routeElevation={Elevation.login}
+      className={cn('bg-page', elevationCn)}
+    >
       <PageTitle icon={<User />}>Вход</PageTitle>
 
-      <div className={'max-w-xl mx-auto px-4 overflow-hidden'}>
+      <div className={'max-w-xl mx-auto px-4 pb-64 overflow-hidden'}>
         <form onSubmit={formik.handleSubmit}>
           <CompoundInput
             autoFocus={!autofocusPassword}
             loading={loading}
             variant={2}
-            title={'Email или имя пользователя'}
+            label={'Email или имя пользователя'}
             props={formik.getFieldProps('login')}
-            name={'login'}
             meta={formik.getFieldMeta('login')}
           />
           <CompoundInput
@@ -102,14 +106,15 @@ export default function Login({ setProgress }: RouteComponentProps) {
             loading={loading}
             variant={3}
             props={formik.getFieldProps('password')}
-            title={'Пароль'}
-            name={'password'}
+            label={'Пароль'}
+            type={'password'}
             meta={formik.getFieldMeta('password')}
             warning={
               /(^\s+)|(\s+$)/.test(formik.values.password) &&
               'Пароль содержит пробелы в начале или в конце. Исправь, если они оказались там случайно'
             }
           />
+          <ErrorMessage className={'mb-4'} message={formik.status} />
           <LoadingButton
             type={'submit'}
             variant={3}
@@ -137,7 +142,7 @@ export default function Login({ setProgress }: RouteComponentProps) {
           />
           <LinkButton
             className={'mb-2 block max-w-sm w-full'}
-            to={register()}
+            to={resetPassword()}
             secondary
           >
             Восстановить пароль
@@ -152,6 +157,6 @@ export default function Login({ setProgress }: RouteComponentProps) {
           </LinkButton>
         </div>
       </div>
-    </Page>
+    </ScrollablePage>
   )
 }

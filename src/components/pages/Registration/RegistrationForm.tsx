@@ -1,7 +1,6 @@
-import { LinkButton } from 'components/shared/Button'
 import { MixedDispatch } from 'store/types'
 import { UserApi } from 'services/api'
-import { index, login } from 'config/routes'
+import { login } from 'config/routes'
 import { notifyErrorObject } from 'store/view'
 import { push } from 'connected-react-router'
 import { useDispatch } from 'react-redux'
@@ -10,6 +9,7 @@ import { useRef, useState } from 'react'
 import CompoundInput from 'components/shared/CompoundInput'
 import LoadingButton from 'components/shared/LoadingButton'
 import Slider from 'components/shared/Slider/Slider'
+import VerifyEmailMessage from 'components/shared/VerifyEmailMessage/VerifyEmailMessage'
 import cn from 'clsx'
 import validate, {
   RegistrationFormValues,
@@ -28,6 +28,7 @@ export default function RegistrationForm({
   const temp = useRef<TempValidationData>({
     blur: false,
     timer: null,
+    submitting: false,
   })
 
   const register = async (values: RegistrationFormValues) => {
@@ -54,7 +55,7 @@ export default function RegistrationForm({
         setLoading?.(false)
       }
     } catch (e) {
-      // TODO: check if some errors may be handled or modify interface
+      // TODO: check if some errors may be handled or modify ui
       dispatch(notifyErrorObject(e))
       setLoading?.(false)
       setStatus(null)
@@ -69,8 +70,7 @@ export default function RegistrationForm({
     },
     onSubmit: register,
     validate: (values) => {
-      // TODO: ask on stackoverflow why this code produces error when
-      // TODO: not assigning to a variable
+      // TODO: ask on stackoverflow why this code produces error when not assigning to a variable
       const errors = validate(values, temp.current, formik)
       return errors
     },
@@ -87,20 +87,22 @@ export default function RegistrationForm({
             'duration-500 transform',
             status === 'verify-email' && '-translate-x-full opacity-0',
           )}
-          onSubmit={formik.handleSubmit}
+          onSubmit={(e) => {
+            temp.current.submitting = true
+            formik.handleSubmit(e)
+            temp.current.submitting = false
+          }}
         >
           <CompoundInput
-            name={'username'}
-            title={'Имя пользователя'}
+            label={'Имя пользователя'}
             meta={formik.getFieldMeta('username')}
             props={formik.getFieldProps('username')}
             loading={loading}
             variant={2}
           />
           <CompoundInput
-            name={'email'}
             type={'email'}
-            title={'Email'}
+            label={'Email'}
             meta={formik.getFieldMeta('email')}
             props={formik.getFieldProps('email')}
             loading={loading}
@@ -114,8 +116,7 @@ export default function RegistrationForm({
             }}
           />
           <CompoundInput
-            name={'password'}
-            title={'Пароль'}
+            label={'Пароль'}
             loading={loading}
             meta={formik.getFieldMeta('password')}
             props={formik.getFieldProps('password')}
@@ -123,8 +124,7 @@ export default function RegistrationForm({
             password
           />
           <CompoundInput
-            name={'passwordRepeat'}
-            title={'Повтори пароль'}
+            label={'Повтори пароль'}
             meta={formik.getFieldMeta('passwordRepeat')}
             props={formik.getFieldProps('passwordRepeat')}
             loading={loading}
@@ -133,7 +133,9 @@ export default function RegistrationForm({
           />
 
           <LoadingButton
-            disabled={status !== null || Object.keys(formik.errors).length > 0}
+            disabled={
+              status === 'verify-email' || Object.keys(formik.errors).length > 0
+            }
             loading={status === 'loading'}
             variant={3}
             type={'submit'}
@@ -142,19 +144,7 @@ export default function RegistrationForm({
           </LoadingButton>
         </form>
       }
-      extraView={
-        <div className={'flex flex-col justify-center'}>
-          <h2 className={'text-4xl mb-4'}>Подтвеждение почты</h2>
-          <p className={'leading-6 mb-8'}>
-            На адрес <strong>{formik.values.email}</strong> должно прийти письмо
-            с ссылкой для подтверждения почты. Перейди по ней, чтобы завершить
-            регистрацию.
-          </p>
-          <LinkButton className={'max-w-xs min-w-48 mx-auto'} to={index()}>
-            На главную
-          </LinkButton>
-        </div>
-      }
+      extraView={<VerifyEmailMessage email={formik.values.email} />}
     />
   )
 }
