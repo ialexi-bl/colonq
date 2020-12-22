@@ -1,5 +1,4 @@
 import { disableAnimations, enableAnimations } from 'store/view'
-import { match } from 'path-to-regexp'
 import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 

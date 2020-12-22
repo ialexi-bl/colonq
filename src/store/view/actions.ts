@@ -41,7 +41,6 @@ export const enableAnimations = createAction(ViewAction.ENABLE_ANIMATIONS)
 export const notifyInfo = createAction<string>(ViewAction.NOTIFY_INFO)
 export const notifyError = createAction<string>(ViewAction.NOTIFY_ERROR)
 export const closeNotification = createAction(ViewAction.CLOSE_NOTIFICATION)
-console.log(notifyInfo('Hello world, [link to login](/login)'))
 
 export const notifyHttpError = (error: HttpError): ThunkAction<void> => async (
   dispatch,

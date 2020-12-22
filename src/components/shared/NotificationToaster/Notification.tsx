@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import { NotificationType } from 'store/view'
 import { useIsNavigationVisible } from '../Navigation'
 import Close from 'components/icons/Close'

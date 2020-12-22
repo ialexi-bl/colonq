@@ -170,11 +170,17 @@ export default class UserApi {
     )
   }
 
-  // TODO: (later) verify token before asking password
   public static submitResetPassword(token: string, password: string) {
     return Api.post<ApiResponse.Auth.ResetPassword>(
       Endpoint.auth.resetPasswordSubmit,
       { json: { token, password } },
+    )
+  }
+
+  public static validateResetPasswordToken(token: string) {
+    return Api.post<ApiResponse.Auth.ResetPasswordValidate>(
+      Endpoint.auth.resetPasswordValidate,
+      { json: { token } },
     )
   }
 
@@ -190,7 +196,7 @@ export default class UserApi {
     document.cookie = `${Config.CHECK_COOKIE}=; max-age=0`
 
     // Even if this request fails, because check cookie is deleted
-    // user won't be able to log in
+    // user will be logged out
     return Api.post<ApiResponse.Auth.Logout>(Endpoint.auth.logout).catch(
       (): ApiResponse.Success<ApiResponse.Auth.Logout> => ({
         success: true,

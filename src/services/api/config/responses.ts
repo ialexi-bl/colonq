@@ -99,6 +99,14 @@ declare namespace ApiResponse {
       providers: string[]
       emailVerified: boolean
     }
+    export type ResetPasswordValidate =
+      | {
+          valid: true
+        }
+      | {
+          valid: false
+          message: string
+        }
     export type RegistrationVk = Registration & UserData
     export type RegistrationGoogle = Registration & UserData
     export type Login = UserData

@@ -11,6 +11,7 @@ import { push, replace } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router'
+import validate from '../Registration/validate'
 
 export type AuthAction =
   | null
@@ -90,10 +91,10 @@ function processCallbackAction(
       return null
     }
     if (
+      authenticated &&
       ![SocialAction.SOCIAL_LINK, SocialAction.SOCIAL_EDIT_PASSWORD].includes(
         action,
-      ) &&
-      authenticated
+      )
     ) {
       dispatch(notifyError('Вход уже выполнен'))
       dispatch(replace(profile()))
@@ -236,6 +237,12 @@ function processVerificationFromEmail(
           break
         }
         case EmailAction.RESET_PASSWORD: {
+          const { data } = await UserApi.validateResetPasswordToken(token)
+          if (!data.valid) {
+            dispatch(notifyError(data.message))
+            dispatch(replace(login()))
+          }
+
           return {
             type: 'prompt-reset-password',
             submit: (password) => {

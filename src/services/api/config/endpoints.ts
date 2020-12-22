@@ -76,6 +76,7 @@ namespace Endpoint {
     resendEmail: 'auth/resend-email',
     resetPassword: 'auth/reset-password',
     resetPasswordSubmit: 'auth/reset-password/submit',
+    resetPasswordValidate: 'auth/reset-password/validate-token',
 
     register: 'auth/register',
     registerGoogle: 'auth/google/register',
