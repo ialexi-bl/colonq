@@ -2,6 +2,7 @@ import { AppState } from 'store/types'
 import { CUTE_FACE, Elevation } from 'config/view'
 import { Category, PlainApp, User, loadApps } from 'store/user'
 import { Fal } from 'components/shared/Fab'
+import { Helmet } from 'react-helmet'
 import { RouteComponentProps, app as appRoute, appsChoice } from 'config/routes'
 import { ScrollablePage } from 'components/shared/Page'
 import { push } from 'connected-react-router'
@@ -55,24 +56,32 @@ export default function AppsList({
 
   if (hadError && user.appsStatus !== 'loaded') {
     return (
-      <LoadingError
-        className={elevationCn}
-        title={`Не удалось загрузить приложения ${CUTE_FACE}`}
-        actions={
-          <Button
-            className={'min-w-64'}
-            disabled={user.appsStatus !== 'error'}
-            onClick={() => dispatch(loadApps())}
-          >
-            Попробовать ещё раз
-          </Button>
-        }
-      />
+      <>
+        <Helmet>
+          <title>Ошибка - Список приложений</title>
+        </Helmet>
+        <LoadingError
+          className={elevationCn}
+          title={`Не удалось загрузить приложения ${CUTE_FACE}`}
+          actions={
+            <Button
+              className={'min-w-64'}
+              disabled={user.appsStatus !== 'error'}
+              onClick={() => dispatch(loadApps())}
+            >
+              Попробовать ещё раз
+            </Button>
+          }
+        />
+      </>
     )
   }
 
   return (
     <Wrapper className={elevationCn}>
+      <Helmet>
+        <title>Список приложений</title>
+      </Helmet>
       <p className={'px-4 mb-12'}>Нажми на тему, чтобы начать занятие</p>
 
       <div className={'px-4 pb-64'}>

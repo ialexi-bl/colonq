@@ -11,7 +11,6 @@ import { push, replace } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router'
-import validate from '../Registration/validate'
 
 export type AuthAction =
   | null
@@ -36,6 +35,7 @@ export default function useAuthActionHandler(): AuthAction {
   const [action, setAction] = useState<AuthAction>(null)
 
   useEffect(() => {
+    console.log(processed.current, userStatus)
     if (processed.current || userStatus === 'loading') return
 
     processed.current = true

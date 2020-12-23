@@ -11,6 +11,11 @@ export class NetworkError extends ColonqError {
     super(ErrorName.NETWORK_ERROR, message)
   }
 }
+export class NotificationsError extends ColonqError {
+  constructor(message = 'Не удалось получить доступ к уведомлениям') {
+    super(ErrorName.NOTIFICATIONS_ERROR, message)
+  }
+}
 export class UnauthenticatedError extends ColonqError {
   constructor(message = 'Требуется авторизация') {
     super(ErrorName.UNAUTHENTICATED_ERROR, message)

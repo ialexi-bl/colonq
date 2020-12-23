@@ -30,6 +30,11 @@ namespace Endpoint {
   }
 
   /**
+   * Notifications subscription
+   */
+  export const subscription = 'subscription'
+
+  /**
    * Apps settings
    */
   export const settings = {

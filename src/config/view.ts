@@ -9,6 +9,7 @@ export namespace Elevation {
   export const index = 200
   export const notFound = 100
   export const appNotFound = 100
+  export const feedback = 80
 
   export const session = 70
   export const appsSettings = 40

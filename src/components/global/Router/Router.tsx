@@ -89,19 +89,6 @@ export default function Router({
         )}
       >
         <TransitionGroup component={null}>
-          <CSSTransition
-            key={visibleKey}
-            exit={animationsEnabled}
-            enter={false}
-            timeout={animationsEnabled ? VISIBLE_TIMEOUT : 0}
-            classNames={ROUTE_TRANSITION_CLASSNAME}
-          >
-            <Routes
-              visible={firstRenderDone ? true : visible}
-              location={visibleLocation}
-              setProgress={setProgress}
-            />
-          </CSSTransition>
           {visibleLocation !== realLocation && (
             <CSSTransition
               // Here as well
@@ -118,6 +105,19 @@ export default function Router({
               />
             </CSSTransition>
           )}
+          <CSSTransition
+            key={visibleKey}
+            exit={animationsEnabled}
+            enter={false}
+            timeout={animationsEnabled ? VISIBLE_TIMEOUT : 0}
+            classNames={ROUTE_TRANSITION_CLASSNAME}
+          >
+            <Routes
+              visible={firstRenderDone ? true : visible}
+              location={visibleLocation}
+              setProgress={setProgress}
+            />
+          </CSSTransition>
         </TransitionGroup>
       </main>
     </>

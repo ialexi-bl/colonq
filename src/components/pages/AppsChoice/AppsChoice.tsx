@@ -2,24 +2,28 @@ import { ApiResponse } from 'services/api/config'
 import { AppState, MixedDispatch } from 'store/types'
 import { AppsApi, UserApi } from 'services/api'
 import { Elevation } from 'config/view'
+import { Helmet } from 'react-helmet'
 import { RouteComponentProps, appsList } from 'config/routes'
 import { ScrollablePage } from 'components/shared/Page'
 import { executeAuthorizedMethod, loadApps } from 'store/user'
-import { notifyErrorObject } from 'store/view'
+import { notifyErrorObject, notifyInfo } from 'store/view'
 import { push } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router'
 import Accordion from 'components/shared/Accordion/Accordion'
+import Button from 'components/shared/Button'
 import Continue from 'components/icons/Continue'
 import DynamicIcon from 'components/icons/DynamicIcon'
 import Fab from 'components/shared/Fab/Fab'
+import LoadingError from 'components/shared/LoadingError'
 import PageTitle from 'components/shared/PageTitle'
 import TextContainer from 'components/shared/TextContainer'
 import ThemeCard from 'components/shared/ThemeCard'
 import useElevation from 'hooks/use-elevation'
 import useIsAuthenticated from 'hooks/use-is-authenticated'
 import useItemsToggler from 'hooks/use-items-toggler'
+import useWasTrue from 'hooks/use-was-true'
 
 /**
  * Displays page for selecting apps.
@@ -36,9 +40,10 @@ export default function AppsChoice({
   const dispatch = useDispatch<MixedDispatch>()
   const location = useLocation<{ noBack?: boolean } | undefined>()
   const user = useSelector((state: AppState) => state.user)
+  const wasError = useWasTrue(user.appsStatus === 'error')
 
   const [categories, setCategories] = useState<
-    null | ApiResponse.Apps.Category[]
+    null | 'error' | 'loading' | ApiResponse.Apps.Category[]
   >(null)
   const [visibleItems, toggleVisible] = useItemsToggler()
   const [chosen, toggle] = useItemsToggler()
@@ -55,14 +60,20 @@ export default function AppsChoice({
     }
   }
 
+  const load = () => {
+    AppsApi.getAppsList()
+      .then((apps) => setCategories(apps.data.categories))
+      .catch((e) => {
+        setCategories('error')
+        dispatch(notifyErrorObject(e))
+      })
+      .then(() => setProgress(100))
+  }
   useEffect(() => {
     if (user.appsStatus !== 'loaded') {
       dispatch(loadApps())
     }
-    AppsApi.getAppsList().then((apps) => {
-      setCategories(apps.data.categories)
-      setProgress(100)
-    })
+    load()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   useEffect(() => {
@@ -79,15 +90,61 @@ export default function AppsChoice({
   }, [toggle, user.appsStatus])
   useElevation(Elevation.appsChoice)
 
-  if (!useIsAuthenticated() || !visible || !categories) {
+  if (
+    !useIsAuthenticated() ||
+    !visible ||
+    !categories ||
+    (!wasError && user.appsStatus !== 'loaded')
+  ) {
     return null
   }
 
+  if (
+    categories === 'error' ||
+    categories === 'loading' ||
+    user.appsStatus !== 'loaded'
+  ) {
+    const userAppsFailed = user.appsStatus !== 'loaded'
+    console.log(
+      userAppsFailed,
+      user.appsStatus === 'loading',
+      categories === 'loading',
+    )
+    return (
+      <Wrapper>
+        <Helmet>
+          <title>Ошибка - Выбор приложений</title>
+        </Helmet>
+        <LoadingError
+          title={'Не удалось загрузить приложения'}
+          actions={
+            <Button
+              disabled={
+                userAppsFailed
+                  ? user.appsStatus === 'loading'
+                  : categories === 'loading'
+              }
+              onClick={() => {
+                if (userAppsFailed) dispatch(loadApps())
+                if (categories === 'error') {
+                  setCategories('loading')
+                  load()
+                }
+              }}
+            >
+              Попробовать ещё раз
+            </Button>
+          }
+        />
+      </Wrapper>
+    )
+  }
+
   return (
-    <ScrollablePage
-      routeElevation={Elevation.appsChoice}
-      className={'route-overlay bg-page'}
-    >
+    <Wrapper>
+      <Helmet>
+        <title>Выбор приложений</title>
+      </Helmet>
       <PageTitle icon={location.state?.noBack ? null : undefined}>
         Выбор тем
       </PageTitle>
@@ -135,6 +192,15 @@ export default function AppsChoice({
           icon={<Continue />}
         />
       </div>
-    </ScrollablePage>
+    </Wrapper>
   )
 }
+
+const Wrapper = ({ children }: BasicProps) => (
+  <ScrollablePage
+    routeElevation={Elevation.appsChoice}
+    className={'route-overlay bg-page'}
+  >
+    {children}
+  </ScrollablePage>
+)

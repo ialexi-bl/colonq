@@ -1,5 +1,6 @@
 import { Elevation } from 'config/view'
 import { FormikHelpers, useFormik } from 'formik'
+import { Helmet } from 'react-helmet'
 import { HttpError } from 'services/errors'
 import { LinkButton } from 'components/shared/Button'
 import { MixedDispatch } from 'store/types'
@@ -88,6 +89,9 @@ export default function Login({ setProgress }: RouteComponentProps) {
       routeElevation={Elevation.login}
       className={cn('bg-page', elevationCn)}
     >
+      <Helmet>
+        <title>Вход</title>
+      </Helmet>
       <PageTitle icon={<User />}>Вход</PageTitle>
 
       <div className={'max-w-xl mx-auto px-4 pb-64 overflow-hidden'}>

@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet'
 import { useFormik } from 'formik'
 import CompoundInput from 'components/shared/CompoundInput'
 import LoadingButton from 'components/shared/LoadingButton'
@@ -30,6 +31,9 @@ export default function NewPasswordPrompt({
   const loading = formik.status === 'loading'
   return (
     <Page>
+      <Helmet>
+        <title>Смена пароля</title>
+      </Helmet>
       <PageTitle icon={<User />}>Изменение пароля</PageTitle>
       <form className={'px-4'} onSubmit={formik.handleSubmit}>
         <CompoundInput

@@ -57,6 +57,14 @@ export default class Api {
     return client.post(...args).json<ApiResponse.Success<T>>()
   }
 
+  public static patch<T>(...args: Parameters<typeof ky.get>) {
+    return client.patch(...args).json<ApiResponse.Success<T>>()
+  }
+
+  public static delete<T>(...args: Parameters<typeof ky.get>) {
+    return client.delete(...args).json<ApiResponse.Success<T>>()
+  }
+
   public static authenticate<T extends ApiResponse.Auth.UserData>(
     fetch: UnauthorizedApiMethod<T>,
   ) {

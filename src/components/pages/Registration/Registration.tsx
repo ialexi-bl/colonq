@@ -1,4 +1,5 @@
 import { Elevation } from 'config/view'
+import { Helmet } from 'react-helmet'
 import { LinkButton } from 'components/shared/Button'
 import { RouteComponentProps, login } from 'config/routes'
 import { ScrollablePage } from 'components/shared/Page'
@@ -22,6 +23,9 @@ export default function Registration({ setProgress }: RouteComponentProps) {
       routeElevation={Elevation.registration}
       className={'bg-page route-right'}
     >
+      <Helmet>
+        <title>Регистрация</title>
+      </Helmet>
       <PageTitle icon={<User />}>Регистрация</PageTitle>
 
       <div className={'max-w-xl mx-auto px-4 pb-64'}>

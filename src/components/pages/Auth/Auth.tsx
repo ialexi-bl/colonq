@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet'
 import { RouteComponentProps } from 'config/routes'
 import { useEffect } from 'react'
 import EmailPrompt from './EmailPrompt'
@@ -19,6 +20,10 @@ export default function Auth({ setProgress }: RouteComponentProps) {
     case 'prompt-vk-email':
       return <EmailPrompt submit={action.submit} />
     default:
-      return null
+      return (
+        <Helmet>
+          <title>Авторизация</title>
+        </Helmet>
+      )
   }
 }

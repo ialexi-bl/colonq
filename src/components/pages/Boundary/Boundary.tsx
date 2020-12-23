@@ -1,5 +1,6 @@
 import { CUTE_FACE } from 'config/view'
 import { Component, ErrorInfo, ReactNode } from 'react'
+import { Helmet } from 'react-helmet'
 import Config from 'config'
 import GeneralApi from 'services/api/general'
 import Page from 'components/shared/Page'
@@ -58,6 +59,9 @@ class Boundary extends Component<BoundaryProps> {
     return (
       // TODO: style
       <Page className={styles.Boundary}>
+        <Helmet>
+          <title>Ошибка</title>
+        </Helmet>
         ERROR
         <p className={styles.Subtitle}>
           Что-то сломалось {CUTE_FACE}. Попробуй обновить страницу, если не

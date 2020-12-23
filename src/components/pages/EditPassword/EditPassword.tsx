@@ -1,5 +1,6 @@
 import { ApiResponse } from 'services/api/config'
 import { Elevation } from 'config/view'
+import { Helmet } from 'react-helmet'
 import { MixedDispatch } from 'store/types'
 import { RouteComponentProps } from 'config/routes'
 import { UserApi } from 'services/api'
@@ -45,6 +46,9 @@ export default function EditPassword({
   if (!updateOptions) {
     return (
       <Wrapper>
+        <Helmet>
+          <title>Ошибка - Смена пароля</title>
+        </Helmet>
         <LoadingError
           title={'Не удалось загрузить способы изменения пароля'}
           actions={
@@ -66,6 +70,9 @@ export default function EditPassword({
   const hasSocial = !hasPassword || updateOptions.length > 1
   return (
     <Wrapper>
+      <Helmet>
+        <title>Смена пароля</title>
+      </Helmet>
       {hasPassword && <PasswordForm />}
       {hasSocial && <div className={'my-16 text-center text-xl'}>ИЛИ</div>}
       {hasSocial && !hasPassword && (

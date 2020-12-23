@@ -1,8 +1,12 @@
+import { AppState } from 'store/types'
 import { Elevation } from 'config/view'
+import { Helmet } from 'react-helmet'
 import { ReactNode, useEffect } from 'react'
 import { RouteComponentProps } from 'config/routes'
+import { useSelector } from 'react-redux'
 import AppError from '../AppError'
 import Page from 'components/shared/Page'
+import useAppTitle from 'hooks/use-app-title'
 import useElevation from 'hooks/use-elevation'
 import useIsAuthenticated from 'hooks/use-is-authenticated'
 import useLesson, { PRACTICE } from 'apps/hooks/use-lesson'
@@ -28,6 +32,7 @@ export default function SessionPage<TProblem extends ProblemWithAnswer>({
 }: SessionPageProps<TProblem>) {
   useElevation(Elevation.session)
   const lesson = useLesson<TProblem>(app, lessonName)
+  const title = useAppTitle(app)
 
   useEffect(() => {
     if (lesson.status !== 'loading') {
@@ -41,6 +46,9 @@ export default function SessionPage<TProblem extends ProblemWithAnswer>({
   if (lesson.status !== 'loaded') {
     return (
       <Wrapper>
+        <Helmet>
+          <title>Ошибка - Занятие {title}</title>
+        </Helmet>
         <AppError
           id={app}
           type={lesson.error}
@@ -51,7 +59,14 @@ export default function SessionPage<TProblem extends ProblemWithAnswer>({
     )
   }
 
-  return <Wrapper>{render(lesson.problems)}</Wrapper>
+  return (
+    <Wrapper>
+      <Helmet>
+        <title>Занятие {title}</title>
+      </Helmet>
+      {render(lesson.problems)}
+    </Wrapper>
+  )
 }
 
 const Wrapper = ({ children }: BasicProps) => (

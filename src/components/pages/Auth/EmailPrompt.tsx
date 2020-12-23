@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet'
 import { useFormik } from 'formik'
 import CompoundInput from 'components/shared/CompoundInput'
 import LoadingButton from 'components/shared/LoadingButton'
@@ -29,6 +30,9 @@ export default function EmailPrompt({
   const loading = formik.status === 'loading'
   return (
     <Page>
+      <Helmet>
+        <title>Ввод электронного адреса</title>
+      </Helmet>
       <PageTitle icon={<User />}>Ввод почты</PageTitle>
 
       <div className={'px-4 h-full container'}>

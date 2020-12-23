@@ -1,4 +1,5 @@
 import { Elevation } from 'config/view'
+import { Helmet } from 'react-helmet'
 import { HttpError } from 'services/errors'
 import { RouteComponentProps } from 'config/routes'
 import { UserApi } from 'services/api'
@@ -44,6 +45,7 @@ export default function ResetPassword({ setProgress }: RouteComponentProps) {
       routeElevation={Elevation.resetPassword}
       className={'bg-page route-overlay'}
     >
+      <Helmet>Восстановление пароля</Helmet>
       <PageTitle>Восстановление пароля</PageTitle>
 
       <Slider

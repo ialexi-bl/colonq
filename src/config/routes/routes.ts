@@ -19,11 +19,6 @@ export const routesArray: RouteOptions[] = [
     getComponent: () => import('components/pages/AppsList'),
   },
   {
-    path: '/settings',
-    name: 'settings',
-    getComponent: () => import('components/pages/Settings'),
-  },
-  {
     path: '/auth',
     name: 'auth',
     getComponent: () => import('components/pages/Auth'),

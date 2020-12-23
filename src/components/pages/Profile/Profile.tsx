@@ -1,20 +1,19 @@
 import { AppState } from 'store/types'
 import { Elevation } from 'config/view'
+import { Helmet } from 'react-helmet'
 import { RouteComponentProps, editPassword } from 'config/routes'
 import { ScrollablePage } from 'components/shared/Page'
 import { UserApi } from 'services/api'
-import { User as UserType, unauthenticate } from 'store/user'
-import { notifyInfo } from 'store/view'
+import { User as UserType } from 'store/user'
 import { push } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useElevationClassnames } from 'hooks/use-elevation'
-import Accordion from 'components/shared/Accordion'
-import Button from 'components/shared/Button'
 import Edit from 'components/icons/Edit'
 import FieldEditor from './FieldEditor'
 import InfoItem from 'components/shared/InfoItem'
-import LangNotifications from 'lang/notifications.json'
+import Logout from './Logout'
+import NotificationsToggler from './NotificationsToggler'
 import PageTitle from 'components/shared/PageTitle'
 import SocialLoginButton from 'components/form/SocialLoginButton'
 import User from 'components/icons/User'
@@ -42,6 +41,9 @@ export default function Profile({ setProgress }: RouteComponentProps) {
       routeElevation={Elevation.profile}
       className={cn('bg-page', className)}
     >
+      <Helmet>
+        <title>Профиль</title>
+      </Helmet>
       <div className={'container'}>
         <PageTitle icon={<User />}>Профиль</PageTitle>
         <div
@@ -89,6 +91,7 @@ export default function Profile({ setProgress }: RouteComponentProps) {
                 }
               />
               <section className={'md:flex-1 px-4'}>
+                <NotificationsToggler />
                 <div className={'flex flex-col items-center'}>
                   <p className={'mb-6 max-w-sm'}>
                     Свяжи аккаунт с другими социальными сетями, если ты хочешь
@@ -114,39 +117,5 @@ export default function Profile({ setProgress }: RouteComponentProps) {
         </div>
       </div>
     </ScrollablePage>
-  )
-}
-
-const Logout = () => {
-  const [started, setStarted] = useState(false)
-  const dispatch = useDispatch()
-  const logout = () => {
-    dispatch(unauthenticate())
-    dispatch(notifyInfo(LangNotifications.logout))
-    UserApi.logout()
-  }
-
-  return (
-    <Accordion
-      className={'self-end text-right'}
-      expanded={started}
-      summary={
-        <Button
-          className={'mt-6 w-64 text-lg'}
-          onClick={() => setStarted(true)}
-          secondary
-        >
-          Выход
-        </Button>
-      }
-      details={
-        <>
-          <p>Точно хочешь выйти?</p>
-          <Button secondary onClick={logout} className={'max-w-xs'}>
-            Подтвердить
-          </Button>
-        </>
-      }
-    />
   )
 }

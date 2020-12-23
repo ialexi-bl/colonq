@@ -1,5 +1,6 @@
 import { AppState } from 'store/types'
 import { Elevation } from 'config/view'
+import { Helmet } from 'react-helmet'
 import { LinkButton } from 'components/shared/Button'
 import { ReactNode, useEffect, useRef } from 'react'
 import {
@@ -31,6 +32,9 @@ export default function Index({ setProgress }: RouteComponentProps) {
 
   return (
     <ScrollablePage routeElevation={Elevation.index} ref={scrollbars}>
+      <Helmet>
+        <title>Главная страница</title>
+      </Helmet>
       <div
         className={cn(
           styles.WelcomeBackground,

@@ -1,36 +1,8 @@
-.ToggleInput {
-  opacity: 0;
-  margin: 0;
-  width: 0;
-  height: 0;
-}
-
-.Container {
-  composes: cursor-pointer from global;
-
-  position: relative;
-  display: inline-block;
-  width: 2.8em 1.5em;
-  height: 2.8em 1.5em;
-}
 .Track {
-  position: absolute;
-  top: 0.3em;
-  bottom: 0.3em;
-  left: 0.3em;
-  right: 0.3em;
-  border-radius: 1em;
-  background: theme('colors.disabled.400');
+  background: theme('colors.disabled.700');
   transition: background 200ms;
 }
 .Slider {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 1.5em;
-  height: 1.5em;
-  border-radius: 100%;
   background: theme('colors.disabled.100');
   transition-duration: 200ms;
   transition-property: transform, background, box-shadow;
@@ -39,7 +11,8 @@
 .ToggleInput:focus,
 .ToggleInput:active {
   & ~ .Slider {
-    box-shadow: 0 0 0 4px theme('colors.disabled.100');
+    background: theme('colors.disabled.400');
+    // box-shadow: 0 0 0 4px theme('colors.disabled.100');
   }
 }
 
@@ -48,7 +21,7 @@
     background: theme('colors.primary.900');
   }
   & ~ .Slider {
-    background: theme('colors.primary.400');
+    background: theme('colors.primary.600');
     transform: translate(2.8em - 1.5em);
   }
 }
@@ -56,6 +29,7 @@
 .ToggleInput:focus:checked,
 .ToggleInput:active:checked {
   & ~ .Slider {
-    box-shadow: 0 0 0 4px theme('colors.primary.400');
+    background: theme('colors.primary.700');
+    // box-shadow: 0 0 0 4px theme('colors.primary.400');
   }
 }

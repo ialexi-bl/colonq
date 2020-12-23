@@ -14,6 +14,10 @@ declare namespace ApiResponse {
     }
   }
 
+  export type Subscription = {
+    hour: number
+  }
+
   export namespace User {
     export type AllowedFields = 'id' | 'apps' | 'username'
     export type Get<T extends AllowedFields = AllowedFields> = Pick<

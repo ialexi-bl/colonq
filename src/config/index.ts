@@ -7,6 +7,8 @@ namespace Config {
   export const REACT_APP_GA_ID = process.env.REACT_APP_GA_ID || ''
   export const REACT_APP_YM_ID = +(process.env.REACT_APP_YM_ID || -1)
 
+  export const VAPID_KEY = process.env.REACT_APP_VAPID_KEY || ''
+
   export const APP_URL = process.env.REACT_APP_URL || ''
   export const API_URL = process.env.REACT_APP_API_URL || ''
   export const CORS_MODE =
