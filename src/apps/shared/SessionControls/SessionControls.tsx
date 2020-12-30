@@ -12,13 +12,15 @@ export default function SessionControls({ className, children }: BasicProps) {
 export function SessionExit() {
   const dispatch = useDispatch()
   return (
-    <Exit
-      className={'opacity-25 w-12 h-12 mr-4'}
-      onClick={() => dispatch(push(appsList()))}
-    />
+    <button className={classNames} onClick={() => dispatch(push(appsList()))}>
+      <Exit />
+    </button>
   )
 }
 
 export function SessionHide({ hide }: { hide: () => unknown }) {
-  return <Hide className={'opacity-25 w-12 h-12'} onClick={hide} />
+  return <Hide className={classNames} onClick={hide} />
 }
+
+const classNames =
+  'w-12 h-12 mr-4 duration-100 text-gray-500 focus:text-gray-600'

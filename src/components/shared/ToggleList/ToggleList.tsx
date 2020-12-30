@@ -46,7 +46,7 @@ const Group = memo(function Group({
 
   return (
     <Accordion
-      className={'mb-4'}
+      className={'mb-2'}
       expanded={expanded}
       summary={
         <Trapezoid

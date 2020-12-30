@@ -1,4 +1,6 @@
 import LetterButton from 'components/shared/LetterButton'
+import cn from 'clsx'
+import styles from './Trigonometry.module.scss'
 
 export type TrigKey =
   | '0'
@@ -61,14 +63,14 @@ export default function TrigKeyboard({
         <LetterButton
           onClick={() => onKeyPress('sqrt')}
           disabled={!allowed.sqrt}
-          className={'w-16'}
+          className={cn(styles.TrigBtn, styles.TrigSqrt, 'w-16')}
         >
           &radic;
         </LetterButton>
         <LetterButton
           onClick={() => onKeyPress('frac')}
           disabled={!allowed.frac}
-          className={'w-16'}
+          className={cn(styles.TrigBtn, styles.TrigFrac, 'w-16 pt-1 pb-3')}
         >
           &divide;
         </LetterButton>
@@ -100,7 +102,7 @@ export default function TrigKeyboard({
           disabled={!allowed.submit}
           className={'w-16'}
         >
-          ↩
+          ⮩
         </LetterButton>
       </div>
     </div>

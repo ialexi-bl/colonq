@@ -1,4 +1,4 @@
-import { ComponentType } from 'react'
+import { ComponentType, useEffect } from 'react'
 import { ProblemWithAnswer } from 'apps/shared/SessionPage'
 import {
   TwoLatestDisplay,
@@ -50,6 +50,21 @@ export default function WordsSession<TProblem extends ProblemWithAnswer>({
   } = useTwoLatestProblemControls<TProblem, number | string>(problems, verify)
   const submitResponse = useSubmitAnswers(app, done, answers, disabled)
 
+  useEffect(() => {
+    function unload(e: BeforeUnloadEvent) {
+      const message =
+        'Занятие ещё не закончено! Если ты выйдешь сейчас, результаты не сохранятся'
+      e.preventDefault()
+      e.returnValue = message
+      return message
+    }
+
+    if (answers.length !== 0 && !done) {
+      window.addEventListener('beforeunload', unload)
+      return () => window.removeEventListener('beforeunload', unload)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [answers.length !== 0, done])
   useHideNavigation()
 
   return (

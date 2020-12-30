@@ -8,7 +8,7 @@ import { ScrollablePage } from 'components/shared/Page'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { useElevationClassnames } from 'hooks/use-elevation'
-import Button from 'components/shared/Button'
+import Button, { LinkButton } from 'components/shared/Button'
 import LessonsList from 'apps/shared/LessonsList'
 import LoadingError from 'components/shared/LoadingError'
 import PageTitle from 'components/shared/PageTitle'
@@ -50,12 +50,12 @@ export default function WordsLessonsList({
     same: 'left',
   })
 
-  if (!visible || !app) return null
+  if (!visible || !app) return <Wrapper className={elevationCn} />
   if (hadError && app.status !== 'loaded') {
     return (
       <Wrapper className={elevationCn}>
         <Helmet>
-          <title>Ошибка - Список уроков</title>
+          <title>Ошибка - Список уроков {title}</title>
         </Helmet>
         <LoadingError
           title={'Не удалось загрузить уроки'}
@@ -75,13 +75,31 @@ export default function WordsLessonsList({
   return (
     <Wrapper className={elevationCn}>
       <Helmet>
-        <title>Список уроков - {app.title}</title>
+        <title>Список уроков {title}</title>
       </Helmet>
       <PageTitle>{app.title}</PageTitle>
 
-      <p className={'px-4 mb-4'}>Нажми на урок, чтобы начать практику</p>
-
-      <LessonsList app={appName} lessons={app.lessons as Lesson[]} />
+      <div className={'flex'}>
+        <section className={'flex-1 mx-auto max-w-xl'}>
+          <p className={'px-4 mb-4'}>Нажми на урок, чтобы начать практику</p>
+          <LessonsList app={appName} lessons={app.lessons as Lesson[]} />
+        </section>
+        <section
+          className={'w-1/3 hidden sticky top-0 md:flex flex-col items-center'}
+        >
+          <LinkButton to={appRoute(appName, 'practice')} className={'min-w-72'}>
+            Начать занятие
+          </LinkButton>
+          <LinkButton
+            to={appRoute(appName, 'settings')}
+            className={'min-w-72'}
+            variant={2}
+            secondary
+          >
+            Настройки
+          </LinkButton>
+        </section>
+      </div>
       {app.hasSettings && (
         <Fal to={appRoute(appName, 'settings')} icon={<Settings />} />
       )}
@@ -91,8 +109,8 @@ export default function WordsLessonsList({
 const Wrapper = ({ children, className }: BasicProps) => (
   <ScrollablePage
     routeElevation={Elevation.lessonsList}
-    className={cn(className, 'bg-page')}
+    className={cn(className, 'bg-page relative')}
   >
-    {children}
+    <div className={'container'}>{children}</div>
   </ScrollablePage>
 )

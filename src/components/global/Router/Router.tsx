@@ -16,7 +16,7 @@ import useLocationControls from './use-location-controls'
 
 const VISIBLE_TIMEOUT = {
   exit: ROUTE_TRANSITION_DURATION,
-  enter: 0,
+  enter: ROUTE_TRANSITION_DURATION,
 }
 const REAL_TIMEOUT = {
   exit: 0,
@@ -40,15 +40,17 @@ export default function Router({
   )
 
   const realLocation = useLocation<{ redirectedFromFailedAuth?: boolean }>()
+
   const {
     visibleLocation,
-    setProgress,
     firstRenderDone,
+    changedPages,
+    setProgress,
+    visibleKey,
     progress,
     loading,
     visible,
     realKey,
-    visibleKey,
   } = useLocationControls(realLocation)
 
   useEffect(() => {
@@ -84,14 +86,13 @@ export default function Router({
         id={'animation-controller'}
         className={cn(
           'w-full h-full',
-          (!firstRenderDone || !animationsEnabled) && 'no-animation-start',
+          (!changedPages || !animationsEnabled) && 'no-animation-start',
           !animationsEnabled && 'no-animation-end',
         )}
       >
         <TransitionGroup component={null}>
           {visibleLocation !== realLocation && (
             <CSSTransition
-              // Here as well
               key={realKey}
               exit={false}
               enter={animationsEnabled}
@@ -108,7 +109,7 @@ export default function Router({
           <CSSTransition
             key={visibleKey}
             exit={animationsEnabled}
-            enter={false}
+            // enter={false}
             timeout={animationsEnabled ? VISIBLE_TIMEOUT : 0}
             classNames={ROUTE_TRANSITION_CLASSNAME}
           >

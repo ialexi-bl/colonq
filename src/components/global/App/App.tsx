@@ -43,12 +43,12 @@ function App({ maintenance }: { maintenance?: boolean }) {
 
   return (
     <>
+      <Navigation />
       <Router closeInitialLoading={closeRouterLoading} />
       <GlobalLoading visible={loading || routerLoading} />
       <CookiesNotification />
       <NotificationToaster />
       <ShapesManager />
-      <Navigation />
     </>
   )
 }

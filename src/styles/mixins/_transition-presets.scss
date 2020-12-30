@@ -1,8 +1,8 @@
 @use './route-transition';
 
 // Entering transitions are done via animation, because
-// if transition is used, routes are not animated
-// after loading
+// there are problems making csstransition to assign class names
+// correctly when component is not loaded yet
 // NOTE: This was the initial reason but now after implementing
 // new routes behaviour this may be revisited
 
@@ -51,16 +51,27 @@ $dir-opacity-offset: 5rem;
 
 // Transition mixins
 @mixin opacity-start {
+  // #animation-controller:not(.no-animation-start) & {
+  //   opacity: 0;
+  // }
+  // @include route-transition.descendant-no-module(enter-active) {
+  //   transition: opacity theme('transitionDuration.route') !important;
+  //   opacity: 1;
+  // }
+  // @include route-transition.descendant-no-module(enter) {
   #animation-controller:not(.no-animation-start) & {
     animation: opacity-enter theme('transitionDuration.route');
   }
+  // }
 }
 @mixin opacity-end {
-  #animation-controller:not(.no-animation-end) & {
-    @include route-transition.descendant-no-module(exit) {
+  @include route-transition.descendant-no-module(exit) {
+    #animation-controller:not(.no-animation-end) & {
       opacity: 1;
     }
-    @include route-transition.descendant-no-module(exit-active) {
+  }
+  @include route-transition.descendant-no-module(exit-active) {
+    #animation-controller:not(.no-animation-end) & {
       transition: opacity theme('transitionDuration.route') !important;
       opacity: 0;
     }
@@ -71,21 +82,54 @@ $dir-opacity-offset: 5rem;
   @include opacity-end;
 }
 
+@mixin dir-start($name, $x, $y: 0) {
+  // Preventing exiting components from playing entering animation
+  // when .no-animation-start is removed
+  #animation-controller > * + &,
+  #animation-controller > * + * & {
+    animation: none !important;
+  }
+
+  #animation-controller:not(.no-animation-start) & {
+    // transform: translate($x, $y);
+
+    // @include route-transition.descendant-no-module(enter) {
+    animation: #{$name}-enter theme('transitionDuration.route');
+    // }
+  }
+
+  // @include route-transition.descendant-no-module(enter-done) {
+  //   transform: translate(0, 0) !important;
+  // }
+  // #animation-controller:not(.no-animation-start) & {
+  //   @include route-transition.descendant-no-module(/* enter-active,  */ enter) {
+  //     transform: translate($x, $y);
+  //   }
+  //   @include route-transition.descendant-no-module(enter-active) {
+  //     transition: transform theme('transitionDuration.route') !important;
+  //     transform: translate(0);
+  //   }
+  // }
+}
 @mixin dir-end($x, $y: 0) {
-  #animation-controller:not(.no-animation-end) & {
-    @include route-transition.descendant-no-module(/* enter-active,  */ exit) {
+  @include route-transition.descendant-no-module(/* enter-active,  */ exit) {
+    #animation-controller:not(.no-animation-end) & {
       transform: translate(0);
     }
-    @include route-transition.descendant-no-module(exit-active) {
+  }
+  @include route-transition.descendant-no-module(exit-active) {
+    #animation-controller:not(.no-animation-end) & {
       transition: transform theme('transitionDuration.route') !important;
       transform: translate($x, $y);
     }
   }
 }
 @mixin up-start {
-  #animation-controller:not(.no-animation-start) & {
-    animation: up-enter theme('transitionDuration.route');
-  }
+  // #animation-controller:not(.no-animation-start) & {
+  //   animation: up-enter theme('transitionDuration.route');
+  // }
+  // @include dir-start(0, -100vh);
+  @include dir-start(up, 0, -100vh);
 }
 @mixin up-end {
   @include dir-end(0, -100vh);
@@ -94,10 +138,13 @@ $dir-opacity-offset: 5rem;
   @include up-start;
   @include up-end;
 }
+
 @mixin down-start {
-  #animation-controller:not(.no-animation-start) & {
-    animation: down-enter theme('transitionDuration.route');
-  }
+  // #animation-controller:not(.no-animation-start) & {
+  //   animation: down-enter theme('transitionDuration.route');
+  // }
+  // @include dir-start(0, 100vh);
+  @include dir-start(down, 0, 100vh);
 }
 @mixin down-end {
   @include dir-end(0, 100vh);
@@ -106,10 +153,13 @@ $dir-opacity-offset: 5rem;
   @include down-start;
   @include down-end;
 }
+
 @mixin right-start {
-  #animation-controller:not(.no-animation-start) & {
-    animation: right-enter theme('transitionDuration.route');
-  }
+  // #animation-controller:not(.no-animation-start) & {
+  //   animation: right-enter theme('transitionDuration.route');
+  // }
+  // @include dir-start(100vw);
+  @include dir-start(right, 100vw);
 }
 @mixin right-end {
   @include dir-end(100vw);
@@ -118,10 +168,13 @@ $dir-opacity-offset: 5rem;
   @include right-start;
   @include right-end;
 }
+
 @mixin left-start {
-  #animation-controller:not(.no-animation-start) & {
-    animation: left-enter theme('transitionDuration.route');
-  }
+  // #animation-controller:not(.no-animation-start) & {
+  //   animation: left-enter theme('transitionDuration.route');
+  // }
+  // @include dir-start(-100vw);
+  @include dir-start(left, -100vw);
 }
 @mixin left-end {
   @include dir-end(-100vw);

@@ -1,7 +1,7 @@
 import { TwoLatestDisplayViewProps } from 'components/shared/TwoLatestDisplay'
 import { WordsNext } from 'apps/shared/words/WordsSession'
 import { memo } from 'react'
-import LetterButton from 'components/shared/LetterButton'
+import Oval from 'components/shared/Oval/Oval'
 import TrigAnswer from './TrigAnswer'
 import TrigExpression, { Fraction } from './TrigExpression'
 import cn from 'clsx'
@@ -36,7 +36,7 @@ export default function TrigView({ correct, item, active }: TrigViewProps) {
       <span className={'block mr-2'}>{item.problem[0]}</span>
       <Argument value={item.problem[1]} />
       <span className={'mx-2'}>=</span>
-      <LetterButton
+      <Oval
         className={cn(
           'min-w-16 mr-3 duration-200',
           (active || correct) && 'opacity-0',
@@ -47,8 +47,8 @@ export default function TrigView({ correct, item, active }: TrigViewProps) {
           active={active}
           value={TrigAnswer.fromString(item.answer)}
         />
-      </LetterButton>
-      <LetterButton
+      </Oval>
+      <Oval
         className={cn(
           'min-w-16 transform duration-200',
           active ? '-translate-x-24' : correct && '-translate-x-20',
@@ -56,7 +56,7 @@ export default function TrigView({ correct, item, active }: TrigViewProps) {
         state={active ? 'invisible' : correct ? 'correct' : 'incorrect'}
       >
         <TrigExpression active={active} value={item.value} />
-      </LetterButton>
+      </Oval>
     </div>
   )
 }

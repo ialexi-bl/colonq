@@ -4,7 +4,7 @@ export type InfoItemProps = HTMLProps.div & {
 
 const InfoItem = ({ label, children, ...props }: InfoItemProps) => (
   <div {...props}>
-    <div className={'text-lg text-disabled-100'}>{label}</div>
+    <h2 className={'text-lg text-disabled-100'}>{label}</h2>
     <div className={'px-2 text-xl'}>{children}</div>
   </div>
 )

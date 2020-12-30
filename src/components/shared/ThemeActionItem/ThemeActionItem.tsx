@@ -37,7 +37,11 @@ const ThemeActionItem = ({
     expanded={expanded}
     summary={
       <ThemeCard
+        tabIndex={0}
         onClick={toggleVisible}
+        onKeyDown={
+          toggleVisible && ((e) => e.key === 'Enter' && toggleVisible())
+        }
         progress={progress}
         disabled={disabled}
         className={'cursor-pointer'}
@@ -47,13 +51,15 @@ const ThemeActionItem = ({
       />
     }
     details={
-      <div className={'flex flex-col px-6'}>
+      <div className={'flex flex-col items-center px-6'}>
         {actions.map(({ label, action, primary, id }, j) => (
           <Button
             key={id}
             variant={(((i + j) % 3) + 1) as 1}
             onClick={action}
+            tabIndex={expanded ? 0 : -1}
             secondary={!primary}
+            className={'w-72'}
           >
             {label}
           </Button>

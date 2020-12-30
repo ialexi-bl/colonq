@@ -1,10 +1,13 @@
 import { MixedDispatch } from 'store/types'
+import { SettingItem, SettingItemContent, SettingItemLabel } from './view'
+import { notifyError, notifyErrorObject } from 'store/view'
 import { useDispatch } from 'react-redux'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import HourSelector from 'components/shared/HourSelector'
 import NotificationsController from 'services/notifications'
 import Toggle from 'components/form/Toggle'
 import cn from 'clsx'
+import useSave from 'hooks/use-save'
 
 export type NotificationsTogglerProps = {
   className?: string
@@ -12,27 +15,36 @@ export type NotificationsTogglerProps = {
 export default function NotificationsToggler({
   className,
 }: NotificationsTogglerProps) {
-  const [status, setStatus] = useState<'none' | 'unavailable' | boolean>('none')
-  const [hour, setHour] = useState(18)
+  const [hour, setHour] = useState({ current: 18, real: 18 })
+  const [status, setStatus] = useState(false)
+  const processing = useRef(false)
   const dispatch = useDispatch<MixedDispatch>()
 
   const subscribe = () => {
-    dispatch(NotificationsController.subscribe()).then(setStatus)
+    if (processing.current) return
+    processing.current = true
+
+    dispatch(NotificationsController.subscribe(hour.current)).then((x) => {
+      setStatus(x)
+      processing.current = false
+    })
   }
   const unsubscribe = async () => {
-    dispatch(NotificationsController.unsubscribe()).then((x) => setStatus(!x))
+    if (processing.current) return
+    processing.current = true
+
+    dispatch(NotificationsController.unsubscribe()).then((x) => {
+      setStatus(!x)
+      processing.current = false
+    })
   }
 
   useEffect(() => {
-    if (!('serviceWorker' in navigator)) {
-      setStatus('unavailable')
-      return
-    }
+    if (!('serviceWorker' in navigator)) return
 
-    // Show toggle only if service worker is registered
     dispatch(NotificationsController.getHour()).then((hour) => {
-      if (hour) {
-        setHour(hour)
+      if (hour !== null) {
+        setHour({ current: hour, real: hour })
         setStatus(true)
       } else {
         setStatus(false)
@@ -40,29 +52,47 @@ export default function NotificationsToggler({
     })
   }, [dispatch])
 
-  if (status === 'none') return null
-  if (status === 'unavailable') {
-    return (
-      <div className={className}>
-        Твой браузер не поддерживает уведомления. Обнови его, чтобы получать
-        напоминания о занятиях
-      </div>
-    )
+  useSave(hour.current !== hour.real, hour, async () => {
+    try {
+      await dispatch(NotificationsController.setHour(hour.current))
+      setHour({ current: hour.current, real: hour.current })
+    } catch (e) {
+      dispatch(notifyErrorObject(e))
+    }
+  })
+
+  const toggle = (checked: boolean) => {
+    if (!('serviceWorker' in navigator)) {
+      return dispatch(
+        notifyError(
+          'Твой браузер не поддерживает уведомления. Обнови его, чтобы получать напоминания о занятиях',
+        ),
+      )
+    }
+
+    if (checked) subscribe()
+    else unsubscribe()
   }
 
   return (
-    <div>
-      <div className={cn(className, 'flex py-4')}>
-        <p className={'flex-1 text-lg'}>Уведомления</p>
-        <Toggle
-          onChange={(checked) => (checked ? subscribe() : unsubscribe())}
-          checked={status}
-        />
-      </div>
-      <div className={cn(className, 'flex py-4')}>
-        <p className={'flex-1 text-lg'}>Уведомления</p>
-        <HourSelector onChange={setHour} value={hour} />
-      </div>
+    <div className={cn(className, 'mb-4')}>
+      <SettingItem>
+        <SettingItemLabel>Уведомления</SettingItemLabel>
+        <SettingItemContent>
+          <Toggle onChange={toggle} checked={status} />
+        </SettingItemContent>
+      </SettingItem>
+      <SettingItem sub>
+        <SettingItemLabel sub>Отправлять в</SettingItemLabel>
+        <SettingItemContent className={'flex'}>
+          <HourSelector
+            disabled={!status}
+            onChange={(h) => setHour({ current: h, real: hour.real })}
+            value={hour.current}
+          />
+          <p className={'ml-2'}>часов</p>
+        </SettingItemContent>
+      </SettingItem>
     </div>
   )
 }

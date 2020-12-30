@@ -40,10 +40,10 @@ export const Fal = ({ className, icon, disabled, to, ...props }: FalProps) => (
 
 export const getClassNames = (disabled?: boolean, className?: string) =>
   cn(
-    'w-12 h-12 p-1 fixed transition-color duration-100',
+    'w-14 h-14 p-2 fixed transition-color duration-100 md:hidden',
     disabled
       ? 'bg-disabled-700 cursor-default'
-      : 'bg-primary-700 cursor-pointer',
+      : 'bg-primary-700 hover:bg-primary-600 active:bg-primary-800 cursor-pointer',
     className,
     styles.Fab,
   )

@@ -1,7 +1,6 @@
 import { AppState } from 'store/types'
 import { CUTE_FACE, Elevation } from 'config/view'
-import { Category, PlainApp, User, loadApps } from 'store/user'
-import { Fal } from 'components/shared/Fab'
+import { Category, PlainApp, loadApps } from 'store/user'
 import { Helmet } from 'react-helmet'
 import { RouteComponentProps, app as appRoute, appsChoice } from 'config/routes'
 import { ScrollablePage } from 'components/shared/Page'
@@ -9,8 +8,7 @@ import { push } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { useElevationClassnames } from 'hooks/use-elevation'
-import Button from 'components/shared/Button'
-import Edit from 'components/icons/Edit'
+import Button, { LinkButton } from 'components/shared/Button'
 import LoadingError from 'components/shared/LoadingError'
 import PageTitle from 'components/shared/PageTitle'
 import ThemeActionItem, {
@@ -27,7 +25,7 @@ export default function AppsList({
 }: RouteComponentProps) {
   const [visibleItems, toggleVisible] = useItemsToggler()
   const dispatch = useDispatch()
-  const user = useSelector((state: AppState) => state.user as User)
+  const user = useSelector((state: AppState) => state.user)
   const hadError = useWasTrue(user.appsStatus === 'error')
 
   useEffect(() => {
@@ -84,19 +82,29 @@ export default function AppsList({
       </Helmet>
       <p className={'px-4 mb-12'}>Нажми на тему, чтобы начать занятие</p>
 
-      <div className={'px-4 pb-64'}>
-        {user.categories.map((category) => {
-          return (
-            <CategoryItem
-              key={category.id}
-              category={category}
-              toggleVisible={toggleVisible}
-              visibleItems={visibleItems}
-            />
-          )
-        })}
+      <div className={'px-4 pb-64 mx-auto'}>
+        <div className={'flex justify-center flex-wrap'}>
+          {user.categories.map((category) => {
+            return (
+              <CategoryItem
+                key={category.id}
+                category={category}
+                toggleVisible={toggleVisible}
+                visibleItems={visibleItems}
+              />
+            )
+          })}
+        </div>
+        <div className={'flex justify-center mt-8'}>
+          <LinkButton
+            className={'min-w-48 mx-auto'}
+            to={appsChoice()}
+            secondary
+          >
+            Изменить
+          </LinkButton>
+        </div>
       </div>
-      <Fal to={appsChoice()} icon={<Edit />} />
     </Wrapper>
   )
 }
@@ -110,8 +118,10 @@ const Wrapper = ({ className, children }: BasicProps) => (
     routeElevation={Elevation.appsList}
     className={cn('bg-page', className)}
   >
-    <PageTitle icon={null}>Темы</PageTitle>
-    {children}
+    <div className={'container'}>
+      <PageTitle icon={null}>Темы</PageTitle>
+      {children}
+    </div>
   </ScrollablePage>
 )
 
@@ -124,7 +134,7 @@ const CategoryItem = ({
   visibleItems: Record<string, boolean>
   toggleVisible: (id: string) => void
 }) => (
-  <div className={'mb-8'} key={category.id}>
+  <div className={'mb-8 max-w-md'} key={category.id}>
     <h2 className={'text-2xl mb-8'}>{category.title}</h2>
     {category.apps.map((app) => {
       return (
@@ -165,7 +175,7 @@ const AppItem = ({
         } as ActionDescription,
         {
           id: 1,
-          label: 'Уроки & Статистика',
+          label: 'Список уроков',
           action: () => dispatch(push(appRoute(app.id, 'stats'))),
         },
         app.hasSettings && {

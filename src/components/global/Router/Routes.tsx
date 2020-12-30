@@ -1,4 +1,5 @@
 import { Location } from 'history'
+import { Ref } from 'react'
 import { Route, Switch } from 'react-router'
 import { RouteComponentProps, routesArray } from 'config/routes'
 import Boundary from 'components/pages/Boundary'
@@ -10,8 +11,10 @@ import NotFound from 'components/pages/NotFound'
  */
 export default function Routes({
   location,
+  innerRef,
   ...controls
-}: { location: Location } & RouteComponentProps) {
+}: { location: Location; innerRef?: Ref<HTMLElement> } & RouteComponentProps) {
+  // console.log(`RENDERING ${location.pathname}`)
   return (
     <Boundary>
       <Switch location={location}>
@@ -27,9 +30,11 @@ export default function Routes({
 
               if (route._imported[key]) {
                 const Component = route._imported[key]
+                // console.log('RENDERING COMPONENT', Component)
                 return <Component {...controls} {...data} />
               }
               if (route._importStarted[key]) {
+                // console.log('RENDERING NULL')
                 return null
               }
 
@@ -37,7 +42,11 @@ export default function Routes({
               // if it's created inside, react treats it as a different
               // component every time and rerenders error page
               const ImportError = () => (
-                <LoadingErrorPage retry={importPage} {...controls} />
+                <LoadingErrorPage
+                  ref={innerRef}
+                  retry={importPage}
+                  {...controls}
+                />
               )
               function importPage() {
                 // Preventing route from being imported multiple times
@@ -55,6 +64,7 @@ export default function Routes({
                   })
               }
               importPage()
+              console.log('RENDERING NOTHING')
             }}
           />
         ))}

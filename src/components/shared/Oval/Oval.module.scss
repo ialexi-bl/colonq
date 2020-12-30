@@ -1,0 +1,14 @@
+.Oval {
+  &:nth-of-type(4n) {
+    clip-path: url(#shape-oval-4);
+  }
+  &:nth-of-type(4n + 1) {
+    clip-path: url(#shape-oval-1);
+  }
+  &:nth-of-type(4n + 2) {
+    clip-path: url(#shape-oval-2);
+  }
+  &:nth-of-type(4n + 3) {
+    clip-path: url(#shape-oval-3);
+  }
+}

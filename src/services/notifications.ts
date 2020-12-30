@@ -1,4 +1,4 @@
-import { ColonqError, NotificationsError } from './errors'
+import { ColonqError, HttpError, NotificationsError } from './errors'
 import { ThunkAction } from 'store/types'
 import { base64ToUint8Array } from 'util/array'
 import { executeAuthorizedMethod } from 'store/user'
@@ -18,7 +18,7 @@ export default class NotificationsController {
             SubscriptionApi.getHour(subscription.endpoint),
           ),
         )
-        return data.hour
+        return this.utcToHour(data.hour)
       } catch (e) {
         // TODO: maybe log this error
         return null
@@ -26,7 +26,23 @@ export default class NotificationsController {
     }
   }
 
-  public static subscribe(): ThunkAction<Promise<boolean>> {
+  public static setHour(hour: number): ThunkAction<Promise<void>> {
+    return async (dispatch) => {
+      const subscription = await this.getSubscription()
+      if (!subscription) return
+
+      await dispatch(
+        executeAuthorizedMethod(
+          SubscriptionApi.modifyHour(
+            subscription.endpoint,
+            this.hourToUtc(hour),
+          ),
+        ),
+      )
+    }
+  }
+
+  public static subscribe(hour: number): ThunkAction<Promise<boolean>> {
     return async (dispatch) => {
       try {
         if (await this.getSubscription()) return true
@@ -38,7 +54,9 @@ export default class NotificationsController {
         })
 
         await dispatch(
-          executeAuthorizedMethod(SubscriptionApi.subscribe(subscription, 10)),
+          executeAuthorizedMethod(
+            SubscriptionApi.subscribe(subscription, this.hourToUtc(hour)),
+          ),
         )
         dispatch(notifyInfo('Теперь ты будешь получать уведомления о занятиях'))
         return true
@@ -77,6 +95,9 @@ export default class NotificationsController {
         )
         return true
       } catch (e) {
+        if (e instanceof HttpError && e.status === 404) {
+          return true
+        }
         dispatch(
           notifyInfo(
             e instanceof ColonqError
@@ -87,6 +108,18 @@ export default class NotificationsController {
         return false
       }
     }
+  }
+
+  private static hourToUtc(hour: number) {
+    const d = new Date()
+    d.setHours(hour)
+    return d.getUTCHours()
+  }
+
+  private static utcToHour(hour: number) {
+    const d = new Date()
+    d.setUTCHours(hour)
+    return d.getHours()
   }
 
   private static async getRegistration(): Promise<ServiceWorkerRegistration> {

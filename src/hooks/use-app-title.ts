@@ -6,12 +6,7 @@ import { useSelector } from 'react-redux'
  * a placeholder
  * @param app - App ID
  */
-export default function useAppTitle(
-  app: string,
-  placeholder: string | null = null,
-) {
-  const title = useSelector(
-    (state: AppState) => state.user.apps[app]?.title || placeholder,
-  )
-  return title && `- ${title}`
+export default function useAppTitle(app: string, prefix: string = '- ') {
+  const title = useSelector((state: AppState) => state.user.apps[app]?.title)
+  return title ? `${prefix}${title}` : ''
 }

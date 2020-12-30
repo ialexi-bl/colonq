@@ -23,7 +23,7 @@ export default class SubscriptionApi {
   public static getHour(endpoint: string) {
     return (token: string) =>
       Api.get<ApiResponse.Subscription>(
-        `${Endpoint.subscription}?endpoint=${endpoint}`,
+        `${Endpoint.subscription}?endpoint=${encodeURIComponent(endpoint)}`,
         { token },
       )
   }

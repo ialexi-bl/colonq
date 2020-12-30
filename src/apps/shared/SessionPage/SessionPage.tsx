@@ -1,11 +1,9 @@
-import { AppState } from 'store/types'
 import { Elevation } from 'config/view'
+import { EmptyPage } from 'components/shared/Page'
 import { Helmet } from 'react-helmet'
-import { ReactNode, useEffect } from 'react'
 import { RouteComponentProps } from 'config/routes'
-import { useSelector } from 'react-redux'
 import AppError from '../AppError'
-import Page from 'components/shared/Page'
+import React, { ReactNode, useEffect } from 'react'
 import useAppTitle from 'hooks/use-app-title'
 import useElevation from 'hooks/use-elevation'
 import useIsAuthenticated from 'hooks/use-is-authenticated'
@@ -42,7 +40,7 @@ export default function SessionPage<TProblem extends ProblemWithAnswer>({
 
   useIsAuthenticated()
 
-  if (!visible || lesson.status === 'loading') return null
+  if (!visible || lesson.status === 'loading') return <Wrapper />
   if (lesson.status !== 'loaded') {
     return (
       <Wrapper>
@@ -58,7 +56,7 @@ export default function SessionPage<TProblem extends ProblemWithAnswer>({
       </Wrapper>
     )
   }
-
+  console.log('rendering everything')
   return (
     <Wrapper>
       <Helmet>
@@ -70,7 +68,10 @@ export default function SessionPage<TProblem extends ProblemWithAnswer>({
 }
 
 const Wrapper = ({ children }: BasicProps) => (
-  <Page routeElevation={Elevation.session} className={'route-overlay bg-page'}>
+  <EmptyPage
+    routeElevation={Elevation.session}
+    className={'route-overlay bg-page'}
+  >
     {children}
-  </Page>
+  </EmptyPage>
 )

@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react'
 import SqrtIcon from 'components/icons/Sqrt'
 import TrigAnswer, { Expr } from './TrigAnswer'
 import cn from 'clsx'
@@ -33,7 +33,7 @@ export function Fraction({
   return (
     <div
       className={cn(
-        'text-4xl min-w-6 transform duration-200',
+        'text-4xl min-w-6 duration-200',
         onlyNumerator ? 'h-12' : 'h-28 mt-4',
       )}
     >

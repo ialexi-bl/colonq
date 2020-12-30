@@ -1,6 +1,6 @@
 import { ApiResponse } from 'services/api/config'
 import { MixedDispatch } from 'store/types'
-import { executeAuthorizedMethod } from 'store/user'
+import { executeAuthorizedMethod, loadApp } from 'store/user'
 import { useDispatch } from 'react-redux'
 import { useEffect, useState } from 'react'
 import Config from 'config'
@@ -39,6 +39,9 @@ export default function useSettings(app: string): Result {
       })
   }
   useEffect(load, [app, dispatch])
+  useEffect(() => {
+    dispatch(loadApp(app))
+  }, [app, dispatch])
 
   return {
     status,

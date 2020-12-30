@@ -54,7 +54,7 @@ export default function FieldEditor({
     <form onSubmit={formik.handleSubmit}>
       <div className={'flex'}>
         <InvisibleInput
-          className={'flex-1 max-w-sm'}
+          className={'flex-1'}
           readOnly={formik.status === 'loading'}
           state={formik.errors.value ? 'invalid' : null}
           {...formik.getFieldProps('value')}

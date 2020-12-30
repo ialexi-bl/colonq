@@ -59,7 +59,7 @@ export default function useSettingsControls(
       dispatch: controls[setting.id],
     })) as Controls,
     // TODO: (later) maybe refactor so that this doesn't use this hack with _modified field
-    modified: (data._modified as unknown) as Record<
+    modified: (data._modified as unknown) as null | Record<
       string,
       ToggleChanges | ToggleListChanges
     >,

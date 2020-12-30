@@ -10,6 +10,7 @@ const Hr = ({ variant, className, ...props }: HrProps) => (
     className={cn(
       styles.Hr,
       className,
+      'border-gray-500',
       variant && styles[`variant-${variant}`],
     )}
     {...props}

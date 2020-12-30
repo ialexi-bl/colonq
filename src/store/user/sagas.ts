@@ -1,7 +1,7 @@
-import { ApiErrorName, ApiResponse } from 'services/api/config'
+import { ApiResponse } from 'services/api/config'
 import { AppState } from 'store/types'
 import { AppsApi, UserApi } from 'services/api'
-import { AuthorizedMethodInternal, UserState } from './types'
+import { AuthorizedMethodInternal, User, UserState } from './types'
 import { Channel, Task } from 'redux-saga'
 import { ColonqError, HttpError } from 'services/errors'
 import {
@@ -48,10 +48,11 @@ function* updateToken() {
     yield put(authenticateSuccess(data))
   } catch (e) {
     if (e instanceof HttpError) {
-      const name: string = yield call(e.getApiName)
-
-      if (name === ApiErrorName.UNAUTHORIZED) {
+      if (e.status === 401) {
         yield put(unauthenticate())
+        return
+      }
+      if (e.status === 429) {
         return
       }
     }
@@ -67,6 +68,11 @@ function* updateToken() {
 }
 
 function* loadApps() {
+  const appsStatus: User['appsStatus'] = yield select(
+    (state: AppState) => state.user.appsStatus,
+  )
+  if (appsStatus === 'loaded') return
+
   try {
     const data: ApiResponse.User.GetApps = yield call(
       executeAuthorizedMethod,
@@ -194,7 +200,6 @@ export default function* userSaga() {
 
     // Executing actions that may have started while authentication way being performed
     yield takeEvery(channel, function* (a) {
-      console.log('Dispatching late action', a)
       yield put(a)
     })
     channel.close()

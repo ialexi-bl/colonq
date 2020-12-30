@@ -1,7 +1,9 @@
 module.exports = {
   purge: ['./src/**/*.html', './src/**/*.tsx', './src/**/*.scss'],
   theme: {
-    container: { center: true },
+    container: {
+      center: true,
+    },
     extend: {
       colors: {
         disabled: {
@@ -81,11 +83,15 @@ module.exports = {
         navigation: 590,
         notification: 580,
       },
+      flex: {
+        2: '2 2 0%',
+      },
     },
   },
   variants: {
     extend: {
       textColor: ['active'],
+      backgroundColor: ['active'],
     },
   },
   future: {

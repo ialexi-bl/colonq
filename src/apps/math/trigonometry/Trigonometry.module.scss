@@ -1,0 +1,20 @@
+@media (min-width: theme('screens.md')) {
+  .TrigBtn {
+    position: relative;
+  }
+  .TrigBtn::after {
+    color: theme('textColor.disabled.100');
+    font-size: theme('fontSize.xs');
+    text-transform: lowercase;
+    position: absolute;
+    bottom: 20%;
+    right: 20%;
+  }
+
+  .TrigSqrt::after {
+    content: 'q';
+  }
+  .TrigFrac::after {
+    content: 'w';
+  }
+}

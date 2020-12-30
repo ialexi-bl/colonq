@@ -30,10 +30,8 @@ const methodsBindings: Record<string, TrigKey | 'down' | 'up'> = {
   '/': 'frac',
   '.': 'sqrt',
   q: 'sqrt',
-  a: 'left',
-  d: 'right',
-  w: 'up',
-  s: 'down',
+  w: 'frac',
+  e: 'delete',
   enter: 'submit',
   space: 'submit',
   arrowup: 'up',
@@ -63,13 +61,17 @@ export default function TrigSession({ problems }: TrigSessionProps) {
     function onKeyDown(e: KeyboardEvent) {
       if (e.repeat || !current) return
       const method = methodsBindings[e.key.toLowerCase()]
+
       if (method === 'submit') {
-        next(current.data.value.toString())
+        if (current.data.value.allowedKeys().submit) {
+          next(current.data.value.toString())
+        }
       } else if (method) {
         current.data.value[method]()
         forceUpdate()
       }
     }
+
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [current, forceUpdate, next])

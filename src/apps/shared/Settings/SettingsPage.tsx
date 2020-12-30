@@ -7,7 +7,6 @@ import { useEffect } from 'react'
 import { useElevationClassnames } from 'hooks/use-elevation'
 import AppError from '../AppError'
 import List from 'components/icons/List'
-import PageTitle from 'components/shared/PageTitle'
 import Settings from './Settings'
 import cn from 'clsx'
 import useAppTitle from 'hooks/use-app-title'
@@ -57,7 +56,6 @@ export default function SettingsPage({
       <Helmet>
         <title>Настройки {title}</title>
       </Helmet>
-      <PageTitle>Найтройки приложения</PageTitle>
       <Settings app={app} settings={settings.settings} />
 
       <Fal

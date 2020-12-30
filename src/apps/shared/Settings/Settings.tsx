@@ -1,11 +1,15 @@
 import { ApiResponse } from 'services/api/config'
+import { LinkButton } from 'components/shared/Button'
 import { MixedDispatch } from 'store/types'
+import { app as appRoute } from 'config/routes'
 import { executeAuthorizedMethod } from 'store/user'
-import { notifyErrorObject, notifyInfo } from 'store/view'
+import { notifyErrorObject } from 'store/view'
 import { useDispatch } from 'react-redux'
-import { useEffect, useRef } from 'react';
+import PageTitle from 'components/shared/PageTitle'
 import SettingsApi from 'services/api/settings'
 import ToggleList from 'components/shared/ToggleList'
+import useAppTitle from 'hooks/use-app-title'
+import useSave from 'hooks/use-save'
 import useSettingsControls, {
   ToggleListDispatch,
 } from './use-settings-controls'
@@ -21,69 +25,57 @@ export default function Settings({
 }: SettingsViewProps) {
   const { settings, modified, resetModified } = useSettingsControls(_settings)
   const dispatch = useDispatch<MixedDispatch>()
-  const save = useRef({ timer: null as null | number, func: () => {} })
+  const title = useAppTitle(app)
 
-  useEffect(() => {
-    if (!modified) return
-
-    async function func() {
-      if (!modified) return Promise.resolve()
-
-      try {
-        await dispatch(
-          executeAuthorizedMethod(SettingsApi.changeSettings(app, modified)),
-        )
-        resetModified()
-        save.current = { timer: null, func: () => {} }
-      } catch (e) {
-        return dispatch(notifyErrorObject(e))
-      }
+  useSave(!!modified, modified, async () => {
+    try {
+      await dispatch(
+        executeAuthorizedMethod(SettingsApi.changeSettings(app, modified!)),
+      )
+      resetModified()
+    } catch (e) {
+      return dispatch(notifyErrorObject(e))
     }
-    function unload(e: BeforeUnloadEvent) {
-      dispatch(notifyInfo('Сохраняю....'))
-      func().then(() => {
-        dispatch(notifyInfo('Настройки сохранены, можешь уходить'))
-      })
-      const message =
-        'Стой, настройки не успели сохраниться! Точно хочешь выйти?'
-      e.preventDefault()
-      e.returnValue = message
-      return message
-    }
-
-    save.current = { func, timer: window.setTimeout(func, 500) }
-    // window.onbeforeunload = unload
-    window.addEventListener('beforeunload', unload)
-    return () => {
-      clearTimeout(save.current.timer!)
-      // window.onbeforeunload = null
-      window.removeEventListener('beforeunload', unload)
-    }
-  }, [app, dispatch, modified, resetModified, settings])
-  useEffect(() => {
-    return () => {
-      if (save.current.timer === null) return
-      clearTimeout(save.current.timer)
-      save.current.func()
-    }
-  }, [])
+  })
 
   return (
-    <div className={'px-2'}>
-      {settings.map((setting) => {
-        switch (setting.type) {
-          case 'list':
-            return (
-              <ListSetting
-                key={setting.id}
-                list={setting.data}
-                dispatch={setting.dispatch}
-              />
-            )
-          default:
-            return null
-        }
-      })}
+    <div className={'container'}>
+      <PageTitle>Найтройки приложения {title}</PageTitle>
+      <div className={'flex'}>
+        <section className={'flex-1 mx-auto max-w-2xl'}>
+          <div className={'px-4'}>
+            {settings.map((setting) => {
+              switch (setting.type) {
+                case 'list':
+                  return (
+                    <ListSetting
+                      key={setting.id}
+                      list={setting.data}
+                      dispatch={setting.dispatch}
+                    />
+                  )
+                default:
+                  return null
+              }
+            })}
+          </div>
+        </section>
+        <section
+          className={'w-1/3 sticky top-0 hidden md:flex flex-col items-center'}
+        >
+          <LinkButton to={appRoute(app, 'practice')} className={'min-w-72'}>
+            Начать занятие
+          </LinkButton>
+          <LinkButton
+            to={appRoute(app, 'stats')}
+            className={'min-w-72'}
+            variant={2}
+            secondary
+          >
+            Список уроков
+          </LinkButton>
+        </section>
+      </div>
     </div>
   )
 }
@@ -98,8 +90,11 @@ function ListSetting({
   return (
     <div className={'px-2'}>
       <h2 className={'text-2xl mb-4'}>{list.title}</h2>
-      {list.description && <p className={'mb-4'}>{list.description}</p>}
-      <ToggleList onToggle={dispatch} data={list.items} />
+      {list.description && <p className={'mb-6'}>{list.description}</p>}
+
+      <div className={'max-w-md mx-auto'}>
+        <ToggleList onToggle={dispatch} data={list.items} />
+      </div>
     </div>
   )
 }

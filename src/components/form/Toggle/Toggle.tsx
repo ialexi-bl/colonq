@@ -8,7 +8,7 @@ export type ToggleProps = Omit<HTMLProps.input, 'onChange'> & {
 
 const Toggle = ({ className, onChange, ...props }: ToggleProps) => (
   <label
-    className={cn(className, 'relative inline-block cursor-pointer w-10 h-6')}
+    className={cn(className, 'relative inline-block cursor-pointer w-12 h-6')}
   >
     <input
       type={'checkbox'}

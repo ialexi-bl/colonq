@@ -27,7 +27,7 @@ function LessonsList({ lessons, app: appName }: LessonsListProps) {
             detail={detail(lesson)}
             progress={lesson.score / 100}
             disabled={disabled}
-            className={'mb-2'}
+            className={'mb-2 cursor-pointer'}
             onClick={() =>
               !disabled &&
               dispatch(

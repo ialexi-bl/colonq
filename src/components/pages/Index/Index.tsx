@@ -25,10 +25,7 @@ import styles from './Index.module.scss'
 export default function Index({ setProgress }: RouteComponentProps) {
   const scrollbars = useRef<Scrollbars | null>(null)
   const status = useSelector((state: AppState) => state.user.status)
-
-  useEffect(() => {
-    setProgress(100)
-  }, [setProgress])
+  useEffect(() => setProgress(100), [setProgress])
 
   return (
     <ScrollablePage routeElevation={Elevation.index} ref={scrollbars}>
@@ -157,9 +154,11 @@ const Advantage = ({
   reversed?: boolean
 }) => (
   <div
-    className={cn('flex h-40 px-4 items-center', {
-      'flex-row-reverse': reversed,
-    })}
+    className={cn(
+      'max-w-2xl mx-auto flex h-40 px-4 items-center',
+      reversed ? 'md:pr-72' : 'md:pl-72',
+      reversed ? 'flex-row-reverse' : 'text-right',
+    )}
   >
     <div className={cn('h-24 w-24 flex-shrink-0', reversed ? 'ml-6' : 'mr-6')}>
       {icon}

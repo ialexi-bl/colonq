@@ -19,7 +19,9 @@ export default function useLocationControls(realLocation: ExtendedLocation) {
   }
   // Progress may never be less than 10
   const progress = useRef(10)
+  const changedPages = useRef<boolean | 1 | 2>(false)
   const firstRenderDone = useRef(false)
+
   const forceUpdate = useForceUpdate()
   const visibleLocation = useRef(realLocation)
   const previousLocation = usePrevious(realLocation)
@@ -36,6 +38,7 @@ export default function useLocationControls(realLocation: ExtendedLocation) {
   )
 
   if (previousLocation.pathname !== realLocation.pathname) {
+    if (changedPages.current === 1) changedPages.current = 2
     progress.current = 10
   }
   // Prevents rerendering when location object is changed but pages is not
@@ -45,17 +48,21 @@ export default function useLocationControls(realLocation: ExtendedLocation) {
   }
 
   if (progress.current >= 100) {
+    if (changedPages.current === 2) changedPages.current = true
+    else if (!changedPages.current) changedPages.current ||= 1
+
     firstRenderDone.current = true
     visibleLocation.current = realLocation
   }
 
   return {
     visibleLocation: visibleLocation.current,
+    firstRenderDone: firstRenderDone.current,
+    changedPages: changedPages.current === true,
+    visibleKey: visibleLocation.current[routerKey]!,
     progress: progress.current,
     visible: progress.current >= 100,
     loading: visibleLocation.current !== realLocation,
-    firstRenderDone: firstRenderDone.current,
-    visibleKey: visibleLocation.current[routerKey]!,
     realKey: realLocation[routerKey]!,
     setProgress,
   }

@@ -1,7 +1,7 @@
 import { ScrollbarProps, Scrollbars } from 'react-custom-scrollbars'
 import { forwardRef } from 'react'
 import { renderScrollThumb, renderScrollTrack } from '../render-scroll'
-import { useIsNavigationVisible } from '../Navigation'
+import { useIsNavigationRendered } from '../Navigation'
 import cn from 'clsx'
 import styles from './Page.module.scss'
 
@@ -10,18 +10,21 @@ type ElevationProps = {
 }
 export type PageProps = HTMLProps.div & ElevationProps
 
-const Page = ({ className, routeElevation, ...props }: PageProps) => (
+export const EmptyPage = ({
+  className,
+  routeElevation,
+  ...props
+}: PageProps) => (
   <div
-    className={cn(
-      styles.Page,
-      // pt-16 is for navigation
-      // container cannot be used here because some apps need full width blocks
-      // For the same reason background is not set
-      'h-full relative overflow-hidden',
-      useIsNavigationVisible() && 'sm:pt-16',
-      className,
-    )}
+    className={cn(className, styles.Page, 'h-full relative overflow-hidden')}
     style={{ zIndex: routeElevation }}
+    {...props}
+  />
+)
+
+const Page = ({ className, ...props }: PageProps) => (
+  <EmptyPage
+    className={cn(className, useIsNavigationRendered() && 'sm:pt-16')}
     {...props}
   />
 )
@@ -34,8 +37,8 @@ export const ScrollablePage = forwardRef<
   <Page routeElevation={routeElevation} className={className}>
     <Scrollbars
       autoHide
-      renderThumbVertical={renderScrollThumb}
       renderTrackVertical={renderScrollTrack}
+      renderThumbVertical={renderScrollThumb}
       ref={ref}
       {...props}
     >
