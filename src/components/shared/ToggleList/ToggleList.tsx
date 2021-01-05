@@ -58,13 +58,16 @@ const Group = memo(function Group({
         >
           <span className={'flex-1'}>{group.label}</span>
           {!group.disabled && (
-            <Expand
+            <button
+              onClick={toggle}
               className={cn(
-                'w-6 transform duration-200',
+                'w-6 transform duration-200 cursor-pointer',
+                'focus:text-gray-500',
                 expanded && 'rotate-180',
               )}
-              onClick={toggle}
-            />
+            >
+              <Expand className={'w-full'} />
+            </button>
           )}
         </Trapezoid>
       }

@@ -19,5 +19,5 @@
     "jsx": "react-jsxdev",
     "baseUrl": "./src"
   },
-  "include": ["src", "src/components/icons/dynamic/.sets/parts-of-speech.ts"]
+  "include": ["src", "src/components/icons/apps/.sets/parts-of-speech.ts"]
 }

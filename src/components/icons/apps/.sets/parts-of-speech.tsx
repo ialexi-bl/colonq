@@ -13,6 +13,14 @@ const map: Record<string, ComponentType<HTMLProps.svg>> = {
   'russian/verb': Verb,
 }
 
-export default function getIcon(name: string) {
-  return map[name] || null
+export default function PartsOfSpeechIcon({
+  name,
+  ...props
+}: HTMLProps.svg & { name: string }) {
+  if (name in map) {
+    const Cmp = map[name]
+    return <Cmp {...props} />
+  } else {
+    return null
+  }
 }

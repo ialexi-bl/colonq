@@ -14,13 +14,13 @@ import { useLocation } from 'react-router'
 import Accordion from 'components/shared/Accordion/Accordion'
 import Button from 'components/shared/Button'
 import Continue from 'components/icons/Continue'
-import DynamicIcon from 'components/icons/DynamicIcon'
 import Fab from 'components/shared/Fab/Fab'
 import LoadingError from 'components/shared/LoadingError'
 import PageTitle from 'components/shared/PageTitle'
 import TextContainer from 'components/shared/TextContainer'
 import ThemeCard from 'components/shared/ThemeCard'
 import useElevation from 'hooks/use-elevation'
+import useIconsSet from 'hooks/use-icons-set'
 import useIsAuthenticated from 'hooks/use-is-authenticated'
 import useItemsToggler from 'hooks/use-items-toggler'
 import useWasTrue from 'hooks/use-was-true'
@@ -41,6 +41,7 @@ export default function AppsChoice({
   const location = useLocation<{ noBack?: boolean } | undefined>()
   const user = useSelector((state: AppState) => state.user)
   const wasError = useWasTrue(user.appsStatus === 'error')
+  const Icon = useIconsSet('apps')
 
   const [categories, setCategories] = useState<
     null | 'error' | 'loading' | ApiResponse.Apps.Category[]
@@ -169,7 +170,7 @@ export default function AppsChoice({
                     disabled={!chosen[app.id]}
                     variant={((i % 4) + 1) as 1}
                     title={app.title}
-                    icon={<DynamicIcon icon={app.icon} />}
+                    icon={<Icon name={app.icon} />}
                   />
                 }
                 details={

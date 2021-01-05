@@ -3,16 +3,18 @@ import { app as appRoute } from 'config/routes'
 import { push } from 'connected-react-router'
 import { useDispatch } from 'react-redux'
 import { withAuth } from 'components/shared/EnsureAuthenticated'
-import DynamicIcon from 'components/icons/DynamicIcon'
 import ThemeCard from 'components/shared/ThemeCard'
+import useIconsSet from 'hooks/use-icons-set'
 
 export type LessonsListProps = {
+  iconsSet: string
   lessons: Lesson[]
   app: string
 }
 
-function LessonsList({ lessons, app: appName }: LessonsListProps) {
+function LessonsList({ lessons, iconsSet, app: appName }: LessonsListProps) {
   const dispatch = useDispatch()
+  const Icon = useIconsSet(iconsSet)
 
   return (
     <div className={'px-4 mt-4 pb-64'}>
@@ -22,7 +24,7 @@ function LessonsList({ lessons, app: appName }: LessonsListProps) {
           <ThemeCard
             variant={((i % 4) + 1) as 1}
             key={lesson.id}
-            icon={<DynamicIcon icon={lesson.icon} />}
+            icon={<Icon name={lesson.icon} />}
             title={lesson.title}
             detail={detail(lesson)}
             progress={lesson.score / 100}

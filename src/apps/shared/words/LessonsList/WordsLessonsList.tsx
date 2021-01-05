@@ -51,7 +51,7 @@ export default function WordsLessonsList({
     same: 'left',
   })
 
-  if (!useIsAuthenticated() ||  !visible || !app) return null
+  if (!useIsAuthenticated() || !visible || !app) return null
   if (hadError && app.status !== 'loaded') {
     return (
       <Wrapper className={elevationCn}>
@@ -84,7 +84,11 @@ export default function WordsLessonsList({
       <div className={'flex pb-72'}>
         <section className={'flex-1 mx-auto max-w-xl'}>
           <p className={'px-4 mb-4'}>Нажми на урок, чтобы начать практику</p>
-          <LessonsList app={appName} lessons={app.lessons as Lesson[]} />
+          <LessonsList
+            app={appName}
+            lessons={app.lessons as Lesson[]}
+            iconsSet={app.iconsSet}
+          />
         </section>
         <section
           className={'w-1/3 hidden sticky top-0 md:flex flex-col items-center'}

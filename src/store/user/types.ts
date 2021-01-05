@@ -56,22 +56,23 @@ export type AuthorizedMethod<T> = (
 
 export type Category = {
   id: string
-  title: string
   apps: PlainApp[]
+  title: string
 }
 
 export type Apps = Record<string, App>
-export type App = PlainApp &
-  (
-    | {
-        status: 'only-info' | 'loading' | 'error'
-        lessons: never[]
-      }
-    | {
-        status: 'loaded' | 'loading' | 'error'
-        lessons: Lesson[]
-      }
-  )
+
+export type App = OnlyInfoApp | LoadedApp
+export type OnlyInfoApp = PlainApp & {
+  status: 'only-info' | 'loading' | 'error'
+  iconsSet: string
+  lessons: never[]
+}
+export type LoadedApp = PlainApp & {
+  status: 'loaded' | 'loading' | 'error'
+  iconsSet: string
+  lessons: Lesson[]
+}
 export type PlainApp = {
   id: string
   icon: string

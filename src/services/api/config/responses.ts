@@ -31,14 +31,15 @@ declare namespace ApiResponse {
 
     export type CategoryDescription = {
       id: string
-      title: string
       apps: AppDescription[]
+      title: string
     }
     export type AppDescription = {
       id: string
       icon: string
       title: string
       score: number
+      iconsSet: string
       hasSettings: boolean
     }
 
@@ -46,6 +47,7 @@ declare namespace ApiResponse {
       icon: string
       title: string
       lessons: LessonDescription[]
+      iconsSet: string
       hasSettings: boolean
     }
     export type LessonDescription = {

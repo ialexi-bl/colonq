@@ -29,7 +29,7 @@ export function preloadIcons(icons: string[]) {
   return Promise.all(promises)
 }
 function importIcon(icon: string) {
-  return import(`components/icons/dynamic/${icon}/index`).catch((e) => {
+  return import(`components/icons/apps/${icon}/index`).catch((e) => {
     if (Config.IS_DEV) console.warn(e)
     return { default: () => null }
   })

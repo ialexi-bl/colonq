@@ -125,7 +125,14 @@ export default createReducer<UserState>(
     }),
     [String(loadAppSuccess)]: (
       state,
-      { app, title, icon, lessons, hasSettings }: LoadAppSuccessPayload,
+      {
+        app,
+        title,
+        icon,
+        lessons,
+        iconsSet,
+        hasSettings,
+      }: LoadAppSuccessPayload,
     ): UserState => ({
       ...state,
       apps: {
@@ -134,6 +141,7 @@ export default createReducer<UserState>(
           id: app,
           score: getScore(lessons),
           status: 'loaded',
+          iconsSet,
           hasSettings,
           lessons,
           title,
