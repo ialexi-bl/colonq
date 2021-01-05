@@ -1,6 +1,5 @@
 import cn from 'clsx'
 import paths from './progress-bar.shape.svg'
-import styles from './ProgressBar.module.scss'
 import useClipShape from 'hooks/use-clip-shape'
 
 export type ProgressBarProps = HTMLProps.div & {
@@ -12,10 +11,7 @@ const ProgressBar = ({ progress, className, ...props }: ProgressBarProps) => (
   useClipShape('progress-bar', paths),
   (
     <div className={cn('p-4', className)}>
-      <div
-        className={cn('bg-secondary-400 h-3', styles.ProgressBar)}
-        {...props}
-      >
+      <div className={'bg-secondary-400 h-3 shape-progress-bar'} {...props}>
         <div
           style={{ width: `${toPercent(progress)}%` }}
           className={'duration-150 bg-primary-700 h-full'}

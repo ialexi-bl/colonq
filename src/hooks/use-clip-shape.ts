@@ -20,12 +20,12 @@ import { useLayoutEffect } from 'react'
  * In CSS provided there is an SVG path with name `outer-1` in `bubble.shape.svg`:
  *   clip-path: url(#shape-bubble-outer-1)
  */
-export default function useClipShape(name: string, paths: Shape[]) {
+export default function useClipShape(setName: string, paths: Shape[]) {
   const dispatch = useDispatch()
 
   // Using layoutEffect because otherwise there's a moment
   // when shape is not loaded but the element is displayed
   useLayoutEffect(() => {
-    dispatch(registerShape({ name, shapes: paths }))
-  }, [dispatch, name, paths])
+    dispatch(registerShape({ setName, shapes: paths }))
+  }, [dispatch, setName, paths])
 }

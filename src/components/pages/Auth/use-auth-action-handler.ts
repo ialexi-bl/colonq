@@ -2,7 +2,7 @@ import { ApiErrorName, EmailAction, SocialAction } from 'services/api/config'
 import { AppState, MixedDispatch, ThunkAction } from 'store/types'
 import { HttpError } from 'services/errors'
 import { UserApi } from 'services/api'
-import { appsList, login, profile, register } from 'config/routes'
+import { appsList, editPassword, login, profile, register } from 'config/routes'
 import { capitalize } from 'util/capitalize'
 import { executeAuthorizedMethod } from 'store/user'
 import { getTokenField } from 'util/jwt'
@@ -35,7 +35,6 @@ export default function useAuthActionHandler(): AuthAction {
   const [action, setAction] = useState<AuthAction>(null)
 
   useEffect(() => {
-    console.log(processed.current, userStatus)
     if (processed.current || userStatus === 'loading') return
 
     processed.current = true
@@ -108,7 +107,7 @@ function processCallbackAction(
             type: 'prompt-new-password',
             submit: (password: string) => {
               return dispatch(
-                submitNewPassword(provider, password, code, redirectUri),
+                submitNewPassword(provider, code, redirectUri, password),
               )
             },
           }
@@ -308,6 +307,18 @@ function submitNewPassword(
       dispatch(push(profile()))
       return true
     } catch (e) {
+      if (
+        e instanceof HttpError &&
+        (await e.getApiName()) === ApiErrorName.BAD_TOKEN
+      ) {
+        dispatch(
+          notifyError(
+            'Недействительный токен. Возможно, время его действия истекло. Попробуй ещё раз и не задерживайся с вводом нового пароля',
+          ),
+        )
+        dispatch(push(editPassword()))
+        return false
+      }
       dispatch(notifyErrorObject(e))
       return false
     }

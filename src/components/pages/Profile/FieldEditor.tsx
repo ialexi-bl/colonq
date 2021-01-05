@@ -4,6 +4,7 @@ import { MixedDispatch } from 'store/types'
 import { notifyErrorObject, notifyInfo } from 'store/view'
 import { useDispatch } from 'react-redux'
 import { useFormik } from 'formik'
+import { useState } from 'react'
 import Accordion from 'components/shared/Accordion'
 import Done from 'components/icons/Done'
 import ErrorMessage from 'components/form/ErrorMessage'
@@ -23,6 +24,8 @@ export default function FieldEditor({
   method,
   email,
 }: FieldEditorProps) {
+  // TODO: remove this hack maybe
+  const [cleanValue, setCleanValue] = useState(defaultValue)
   const dispatch = useDispatch<MixedDispatch>()
 
   const formik = useFormik({
@@ -41,6 +44,7 @@ export default function FieldEditor({
         .then(() => {
           if (message) dispatch(notifyInfo(message))
           formik.setStatus('success')
+          setCleanValue(value)
         })
         .catch((e) => {
           dispatch(notifyErrorObject(e))
@@ -49,7 +53,7 @@ export default function FieldEditor({
     },
   })
 
-  const modified = formik.values.value !== defaultValue
+  const modified = formik.values.value !== cleanValue
   const form = (
     <form onSubmit={formik.handleSubmit}>
       <div className={'flex'}>

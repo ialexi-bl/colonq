@@ -4,6 +4,7 @@ import { Location } from 'history'
 import { ReactNode } from 'react'
 import { appsList, profile } from 'config/routes'
 import { useSelector } from 'react-redux'
+import Feedback from 'components/icons/Feedback'
 import List from 'components/icons/List'
 import User from 'components/icons/User'
 import cn from 'clsx'
@@ -11,7 +12,7 @@ import useWasTrue from 'hooks/use-was-true'
 
 export function useIsNavigationRendered() {
   const status = useSelector((state: AppState) => state.user.status)
-  const loadedOnce = useWasTrue(status !== 'loading')
+  const loadedOnce = useWasTrue(status === 'authenticated')
 
   return status === 'authenticated' || (status === 'loading' && loadedOnce)
 }
@@ -30,7 +31,7 @@ export default function Navigation() {
       className={cn(
         'flex justify-center items-center bg-navigation fixed inset-x-0 bottom-0 h-12 px-2',
         'z-navigation transition-transform duration-300 transform',
-        'sm:top-0 sm:bottom-auto sm:h-16',
+        'sm:top-0 sm:bottom-auto sm:h-16 md:px-12',
         !visible && 'translate-y-full sm:-translate-y-full',
       )}
     >
@@ -41,6 +42,10 @@ export default function Navigation() {
       <NavLink visible={visible} location={location} to={profile()}>
         <User className={'w-8 h-8'} />
         <p className={'hidden md:block ml-4 uppercase'}>Профиль</p>
+      </NavLink>
+      <NavLink visible={visible} location={location} to={profile()}>
+        <Feedback className={'w-8 h-8'} />
+        <p className={'hidden md:block ml-4 uppercase'}>Обратная связь</p>
       </NavLink>
     </nav>
   )

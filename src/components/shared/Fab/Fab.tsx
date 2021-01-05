@@ -2,7 +2,6 @@ import * as React from 'react'
 import { Link, LinkProps } from 'react-router-dom'
 import cn from 'clsx'
 import shape from './Fab.shape.svg'
-import styles from './Fab.module.scss'
 import useClipShape from 'hooks/use-clip-shape'
 
 type CommonProps = {
@@ -17,7 +16,7 @@ const Fab = ({ className, icon, disabled, ...props }: FabProps) => (
   (
     <button
       disabled={disabled}
-      className={getClassNames(disabled, className)}
+      className={useFabClassNames(disabled, className)}
       {...props}
     >
       {icon}
@@ -31,19 +30,20 @@ export const Fal = ({ className, icon, disabled, to, ...props }: FalProps) => (
   (
     <Link
       to={disabled ? '#' : to}
-      className={getClassNames(disabled, className)}
+      className={useFabClassNames(disabled, className)}
+      {...props}
     >
       {icon}
     </Link>
   )
 )
 
-export const getClassNames = (disabled?: boolean, className?: string) =>
+export const useFabClassNames = (disabled?: boolean, className?: string) =>
   cn(
     'w-14 h-14 p-2 fixed transition-color duration-100 md:hidden',
+    'shape-fab bottom-16 right-2',
     disabled
       ? 'bg-disabled-700 cursor-default'
       : 'bg-primary-700 hover:bg-primary-600 active:bg-primary-800 cursor-pointer',
     className,
-    styles.Fab,
   )

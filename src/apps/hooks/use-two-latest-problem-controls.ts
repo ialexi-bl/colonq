@@ -58,7 +58,6 @@ export default function useTwoLatestProblemControls<
       })
     },
     next: (answer: TAnswer) => {
-      console.log(answer)
       if (!verify(problems[p].data, answer)) {
         // Repeat problem and reduce progress on wrong answer
         setProgress((progress) => Math.max(0, progress - 0.03))

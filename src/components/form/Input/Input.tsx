@@ -31,9 +31,9 @@ const Input = memo(function Input({
       tabIndex={0}
       className={cn(
         'py-4 px-6 outline-none',
+        `shape-input-${variant}`,
         className,
         styles.Input,
-        styles[`variant-${variant}`],
         props.readOnly && styles.readonly,
         state && styles[state],
       )}

@@ -5,7 +5,7 @@ export type Shape = {
   shape: string
 }
 export type ShapeSet = {
-  name: string
+  setName: string
   shapes: Shape[]
 }
-export type ShapesState = ShapeSet[]
+export type ShapesState = Shape[]

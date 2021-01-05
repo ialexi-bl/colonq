@@ -54,47 +54,48 @@ export default function Index({ setProgress }: RouteComponentProps) {
         {status === 'authenticated' ? <AuthButtons /> : <GuestButtons />}
         <ScrollIcon className={'h-12 mt-16'} />
       </div>
+      <div className={'route-down bg-page'}>
+        <h2 className={'my-32 px-4 text-center text-4xl route-down'}>
+          Запомни один раз, не забывай никогда
+        </h2>
 
-      <h2 className={'my-32 px-4 text-center text-4xl route-down'}>
-        Запомни один раз, не забывай никогда
-      </h2>
+        <div
+          className={cn(
+            styles.AdvantagesBackground,
+            'bg-secondary-800 route-down',
+          )}
+        >
+          <Advantage
+            icon={<Suffixes />}
+            title={'Русский язык'}
+            description={
+              'Практикуй правила и учи слова-исключения, чтобы чувствовать себя уверенно на контрольных'
+            }
+          />
+          <Hr />
+          <Advantage
+            reversed
+            icon={<Trigonometry />}
+            title={'Математика'}
+            description={
+              'Запоминай простые факты и не трать драгоценное время экзамена на попытки их вспомнить'
+            }
+          />
+          <Hr />
+          <h4 className={'text-center text-3xl my-8'}>Скоро больше!</h4>
+        </div>
 
-      <div
-        className={cn(
-          styles.AdvantagesBackground,
-          'bg-secondary-800 route-down',
-        )}
-      >
-        <Advantage
-          icon={<Suffixes />}
-          title={'Русский язык'}
-          description={
-            'Практикуй правила и учи слова-исключения, чтобы чувствовать себя уверенно на контрольных'
-          }
-        />
-        <Hr />
-        <Advantage
-          reversed
-          icon={<Trigonometry />}
-          title={'Математика'}
-          description={
-            'Запоминай простые факты и не трать драгоценное время экзамена на попытки их вспомнить'
-          }
-        />
-        <Hr />
-        <h4 className={'text-center text-3xl my-8'}>Скоро больше!</h4>
-      </div>
+        <div className={'my-64 px-4 flex flex-col items-center'}>
+          <NotificationIcon className={'h-32 w-32 mb-4'} />
+          <h3 className={'text-3xl text-center'}>
+            Уведомления не позволят пропускать ежедневные занятия
+          </h3>
+        </div>
 
-      <div className={'my-64 px-4 flex flex-col items-center'}>
-        <NotificationIcon className={'h-32 w-32 mb-4'} />
-        <h3 className={'text-3xl text-center'}>
-          Уведомления не позволят пропускать ежедневные занятия
-        </h3>
-      </div>
-
-      <h2 className={'px-4 mb-6 text-4xl text-center'}>Начни прямо сейчас</h2>
-      <div className={'px-4 mb-64 flex flex-col items-center'}>
-        {status === 'authenticated' ? <AuthButtons /> : <GuestButtons />}
+        <h2 className={'px-4 mb-6 text-4xl text-center'}>Начни прямо сейчас</h2>
+        <div className={'px-4 mb-64 flex flex-col items-center'}>
+          {status === 'authenticated' ? <AuthButtons /> : <GuestButtons />}
+        </div>
       </div>
     </ScrollablePage>
   )

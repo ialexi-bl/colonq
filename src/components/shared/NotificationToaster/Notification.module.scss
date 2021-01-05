@@ -5,10 +5,15 @@
     transform: translateY(0);
   }
   @include transition.self(notification, (exit-to, from)) {
-    transform: translateY(100%);
+    // Moving a bit more that 100% for large devices
+    transform: translateY(120%);
   }
   @include transition.self(notification, (enter-to, appear-to)) {
     transform: translateY(0);
+  }
+
+  @media (min-width: theme('screens.lg')) {
+    clip-path: url(#shape-notification);
   }
 }
 

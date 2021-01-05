@@ -17,7 +17,7 @@ export default function LoadingError({
     <div
       className={cn(
         className,
-        'px-8 pb-64 h-full flex flex-col items-center justify-center bg-page',
+        'px-8 pt-32 pb-64 h-full flex flex-col items-center justify-center bg-page',
       )}
     >
       <h2 className={`text-2xl text-center ${detail ? 'pb-2' : 'pb-4'}`}>

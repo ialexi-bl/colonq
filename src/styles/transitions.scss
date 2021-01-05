@@ -39,27 +39,27 @@
 }
 
 @include enter-class-name(right, overlay) {
-  @include transition-presets.right-start;
+  @include transition-presets.dir-start(right);
 }
 @include enter-class-name(left) {
-  @include transition-presets.left-start;
+  @include transition-presets.dir-start(left);
 }
 @include enter-class-name(down) {
-  @include transition-presets.down-start;
+  @include transition-presets.dir-start(down);
 }
 @include enter-class-name(up) {
-  @include transition-presets.up-start;
+  @include transition-presets.dir-start(up);
 }
 
 @include exit-class-name(right, overlay) {
-  @include transition-presets.right-end;
+  @include transition-presets.dir-end(100vw);
 }
 @include exit-class-name(left) {
-  @include transition-presets.left-end;
+  @include transition-presets.dir-end(-100vw);
 }
 @include exit-class-name(down) {
-  @include transition-presets.down-end;
+  @include transition-presets.dir-end(0, 100%);
 }
 @include exit-class-name(up) {
-  @include transition-presets.up-end;
+  @include transition-presets.dir-end(0, -100%);
 }

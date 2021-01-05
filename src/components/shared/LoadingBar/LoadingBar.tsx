@@ -1,5 +1,5 @@
 import { CSSTransition } from 'react-transition-group'
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
 import cn from 'clsx'
 import paths from './loading-bar.shape.svg'
 import styles from './LoadingBar.module.scss'
@@ -38,7 +38,12 @@ export default function Loadingbar({
   }, [progress])
 
   return (
-    <div className={cn('fixed inset-x-0 top-0 z-loading', styles.Track)}>
+    <div
+      className={cn(
+        'fixed inset-x-0 top-0 z-loading shape-loading-bar',
+        styles.Track,
+      )}
+    >
       <CSSTransition timeout={TIMEOUT} classNames={CLASS_NAME} in={visible}>
         <div
           style={{ transform: `scaleX(${format(p)})` }}

@@ -1,5 +1,6 @@
 import { MixedDispatch } from 'store/types'
 import { SettingItem, SettingItemContent, SettingItemLabel } from './view'
+import { decline } from 'util/lang'
 import { notifyError, notifyErrorObject } from 'store/view'
 import { useDispatch } from 'react-redux'
 import { useEffect, useRef, useState } from 'react'
@@ -90,7 +91,9 @@ export default function NotificationsToggler({
             onChange={(h) => setHour({ current: h, real: hour.real })}
             value={hour.current}
           />
-          <p className={'ml-2'}>часов</p>
+          <p className={'ml-2 w-12'}>
+            {decline(hour.current, ['час  ', 'часа ', 'часов'])}
+          </p>
         </SettingItemContent>
       </SettingItem>
     </div>

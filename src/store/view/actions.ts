@@ -3,6 +3,7 @@ import { ThunkAction } from 'store/types'
 import { createAction } from 'store/util'
 import Config from 'config'
 import LangErrors from 'lang/errors.json'
+import ky from 'ky'
 
 export enum ViewAction {
   OPEN_LOADING = 'VIEW/OPEN_LOADING',
@@ -53,6 +54,12 @@ export const notifyErrorObject = (e: Error): ThunkAction<void> => (
 ) => {
   if (e instanceof HttpError) {
     dispatch(notifyHttpError(e))
+  } else if (e instanceof ky.TimeoutError) {
+    dispatch(
+      notifyError(
+        'Сервер слишком долго выполнял запрос, наверное там что-то сломалось. Попробуй ещё раз позже',
+      ),
+    )
   } else if (e.name === 'TypeError' && e.message === 'Failed to fetch') {
     dispatch(notifyError(LangErrors.network))
   } else {

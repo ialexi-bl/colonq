@@ -94,8 +94,16 @@ export default function Login({ setProgress }: RouteComponentProps) {
       </Helmet>
       <PageTitle icon={<User />}>Вход</PageTitle>
 
-      <div className={'max-w-xl mx-auto px-4 pb-64 overflow-hidden'}>
-        <form onSubmit={formik.handleSubmit}>
+      <div
+        className={cn(
+          'max-w-xl mx-auto px-4 pb-64 overflow-hidden',
+          'justify-center lg:container lg:flex',
+        )}
+      >
+        <form
+          className={'flex-1 lg:max-w-md lg:mr-8'}
+          onSubmit={formik.handleSubmit}
+        >
           <CompoundInput
             autoFocus={!autofocusPassword}
             loading={loading}
@@ -128,9 +136,9 @@ export default function Login({ setProgress }: RouteComponentProps) {
           </LoadingButton>
         </form>
 
-        <div className={'my-16 text-center text-xl'}>ИЛИ</div>
+        <div className={'my-16 text-center text-xl lg:hidden'}>ИЛИ</div>
 
-        <div className={'flex flex-col items-center text-lg'}>
+        <div className={'flex flex-col items-center text-lg max-w-xl flex-1'}>
           <SocialLoginButton
             provider={'google'}
             disabled={loading}

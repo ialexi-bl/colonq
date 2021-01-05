@@ -50,7 +50,7 @@ const Group = memo(function Group({
       expanded={expanded}
       summary={
         <Trapezoid
-          variant={((i % 6) + 1) as 1}
+          variant={((i % 6) + 1) as any}
           className={cn(
             'flex px-6 py-4 items-center',
             group.disabled ? 'bg-disabled-1000' : 'bg-secondary-400',
@@ -69,7 +69,7 @@ const Group = memo(function Group({
         </Trapezoid>
       }
       details={
-        <div className={'flex flex-wrap'}>
+        <div className={'flex flex-wrap pl-4'}>
           {group.items.map((item, j) => (
             <Item
               i={j}
@@ -97,10 +97,10 @@ const Item = memo(function Item({
 }) {
   return (
     <Trapezoid
-      variant={((i % 6) + 1) as 1}
+      variant={((i % 6) + 1) as any}
       onClick={() => onToggle({ group: groupId, item: item.id })}
       className={cn(
-        'px-4 py-2 m-1 flex-auto transition-color duration-100',
+        'px-4 py-2 m-1 flex-auto transition-color duration-100 cursor-pointer',
         item.value ? 'bg-primary-700' : 'bg-disabled-1000',
       )}
     >

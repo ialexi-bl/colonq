@@ -56,7 +56,6 @@ export default function SessionPage<TProblem extends ProblemWithAnswer>({
       </Wrapper>
     )
   }
-  console.log('rendering everything')
   return (
     <Wrapper>
       <Helmet>

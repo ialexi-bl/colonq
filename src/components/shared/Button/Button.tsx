@@ -1,7 +1,6 @@
 import { Link, LinkProps } from 'react-router-dom'
 import cn from 'clsx'
 import paths from './button.shape.svg'
-import styles from './Button.module.scss'
 import useClipShape from 'hooks/use-clip-shape'
 
 type CommonProps = {
@@ -74,13 +73,11 @@ const buttonClassNames = (
   disabled?: boolean,
 ) =>
   cn(
-    styles[`variant-${variant}`],
+    `shape-button-${variant}`,
     'py-4 px-6 duration-200 bg-cover bg-center bg-no-repeat cursor-pointer',
     {
-      [`bg-secondary-200 focus:bg-secondary-400 ${styles.secondary}`]:
-        !disabled && secondary,
-      [`bg-primary-700 focus:bg-primary-900 ${styles.primary}`]:
-        !disabled && !secondary,
+      [`bg-secondary-200 focus:bg-secondary-400`]: !disabled && secondary,
+      [`bg-primary-700 focus:bg-primary-900`]: !disabled && !secondary,
       'bg-disabled-700': disabled,
     },
   )

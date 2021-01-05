@@ -1,7 +1,6 @@
-import * as React from 'react';
+import * as React from 'react'
 import cn from 'clsx'
 import shapes from './bubble.shape.svg'
-import styles from './Bubble.module.scss'
 import useClipShape from 'hooks/use-clip-shape'
 
 export type BubbleProps = HTMLProps.div & {
@@ -27,8 +26,8 @@ export default function Bubble({
     <div
       className={cn(
         'relative w-28 h-28',
+        `shape-bubble-outer-${variant}`,
         className,
-        styles[`variant-${variant}`],
       )}
       {...props}
     >
@@ -43,7 +42,7 @@ export default function Bubble({
       <div
         className={cn(
           'p-6 transition-colors w-28 h-28',
-          styles.inner,
+          `shape-bubble-inner-${variant}`,
           // ? NOTE: maybe transition duration and delay should be dynamic?
           unlockTransition ? 'duration-1000 delay-200' : 'duration-100',
           disabled ? 'bg-disabled-1000' : 'bg-primary-900',

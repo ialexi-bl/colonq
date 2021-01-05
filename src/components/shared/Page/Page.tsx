@@ -1,5 +1,4 @@
 import { ScrollbarProps, Scrollbars } from 'react-custom-scrollbars'
-import { forwardRef } from 'react'
 import { renderScrollThumb, renderScrollTrack } from '../render-scroll'
 import { useIsNavigationRendered } from '../Navigation'
 import cn from 'clsx'
@@ -30,19 +29,20 @@ const Page = ({ className, ...props }: PageProps) => (
 )
 export default Page
 
-export const ScrollablePage = forwardRef<
-  Scrollbars,
-  ScrollbarProps & ElevationProps
->(({ className, children, routeElevation, ...props }, ref) => (
+export const ScrollablePage = ({
+  className,
+  children,
+  routeElevation,
+  ...props
+}: ScrollbarProps & ElevationProps) => (
   <Page routeElevation={routeElevation} className={className}>
     <Scrollbars
       autoHide
       renderTrackVertical={renderScrollTrack}
       renderThumbVertical={renderScrollThumb}
-      ref={ref}
       {...props}
     >
       {children}
     </Scrollbars>
   </Page>
-))
+)

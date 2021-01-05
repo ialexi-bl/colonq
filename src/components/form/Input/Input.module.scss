@@ -1,15 +1,15 @@
 $placeholder-color: #888;
 
 @mixin border-rule($color, $thickness) {
-  box-shadow: inset 0 (-$thickness) $color;
+  border-bottom: $thickness solid $color;
+  // box-shadow: inset 0 (-$thickness) $color;
 }
 @mixin border($color) {
-  &.InvisibleInput {
-    @include border-rule($color, 4px);
-  }
-  &.Input {
-    @include border-rule($color, 8px);
-  }
+  // border-bottom: $thickness solid $color;
+  // &.InvisibleInput,
+  // &.Input {
+  @include border-rule($color, 4px);
+  // }
 }
 
 .InvisibleInput,
@@ -63,14 +63,4 @@ $placeholder-color: #888;
 }
 .readonly {
   @include border(theme('colors.disabled.700'));
-}
-
-.variant-1 {
-  clip-path: url(#shape-input-1);
-}
-.variant-2 {
-  clip-path: url(#shape-input-2);
-}
-.variant-3 {
-  clip-path: url(#shape-input-3);
 }

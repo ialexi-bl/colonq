@@ -92,7 +92,7 @@ function ListSetting({
       <h2 className={'text-2xl mb-4'}>{list.title}</h2>
       {list.description && <p className={'mb-6'}>{list.description}</p>}
 
-      <div className={'max-w-md mx-auto'}>
+      <div className={'max-w-xl mx-auto'}>
         <ToggleList onToggle={dispatch} data={list.items} />
       </div>
     </div>

@@ -1,3 +1,4 @@
+import { Elevation } from 'config/view'
 import { Helmet } from 'react-helmet'
 import { useFormik } from 'formik'
 import CompoundInput from 'components/shared/CompoundInput'
@@ -6,6 +7,7 @@ import Page from 'components/shared/Page'
 import PageTitle from 'components/shared/PageTitle'
 import User from 'components/icons/User'
 import Validate from 'services/validation'
+import useElevation from 'hooks/use-elevation'
 
 type FormValues = {
   password: string
@@ -28,14 +30,18 @@ export default function NewPasswordPrompt({
     validate,
   })
 
+  useElevation(Elevation.auth)
   const loading = formik.status === 'loading'
   return (
-    <Page>
+    <Page
+      routeElevation={Elevation.auth}
+      className={'container route-overlay bg-page'}
+    >
       <Helmet>
         <title>Смена пароля</title>
       </Helmet>
       <PageTitle icon={<User />}>Изменение пароля</PageTitle>
-      <form className={'px-4'} onSubmit={formik.handleSubmit}>
+      <form className={'px-4 max-w-xl mx-auto'} onSubmit={formik.handleSubmit}>
         <CompoundInput
           type={'password'}
           meta={formik.getFieldMeta('password')}

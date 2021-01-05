@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet'
 import { RouteComponentProps, appsList } from 'config/routes'
 import { ScrollablePage } from 'components/shared/Page'
 import { executeAuthorizedMethod, loadApps } from 'store/user'
-import { notifyErrorObject,  } from 'store/view'
+import { notifyErrorObject } from 'store/view'
 import { push } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
@@ -105,11 +105,6 @@ export default function AppsChoice({
     user.appsStatus !== 'loaded'
   ) {
     const userAppsFailed = user.appsStatus !== 'loaded'
-    console.log(
-      userAppsFailed,
-      user.appsStatus === 'loading',
-      categories === 'loading',
-    )
     return (
       <Wrapper>
         <Helmet>

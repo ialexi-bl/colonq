@@ -42,10 +42,11 @@ export default function Router({
   const realLocation = useLocation<{ redirectedFromFailedAuth?: boolean }>()
 
   const {
+    setProgressVisible,
+    setProgressReal,
     visibleLocation,
     firstRenderDone,
     changedPages,
-    setProgress,
     visibleKey,
     progress,
     loading,
@@ -77,7 +78,7 @@ export default function Router({
       dispatch(goBack())
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [realLocation])
+  }, [status, realLocation])
 
   return (
     <>
@@ -102,7 +103,7 @@ export default function Router({
               <Routes
                 visible={visible}
                 location={realLocation}
-                setProgress={setProgress}
+                setProgress={setProgressReal}
               />
             </CSSTransition>
           )}
@@ -116,7 +117,7 @@ export default function Router({
             <Routes
               visible={firstRenderDone ? true : visible}
               location={visibleLocation}
-              setProgress={setProgress}
+              setProgress={setProgressVisible}
             />
           </CSSTransition>
         </TransitionGroup>

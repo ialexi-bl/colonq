@@ -20,7 +20,7 @@ const NotFound = ({
     <Page
       routeElevation={Elevation.notFound}
       className={cn(
-        'flex flex-col md:flex-row-reverse justify-center items-center',
+        'flex flex-col justify-center items-center',
         'route-overlay bg-page',
       )}
     >
@@ -32,8 +32,8 @@ const NotFound = ({
           <h1 className={'text-4xl mb-2'}>Такой страницы нет</h1>
           <p>ColonQ в недоумении</p>
         </div>
-        <Logo className={cn(styles.Monster, 'mx-auto w-48 h-48')} />
       </div>
+      <Logo className={cn(styles.Monster, 'mx-auto w-48 h-48')} />
       <LinkButton to={appsList()} className={'min-w-64'}>
         На главную
       </LinkButton>

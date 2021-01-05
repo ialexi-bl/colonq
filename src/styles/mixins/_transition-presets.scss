@@ -26,8 +26,8 @@
     }
   }
 }
-@include dir-animation('up-enter', 0, -100vh);
-@include dir-animation('down-enter', 0, 100vh);
+@include dir-animation('up-enter', 0, -100%);
+@include dir-animation('down-enter', 0, 100%);
 @include dir-animation('left-enter', -100vw);
 @include dir-animation('right-enter', 100vw);
 
@@ -82,7 +82,7 @@ $dir-opacity-offset: 5rem;
   @include opacity-end;
 }
 
-@mixin dir-start($name, $x, $y: 0) {
+@mixin dir-start($name) {
   // Preventing exiting components from playing entering animation
   // when .no-animation-start is removed
   #animation-controller > * + &,
@@ -123,63 +123,4 @@ $dir-opacity-offset: 5rem;
       transform: translate($x, $y);
     }
   }
-}
-@mixin up-start {
-  // #animation-controller:not(.no-animation-start) & {
-  //   animation: up-enter theme('transitionDuration.route');
-  // }
-  // @include dir-start(0, -100vh);
-  @include dir-start(up, 0, -100vh);
-}
-@mixin up-end {
-  @include dir-end(0, -100vh);
-}
-@mixin up {
-  @include up-start;
-  @include up-end;
-}
-
-@mixin down-start {
-  // #animation-controller:not(.no-animation-start) & {
-  //   animation: down-enter theme('transitionDuration.route');
-  // }
-  // @include dir-start(0, 100vh);
-  @include dir-start(down, 0, 100vh);
-}
-@mixin down-end {
-  @include dir-end(0, 100vh);
-}
-@mixin down {
-  @include down-start;
-  @include down-end;
-}
-
-@mixin right-start {
-  // #animation-controller:not(.no-animation-start) & {
-  //   animation: right-enter theme('transitionDuration.route');
-  // }
-  // @include dir-start(100vw);
-  @include dir-start(right, 100vw);
-}
-@mixin right-end {
-  @include dir-end(100vw);
-}
-@mixin right {
-  @include right-start;
-  @include right-end;
-}
-
-@mixin left-start {
-  // #animation-controller:not(.no-animation-start) & {
-  //   animation: left-enter theme('transitionDuration.route');
-  // }
-  // @include dir-start(-100vw);
-  @include dir-start(left, -100vw);
-}
-@mixin left-end {
-  @include dir-end(-100vw);
-}
-@mixin left {
-  @include left-start;
-  @include left-end;
 }

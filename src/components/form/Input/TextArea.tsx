@@ -1,14 +1,12 @@
-import { TextareaHTMLAttributes } from 'react';
-import * as React from 'react';
+import * as React from 'react'
+import { TextareaHTMLAttributes } from 'react'
 import cn from 'clsx'
+import paths from './textarea.shape.svg'
 import styles from './Input.module.scss'
+import useClipShape from 'hooks/use-clip-shape'
 
-export type InputProps = Omit<
-  TextareaHTMLAttributes<HTMLTextAreaElement>,
-  'onChange'
-> & {
+export type InputProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
   invalid?: boolean
-  onChange?: (value: string, e: React.ChangeEvent) => unknown
 }
 
 /**
@@ -16,17 +14,19 @@ export type InputProps = Omit<
  * the first parameter for onChange listener
  * @param props
  */
-export const TextArea = ({
-  className,
-  onChange,
-  invalid,
-  ...props
-}: InputProps) => (
-  <textarea
-    rows={5}
-    tabIndex={0}
-    className={cn(className, styles.Input, invalid && styles.invalid)}
-    onChange={onChange && ((e) => onChange(e.target.value, e))}
-    {...props}
-  />
+export const TextArea = ({ className, invalid, ...props }: InputProps) => (
+  useClipShape('textarea', paths),
+  (
+    <textarea
+      rows={5}
+      tabIndex={0}
+      className={cn(
+        'py-10 px-6 outline-none shape-textarea',
+        className,
+        styles.Input,
+        invalid && styles.invalid,
+      )}
+      {...props}
+    />
+  )
 )

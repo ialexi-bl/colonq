@@ -1,3 +1,4 @@
+import { Elevation } from 'config/view'
 import { Helmet } from 'react-helmet'
 import { useFormik } from 'formik'
 import CompoundInput from 'components/shared/CompoundInput'
@@ -8,6 +9,7 @@ import Regex from 'config/regex'
 import Slider from 'components/shared/Slider/Slider'
 import User from 'components/icons/User'
 import VerifyEmailMessage from 'components/shared/VerifyEmailMessage/VerifyEmailMessage'
+import useElevation from 'hooks/use-elevation'
 
 type FormValues = { email: string }
 
@@ -27,9 +29,13 @@ export default function EmailPrompt({
     validate,
   })
 
+  useElevation(Elevation.auth)
   const loading = formik.status === 'loading'
   return (
-    <Page>
+    <Page
+      routeElevation={Elevation.auth}
+      className={'container route-overlay bg-page'}
+    >
       <Helmet>
         <title>Ввод электронного адреса</title>
       </Helmet>

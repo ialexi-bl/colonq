@@ -15,6 +15,7 @@ import PageTitle from 'components/shared/PageTitle'
 import Settings from 'components/icons/Settings'
 import cn from 'clsx'
 import useAppTitle from 'hooks/use-app-title'
+import useIsAuthenticated from 'hooks/use-is-authenticated'
 import useWasTrue from 'hooks/use-was-true'
 
 export type WordsLessonsListProps = RouteComponentProps & {
@@ -40,7 +41,7 @@ export default function WordsLessonsList({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appName])
   useEffect(() => {
-    if (app && app.status !== 'loading') {
+    if (app && (app.status === 'loaded' || app.status === 'error')) {
       setProgress(100)
     }
   }, [app, app?.status, setProgress])
@@ -50,7 +51,7 @@ export default function WordsLessonsList({
     same: 'left',
   })
 
-  if (!visible || !app) return <Wrapper className={elevationCn} />
+  if (!useIsAuthenticated() ||  !visible || !app) return null
   if (hadError && app.status !== 'loaded') {
     return (
       <Wrapper className={elevationCn}>
@@ -62,6 +63,7 @@ export default function WordsLessonsList({
           actions={
             <Button
               className={'min-w-64'}
+              disabled={app.status === 'loading'}
               onClick={() => dispatch(loadApp(appName))}
             >
               Попробовать ещё раз
@@ -79,7 +81,7 @@ export default function WordsLessonsList({
       </Helmet>
       <PageTitle>{app.title}</PageTitle>
 
-      <div className={'flex'}>
+      <div className={'flex pb-72'}>
         <section className={'flex-1 mx-auto max-w-xl'}>
           <p className={'px-4 mb-4'}>Нажми на урок, чтобы начать практику</p>
           <LessonsList app={appName} lessons={app.lessons as Lesson[]} />
