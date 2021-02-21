@@ -1,0 +1,3 @@
+Contact: mailto:security@colonq.ru
+Preferred-Languages: en, ru
+Canonical: https://colonq.ru/.well-known/security.txt

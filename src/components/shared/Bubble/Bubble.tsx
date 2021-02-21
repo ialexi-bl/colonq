@@ -25,7 +25,8 @@ export default function Bubble({
   return (
     <div
       className={cn(
-        'relative w-28 h-28',
+        // overflow-hidden to prevent a weird bug in safari
+        'relative w-28 h-28 overflow-hidden',
         `shape-bubble-outer-${variant}`,
         className,
       )}

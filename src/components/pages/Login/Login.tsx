@@ -64,8 +64,8 @@ export default function Login({ setProgress }: RouteComponentProps) {
   }
   const formik = useFormik<FormValues>({
     initialValues: {
-      login: typeof email === 'string' ? email : 'alex',
-      password: typeof password === 'string' ? password : 'sofia9841263',
+      login: typeof email === 'string' ? email : '',
+      password: typeof password === 'string' ? password : '',
     },
     validate: ({ login, password }) => {
       const errors: Partial<FormValues> = {}
