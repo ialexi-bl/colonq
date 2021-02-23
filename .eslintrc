@@ -1,5 +1,11 @@
 {
-  "extends": ["react-app", "standard", "prettier"],
+  "extends": [
+    "react-app",
+    "standard",
+    "prettier",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
   "plugins": ["@typescript-eslint", "sort-imports-es6-autofix", "react-hooks"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -11,17 +17,8 @@
     "es6": true
   },
   "rules": {
-    "no-undef": "off",
-    "no-unused-expressions": "off",
     "no-debugger": "warn",
-    "no-unused-vars": "off",
-    "no-useless-constructor": "off",
-    "no-dupe-class-members": "off",
     "spaced-comment": "warn",
-    "import/export": "off",
-    "no-redeclare": "off",
-    "no-inner-declarations": "off",
-    "no-sequences": "off",
     "no-use-before-define": "off",
     "handle-callback-err": "off",
     "sort-imports-es6-autofix/sort-imports-es6": ["warn"],
@@ -31,9 +28,15 @@
     "react/jsx-key": ["warn", { "checkFragmentShorthand": true }],
     "react/jsx-curly-brace-presence": ["warn", { "props": "always" }],
 
-    "@typescript-eslint/no-redeclare": "error",
-    "@typescript-eslint/no-unused-vars": "warn",
-    "@typescript-eslint/no-useless-constructor": "error",
+    "@typescript-eslint/explicit-module-boundary-types": [
+      "warn",
+      { "allowArgumentsExplicitlyTypedAsAny": true }
+    ],
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/no-namespace": ["warn", { "allowDeclarations": true }],
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/member-ordering": "warn",
     "@typescript-eslint/no-unused-expressions": [
       "error",
@@ -42,5 +45,14 @@
         "allowTernary": true
       }
     ]
-  }
+  },
+  "overrides": [
+    {
+      // enable the rule specifically for TypeScript files
+      "files": ["*.tsx"],
+      "rules": {
+        "@typescript-eslint/explicit-module-boundary-types": ["off"]
+      }
+    }
+  ]
 }

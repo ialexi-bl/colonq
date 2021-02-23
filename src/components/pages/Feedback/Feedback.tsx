@@ -1,11 +1,10 @@
 import { Elevation } from 'config/view'
 import { Helmet } from 'react-helmet'
-import { HttpError } from 'services/errors'
+import { HttpError } from 'core/errors'
 import { MixedDispatch } from 'store/types'
 import { RouteComponentProps, appsList } from 'config/routes'
 import { TextArea } from 'components/form/Input/TextArea'
 import { decline } from 'util/lang'
-import { executeAuthorizedMethod } from 'store/user'
 import { notifyError, notifyHttpError } from 'store/view'
 import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
@@ -14,7 +13,7 @@ import Button, { LinkButton } from 'components/shared/Button'
 import Config from 'config'
 import ErrorMessage from 'components/form/ErrorMessage'
 import FeedbackIcon from 'components/icons/Feedback'
-import MiscApi from 'services/api/misc'
+import MiscApi from 'core/api/services/misc'
 import Page from 'components/shared/Page'
 import PageTitle from 'components/shared/PageTitle'
 import Slider from 'components/shared/Slider/Slider'
@@ -36,7 +35,7 @@ export default function Feedback({ setProgress }: RouteComponentProps) {
     },
     onSubmit: async ({ message }) => {
       try {
-        await dispatch(executeAuthorizedMethod(MiscApi.sendFeedback(message)))
+        await MiscApi.sendFeedback(message)
         formik.setStatus('success')
       } catch (e) {
         if (e instanceof HttpError) {

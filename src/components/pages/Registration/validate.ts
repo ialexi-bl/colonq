@@ -1,5 +1,5 @@
-import { UserApi } from 'services/api'
-import Validate from 'services/validation'
+import AuthService from 'core/api/services/auth'
+import Validate from 'core/validation'
 
 export type RegistrationFormValues = {
   email: string
@@ -29,7 +29,7 @@ export default function validate(
   values: RegistrationFormValues,
   temp: TempValidationData,
   formik: any,
-) {
+): Partial<RegistrationFormValues> {
   const errors: Partial<RegistrationFormValues> = {}
 
   // Validating user name
@@ -58,7 +58,7 @@ export default function validate(
   // Verifying that email is not occupied
   else if (!temp.submitting && temp.email !== values.email) {
     const msg = 'Этот email уже занят'
-    const occupied = UserApi.isEmailOccupiedCache(values.email)
+    const occupied = AuthService.isEmailOccupiedCache(values.email)
 
     // Do not request if this email has already been checked
     if (occupied === true) {
@@ -67,7 +67,7 @@ export default function validate(
       errors.email = 'pending'
       temp.timer = window.setTimeout(
         () => {
-          UserApi.isEmailOccupied(values.email).then((occupied) => {
+          AuthService.isEmailOccupied(values.email).then((occupied) => {
             // If temp.email has changed, it means
             // that another email has been supplied
             // while the request or timeout was working

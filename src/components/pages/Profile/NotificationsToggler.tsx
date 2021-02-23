@@ -5,7 +5,7 @@ import { notifyError, notifyErrorObject } from 'store/view'
 import { useDispatch } from 'react-redux'
 import { useEffect, useRef, useState } from 'react'
 import HourSelector from 'components/shared/HourSelector'
-import NotificationsController from 'services/notifications'
+import NotificationsController from 'core/notifications'
 import Toggle from 'components/form/Toggle'
 import cn from 'clsx'
 import useSave from 'hooks/use-save'
@@ -25,7 +25,7 @@ export default function NotificationsToggler({
     if (processing.current) return
     processing.current = true
 
-    dispatch(NotificationsController.subscribe(hour.current)).then((x) => {
+    NotificationsController.subscribe(hour.current).then((x) => {
       setStatus(x)
       processing.current = false
     })
@@ -43,7 +43,7 @@ export default function NotificationsToggler({
   useEffect(() => {
     if (!('serviceWorker' in navigator)) return
 
-    dispatch(NotificationsController.getHour()).then((hour) => {
+    NotificationsController.getHour().then((hour) => {
       if (hour !== null) {
         setHour({ current: hour, real: hour })
         setStatus(true)
@@ -55,7 +55,7 @@ export default function NotificationsToggler({
 
   useSave(hour.current !== hour.real, hour, async () => {
     try {
-      await dispatch(NotificationsController.setHour(hour.current))
+      await NotificationsController.setHour(hour.current)
       setHour({ current: hour.current, real: hour.current })
     } catch (e) {
       dispatch(notifyErrorObject(e))

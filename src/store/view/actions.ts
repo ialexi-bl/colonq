@@ -1,4 +1,4 @@
-import { HttpError } from 'services/errors'
+import { HttpError } from 'core/errors'
 import { ThunkAction } from 'store/types'
 import { createAction } from 'store/util'
 import Config from 'config'

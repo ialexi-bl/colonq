@@ -13,10 +13,10 @@ export default function useIsAuthenticated(
   redirect: string | false = login(),
 ): boolean {
   const dispatch = useDispatch()
-  const { status, token } = useSelector((state: AppState) => state.user)
+  const status = useSelector((state: AppState) => state.user.status)
 
   useEffect(() => {
-    if (redirect && status !== 'loading' && !token) {
+    if (redirect && (status === 'error' || status === 'unauthenticated')) {
       dispatch(
         push(redirect, {
           // If there was an error fetching the token
@@ -27,7 +27,7 @@ export default function useIsAuthenticated(
       )
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, redirect, status, token])
+  }, [dispatch, redirect, status])
 
-  return token !== null
+  return status === 'authenticated'
 }

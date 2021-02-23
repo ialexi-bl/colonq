@@ -1,6 +1,6 @@
 import * as React from 'react'
-import Config from 'config'
-import Endpoint from 'services/api/config/endpoints'
+import { SupportedProvider } from 'config'
+import Endpoint from 'core/api/config/endpoints'
 import Google from 'components/icons/social/Google'
 import Vk from 'components/icons/social/Vk'
 import cn from 'clsx'
@@ -9,12 +9,12 @@ import styles from './SocialLoginButton.module.scss'
 import useClipShape from 'hooks/use-clip-shape'
 
 export type SocialLoginButtonProps = Omit<HTMLProps.a, 'href'> & {
-  provider: Config.SupportedProvider
+  provider: SupportedProvider
   disabled?: boolean
   type: 'login' | 'register' | 'link' | 'editPassword'
 }
 
-const endpoint = {
+const endpoints = {
   login: {
     vk: Endpoint.oauth.loginVk,
     google: Endpoint.oauth.loginGoogle,
@@ -57,7 +57,7 @@ export default function SocialLoginButton({
         styles.SocialButton,
         className,
       )}
-      href={endpoint[type][provider]}
+      href={endpoints[type][provider]}
       {...props}
     >
       <Icon className={'w-6 h-6 mr-2'} />
@@ -73,13 +73,13 @@ export default function SocialLoginButton({
 }
 
 const icons: Record<
-  Config.SupportedProvider,
+  SupportedProvider,
   React.ComponentType<{ className?: string }>
 > = {
   vk: Vk,
   google: Google,
 }
-const labels: Record<Config.SupportedProvider, string> = {
+const labels: Record<SupportedProvider, string> = {
   vk: 'ВКонтакте',
   google: 'Google',
 }

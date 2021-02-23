@@ -1,6 +1,6 @@
-import { ApiErrorName } from 'services/api/config'
+import { ApiErrorName } from 'core/api/config'
 import { CUTE_FACE } from 'config/view'
-import { HttpError } from 'services/errors'
+import { HttpError } from 'core/errors'
 import { app } from 'config/routes'
 import { goBack } from 'connected-react-router'
 import { useDispatch } from 'react-redux'

@@ -1,5 +1,5 @@
 import { RouteOptions, Routes } from './types'
-import Config from 'config'
+import Config from '../index'
 import appsRoutes from './apps-routes'
 
 export const routesArray: RouteOptions[] = [
@@ -69,17 +69,17 @@ for (const route of routesArray) {
   routes[route.name] = routes[route.path] = route
 }
 
-export const resetPassword = () => routes.resetPassword.path
-export const editPassword = () => routes.editPassword.path
-export const verifyEmail = () => routes.verifyEmail.path
-export const appsChoice = () => routes.appsChoice.path
-export const appsList = () => routes.appsList.path
-export const feedback = () => routes.feedback.path
-export const settings = () => routes.settings.path
-export const register = () => routes.register.path
-export const profile = () => routes.profile.path
-export const login = () => routes.login.path
-export const index = () => routes.index.path
-export const auth = () => routes.auth.path
-export const app = (id: string, path?: string) =>
+export const resetPassword = (): string => routes.resetPassword.path
+export const editPassword = (): string => routes.editPassword.path
+export const verifyEmail = (): string => routes.verifyEmail.path
+export const appsChoice = (): string => routes.appsChoice.path
+export const appsList = (): string => routes.appsList.path
+export const feedback = (): string => routes.feedback.path
+export const settings = (): string => routes.settings.path
+export const register = (): string => routes.register.path
+export const profile = (): string => routes.profile.path
+export const login = (): string => routes.login.path
+export const index = (): string => routes.index.path
+export const auth = (): string => routes.auth.path
+export const app = (id: string, path?: string): string =>
   `/app/${id}${path ? '/' + path : ''}`

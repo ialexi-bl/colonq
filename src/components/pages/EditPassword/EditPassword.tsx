@@ -1,11 +1,9 @@
-import { ApiResponse } from 'services/api/config'
+import { Api } from 'core/api/config'
 import { Elevation } from 'config/view'
 import { Helmet } from 'react-helmet'
 import { MixedDispatch } from 'store/types'
 import { RouteComponentProps } from 'config/routes'
 import { ScrollablePage } from 'components/shared/Page'
-import { UserApi } from 'services/api'
-import { executeAuthorizedMethod } from 'store/user'
 import { useDispatch } from 'react-redux'
 import { useEffect, useState } from 'react'
 import Button from 'components/shared/Button'
@@ -14,10 +12,11 @@ import PageTitle from 'components/shared/PageTitle'
 import PasswordForm from './PasswordForm'
 import SocialLoginButton from 'components/form/SocialLoginButton'
 import User from 'components/icons/User'
+import UserService from 'core/api/services/user'
 import useElevation from 'hooks/use-elevation'
 import useIsAuthenticated from 'hooks/use-is-authenticated'
 
-type UpdateOptions = ApiResponse.User.PasswordUpdateOption[] | false | null
+type UpdateOptions = Api.User.PasswordUpdateOption[] | false | null
 export default function EditPassword({
   setProgress,
   visible,
@@ -27,7 +26,7 @@ export default function EditPassword({
 
   const load = () => {
     setUpdateOptions(null)
-    dispatch(executeAuthorizedMethod(UserApi.getPasswordUpdateOptions()))
+    UserService.getPasswordUpdateOptions()
       .then(({ data }) => {
         setUpdateOptions(data)
       })

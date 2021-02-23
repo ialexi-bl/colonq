@@ -4,7 +4,6 @@ import { Helmet } from 'react-helmet'
 import { Logout, Section } from './view'
 import { RouteComponentProps, editPassword } from 'config/routes'
 import { ScrollablePage } from 'components/shared/Page'
-import { UserApi } from 'services/api'
 import { User as UserType } from 'store/user'
 import { push } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
@@ -18,7 +17,8 @@ import Separator from './Separator'
 import Settings from './Settings'
 import SocialLoginButton from 'components/form/SocialLoginButton'
 import User from 'components/icons/User'
-import Validate from 'services/validation'
+import UserService from 'core/api/services/user'
+import Validate from 'core/validation'
 import cn from 'clsx'
 import useIsAuthenticated from 'hooks/use-is-authenticated'
 
@@ -62,7 +62,7 @@ export default function Profile({ setProgress }: RouteComponentProps) {
               <InfoItem className={'mb-4'} label={'Имя пользователя'}>
                 <FieldEditor
                   message={'Имя пользователя изменено'}
-                  method={UserApi.setUsername}
+                  method={UserService.setUsername}
                   validate={Validate.username}
                   defaultValue={username}
                 />
@@ -70,7 +70,7 @@ export default function Profile({ setProgress }: RouteComponentProps) {
               <InfoItem className={'mb-4'} label={'Email'}>
                 <FieldEditor
                   email
-                  method={UserApi.requestChangeEmail}
+                  method={UserService.requestChangeEmail}
                   validate={Validate.emailFormat}
                   defaultValue={email}
                 />

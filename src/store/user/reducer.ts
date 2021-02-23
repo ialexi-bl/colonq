@@ -1,11 +1,5 @@
-import { ApiResponse } from 'services/api/config'
-import {
-  Apps,
-  AuthorizedMethodInternal,
-  EmptyUser,
-  Lesson,
-  UserState,
-} from './types'
+import { Api } from 'core/api/config'
+import { Apps, EmptyUser, Lesson, UserState } from './types'
 import {
   LoadAppSuccessPayload,
   UpdateLessonsPayload,
@@ -18,19 +12,15 @@ import {
   loadApps,
   loadAppsError,
   loadAppsSuccess,
-  queueAuthMethod,
   unauthenticate,
   updateLessons,
 } from './actions'
 import { createReducer } from 'store/util'
-import { getTokenExpirationTime } from 'util/jwt'
 
 export const initialState: EmptyUser = {
   status: 'loading',
-  tokenExpires: null,
   providers: [],
   username: null,
-  token: null,
   email: null,
   id: null,
 
@@ -38,8 +28,6 @@ export const initialState: EmptyUser = {
   categories: [],
   appsList: [],
   apps: {},
-
-  methodsQueue: [],
 }
 
 const getScore = (lessons: Lesson[]) =>
@@ -56,12 +44,10 @@ export default createReducer<UserState>(
     }),
     [String(authenticateSuccess)]: (
       state,
-      payload: ApiResponse.Auth.UserData,
+      payload: Api.Auth.UserData,
     ): UserState => ({
       ...(state.id === payload.id ? state : initialState),
       ...payload,
-      methodsQueue: [],
-      tokenExpires: getTokenExpirationTime(payload.token),
       status: 'authenticated',
     }),
     [String(unauthenticate)]: (): UserState => ({
@@ -75,7 +61,7 @@ export default createReducer<UserState>(
     }),
     [String(loadAppsSuccess)]: (
       state,
-      categories: ApiResponse.User.CategoryDescription[],
+      categories: Api.User.CategoryDescription[],
     ): UserState => {
       const apps: Apps = {}
       const appsList: string[] = []
@@ -180,14 +166,6 @@ export default createReducer<UserState>(
           status: 'error',
         },
       },
-    }),
-
-    [String(queueAuthMethod)]: (
-      state,
-      method: AuthorizedMethodInternal<any>,
-    ) => ({
-      ...state,
-      methodsQueue: state.methodsQueue.concat(method),
     }),
   },
   initialState,

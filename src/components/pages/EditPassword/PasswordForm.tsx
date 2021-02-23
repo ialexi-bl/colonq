@@ -1,13 +1,12 @@
 import { MixedDispatch } from 'store/types'
-import { UserApi } from 'services/api'
-import { executeAuthorizedMethod } from 'store/user'
 import { goBack } from 'connected-react-router'
 import { notifyErrorObject, notifyInfo } from 'store/view'
 import { useDispatch } from 'react-redux'
 import { useFormik } from 'formik'
 import CompoundInput from 'components/shared/CompoundInput'
 import LoadingButton from 'components/shared/LoadingButton'
-import Validate from 'services/validation'
+import UserService from 'core/api/services/user'
+import Validate from 'core/validation'
 
 type FormValues = {
   newPassword: string
@@ -42,11 +41,7 @@ export default function PasswordForm() {
     onSubmit: async ({ newPassword, currentPassword }) => {
       try {
         formik.setStatus('loading')
-        await dispatch(
-          executeAuthorizedMethod(
-            UserApi.setPasswordTraditional(currentPassword, newPassword),
-          ),
-        )
+        await UserService.setPasswordTraditional(currentPassword, newPassword)
         dispatch(notifyInfo('Пароль изменён'))
         dispatch(goBack())
       } catch (e) {

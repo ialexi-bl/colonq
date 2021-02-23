@@ -13,14 +13,17 @@ import { useLocation } from 'react-router'
 export default function useIsGuest(redirect = appsList()): boolean {
   const dispatch = useDispatch()
   const location = useLocation<{ redirectedFromFailedAuth?: boolean }>()
-  const { status, token } = useSelector((state: AppState) => state.user)
+  const status = useSelector((state: AppState) => state.user.status)
 
   useEffect(() => {
-    if (token && !location.state?.redirectedFromFailedAuth) {
+    if (
+      status === 'authenticated' &&
+      !location.state?.redirectedFromFailedAuth
+    ) {
       dispatch(replace(redirect))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, redirect, token])
+  }, [dispatch, redirect])
 
-  return status in { unauthenticated: 1, error: 1 }
+  return status === 'unauthenticated' || status === 'error'
 }

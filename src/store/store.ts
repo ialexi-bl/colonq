@@ -14,7 +14,8 @@ function createStore(history: History) {
   const store = createReduxStore(
     createRootReducer(history),
     process.env.NODE_ENV !== 'production'
-      ? require('./dev-middleware').applyMiddleware(...middlewares)
+      ? // eslint-disable-next-line @typescript-eslint/no-var-requires
+        require('./dev-middleware').applyMiddleware(...middlewares)
       : applyMiddleware(...middlewares),
   )
   sagaMiddleware.run(rootSaga)
@@ -22,5 +23,8 @@ function createStore(history: History) {
   return store
 }
 
+export function getStore(): typeof store {
+  return store
+}
 export const history = createBrowserHistory()
 export const store = createStore(history)

@@ -1,17 +1,17 @@
-import { ApiResponse } from 'services/api/config'
+import { Api } from 'core/api/config'
 import { AppState, MixedDispatch } from 'store/types'
-import { AppsApi, UserApi } from 'services/api'
 import { Elevation } from 'config/view'
 import { Helmet } from 'react-helmet'
 import { RouteComponentProps, appsList } from 'config/routes'
 import { ScrollablePage } from 'components/shared/Page'
-import { executeAuthorizedMethod, loadApps } from 'store/user'
+import { loadApps } from 'store/user'
 import { notifyErrorObject } from 'store/view'
 import { push } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router'
 import Accordion from 'components/shared/Accordion/Accordion'
+import AppsService from 'core/api/services/apps'
 import Button from 'components/shared/Button'
 import Continue from 'components/icons/Continue'
 import Fab from 'components/shared/Fab/Fab'
@@ -19,6 +19,7 @@ import LoadingError from 'components/shared/LoadingError'
 import PageTitle from 'components/shared/PageTitle'
 import TextContainer from 'components/shared/TextContainer'
 import ThemeCard from 'components/shared/ThemeCard'
+import UserService from 'core/api/services/user'
 import useElevation from 'hooks/use-elevation'
 import useIconsSet from 'hooks/use-icons-set'
 import useIsAuthenticated from 'hooks/use-is-authenticated'
@@ -44,7 +45,7 @@ export default function AppsChoice({
   const Icon = useIconsSet('apps')
 
   const [categories, setCategories] = useState<
-    null | 'error' | 'loading' | ApiResponse.Apps.Category[]
+    null | 'error' | 'loading' | Api.Apps.Category[]
   >(null)
   const [visibleItems, toggleVisible] = useItemsToggler()
   const [chosen, toggle] = useItemsToggler()
@@ -54,7 +55,7 @@ export default function AppsChoice({
     if (apps.length === 0) return
 
     try {
-      await dispatch(executeAuthorizedMethod(UserApi.setApps(apps)))
+      await UserService.setApps(apps)
       dispatch(push(appsList()))
     } catch (e) {
       dispatch(notifyErrorObject(e))
@@ -62,7 +63,7 @@ export default function AppsChoice({
   }
 
   const load = () => {
-    AppsApi.getAppsList()
+    AppsService.getAppsList()
       .then((apps) => setCategories(apps.data.categories))
       .catch((e) => {
         setCategories('error')

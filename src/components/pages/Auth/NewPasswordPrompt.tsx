@@ -6,7 +6,7 @@ import LoadingButton from 'components/shared/LoadingButton'
 import Page from 'components/shared/Page'
 import PageTitle from 'components/shared/PageTitle'
 import User from 'components/icons/User'
-import Validate from 'services/validation'
+import Validate from 'core/validation'
 import useElevation from 'hooks/use-elevation'
 
 type FormValues = {

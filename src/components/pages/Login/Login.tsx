@@ -1,7 +1,7 @@
 import { Elevation } from 'config/view'
 import { FormikHelpers, useFormik } from 'formik'
 import { Helmet } from 'react-helmet'
-import { HttpError } from 'services/errors'
+import { HttpError } from 'core/errors'
 import { LinkButton } from 'components/shared/Button'
 import { MixedDispatch } from 'store/types'
 import {
@@ -11,13 +11,13 @@ import {
   resetPassword,
 } from 'config/routes'
 import { ScrollablePage } from 'components/shared/Page'
-import { UserApi } from 'services/api'
 import { notifyErrorObject } from 'store/view'
 import { push } from 'connected-react-router'
 import { useDispatch } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { useElevationClassnames } from 'hooks/use-elevation'
 import { useLocation } from 'react-router'
+import AuthService from 'core/api/services/auth'
 import CompoundInput from 'components/shared/CompoundInput'
 import ErrorMessage from 'components/form/ErrorMessage'
 import LoadingButton from 'components/shared/LoadingButton'
@@ -49,7 +49,7 @@ export default function Login({ setProgress }: RouteComponentProps) {
     formik.setStatus(null)
 
     try {
-      await dispatch(UserApi.login(values.login, values.password))
+      await AuthService.login(values.login, values.password)
       push(appsList())
     } catch (e) {
       setLoading(false)

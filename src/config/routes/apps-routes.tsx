@@ -1,5 +1,5 @@
 import { RouteComponentProps, RouteOptions } from './types'
-import Config from 'config'
+import Config from '../index'
 import NotFound from 'components/pages/NotFound'
 
 const getKey: RouteOptions['getKey'] = ({ match: { params } }) =>

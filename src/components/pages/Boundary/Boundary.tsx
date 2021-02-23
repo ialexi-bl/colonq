@@ -2,7 +2,7 @@ import { CUTE_FACE } from 'config/view'
 import { Component, ErrorInfo, ReactNode } from 'react'
 import { Helmet } from 'react-helmet'
 import Config from 'config'
-import GeneralApi from 'services/api/general'
+import MiscellaneousService from 'core/api/services/misc'
 import Page from 'components/shared/Page'
 import styles from './Boundary.module.scss'
 
@@ -41,7 +41,7 @@ class Boundary extends Component<BoundaryProps> {
     /* eslint-enable no-undef */
 
     // TODO: check if this needs to be authorized
-    GeneralApi.log({
+    MiscellaneousService.log({
       type: 'page',
       gaId,
       ymId,

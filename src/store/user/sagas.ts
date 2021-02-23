@@ -1,12 +1,10 @@
-import { ApiResponse } from 'services/api/config'
+import { Api } from 'core/api/config'
 import { AppState } from 'store/types'
-import { AppsApi, UserApi } from 'services/api'
-import { AuthorizedMethodInternal, User, UserState } from './types'
 import { Channel, Task } from 'redux-saga'
-import { ColonqError, HttpError } from 'services/errors'
+import { ColonqError, HttpError } from 'core/errors'
+import { User } from './types'
 import {
   UserAction,
-  authenticate,
   authenticateError,
   authenticateStart,
   authenticateSuccess,
@@ -14,7 +12,6 @@ import {
   loadAppSuccess,
   loadAppsError,
   loadAppsSuccess,
-  queueAuthMethod,
   unauthenticate,
 } from './actions'
 import {
@@ -22,6 +19,7 @@ import {
   all,
   call,
   cancel,
+  delay,
   fork,
   put,
   select,
@@ -29,22 +27,17 @@ import {
   takeEvery,
   takeLeading,
 } from 'redux-saga/effects'
-import { executeAuthorizedMethod } from 'store/util'
 import { notifyErrorObject } from 'store/view'
+import AppsService from 'core/api/services/apps'
+import AuthService from 'core/api/services/auth'
 
 // Logic
-
-function* updateToken() {
+function* getSelf(): Generator<unknown, any, any> {
   try {
     yield put(authenticateStart())
-    const { data }: ApiResponse.Success<ApiResponse.Auth.Token> = yield call(
-      UserApi.fetchToken,
+    const { data }: Api.Success<Api.Auth.Token> = yield call(
+      AuthService.getSelf,
     )
-
-    const methods: AuthorizedMethodInternal<any>[] = yield select(
-      (state: AppState) => state.user.methodsQueue,
-    )
-    methods.forEach((method) => method.call(data.token, data.id))
     yield put(authenticateSuccess(data))
   } catch (e) {
     if (e instanceof HttpError) {
@@ -53,17 +46,14 @@ function* updateToken() {
         return
       }
       if (e.status === 429) {
+        yield delay(500)
+        yield call(getSelf)
         return
       }
     }
 
     yield put(authenticateError())
     yield put(notifyErrorObject(e) as any)
-
-    const methods: AuthorizedMethodInternal<any>[] = yield select(
-      (state: AppState) => state.user.methodsQueue,
-    )
-    methods.forEach((method) => method.throw(e))
   }
 }
 
@@ -74,10 +64,7 @@ function* loadApps() {
   if (appsStatus === 'loaded') return
 
   try {
-    const data: ApiResponse.User.GetApps = yield call(
-      executeAuthorizedMethod,
-      AppsApi.loadApps(),
-    )
+    const data: Api.User.GetApps = yield call(AppsService.loadApps)
     yield put(loadAppsSuccess(data.categories))
   } catch (e) {
     yield put(loadAppsError())
@@ -89,10 +76,7 @@ function* loadApps() {
 
 function* loadApp(app: string) {
   try {
-    const data: ApiResponse.User.GetApp = yield call(
-      executeAuthorizedMethod,
-      AppsApi.loadApp(app),
-    )
+    const data: Api.User.GetApp = yield call(AppsService.loadApp, app)
     yield put(loadAppSuccess({ ...data, app }))
   } catch (e) {
     console.error(e)
@@ -103,56 +87,10 @@ function* loadApp(app: string) {
   }
 }
 
-function* requestAuthMethod({
-  payload,
-}: {
-  payload: AuthorizedMethodInternal<any>
-}) {
-  const user: UserState = yield select((state: AppState) => state.user)
-
-  // NOTE: this actually sends request for token till the end of times
-  // for some reason but i'm not sure if it's bad and should be fixed, leaving for now
-  if (
-    user.status !== 'loading' &&
-    user.token &&
-    user.tokenExpires - Date.now() > 500
-  ) {
-    payload.call(user.token, user.id)
-  } else {
-    yield put(queueAuthMethod(payload))
-    // TODO: (later) fix duplicate request
-    // If initial token fetch fails and there are some
-    // methods queued while it's going on, this causes
-    // duplicate request. It's not that it breaks something
-    // but it's not nice so
-    yield put(authenticate())
-  }
-}
-
 // Watchers
-
-function* watchUpdateToken() {
-  yield takeLeading(UserAction.AUTHENTICATE_REQUEST, function* () {
-    const user: UserState = yield select((state: AppState) => state.user)
-    // Prevent updating token that hasn't expired yet
-    if (
-      user.status !== 'loading' &&
-      user.token &&
-      user.tokenExpires - Date.now() > 500
-    ) {
-      return
-    }
-
-    yield call(updateToken)
-  })
-}
 
 function* watchLoadApps() {
   yield takeLeading(UserAction.LOAD_APPS_REQUEST, loadApps)
-}
-
-function* watchExecuteAuthorizedMethod() {
-  yield takeEvery(UserAction.REQUEST_AUTH_METHOD, requestAuthMethod as any)
 }
 
 function* watchLoadApp() {
@@ -171,7 +109,7 @@ function* watchLoadApp() {
   }
 }
 
-export default function* userSaga() {
+export default function* userSaga(): Generator<unknown, any, any> {
   while (true) {
     const channel: Channel<any> = yield actionChannel(
       ({ type }: { type: string }) => {
@@ -179,7 +117,7 @@ export default function* userSaga() {
       },
     )
 
-    const tokenTask = yield fork(updateToken)
+    const tokenTask = yield fork(getSelf)
     const action = yield take([
       UserAction.LOGOUT,
       UserAction.AUTHENTICATE_SUCCESS,
@@ -191,12 +129,7 @@ export default function* userSaga() {
       continue
     }
 
-    const tasks: Task[] = yield all([
-      fork(watchLoadApps),
-      fork(watchLoadApp),
-      fork(watchUpdateToken),
-      fork(watchExecuteAuthorizedMethod),
-    ])
+    const tasks: Task[] = yield all([fork(watchLoadApps), fork(watchLoadApp)])
 
     // Executing actions that may have started while authentication way being performed
     yield takeEvery(channel, function* (a) {

@@ -1,5 +1,5 @@
-import { ApiResponse } from 'services/api/config'
-import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { Api } from 'core/api/config'
+import { ReactNode, useEffect, useMemo, useState } from 'react'
 import { useHistory } from 'react-router'
 import Bubble from 'components/shared/Bubble'
 import Button from 'components/shared/Button'
@@ -9,7 +9,7 @@ import Hr from 'components/shared/Hr'
 import useTween from 'hooks/use-tween'
 
 export type AchievementsDisplayProps = {
-  response: ApiResponse.Session.Submit
+  response: Api.Session.Submit
   delay?: number
 }
 
@@ -23,7 +23,7 @@ export default function AchievementsDisplay({
   const [loaded, setLoaded] = useState(false)
 
   const lessonsObj = useMemo(() => {
-    const res: Record<string, ApiResponse.User.LessonDescription> = {}
+    const res: Record<string, Api.User.LessonDescription> = {}
     lessons.forEach((lesson) => {
       res[lesson.id] = lesson
     })
@@ -70,7 +70,7 @@ export default function AchievementsDisplay({
 }
 
 type UpdatedProps = {
-  lessons: Record<string, ApiResponse.User.LessonDescription>
+  lessons: Record<string, Api.User.LessonDescription>
   updated: { id: string; new: number; old: number }[]
   delay: number
 }
@@ -100,7 +100,7 @@ function Updated({ lessons, updated, delay }: UpdatedProps) {
 }
 
 type UnlockedProps = {
-  lessons: Record<string, ApiResponse.User.LessonDescription>
+  lessons: Record<string, Api.User.LessonDescription>
   unlocked: string[]
   delay: number
 }

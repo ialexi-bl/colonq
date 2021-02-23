@@ -1,8 +1,8 @@
-import { ApiResponse } from 'services/api/config'
-import { ToggleChanges, ToggleListChanges } from 'services/api/settings'
+import { Api } from 'core/api/config'
+import { ToggleChanges, ToggleListChanges } from 'core/api/services/settings'
 import { useCallback, useMemo, useReducer } from 'react'
 
-type SettingsMap = Record<string, ApiResponse.Settings.Setting>
+type SettingsMap = Record<string, Api.Settings.Setting>
 
 export type ToggleDispatch = (value?: boolean) => void
 export type ToggleListDispatch = (data: { group: string; item: string }) => void
@@ -11,21 +11,20 @@ type DispatchMap = Record<string, ToggleDispatch | ToggleListDispatch>
 export type Controls = Array<
   | {
       id: string
-      type: ApiResponse.Settings.Toggle['type']
-      data: ApiResponse.Settings.Toggle
+      type: Api.Settings.Toggle['type']
+      data: Api.Settings.Toggle
       dispatch: ToggleDispatch
     }
   | {
       id: string
-      type: ApiResponse.Settings.ToggleList['type']
-      data: ApiResponse.Settings.ToggleList
+      type: Api.Settings.ToggleList['type']
+      data: Api.Settings.ToggleList
       dispatch: ToggleListDispatch
     }
 >
 
-export default function useSettingsControls(
-  settings: ApiResponse.Settings.Get,
-) {
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export default function useSettingsControls(settings: Api.Settings.Get) {
   const [data, dispatch] = useReducer(reducer, settings, getInitial)
   const controls = useMemo(() => {
     const result: DispatchMap = {}
@@ -67,7 +66,7 @@ export default function useSettingsControls(
   }
 }
 
-const getInitial = (settings: ApiResponse.Settings.Get) => {
+const getInitial = (settings: Api.Settings.Get) => {
   const state = ({ _modified: null } as unknown) as SettingsMap
   settings.forEach((setting) => (state[setting.id] = setting))
   return state
@@ -83,7 +82,7 @@ const reducer = (
     case 'reset-modified':
       return ({ ...state, _modified: null } as unknown) as SettingsMap
     case 'toggle': {
-      const setting = state[action.id] as ApiResponse.Settings.Toggle
+      const setting = state[action.id] as Api.Settings.Toggle
       const value = action.value ?? !setting.value
 
       return {
@@ -100,7 +99,7 @@ const reducer = (
     }
     case 'list': {
       const { id, group: groupId, item: itemId } = action
-      const list = state[id] as ApiResponse.Settings.ToggleList
+      const list = state[id] as Api.Settings.ToggleList
 
       for (let i = 0, l = list.items.length; i < l; i++) {
         const group = list.items[i]

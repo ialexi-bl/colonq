@@ -1,16 +1,16 @@
-import { ApiErrorName, EmailAction, SocialAction } from 'services/api/config'
+import { ApiErrorName, EmailAction, SocialAction } from 'core/api/config'
 import { AppState, MixedDispatch, ThunkAction } from 'store/types'
-import { HttpError } from 'services/errors'
-import { UserApi } from 'services/api'
+import { HttpError } from 'core/errors'
 import { appsList, editPassword, login, profile, register } from 'config/routes'
 import { capitalize } from 'util/capitalize'
-import { executeAuthorizedMethod } from 'store/user'
 import { getTokenField } from 'util/jwt'
 import { notifyError, notifyErrorObject, notifyInfo } from 'store/view'
 import { push, replace } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router'
+import AuthService from 'core/api/services/auth'
+import UserService from 'core/api/services/user'
 
 export type AuthAction =
   | null
@@ -118,9 +118,7 @@ function processCallbackAction(
             google: 'linkGoogle',
           } as const)[provider]
 
-          await dispatch(
-            executeAuthorizedMethod(UserApi[method](code, redirectUri)),
-          )
+          await AuthService[method](code, redirectUri)
 
           dispatch(replace(profile()))
           dispatch(
@@ -146,7 +144,7 @@ function processCallbackAction(
           } as const)[action][provider]
 
           try {
-            await dispatch(UserApi[method](code, redirectUri))
+            await AuthService[method](code, redirectUri)
           } catch (e) {
             // Showing email prompt if error is caused by vk not providing email
             if (!(e instanceof HttpError)) {
@@ -210,7 +208,7 @@ function processVerificationFromEmail(
     try {
       switch (action) {
         case EmailAction.VERIFY_EMAIL: {
-          await dispatch(UserApi.verifyEmail(token))
+          await AuthService.verifyEmail(token)
 
           dispatch(notifyInfo('Адрес подтверждён, теперь ты можешь войти'))
           dispatch(
@@ -229,14 +227,12 @@ function processVerificationFromEmail(
             break
           }
 
-          await dispatch(
-            executeAuthorizedMethod(UserApi.submitChangeEmail(token)),
-          )
+          await UserService.submitChangeEmail(token)
           dispatch(replace(profile()))
           break
         }
         case EmailAction.RESET_PASSWORD: {
-          const { data } = await UserApi.validateResetPasswordToken(token)
+          const { data } = await AuthService.validateResetPasswordToken(token)
           if (!data.valid) {
             dispatch(notifyError(data.message))
             dispatch(replace(login()))
@@ -272,7 +268,7 @@ function submitResetPassword(
 ): ThunkAction<Promise<boolean>> {
   return async (dispatch) => {
     try {
-      await UserApi.submitResetPassword(token, password)
+      await AuthService.submitResetPassword(token, password)
       dispatch(notifyInfo('Пароль изменён'))
       dispatch(push(login()))
       return true
@@ -298,11 +294,7 @@ function submitNewPassword(
 ): ThunkAction<Promise<boolean>> {
   return async (dispatch) => {
     try {
-      await dispatch(
-        executeAuthorizedMethod(
-          UserApi.setPasswordSocial(provider, code, redirectUri, password),
-        ),
-      )
+      await UserService.setPasswordSocial(provider, code, redirectUri, password)
       dispatch(notifyInfo('Пароль изменён'))
       dispatch(push(profile()))
       return true
@@ -337,7 +329,7 @@ function submitVkEmail(
 ): ThunkAction<Promise<boolean>> {
   return async (dispatch) => {
     try {
-      await UserApi.registerVkEmail(token, email)
+      await AuthService.registerVkEmail(token, email)
       return true
     } catch (e) {
       dispatch(notifyErrorObject(e))

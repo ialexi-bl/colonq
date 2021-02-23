@@ -1,12 +1,11 @@
-import { ApiResponse } from 'services/api/config'
+import { Api } from 'core/api/config'
 import { LinkButton } from 'components/shared/Button'
 import { MixedDispatch } from 'store/types'
 import { app as appRoute } from 'config/routes'
-import { executeAuthorizedMethod } from 'store/user'
 import { notifyErrorObject } from 'store/view'
 import { useDispatch } from 'react-redux'
 import PageTitle from 'components/shared/PageTitle'
-import SettingsApi from 'services/api/settings'
+import SettingsService from 'core/api/services/settings'
 import ToggleList from 'components/shared/ToggleList'
 import useAppTitle from 'hooks/use-app-title'
 import useSave from 'hooks/use-save'
@@ -16,7 +15,7 @@ import useSettingsControls, {
 
 export type SettingsViewProps = {
   app: string
-  settings: ApiResponse.Settings.Get
+  settings: Api.Settings.Get
 }
 
 export default function Settings({
@@ -29,9 +28,7 @@ export default function Settings({
 
   useSave(!!modified, modified, async () => {
     try {
-      await dispatch(
-        executeAuthorizedMethod(SettingsApi.changeSettings(app, modified!)),
-      )
+      await SettingsService.changeSettings(app, modified!)
       resetModified()
     } catch (e) {
       return dispatch(notifyErrorObject(e))
@@ -84,7 +81,7 @@ function ListSetting({
   list,
   dispatch,
 }: {
-  list: ApiResponse.Settings.ToggleList
+  list: Api.Settings.ToggleList
   dispatch: ToggleListDispatch
 }) {
   return (

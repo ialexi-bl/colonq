@@ -8,7 +8,6 @@ import { goBack } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import Config from 'config'
 import LoadingBar from '../../shared/LoadingBar'
 import Routes from './Routes'
 import cn from 'clsx'
@@ -22,7 +21,7 @@ const REAL_TIMEOUT = {
   exit: 0,
   enter: ROUTE_TRANSITION_DURATION,
 }
-declare const gtag: any
+
 /**
  * Displays routes, manages how they are loaded and shown,
  * displays progress bar and provides classes for routes
@@ -53,14 +52,6 @@ export default function Router({
     visible,
     realKey,
   } = useLocationControls(realLocation)
-
-  useEffect(() => {
-    if (Config.IS_PROD) {
-      gtag('config', Config.REACT_APP_GA_ID, {
-        page_path: realLocation.pathname,
-      })
-    }
-  }, [realLocation.pathname])
 
   useEffect(() => {
     if (visible && firstRenderDone) closeInitialLoading()

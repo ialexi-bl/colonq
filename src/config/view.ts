@@ -3,26 +3,26 @@ export const ROUTE_TRANSITION_CLASSNAME = 'route-transition'
 
 export const CUTE_FACE = 'ಠ╭╮ಠ'
 
-export namespace Elevation {
+export const Elevation = {
   // Index page is above all others because it has this curtain that should
   // overlap anything below it
-  export const index = 200
-  export const notFound = 100
-  export const appNotFound = 100
-  export const auth = 100
-  export const feedback = 80
+  index: 200,
+  notFound: 100,
+  appNotFound: 100,
+  auth: 100,
+  feedback: 80,
 
-  export const session = 70
-  export const appsSettings = 40
-  export const lessonsList = 40
-  export const appsChoice = 40
-  export const editUserData = 40
+  session: 70,
+  appsSettings: 40,
+  lessonsList: 40,
+  appsChoice: 40,
+  editUserData: 40,
 
-  export const resetPassword = 30
-  export const appsList = 30
-  export const profile = 30
+  resetPassword: 30,
+  appsList: 30,
+  profile: 30,
 
   // These are on the same level
-  export const registration = 20
-  export const login = 20
+  registration: 20,
+  login: 20,
 }

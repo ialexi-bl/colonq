@@ -1,10 +1,10 @@
-import { ApiResponse } from 'services/api/config'
+import { Api } from 'core/api/config'
 import { MixedDispatch } from 'store/types'
-import { executeAuthorizedMethod, loadApp } from 'store/user'
+import { loadApp } from 'store/user'
 import { useDispatch } from 'react-redux'
 import { useEffect, useState } from 'react'
 import Config from 'config'
-import SettingsApi from 'services/api/settings'
+import SettingsService from 'core/api/services/settings'
 
 type Status = Result['status']
 type Result =
@@ -15,7 +15,7 @@ type Result =
     }
   | {
       status: 'loaded'
-      settings: ApiResponse.Settings.Get
+      settings: Api.Settings.Get
       retry: () => void
     }
 
@@ -23,12 +23,10 @@ type Result =
 export default function useSettings(app: string): Result {
   const dispatch = useDispatch<MixedDispatch>()
   const [status, setStatus] = useState<Status>('loading')
-  const [settings, setSettings] = useState<null | ApiResponse.Settings.Get>(
-    null,
-  )
+  const [settings, setSettings] = useState<null | Api.Settings.Get>(null)
 
   const load = () => {
-    dispatch(executeAuthorizedMethod(SettingsApi.getSettings(app)))
+    SettingsService.getSettings(app)
       .then(({ data }) => {
         setSettings(data)
         setStatus('loaded')

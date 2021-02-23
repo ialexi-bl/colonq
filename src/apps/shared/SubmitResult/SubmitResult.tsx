@@ -1,9 +1,9 @@
-import { ApiResponse } from 'services/api/config'
+import { Api } from 'core/api/config'
 import AchievementsDisplay from '../AchievementsDisplay'
 import cn from 'clsx'
 
 export type SubmitResultProps = {
-  response: ApiResponse.Session.Submit | null
+  response: Api.Session.Submit | null
 }
 export default function SubmitResult({ response }: SubmitResultProps) {
   return (

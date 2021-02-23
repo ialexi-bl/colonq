@@ -1,5 +1,3 @@
-import { MixedDispatch } from 'store/types'
-
 export const FETCH_USER_SUCCESS = 'USER/FETCH_SUCCESS'
 
 /**
@@ -7,34 +5,22 @@ export const FETCH_USER_SUCCESS = 'USER/FETCH_SUCCESS'
  */
 export type User = {
   status: 'authenticated' | 'loading' | 'error'
-  /** Access JWT token */
-  token: string
-  /** Token expiry time in **milliseconds** */
-  tokenExpires: number
   /** List of providers linked to the account */
   providers: string[]
   username: string
   email: string
   id: string
-
-  methodsQueue: AuthorizedMethodInternal<any>[]
 } & AppsState
 /**
  * State for unauthenticated user
  */
 export type EmptyUser = {
   status: 'unauthenticated' | 'loading' | 'error' | 'none'
-  /** Access JWT token */
-  token: null
-  /** Token expiry time in **milliseconds** */
-  tokenExpires: null
   /** List of providers linked to the account */
   providers: never[]
   username: null
   email: null
   id: null
-
-  methodsQueue: AuthorizedMethodInternal<any>[]
 } & AppsState
 
 export type AppsState = {
@@ -43,16 +29,6 @@ export type AppsState = {
   appsList: string[]
   apps: Apps
 }
-
-export type AuthorizedMethodInternal<T> = {
-  call: (token: string, id: string) => Promise<T>
-  throw: (error: Error) => void
-}
-export type AuthorizedMethod<T> = (
-  token: string,
-  id: string,
-  dispatch: MixedDispatch,
-) => Promise<T>
 
 export type Category = {
   id: string

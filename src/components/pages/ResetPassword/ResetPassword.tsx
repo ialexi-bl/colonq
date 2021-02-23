@@ -1,12 +1,12 @@
 import { Elevation } from 'config/view'
 import { Helmet } from 'react-helmet'
-import { HttpError } from 'services/errors'
+import { HttpError } from 'core/errors'
 import { RouteComponentProps } from 'config/routes'
-import { UserApi } from 'services/api'
 import { notifyErrorObject } from 'store/view'
 import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 import { useFormik } from 'formik'
+import AuthService from 'core/api/services/auth'
 import CompoundInput from 'components/shared/CompoundInput'
 import LoadingButton from 'components/shared/LoadingButton'
 import Page from 'components/shared/Page'
@@ -25,7 +25,7 @@ export default function ResetPassword({ setProgress }: RouteComponentProps) {
       login.trim() ? {} : { login: 'Введи имя пользователя или email' },
     onSubmit: async ({ login }) => {
       formik.setStatus('loading')
-      UserApi.requestResetPassword(login)
+      AuthService.requestResetPassword(login)
         .then(() => {
           formik.setStatus('success')
         })

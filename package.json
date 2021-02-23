@@ -168,6 +168,7 @@
     "@typescript-eslint/eslint-plugin": "^4.4.1",
     "@typescript-eslint/parser": "^4.4.1",
     "args": "^5.0.1",
+    "circular-dependency-plugin": "^5.2.2",
     "eslint": "^7.11.0",
     "eslint-config-prettier": "^6.13.0",
     "eslint-config-react-app": "^6.0.0",
@@ -190,6 +191,7 @@
     "redux-devtools-extension": "^2.13.8",
     "redux-logger": "^3.0.6",
     "redux-mock-store": "^1.5.4",
-    "tailwindcss": "^2.0.2"
+    "tailwindcss": "^2.0.2",
+    "webpack-cli": "^4.5.0"
   }
 }

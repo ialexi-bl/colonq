@@ -1,11 +1,10 @@
 import { AppErrorName, appHttpError } from 'apps/shared/AppError'
-import { HttpError } from 'services/errors'
+import { HttpError } from 'core/errors'
 import { MixedDispatch } from 'store/types'
-import { executeAuthorizedMethod } from 'store/user'
 import { useDispatch } from 'react-redux'
 import { useEffect, useState } from 'react'
 import Config from 'config'
-import SessionApi from 'services/api/session'
+import SessionsService from 'core/api/services/session'
 
 type Status = 'loading' | 'retrying' | 'loaded' | 'error'
 type Result<TProblem> =
@@ -48,13 +47,12 @@ export default function useLesson<TProblem>(
   const [error, setError] = useState<AppErrorName | null>(null)
 
   const load = () => {
-    dispatch(
-      executeAuthorizedMethod(
-        lesson === PRACTICE
-          ? SessionApi.getPracticeLesson<TProblem>(app)
-          : SessionApi.getLesson<TProblem>(app, lesson),
-      ),
-    )
+    const promise =
+      lesson === PRACTICE
+        ? SessionsService.getPracticeLesson<TProblem>(app)
+        : SessionsService.getLesson<TProblem>(app, lesson)
+
+    promise
       .then(({ data: { problems } }) => {
         setProblems(problems)
         setStatus('loaded')

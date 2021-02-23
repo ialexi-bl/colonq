@@ -1,11 +1,11 @@
 import { AppState } from 'store/types'
-import { UserApi } from 'services/api'
 import { login, profile } from 'config/routes'
 import { notifyErrorObject, notifyInfo } from 'store/view'
 import { replace } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useRef } from 'react'
 import { useLocation } from 'react-router'
+import AuthService from 'core/api/services/auth'
 
 export default function ResendEmail() {
   const userStatus = useSelector((state: AppState) => state.user.status)
@@ -28,7 +28,7 @@ export default function ResendEmail() {
     }
 
     const id = query.get('id')!
-    UserApi.resendEmail(id)
+    AuthService.resendEmail(id)
       .then(
         () => {
           dispatch(notifyInfo('Письмо было отправлено заново, проверь почту'))

@@ -1,4 +1,3 @@
-import { AuthorizedMethod, executeAuthorizedMethod } from 'store/user'
 import { InvisibleInput } from 'components/form/Input'
 import { MixedDispatch } from 'store/types'
 import { notifyErrorObject, notifyInfo } from 'store/view'
@@ -14,9 +13,10 @@ export type FieldEditorProps = {
   defaultValue: string
   validate?: (value: string) => null | string
   message?: string
-  method: (value: string) => AuthorizedMethod<unknown>
+  method: (value: string) => Promise<unknown>
   email?: boolean
 }
+
 export default function FieldEditor({
   defaultValue,
   validate,
@@ -40,7 +40,7 @@ export default function FieldEditor({
       }
 
       formik.setStatus('loading')
-      dispatch(executeAuthorizedMethod(method(value)))
+      method(value)
         .then(() => {
           if (message) dispatch(notifyInfo(message))
           formik.setStatus('success')

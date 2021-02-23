@@ -1,13 +1,13 @@
-import { ApiResponse } from 'services/api/config'
+import { Api } from 'core/api/config'
 import { MixedDispatch } from 'store/types'
 import { ProblemWithAnswer } from 'apps/shared/SessionPage'
 import { appsList } from 'config/routes'
-import { executeAuthorizedMethod, updateLessons } from 'store/user'
 import { notifyErrorObject } from 'store/view'
 import { push } from 'connected-react-router'
+import { updateLessons } from 'store/user'
 import { useDispatch } from 'react-redux'
 import { useEffect, useState } from 'react'
-import SessionApi from 'services/api/session'
+import SessionsService from 'core/api/services/session'
 
 const emptyArray: string[] = []
 
@@ -28,19 +28,17 @@ export default function useSubmitAnswers(
   // empty array is from constant to prevent `useEffect`
   // from firing every time new array is created
   disabled: string[] = emptyArray,
-) {
+): Api.Session.Submit | null {
   const dispatch = useDispatch<MixedDispatch>()
   const [
     submitResponse,
     setSubmitResponse,
-  ] = useState<ApiResponse.Session.Submit | null>(null)
+  ] = useState<Api.Session.Submit | null>(null)
 
   useEffect(() => {
     if (!done) return
 
-    dispatch(
-      executeAuthorizedMethod(SessionApi.submitAnswers(app, answers, disabled)),
-    )
+    SessionsService.submitAnswers(app, answers, disabled)
       .then((response) => {
         setSubmitResponse(response.data)
         dispatch(

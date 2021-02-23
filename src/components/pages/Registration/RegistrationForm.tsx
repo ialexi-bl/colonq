@@ -1,11 +1,11 @@
 import { MixedDispatch } from 'store/types'
-import { UserApi } from 'services/api'
 import { login } from 'config/routes'
 import { notifyErrorObject } from 'store/view'
 import { push } from 'connected-react-router'
 import { useDispatch } from 'react-redux'
 import { useFormik } from 'formik'
 import { useRef, useState } from 'react'
+import AuthService from 'core/api/services/auth'
 import CompoundInput from 'components/shared/CompoundInput'
 import LoadingButton from 'components/shared/LoadingButton'
 import Slider from 'components/shared/Slider/Slider'
@@ -37,7 +37,7 @@ export default function RegistrationForm({
     setLoading?.(true)
 
     try {
-      const { data } = await UserApi.register(
+      const { data } = await AuthService.register(
         values.email,
         values.username,
         values.password,

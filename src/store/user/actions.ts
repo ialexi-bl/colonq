@@ -1,6 +1,5 @@
-import { ApiResponse } from 'services/api/config'
-import { AuthorizedMethod, AuthorizedMethodInternal, Lesson } from './types'
-import { ThunkAction } from 'store/types'
+import { Api } from 'core/api/config'
+import { Lesson } from './types'
 import { createAction } from 'store/util'
 
 export enum UserAction {
@@ -42,16 +41,16 @@ export type UpdateLessonsPayload = {
 export const authenticate = createAction(UserAction.AUTHENTICATE_REQUEST)
 export const authenticateStart = createAction(UserAction.AUTHENTICATE_START)
 export const authenticateError = createAction(UserAction.AUTHENTICATE_ERROR)
-export const authenticateSuccess = createAction<ApiResponse.Auth.UserData>(
+export const authenticateSuccess = createAction<Api.Auth.UserData>(
   UserAction.AUTHENTICATE_SUCCESS,
 )
 export const unauthenticate = createAction(UserAction.UNAUTHENTICATE)
 
 export const loadApps = createAction(UserAction.LOAD_APPS_REQUEST)
 export const loadAppsError = createAction(UserAction.LOAD_APPS_ERROR)
-export const loadAppsSuccess = createAction<
-  ApiResponse.User.CategoryDescription[]
->(UserAction.LOAD_APPS_SUCCESS)
+export const loadAppsSuccess = createAction<Api.User.CategoryDescription[]>(
+  UserAction.LOAD_APPS_SUCCESS,
+)
 
 export const loadApp = createAction<string>(UserAction.LOAD_APP_REQUEST)
 export const loadAppError = createAction<string>(UserAction.LOAD_APP_ERROR)
@@ -61,24 +60,3 @@ export const loadAppSuccess = createAction<LoadAppSuccessPayload>(
 export const updateLessons = createAction<UpdateLessonsPayload>(
   UserAction.UPDATE_LESSONS,
 )
-
-export const requestAuthMethod = createAction<AuthorizedMethodInternal<any>>(
-  UserAction.REQUEST_AUTH_METHOD,
-)
-export const queueAuthMethod = createAction<AuthorizedMethodInternal<any>>(
-  UserAction.QUEUE_AUTH_METHOD,
-)
-export const executeAuthorizedMethod = <T>(
-  method: AuthorizedMethod<T>,
-): ThunkAction<Promise<T>> => {
-  return async (dispatch) =>
-    new Promise((resolve, reject) =>
-      dispatch(
-        requestAuthMethod({
-          throw: reject,
-          call: (token, id) =>
-            method(token, id, dispatch).then(resolve).catch(reject),
-        }),
-      ),
-    )
-}

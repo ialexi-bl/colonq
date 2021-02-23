@@ -1,8 +1,8 @@
-import { UserApi } from 'services/api'
 import { notifyInfo } from 'store/view'
 import { unauthenticate } from 'store/user'
 import { useDispatch } from 'react-redux'
 import Accordion from 'components/shared/Accordion'
+import AuthService from 'core/api/services/auth'
 import Button from 'components/shared/Button'
 import LangNotifications from 'lang/notifications.json'
 import cn from 'clsx'
@@ -32,7 +32,7 @@ export function Logout() {
   const logout = () => {
     dispatch(unauthenticate())
     dispatch(notifyInfo(LangNotifications.logout))
-    UserApi.logout()
+    AuthService.logout()
   }
 
   return (
