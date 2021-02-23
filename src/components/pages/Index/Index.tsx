@@ -2,7 +2,7 @@ import { AppState } from 'store/types'
 import { Elevation } from 'config/view'
 import { Helmet } from 'react-helmet'
 import { LinkButton } from 'components/shared/Button'
-import { ReactNode, useEffect, useRef } from 'react'
+import { ReactNode, useEffect } from 'react'
 import {
   RouteComponentProps,
   appsList,
@@ -16,19 +16,17 @@ import Hr from 'components/shared/Hr'
 import LetterButton from 'components/shared/LetterButton'
 import NotificationIcon from 'components/icons/Notification'
 import ScrollIcon from 'components/icons/Scroll'
-import Scrollbars from 'react-custom-scrollbars'
 import Suffixes from 'components/icons/apps/russian/suffixes'
 import Trigonometry from 'components/icons/apps/math/sin'
 import cn from 'clsx'
 import styles from './Index.module.scss'
 
 export default function Index({ setProgress }: RouteComponentProps) {
-  const scrollbars = useRef<Scrollbars | null>(null)
   const status = useSelector((state: AppState) => state.user.status)
   useEffect(() => setProgress(100), [setProgress])
 
   return (
-    <ScrollablePage routeElevation={Elevation.index} ref={scrollbars}>
+    <ScrollablePage routeElevation={Elevation.index}>
       <Helmet>
         <title>Главная страница</title>
       </Helmet>
