@@ -1,21 +1,21 @@
-import { Api, ApiResponse, Endpoint } from 'core/api/config'
+import { Api, ApiPromise, Endpoint } from 'core/api/config'
 import ApiService from './api'
 import StoreController from 'store/StoreController'
 
 const getId = StoreController.requireUserId
 
-function getAppsList(): ApiResponse<Api.Apps.GetApps> {
+function getAppsList(): ApiPromise<Api.Apps.GetApps> {
   return ApiService.get<Api.Apps.GetApps>(Endpoint.apps.get)
 }
 
-function loadApps(): ApiResponse<Api.User.GetApps> {
+function loadApps(): ApiPromise<Api.User.GetApps> {
   return ApiService.get<Api.User.GetApps>(Endpoint.user.getApps(getId()))
 }
 
 function loadApp(
   category: string,
   name?: string,
-): ApiResponse<Api.User.GetApp> {
+): ApiPromise<Api.User.GetApp> {
   return ApiService.get<Api.User.GetApp>(
     Endpoint.user.getApp(getId(), name ? `${category}/${name}` : category),
   )

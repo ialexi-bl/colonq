@@ -38,7 +38,7 @@ export function Logout() {
   return (
     <Accordion
       // inline-block to prevent spanning the entire width
-      className={'self-start inline-block'}
+      className={'block text-center'}
       expanded={started}
       summary={
         <Button

@@ -1,6 +1,6 @@
 import { useReducer } from 'react'
 
-type ToggleList = Record<string, true>
+export type ToggleList = Record<string, boolean>
 const reducer = (chosen: ToggleList, app: string | ToggleList) => {
   if (typeof app === 'string') {
     const newState = { ...chosen }

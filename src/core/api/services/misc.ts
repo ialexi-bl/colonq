@@ -1,13 +1,13 @@
-import { ApiResponse, Endpoint } from '../config'
+import { ApiPromise, Endpoint } from '../config'
 import ApiService from './api'
 
-function sendFeedback(message: string): ApiResponse<null> {
+function sendFeedback(message: string): ApiPromise<null> {
   return ApiService.post<null>(Endpoint.general.feedback, {
     json: { message },
   })
 }
 
-function log(data: Record<string, unknown>): ApiResponse<null> {
+function log(data: Record<string, unknown>): ApiPromise<null> {
   // TODO: maybe authorize
   return ApiService.post<null>(Endpoint.general.log, {
     json: data,

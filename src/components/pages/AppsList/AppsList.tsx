@@ -134,7 +134,7 @@ const CategoryItem = ({
   visibleItems: Record<string, boolean>
   toggleVisible: (id: string) => void
 }) => (
-  <div className={'mb-8 max-w-md'} key={category.id}>
+  <div className={'mb-8 mx-4 max-w-md xl:max-w-md xl:mx-12'} key={category.id}>
     <h2 className={'text-2xl mb-8'}>{category.title}</h2>
     {category.apps.map((app) => {
       return (

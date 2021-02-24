@@ -23,13 +23,13 @@ import UserService from 'core/api/services/user'
 import useElevation from 'hooks/use-elevation'
 import useIconsSet from 'hooks/use-icons-set'
 import useIsAuthenticated from 'hooks/use-is-authenticated'
-import useItemsToggler from 'hooks/use-items-toggler'
+import useItemsToggler, { ToggleList } from 'hooks/use-items-toggler'
 import useWasTrue from 'hooks/use-was-true'
 
 /**
  * Displays page for selecting apps.
  * This component can read `noBack` boolean value from history state,
- * which disables "back" button on the page. Main reason - to prevent
+ * which disables "back" button on the page. Main purpose - preventing
  * user that didn't choose any apps from returning to screen that cannot
  * display anything because apps aren't chosen
  * @param props
@@ -137,6 +137,7 @@ export default function AppsChoice({
     )
   }
 
+  const blocked = !hasChosen(chosen)
   return (
     <Wrapper>
       <Helmet>
@@ -153,42 +154,59 @@ export default function AppsChoice({
         Нажми на название темы, чтобы посмотреть описание, или на иконку, чтобы
         включить или вылючить её.
       </p>
-      <div className={'px-4 pb-64'}>
+      <div className={'px-4 flex flex-wrap justify-center'}>
         {categories.map((category) => (
-          <div className={'mb-8'} key={category.id}>
-            <h2 className={'text-2xl mb-8'}>{category.title}</h2>
+          <div className={'mb-8 mx-4 xl:mx-12'} key={category.id}>
+            <div className={'flex items-center mb-8'}>
+              <h2 className={'text-2xl flex-1'}>{category.title}</h2>
+              <button
+                onClick={() => {
+                  const allEnabled = category.apps.every((x) => chosen[x.id])
+                  // Disable all if all enabled, otherwise enable all
+                  toggle(appsToObject(category.apps, !allEnabled))
+                }}
+                className={
+                  'text-primary-300 hover:text-primary-200 active:text-primary-400 duration-100'
+                }
+              >
+                Переключить все
+              </button>
+            </div>
 
-            {category.apps.map((app, i) => (
-              <Accordion
-                key={app.id}
-                expanded={app.id in visibleItems}
-                className={'mb-6'}
-                summary={
-                  <ThemeCard
-                    onTextClick={() => toggleVisible(app.id)}
-                    onIconClick={() => toggle(app.id)}
-                    className={'cursor-pointer'}
-                    disabled={!chosen[app.id]}
-                    variant={((i % 4) + 1) as 1}
-                    title={app.title}
-                    icon={<Icon name={app.icon} />}
-                  />
-                }
-                details={
-                  <TextContainer variant={((i % 3) + 1) as 1}>
-                    {app.description}
-                  </TextContainer>
-                }
-              />
-            ))}
+            <div className={'max-w-md xl:max-w-md'}>
+              {category.apps.map((app, i) => (
+                <Accordion
+                  key={app.id}
+                  expanded={app.id in visibleItems}
+                  className={'mb-6'}
+                  summary={
+                    <ThemeCard
+                      onTextClick={() => toggleVisible(app.id)}
+                      onIconClick={() => toggle(app.id)}
+                      className={'cursor-pointer'}
+                      disabled={!chosen[app.id]}
+                      variant={((i % 4) + 1) as 1}
+                      title={app.title}
+                      icon={<Icon name={app.icon} />}
+                    />
+                  }
+                  details={
+                    <TextContainer variant={((i % 3) + 1) as 1}>
+                      {app.description}
+                    </TextContainer>
+                  }
+                />
+              ))}
+            </div>
           </div>
         ))}
-        <Fab
-          disabled={Object.keys(chosen).length === 0}
-          onClick={proceed}
-          icon={<Continue />}
-        />
       </div>
+      <div className={'text-center'}>
+        <Button disabled={blocked} onClick={proceed} className={'min-w-48'}>
+          Продолжить
+        </Button>
+      </div>
+      <Fab disabled={blocked} onClick={proceed} icon={<Continue />} />
     </Wrapper>
   )
 }
@@ -198,6 +216,19 @@ const Wrapper = ({ children }: BasicProps) => (
     routeElevation={Elevation.appsChoice}
     className={'route-overlay bg-page'}
   >
-    {children}
+    <div className={'container pb-64'}>{children}</div>
   </ScrollablePage>
 )
+
+function appsToObject(apps: Api.Apps.App[], value: boolean) {
+  const object: Record<string, boolean> = {}
+  apps.forEach((app) => (object[app.id] = value))
+  return object
+}
+
+function hasChosen(chosen: ToggleList) {
+  for (const id in chosen) {
+    if (chosen[id]) return true
+  }
+  return false
+}

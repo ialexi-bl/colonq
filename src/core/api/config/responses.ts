@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import ApiErrorName from './error-names'
 
-export type ApiResponse<T> = Promise<Api.Success<T>>
+export type ApiResponse<T> = Api.Success<T>
+export type ApiPromise<T> = Promise<ApiResponse<T>>
 
 declare namespace Api {
   export type Success<T = null> = {

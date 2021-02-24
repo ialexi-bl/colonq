@@ -59,7 +59,7 @@ const ThemeActionItem = ({
             onClick={action}
             tabIndex={expanded ? 0 : -1}
             secondary={!primary}
-            className={'w-72'}
+            className={'w-64'}
           >
             {label}
           </Button>

@@ -23,7 +23,7 @@ export function Notification({ text, type, close }: NotificationProps) {
         useIsNavigationVisible() ? 'pb-20' : 'pb-6',
         'z-notification pt-6 px-12 duration-300 leading-5',
         'fixed inset-x-0 bottom-0 text-light',
-        'lg:inset-x-auto lg:right-4 lg:pb-6 lg:max-w-sm lg:bottom-4',
+        'sm:pb-6 lg:inset-x-auto lg:right-4 lg:max-w-sm lg:bottom-4',
         type === 'error' ? 'bg-error' : 'bg-primary-900',
       )}
     >

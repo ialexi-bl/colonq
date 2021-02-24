@@ -28,6 +28,7 @@ export default function ThemeCard({
   return (
     <div className={cn('flex items-center', className)} {...props}>
       <Bubble
+        tabIndex={onIconClick ? 0 : -1}
         onClick={onIconClick}
         disabled={disabled}
         progress={progress}
@@ -36,7 +37,12 @@ export default function ThemeCard({
       />
       {detail ? (
         <div className={'flex-1 flex flex-col align-center'}>
-          <Title className={'mb-2'} onClick={onTextClick} disabled={disabled}>
+          <Title
+            className={'mb-2'}
+            tabIndex={onTextClick ? 0 : -1}
+            onClick={onTextClick}
+            disabled={disabled}
+          >
             {title}
           </Title>
           <p

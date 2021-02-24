@@ -29,8 +29,8 @@ export default function Accordion({
       <div>{summary}</div>
       <div
         className={'overflow-hidden duration-300'}
-        ref={ref}
         style={{ height }}
+        ref={ref}
       >
         {/* Padding is visible when open for height: 0 so emulating it with extra div */}
         <div className={'h-2'} />

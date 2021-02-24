@@ -25,7 +25,7 @@ type Config = {
   onUpdate?: (registration: ServiceWorkerRegistration) => void
 }
 
-export function register(config?: Config) {
+export function register(config?: Config): void {
   if (
     // process.env.NODE_ENV !== 'production' ||
     !('serviceWorker' in navigator)
@@ -53,8 +53,7 @@ export function register(config?: Config) {
       // service worker/PWA documentation.
       navigator.serviceWorker.ready.then(() => {
         console.log(
-          'This web app is being served cache-first by a service ' +
-            'worker. To learn more, visit https://bit.ly/CRA-PWA',
+          'This web app uses service worker. To learn more, visit https://bit.ly/CRA-PWA',
         )
       })
     } else {
@@ -136,7 +135,7 @@ function checkValidServiceWorker(swUrl: string, config?: Config) {
     })
 }
 
-export function unregister() {
+export function unregister(): void {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.ready.then((registration) => {
       registration.unregister()

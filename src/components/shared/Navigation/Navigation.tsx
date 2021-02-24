@@ -2,7 +2,7 @@ import { AppState } from 'store/types'
 import { Link, useLocation } from 'react-router-dom'
 import { Location } from 'history'
 import { ReactNode } from 'react'
-import { appsList, profile } from 'config/routes'
+import { appsList, feedback, profile } from 'config/routes'
 import { useSelector } from 'react-redux'
 import Feedback from 'components/icons/Feedback'
 import List from 'components/icons/List'
@@ -43,7 +43,7 @@ export default function Navigation() {
         <User className={'w-8 h-8'} />
         <p className={'hidden md:block ml-4 uppercase'}>Профиль</p>
       </NavLink>
-      <NavLink visible={visible} location={location} to={profile()}>
+      <NavLink visible={visible} location={location} to={feedback()}>
         <Feedback className={'w-8 h-8'} />
         <p className={'hidden md:block ml-4 uppercase'}>Обратная связь</p>
       </NavLink>

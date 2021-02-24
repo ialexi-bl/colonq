@@ -1,4 +1,4 @@
-import { Api, ApiErrorName, ApiResponse, Endpoint } from 'core/api/config'
+import { Api, ApiErrorName, ApiPromise, Endpoint } from 'core/api/config'
 import { HttpError } from 'core/errors'
 import { authenticateSuccess } from 'store/user'
 import ApiService from './api'
@@ -17,7 +17,7 @@ function authenticateAfterRequest<T extends Api.Auth.UserData>(
 }
 
 // Authentication
-function getSelf(): ApiResponse<Api.Auth.Token> {
+function getSelf(): ApiPromise<Api.Auth.Token> {
   return ApiService.get<Api.Auth.Token>(Endpoint.auth.self, {
     credentials: Config.CORS_MODE,
   })
@@ -57,7 +57,7 @@ async function isEmailOccupied(email: string): Promise<boolean | null> {
   }
 }
 
-function resendEmail(id: string): ApiResponse<null> {
+function resendEmail(id: string): ApiPromise<null> {
   return ApiService.post<null>(Endpoint.auth.resendEmail, {
     json: { id },
   })
@@ -67,7 +67,7 @@ function register(
   email: string,
   username: string,
   password: string,
-): ApiResponse<Api.Auth.Registration> {
+): ApiPromise<Api.Auth.Registration> {
   return ApiService.post<Api.Auth.Registration>(Endpoint.auth.register, {
     json: { email, username, password },
   })
@@ -82,7 +82,7 @@ function register(
 function registerVk(
   code: string,
   redirectUri: string,
-): ApiResponse<Api.Auth.RegistrationVk> {
+): ApiPromise<Api.Auth.RegistrationVk> {
   return authenticateAfterRequest(() =>
     ApiService.post<Api.Auth.RegistrationVk>(Endpoint.auth.registerVk, {
       json: { code, redirectUri },
@@ -99,7 +99,7 @@ function registerVk(
 function registerVkEmail(
   token: string,
   email: string,
-): ApiResponse<Api.Auth.RegistrationVk> {
+): ApiPromise<Api.Auth.RegistrationVk> {
   return ApiService.post<Api.Auth.RegistrationVk>(
     Endpoint.auth.registerVkWithEmail,
     { json: { token, email } },
@@ -115,7 +115,7 @@ function registerVkEmail(
 function registerGoogle(
   code: string,
   redirectUri: string,
-): ApiResponse<Api.Auth.RegistrationGoogle> {
+): ApiPromise<Api.Auth.RegistrationGoogle> {
   return authenticateAfterRequest(() =>
     ApiService.post<Api.Auth.RegistrationGoogle>(Endpoint.auth.registerGoogle, {
       json: { code, redirectUri },
@@ -129,7 +129,7 @@ function registerGoogle(
  * @param code
  * @param redirectUri
  */
-function login(login: string, password: string): ApiResponse<Api.Auth.Login> {
+function login(login: string, password: string): ApiPromise<Api.Auth.Login> {
   return authenticateAfterRequest(() =>
     ApiService.post<Api.Auth.Login>(Endpoint.auth.login, {
       json: { login, password },
@@ -146,7 +146,7 @@ function login(login: string, password: string): ApiResponse<Api.Auth.Login> {
 function loginVk(
   code: string,
   redirectUri: string,
-): ApiResponse<Api.Auth.LoginVk> {
+): ApiPromise<Api.Auth.LoginVk> {
   return authenticateAfterRequest(() =>
     ApiService.post<Api.Auth.LoginVk>(Endpoint.auth.loginVk, {
       json: { code, redirectUri },
@@ -163,7 +163,7 @@ function loginVk(
 function loginGoogle(
   code: string,
   redirectUri: string,
-): ApiResponse<Api.Auth.LoginGoogle> {
+): ApiPromise<Api.Auth.LoginGoogle> {
   return authenticateAfterRequest(() =>
     ApiService.post<Api.Auth.LoginGoogle>(Endpoint.auth.loginGoogle, {
       json: { code, redirectUri },
@@ -174,7 +174,7 @@ function loginGoogle(
 function linkVk(
   code: string,
   redirectUri: string,
-): ApiResponse<Api.Auth.LinkVk> {
+): ApiPromise<Api.Auth.LinkVk> {
   return authenticateAfterRequest(() =>
     ApiService.post<Api.Auth.LinkVk>(Endpoint.auth.linkVk, {
       json: { code, redirectUri },
@@ -185,7 +185,7 @@ function linkVk(
 function linkGoogle(
   code: string,
   redirectUri: string,
-): ApiResponse<Api.Auth.LinkGoogle> {
+): ApiPromise<Api.Auth.LinkGoogle> {
   return authenticateAfterRequest(() =>
     ApiService.post<Api.Auth.LinkGoogle>(Endpoint.auth.linkGoogle, {
       json: { code, redirectUri },
@@ -195,7 +195,7 @@ function linkGoogle(
 
 function requestResetPassword(
   login: string,
-): ApiResponse<Api.Auth.ResetPassword> {
+): ApiPromise<Api.Auth.ResetPassword> {
   return ApiService.post<Api.Auth.ResetPassword>(Endpoint.auth.resetPassword, {
     json: { login },
   })
@@ -204,7 +204,7 @@ function requestResetPassword(
 function submitResetPassword(
   token: string,
   password: string,
-): ApiResponse<Api.Auth.ResetPassword> {
+): ApiPromise<Api.Auth.ResetPassword> {
   return ApiService.post<Api.Auth.ResetPassword>(
     Endpoint.auth.resetPasswordSubmit,
     { json: { token, password } },
@@ -213,14 +213,14 @@ function submitResetPassword(
 
 function validateResetPasswordToken(
   token: string,
-): ApiResponse<Api.Auth.ResetPasswordValidate> {
+): ApiPromise<Api.Auth.ResetPasswordValidate> {
   return ApiService.post<Api.Auth.ResetPasswordValidate>(
     Endpoint.auth.resetPasswordValidate,
     { json: { token } },
   )
 }
 
-function verifyEmail(token: string): ApiResponse<Api.Auth.VerifyEmail> {
+function verifyEmail(token: string): ApiPromise<Api.Auth.VerifyEmail> {
   return authenticateAfterRequest(() =>
     ApiService.post<Api.Auth.VerifyEmail>(Endpoint.auth.verifyEmail, {
       json: { token },
@@ -228,7 +228,7 @@ function verifyEmail(token: string): ApiResponse<Api.Auth.VerifyEmail> {
   )
 }
 
-function logout(): ApiResponse<Api.Auth.Logout> {
+function logout(): ApiPromise<Api.Auth.Logout> {
   document.cookie = `${Config.CHECK_COOKIE}=; max-age=0`
 
   // Even if this request fails, because check cookie is deleted

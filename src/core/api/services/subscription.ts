@@ -1,4 +1,4 @@
-import { Api, ApiResponse, Endpoint } from '../config'
+import { Api, ApiPromise, Endpoint } from '../config'
 import ApiService from './api'
 
 function subscribe(
@@ -20,7 +20,7 @@ function modifyHour(endpoint: string, hour: number): Promise<unknown> {
   })
 }
 
-function getHour(endpoint: string): ApiResponse<Api.Subscription> {
+function getHour(endpoint: string): ApiPromise<Api.Subscription> {
   return ApiService.get<Api.Subscription>(
     `${Endpoint.subscription}?endpoint=${encodeURIComponent(endpoint)}`,
   )

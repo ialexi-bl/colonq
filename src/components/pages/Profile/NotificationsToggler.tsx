@@ -16,27 +16,29 @@ export type NotificationsTogglerProps = {
 export default function NotificationsToggler({
   className,
 }: NotificationsTogglerProps) {
+  const h = useRef(0)
   const [hour, setHour] = useState({ current: 18, real: 18 })
   const [status, setStatus] = useState(false)
-  const processing = useRef(false)
+  const pending = useRef(false)
   const dispatch = useDispatch<MixedDispatch>()
+  h.current = hour.current
 
   const subscribe = () => {
-    if (processing.current) return
-    processing.current = true
+    if (pending.current) return
+    pending.current = true
 
     NotificationsController.subscribe(hour.current).then((x) => {
       setStatus(x)
-      processing.current = false
+      pending.current = false
     })
   }
   const unsubscribe = async () => {
-    if (processing.current) return
-    processing.current = true
+    if (pending.current) return
+    pending.current = true
 
     dispatch(NotificationsController.unsubscribe()).then((x) => {
       setStatus(!x)
-      processing.current = false
+      pending.current = false
     })
   }
 
@@ -45,7 +47,7 @@ export default function NotificationsToggler({
 
     NotificationsController.getHour().then((hour) => {
       if (hour !== null) {
-        setHour({ current: hour, real: hour })
+        setHour({ current: h.current, real: hour })
         setStatus(true)
       } else {
         setStatus(false)

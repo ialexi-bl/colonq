@@ -93,11 +93,7 @@ export default function Profile({ setProgress }: RouteComponentProps) {
               <>
                 <Separator className={'h-px w-72 self-center'} />
 
-                <Section
-                  className={
-                    'md:flex-1 flex flex-col items-center md:items-start'
-                  }
-                >
+                <Section className={'md:flex-1 flex flex-col items-center'}>
                   <p className={'self-start mb-6 max-w-sm'}>
                     Свяжи аккаунт с другими социальными сетями, если ты хочешь
                     выполнять через них вход

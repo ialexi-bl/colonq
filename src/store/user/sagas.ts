@@ -1,4 +1,4 @@
-import { Api } from 'core/api/config'
+import { Api, ApiResponse } from 'core/api/config'
 import { AppState } from 'store/types'
 import { Channel, Task } from 'redux-saga'
 import { ColonqError, HttpError } from 'core/errors'
@@ -64,8 +64,10 @@ function* loadApps() {
   if (appsStatus === 'loaded') return
 
   try {
-    const data: Api.User.GetApps = yield call(AppsService.loadApps)
-    yield put(loadAppsSuccess(data.categories))
+    const response: ApiResponse<Api.User.GetApps> = yield call(
+      AppsService.loadApps,
+    )
+    yield put(loadAppsSuccess(response.data.categories))
   } catch (e) {
     yield put(loadAppsError())
     if (!(e instanceof ColonqError)) {
@@ -76,8 +78,11 @@ function* loadApps() {
 
 function* loadApp(app: string) {
   try {
-    const data: Api.User.GetApp = yield call(AppsService.loadApp, app)
-    yield put(loadAppSuccess({ ...data, app }))
+    const response: ApiResponse<Api.User.GetApp> = yield call(
+      AppsService.loadApp,
+      app,
+    )
+    yield put(loadAppSuccess({ ...response.data, app }))
   } catch (e) {
     console.error(e)
     yield put(loadAppError(app))
