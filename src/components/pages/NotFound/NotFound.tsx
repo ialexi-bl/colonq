@@ -27,13 +27,8 @@ const NotFound = ({
       <Helmet>
         <title>Страница не найдена</title>
       </Helmet>
-      <div className={'mb-24'}>
-        <div className={'flex flex-col text-center mb-8'}>
-          <h1 className={'text-4xl mb-2'}>Такой страницы нет</h1>
-          <p>ColonQ в недоумении</p>
-        </div>
-      </div>
-      <Logo className={cn(styles.Monster, 'mx-auto w-48 h-48')} />
+      <h1 className={'text-4xl mb-6'}>Такой страницы нет</h1>
+      <Logo className={cn(styles.Monster, 'mx-auto mb-6 w-48 h-48')} />
       <LinkButton to={appsList()} className={'min-w-64'}>
         На главную
       </LinkButton>

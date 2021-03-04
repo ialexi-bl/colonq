@@ -50,7 +50,8 @@ export default function Login({ setProgress }: RouteComponentProps) {
 
     try {
       await AuthService.login(values.login, values.password)
-      push(appsList())
+      console.log('Logged in')
+      dispatch(push(appsList()))
     } catch (e) {
       setLoading(false)
       if (e instanceof HttpError) {

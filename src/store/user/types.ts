@@ -32,38 +32,19 @@ export type AppsState = {
 
 export type Category = {
   id: string
-  apps: PlainApp[]
+  apps: App[]
   title: string
 }
 
 export type Apps = Record<string, App>
 
-export type App = OnlyInfoApp | LoadedApp
-export type OnlyInfoApp = PlainApp & {
-  status: 'only-info' | 'loading' | 'error'
-  iconsSet: string
-  lessons: never[]
-}
-export type LoadedApp = PlainApp & {
-  status: 'loaded' | 'loading' | 'error'
-  iconsSet: string
-  lessons: Lesson[]
-}
-export type PlainApp = {
+export type App /* PlainApp */ = {
   id: string
   icon: string
   score: number
   title: string
+  iconsSet: string
   hasSettings: boolean
-}
-
-export type Lesson = {
-  id: string
-  icon: string
-  score: number
-  title: string
-  empty?: boolean
-  unlocked: boolean
 }
 
 export type UserState = User | EmptyUser

@@ -4,7 +4,6 @@ import { ProblemWithAnswer } from 'apps/shared/SessionPage'
 import { appsList } from 'config/routes'
 import { notifyErrorObject } from 'store/view'
 import { push } from 'connected-react-router'
-import { updateLessons } from 'store/user'
 import { useDispatch } from 'react-redux'
 import { useEffect, useState } from 'react'
 import SessionsService from 'core/api/services/session'
@@ -41,12 +40,12 @@ export default function useSubmitAnswers(
     SessionsService.submitAnswers(app, answers, disabled)
       .then((response) => {
         setSubmitResponse(response.data)
-        dispatch(
-          updateLessons({
-            app,
-            lessons: response.data.lessons,
-          }),
-        )
+        // dispatch(
+        //   updateLessons({
+        //     app,
+        //     lessons: response.data.lessons,
+        //   }),
+        // )
       })
       .catch((e) => {
         dispatch(notifyErrorObject(e))

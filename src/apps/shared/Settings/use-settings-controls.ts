@@ -3,11 +3,19 @@ import { ToggleChanges, ToggleListChanges } from 'core/api/services/settings'
 import { useCallback, useMemo, useReducer } from 'react'
 
 type SettingsMap = Record<string, Api.Settings.Setting>
+type SettingsAction =
+  | { type: 'reset-modified' }
+  | { id: string; type: 'stages'; problem: string; stage: string; set: string }
+  | { id: string; type: 'toggle'; value?: boolean }
 
 export type ToggleDispatch = (value?: boolean) => void
-export type ToggleListDispatch = (data: { group: string; item: string }) => void
+export type StagesControlsDispatch = (data: {
+  problem: string
+  stage: string
+  set: string
+}) => void
 
-type DispatchMap = Record<string, ToggleDispatch | ToggleListDispatch>
+type DispatchMap = Record<string, ToggleDispatch | StagesControlsDispatch>
 export type Controls = Array<
   | {
       id: string
@@ -17,9 +25,9 @@ export type Controls = Array<
     }
   | {
       id: string
-      type: Api.Settings.ToggleList['type']
-      data: Api.Settings.ToggleList
-      dispatch: ToggleListDispatch
+      type: Api.Settings.StagesControls['type']
+      data: Api.Settings.StagesControls
+      dispatch: StagesControlsDispatch
     }
 >
 
@@ -30,14 +38,12 @@ export default function useSettingsControls(settings: Api.Settings.Get) {
     const result: DispatchMap = {}
     settings.forEach((setting) => {
       switch (setting.type) {
-        case 'list':
-          result[setting.id] = ({
-            group,
-            item,
-          }: {
-            group: string
-            item: string
-          }) => dispatch({ id: setting.id, type: 'list', group, item })
+        case 'stages':
+          result[setting.id] = (data: {
+            problem: string
+            stage: string
+            set: string
+          }) => dispatch({ id: setting.id, type: 'stages', ...data })
           break
         case 'toggle':
           result[setting.id] = (value?: boolean) =>
@@ -71,13 +77,7 @@ const getInitial = (settings: Api.Settings.Get) => {
   settings.forEach((setting) => (state[setting.id] = setting))
   return state
 }
-const reducer = (
-  state: SettingsMap,
-  action:
-    | { type: 'reset-modified' }
-    | { id: string; type: 'list'; group: string; item: string }
-    | { id: string; type: 'toggle'; value?: boolean },
-) => {
+const reducer = (state: SettingsMap, action: SettingsAction) => {
   switch (action.type) {
     case 'reset-modified':
       return ({ ...state, _modified: null } as unknown) as SettingsMap
@@ -97,45 +97,53 @@ const reducer = (
         },
       }
     }
-    case 'list': {
-      const { id, group: groupId, item: itemId } = action
-      const list = state[id] as Api.Settings.ToggleList
+    case 'stages': {
+      const { id, stage: stageId, set: setId, problem: problemId } = action
+      const controls = state[id] as Api.Settings.StagesControls
 
-      for (let i = 0, l = list.items.length; i < l; i++) {
-        const group = list.items[i]
-        if (group.id !== groupId) continue
+      for (let i = 0, l = controls.items.length; i < l; i++) {
+        const stage = controls.items[i]
+        if (stage.id !== stageId) continue
 
-        for (let j = 0, l = group.items.length; j < l; j++) {
-          const item = group.items[j]
-          if (item.id !== itemId) continue
+        for (let j = 0, l = stage.sets.length; j < l; j++) {
+          const set = stage.sets[j]
+          if (set.id !== setId) continue
 
-          const newGroupItems = [...group.items]
-          newGroupItems[j] = {
-            ...item,
-            value: !item.value,
-          }
-          const newItems = [...list.items]
-          newItems[i] = {
-            ...group,
-            items: newGroupItems,
-          }
+          for (let k = 0, l = set.problems.length; k < l; k++) {
+            const problem = set.problems[k]
+            if (problem.id !== problemId) continue
 
-          const changes: Record<string, boolean> = {}
-          newGroupItems.forEach((item) => (changes[item.id] = item.value))
+            const newProblems = set.problems.slice()
+            newProblems[k] = {
+              ...problem,
+              enabled: !problem.enabled,
+            }
 
-          return {
-            ...state,
-            [id]: {
-              ...list,
-              items: newItems,
-            },
-            _modified: {
-              ...state._modified,
+            const newSets = stage.sets.slice()
+            newSets[j] = { ...set, problems: newProblems }
+
+            const newItems = controls.items.slice()
+            newItems[i] = { ...stage, sets: newSets }
+
+            const changes: Record<string, boolean> = {}
+            newProblems.forEach(
+              (problem) => (changes[problem.id] = problem.enabled),
+            )
+
+            return {
+              ...state,
               [id]: {
-                ...((state._modified || {}) as any)[id],
-                ...changes,
+                ...controls,
+                items: newItems,
               },
-            },
+              _modified: {
+                ...state._modified,
+                [id]: {
+                  ...((state._modified || {}) as any)[id],
+                  ...changes,
+                },
+              },
+            }
           }
         }
       }

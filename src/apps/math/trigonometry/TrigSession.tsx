@@ -21,20 +21,19 @@ export type TrigSessionProps = {
 }
 
 const methodsBindings: Record<string, TrigKey | 'down' | 'up'> = {
-  0: '0',
-  1: '1',
-  2: '2',
-  3: '3',
-  '~': '0',
-  '`': '0',
-  '/': 'frac',
-  '.': 'sqrt',
-  q: 'sqrt',
-  w: 'frac',
-  e: 'delete',
+  digit0: '0',
+  digit1: '1',
+  digit2: '2',
+  digit3: '3',
+  keyq: 'sqrt',
+  keyw: 'frac',
+  keye: 'delete',
   enter: 'submit',
   space: 'submit',
+  slash: 'frac',
+  period: 'sqrt',
   arrowup: 'up',
+  backquote: '0',
   arrowdown: 'down',
   arrowleft: 'left',
   backspace: 'delete',
@@ -60,7 +59,7 @@ export default function TrigSession({ problems }: TrigSessionProps) {
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
       if (e.repeat || !current) return
-      const method = methodsBindings[e.key.toLowerCase()]
+      const method = methodsBindings[e.code.toLowerCase()]
 
       if (method === 'submit') {
         if (current.data.value.allowedKeys().submit) {

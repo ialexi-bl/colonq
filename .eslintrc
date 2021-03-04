@@ -19,7 +19,9 @@
   "rules": {
     "no-debugger": "warn",
     "spaced-comment": "warn",
+    "no-sequences": "off",
     "no-use-before-define": "off",
+    "import/export": "off",
     "handle-callback-err": "off",
     "sort-imports-es6-autofix/sort-imports-es6": ["warn"],
 

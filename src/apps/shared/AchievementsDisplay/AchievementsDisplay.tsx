@@ -3,9 +3,8 @@ import { ReactNode, useEffect, useMemo, useState } from 'react'
 import { useHistory } from 'react-router'
 import Bubble from 'components/shared/Bubble'
 import Button from 'components/shared/Button'
-import DynamicIcon, { preloadIcons } from 'components/icons/DynamicIcon'
-import FullscreenLoading from 'components/shared/GlobalLoading/FullscreenLoading'
 import Hr from 'components/shared/Hr'
+import useIconsSet from 'hooks/use-icons-set'
 import useTween from 'hooks/use-tween'
 
 export type AchievementsDisplayProps = {
@@ -17,80 +16,42 @@ export default function AchievementsDisplay({
   response,
   delay = 200,
 }: AchievementsDisplayProps) {
-  const { lessons, updatedLessons, unlockedLessons } = response
+  const { updatedStages, unlockedStages } = response
   const hrVariant = useMemo(() => (Math.floor(Math.random() * 2) + 1) as 1, [])
   const history = useHistory()
-  const [loaded, setLoaded] = useState(false)
-
-  const lessonsObj = useMemo(() => {
-    const res: Record<string, Api.User.LessonDescription> = {}
-    lessons.forEach((lesson) => {
-      res[lesson.id] = lesson
-    })
-    return res
-  }, [lessons])
-
-  useEffect(() => {
-    const icons: Record<string, true> = {}
-    updatedLessons.forEach(({ id }) => (icons[lessonsObj[id].icon] = true))
-    unlockedLessons.forEach((id) => (icons[lessonsObj[id].icon] = true))
-
-    preloadIcons(Object.keys(icons)).then(() => {
-      setLoaded(true)
-    })
-    // Loading icons only once
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   return (
     <div className={'w-full h-full flex flex-col justify-center items-center'}>
-      <FullscreenLoading visible={!loaded} absolute />
-      {loaded && (
-        <>
-          <Unlocked
-            lessons={lessonsObj}
-            unlocked={unlockedLessons}
-            delay={delay}
-          />
-          {unlockedLessons.length > 0 && (
-            <Hr className={'w-full'} variant={hrVariant} />
-          )}
-          <Updated
-            lessons={lessonsObj}
-            updated={updatedLessons}
-            delay={delay}
-          />
-          <Button onClick={history.goBack} className={'mt-8 min-w-64'}>
-            Продолжить
-          </Button>
-        </>
+      <Unlocked unlocked={unlockedStages} delay={delay} />
+      {unlockedStages.length > 0 && (
+        <Hr className={'w-full'} variant={hrVariant} />
       )}
+      <Updated updated={updatedStages} delay={delay} />
+      <Button onClick={history.goBack} className={'mt-8 min-w-64'}>
+        Продолжить
+      </Button>
     </div>
   )
 }
 
 type UpdatedProps = {
-  lessons: Record<string, Api.User.LessonDescription>
-  updated: { id: string; new: number; old: number }[]
+  // lessons: Record<string, Api.User.LessonDescription>
+  updated: { id: string; new: number; icon: string; old: number }[]
   delay: number
 }
-function Updated({ lessons, updated, delay }: UpdatedProps) {
+function Updated({ /* lessons, */ updated, delay }: UpdatedProps) {
   const tween = useTween(updated.length > 0, 1000, delay)
+  const Icon = useIconsSet('numbers')
 
   return (
     <div className={'flex flex-wrap justify-center items-center'}>
       {updated.map((score, i) => {
-        if (!(score.id in lessons)) {
-          console.warn(`No description for updated lesson ${score.id}`)
-          return null
-        }
-
         return (
-          <Figure key={score.id} title={lessons[score.id].title}>
+          <Figure title={`Часть ${+score.id + 1}`} key={score.id}>
             <Bubble
               variant={((i % 4) + 1) as 1}
               progress={(score.old + (score.new - score.old) * tween) / 100}
-              icon={<DynamicIcon icon={lessons[score.id].icon} />}
+              icon={<Icon name={score.icon} />}
             />
           </Figure>
         )
@@ -100,12 +61,13 @@ function Updated({ lessons, updated, delay }: UpdatedProps) {
 }
 
 type UnlockedProps = {
-  lessons: Record<string, Api.User.LessonDescription>
-  unlocked: string[]
+  // lessons: Record<string, Api.User.LessonDescription>
+  unlocked: { icon: string; id: string }[]
   delay: number
 }
-function Unlocked({ lessons, unlocked, delay }: UnlockedProps) {
+function Unlocked({ unlocked, delay }: UnlockedProps) {
   const [disabled, setDisabled] = useState(true)
+  const Icon = useIconsSet('numbers')
 
   useEffect(() => {
     if (unlocked.length) {
@@ -118,20 +80,15 @@ function Unlocked({ lessons, unlocked, delay }: UnlockedProps) {
 
   return (
     <div className={'flex flex-wrap justify-center items-center'}>
-      {unlocked.map((id, i) => {
-        if (!(id in lessons)) {
-          console.warn(`No description for unlocked lesson ${id}`)
-          return null
-        }
-
+      {unlocked.map(({ id, icon }, i) => {
         return (
-          <Figure key={id} title={lessons[id].title}>
+          <Figure title={`Часть ${+id + 1}`} key={id}>
             <Bubble
               unlockTransition
               disabled={disabled}
               variant={((i % 4) + 1) as 1}
               progress={0}
-              icon={<DynamicIcon icon={lessons[id].icon} />}
+              icon={<Icon name={icon} />}
             />
           </Figure>
         )
@@ -141,14 +98,14 @@ function Unlocked({ lessons, unlocked, delay }: UnlockedProps) {
 }
 
 const Figure = ({
-  title,
   children,
+  title,
 }: {
-  title: string
   children?: ReactNode
+  title: string
 }) => (
   <div className={'flex flex-col items-center mx-1'}>
     <div>{children}</div>
-    <div className={'mt-2 w-20 truncate'}>{title}</div>
+    <div className={'mt-2 w-20 truncate text-center'}>{title}</div>
   </div>
 )

@@ -11,6 +11,7 @@ function authenticateAfterRequest<T extends Api.Auth.UserData>(
   fetch: () => Promise<Api.Success<T>>,
 ): Promise<Api.Success<T>> {
   return fetch().then((response) => {
+    console.log('Response got', response)
     StoreController.dispatch(authenticateSuccess(response.data))
     return response
   })

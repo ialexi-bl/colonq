@@ -13,7 +13,7 @@ export default function useSave(
   modified: boolean,
   value: unknown,
   save: () => unknown | Promise<unknown>,
-) {
+): void {
   const dispatch = useDispatch()
   const temp = useRef({ timer: null as null | number, force: () => {} })
 
@@ -55,7 +55,6 @@ export default function useSave(
   // Force save when leaving page
   useEffect(() => {
     return () => {
-      console.log('Forcing')
       if (temp.current.timer === null) return
       clearTimeout(temp.current.timer)
       temp.current.force()

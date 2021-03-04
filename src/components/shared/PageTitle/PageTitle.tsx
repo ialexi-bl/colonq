@@ -11,7 +11,6 @@ export type PageTitleProps = Childfree<HTMLProps.heading> & {
 
 const PageTitle = ({ icon, children, className, ...props }: PageTitleProps) => {
   const dispatch = useDispatch()
-
   return (
     <h1
       className={cn(className, 'py-2 px-4 text-4xl flex items-center my-6')}

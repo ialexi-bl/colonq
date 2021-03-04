@@ -47,22 +47,22 @@ declare namespace Api {
       hasSettings: boolean
     }
 
-    export type DetailedAppDescription = {
-      icon: string
-      title: string
-      lessons: LessonDescription[]
-      iconsSet: string
-      hasSettings: boolean
-    }
-    export type LessonDescription = {
-      id: string
-      icon: string
-      score: number
-      title: string
-      unlocked: boolean
-    }
+    // export type DetailedAppDescription = {
+    //   icon: string
+    //   title: string
+    //   lessons: LessonDescription[]
+    //   iconsSet: string
+    //   hasSettings: boolean
+    // }
+    // export type LessonDescription = {
+    //   id: string
+    //   icon: string
+    //   score: number
+    //   title: string
+    //   unlocked: boolean
+    // }
 
-    export type GetApp = DetailedAppDescription
+    // export type GetApp = DetailedAppDescription
     export type GetApps = { categories: CategoryDescription[] }
 
     export type PasswordUpdateOption = 'password' | 'vk' | 'google'
@@ -141,9 +141,9 @@ declare namespace Api {
     }
 
     type Submit = {
-      updatedLessons: { old: number; new: number; id: string }[]
-      unlockedLessons: string[]
-      lessons: User.LessonDescription[]
+      updatedStages: { old: number; new: number; icon: string; id: string }[]
+      unlockedStages: { icon: string; id: string }[]
+      // lessons: User.LessonDescription[]
     }
   }
 
@@ -151,12 +151,38 @@ declare namespace Api {
     export type Get = Setting[]
     export type Change = null
 
-    export type Setting = Toggle | ToggleList
+    export type Setting = Toggle | StagesControls
     export type Toggle = {
       id: string
       type: 'toggle'
       label: string
       value: boolean
+    }
+
+    export type StagesControls = {
+      id: string
+      type: 'stages'
+      title: string
+      items: Stage[]
+      description?: string
+    }
+    export type Stage = {
+      id: string
+      icon: string
+      label: string
+      unlocked: boolean
+      sets: StageSet[]
+    }
+    export type StageSet = {
+      id: string
+      icon: string
+      label: string
+      problems: StageProblem[]
+    }
+    export type StageProblem = {
+      id: string
+      label: string
+      enabled: boolean
     }
 
     export type ToggleList = {

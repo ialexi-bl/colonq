@@ -52,6 +52,11 @@ $placeholder-color: #888;
   }
 }
 
+.Input::-ms-reveal {
+  // Color has no effect on this button and it's black by default so inverting it
+  filter: invert(1);
+}
+
 .invalid {
   @include border(theme('colors.error.DEFAULT'));
 }

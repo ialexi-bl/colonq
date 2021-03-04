@@ -20,10 +20,11 @@ export default function useIsGuest(redirect = appsList()): boolean {
       status === 'authenticated' &&
       !location.state?.redirectedFromFailedAuth
     ) {
+      console.log('Replacing')
       dispatch(replace(redirect))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, redirect])
+  }, [dispatch, redirect, status])
 
   return status === 'unauthenticated' || status === 'error'
 }

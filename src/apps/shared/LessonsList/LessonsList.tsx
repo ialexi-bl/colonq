@@ -1,4 +1,4 @@
-import { Lesson } from 'store/user'
+// @ts-nocheck
 import { app as appRoute } from 'config/routes'
 import { push } from 'connected-react-router'
 import { useDispatch } from 'react-redux'
@@ -46,5 +46,3 @@ function LessonsList({ lessons, iconsSet, app: appName }: LessonsListProps) {
 }
 const detail = (lesson: Lesson) =>
   lesson.empty ? 'Нет заданий' : !lesson.unlocked ? 'Заблокировано' : ''
-
-export default withAuth(LessonsList)

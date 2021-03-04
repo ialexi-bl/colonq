@@ -1,4 +1,5 @@
-import { App, Lesson, loadApp } from 'store/user'
+// @ts-nocheck
+import { App } from 'store/user'
 import { AppState } from 'store/types'
 import { Elevation } from 'config/view'
 import { Fal } from 'components/shared/Fab'
@@ -9,7 +10,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { useElevationClassnames } from 'hooks/use-elevation'
 import Button, { LinkButton } from 'components/shared/Button'
-import LessonsList from 'apps/shared/LessonsList'
 import LoadingError from 'components/shared/LoadingError'
 import PageTitle from 'components/shared/PageTitle'
 import Settings from 'components/icons/Settings'
@@ -22,7 +22,7 @@ export type WordsLessonsListProps = RouteComponentProps & {
   app: string
 }
 
-export default function WordsLessonsList({
+function WordsLessonsList({
   app: appName,
   visible,
   setProgress,
@@ -84,11 +84,11 @@ export default function WordsLessonsList({
       <div className={'flex pb-72'}>
         <section className={'flex-1 mx-auto max-w-xl'}>
           <p className={'px-4 mb-4'}>Нажми на урок, чтобы начать практику</p>
-          <LessonsList
+          {/* <LessonsList
             app={appName}
             lessons={app.lessons as Lesson[]}
             iconsSet={app.iconsSet}
-          />
+          /> */}
         </section>
         <section
           className={'w-1/3 hidden sticky top-0 md:flex flex-col items-center'}

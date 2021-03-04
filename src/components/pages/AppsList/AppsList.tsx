@@ -1,6 +1,6 @@
+import { App, Category, loadApps } from 'store/user'
 import { AppState } from 'store/types'
 import { CUTE_FACE, Elevation } from 'config/view'
-import { Category, PlainApp, loadApps } from 'store/user'
 import { Helmet } from 'react-helmet'
 import { RouteComponentProps, app as appRoute, appsChoice } from 'config/routes'
 import { ScrollablePage } from 'components/shared/Page'
@@ -153,7 +153,7 @@ const AppItem = ({
   expanded,
   toggleVisible,
 }: {
-  app: PlainApp
+  app: App
   expanded: boolean
   toggleVisible: (id: string) => void
 }) => {
@@ -173,11 +173,6 @@ const AppItem = ({
           label: 'Начать занятие',
           action: () => dispatch(push(appRoute(app.id, 'practice'))),
         } as ActionDescription,
-        {
-          id: 1,
-          label: 'Список уроков',
-          action: () => dispatch(push(appRoute(app.id, 'stats'))),
-        },
         app.hasSettings && {
           id: 2,
           label: 'Настройки',

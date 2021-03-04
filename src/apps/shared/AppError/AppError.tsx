@@ -47,8 +47,8 @@ export default function AppError({
       return (
         <LoadingError
           className={className}
-          title={'Этот урок пока заблокирован'}
-          detail={'Заверши предыдущие уроки, чтобы получить к нему доступ'}
+          title={'Эта часть пока заблокирована'}
+          detail={'Заверши предыдущие части, чтобы получить к ней доступ'}
           actions={[
             <LinkButton
               className={'min-w-64'}

@@ -1,19 +1,13 @@
 import { Api } from 'core/api/config'
-import { Apps, EmptyUser, Lesson, UserState } from './types'
+import { Apps, EmptyUser, UserState } from './types'
 import {
-  LoadAppSuccessPayload,
-  UpdateLessonsPayload,
   authenticateError,
   authenticateStart,
   authenticateSuccess,
-  loadApp,
-  loadAppError,
-  loadAppSuccess,
   loadApps,
   loadAppsError,
   loadAppsSuccess,
   unauthenticate,
-  updateLessons,
 } from './actions'
 import { createReducer } from 'store/util'
 
@@ -30,8 +24,6 @@ export const initialState: EmptyUser = {
   apps: {},
 }
 
-const getScore = (lessons: Lesson[]) =>
-  lessons.reduce((a, b) => a + b.score, 0) / lessons.length
 export default createReducer<UserState>(
   {
     [String(authenticateStart)]: (state): UserState => ({
@@ -69,20 +61,7 @@ export default createReducer<UserState>(
       categories.forEach((category) => {
         category.apps.forEach((app) => {
           appsList.push(app.id)
-
-          const previous = state.apps[app.id]
-          apps[app.id] =
-            previous?.status === 'loaded'
-              ? {
-                  ...app,
-                  status: 'loaded',
-                  lessons: previous.lessons,
-                }
-              : {
-                  ...app,
-                  status: 'only-info',
-                  lessons: [],
-                }
+          apps[app.id] = app
         })
       })
 
@@ -97,75 +76,6 @@ export default createReducer<UserState>(
     [String(loadAppsError)]: (state): UserState => ({
       ...state,
       appsStatus: 'error',
-    }),
-
-    [String(loadApp)]: (state, app: string): UserState => ({
-      ...state,
-      apps: {
-        ...state.apps,
-        [app]: {
-          ...state.apps[app],
-          status: 'loading',
-        },
-      },
-    }),
-    [String(loadAppSuccess)]: (
-      state,
-      {
-        app,
-        title,
-        icon,
-        lessons,
-        iconsSet,
-        hasSettings,
-      }: LoadAppSuccessPayload,
-    ): UserState => ({
-      ...state,
-      apps: {
-        ...state.apps,
-        [app]: {
-          id: app,
-          score: getScore(lessons),
-          status: 'loaded',
-          iconsSet,
-          hasSettings,
-          lessons,
-          title,
-          icon,
-        },
-      },
-    }),
-    [String(updateLessons)]: (
-      state,
-      { app: appName, lessons }: UpdateLessonsPayload,
-    ) => {
-      const app = state.apps[appName]
-      if (app?.status !== 'loaded') {
-        // If app hasn't been loaded, then loading will be requested later
-        // by components that will need it
-        return state
-      }
-      return {
-        ...state,
-        apps: {
-          ...state.apps,
-          [appName]: {
-            ...app,
-            score: getScore(lessons),
-            lessons,
-          },
-        },
-      }
-    },
-    [String(loadAppError)]: (state, app: string): UserState => ({
-      ...state,
-      apps: {
-        ...state.apps,
-        [app]: {
-          ...state.apps[app],
-          status: 'error',
-        },
-      },
     }),
   },
   initialState,

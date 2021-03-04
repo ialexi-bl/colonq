@@ -6,11 +6,11 @@ import { notifyErrorObject } from 'store/view'
 import { useDispatch } from 'react-redux'
 import PageTitle from 'components/shared/PageTitle'
 import SettingsService from 'core/api/services/settings'
-import ToggleList from 'components/shared/ToggleList'
+import StagesEditor from 'components/shared/StagesEditor'
 import useAppTitle from 'hooks/use-app-title'
 import useSave from 'hooks/use-save'
 import useSettingsControls, {
-  ToggleListDispatch,
+  StagesControlsDispatch,
 } from './use-settings-controls'
 
 export type SettingsViewProps = {
@@ -36,19 +36,19 @@ export default function Settings({
   })
 
   return (
-    <div className={'container'}>
-      <PageTitle>Найтройки приложения {title}</PageTitle>
+    <div className={'container pb-72'}>
+      <PageTitle>Настройки приложения {title}</PageTitle>
       <div className={'flex'}>
         <section className={'flex-1 mx-auto max-w-2xl'}>
           <div className={'px-4'}>
             {settings.map((setting) => {
               switch (setting.type) {
-                case 'list':
+                case 'stages':
                   return (
-                    <ListSetting
+                    <StagesControls
                       key={setting.id}
-                      list={setting.data}
                       dispatch={setting.dispatch}
+                      stagesControls={setting.data}
                     />
                   )
                 default:
@@ -57,19 +57,9 @@ export default function Settings({
             })}
           </div>
         </section>
-        <section
-          className={'w-1/3 sticky top-0 hidden md:flex flex-col items-center'}
-        >
+        <section className={'w-1/3 top-0 hidden md:flex flex-col items-center'}>
           <LinkButton to={appRoute(app, 'practice')} className={'min-w-72'}>
             Начать занятие
-          </LinkButton>
-          <LinkButton
-            to={appRoute(app, 'stats')}
-            className={'min-w-72'}
-            variant={2}
-            secondary
-          >
-            Список уроков
           </LinkButton>
         </section>
       </div>
@@ -77,20 +67,22 @@ export default function Settings({
   )
 }
 
-function ListSetting({
-  list,
+function StagesControls({
+  stagesControls,
   dispatch,
 }: {
-  list: Api.Settings.ToggleList
-  dispatch: ToggleListDispatch
+  stagesControls: Api.Settings.StagesControls
+  dispatch: StagesControlsDispatch
 }) {
   return (
     <div className={'px-2'}>
-      <h2 className={'text-2xl mb-4'}>{list.title}</h2>
-      {list.description && <p className={'mb-6'}>{list.description}</p>}
+      <h2 className={'text-3xl mb-4'}>{stagesControls.title}</h2>
+      {stagesControls.description && (
+        <p className={'mb-6'}>{stagesControls.description}</p>
+      )}
 
       <div className={'max-w-xl mx-auto'}>
-        <ToggleList onToggle={dispatch} data={list.items} />
+        <StagesEditor onToggle={dispatch} stages={stagesControls.items} />
       </div>
     </div>
   )

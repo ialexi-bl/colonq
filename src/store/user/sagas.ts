@@ -8,8 +8,6 @@ import {
   authenticateError,
   authenticateStart,
   authenticateSuccess,
-  loadAppError,
-  loadAppSuccess,
   loadAppsError,
   loadAppsSuccess,
   unauthenticate,
@@ -76,42 +74,10 @@ function* loadApps() {
   }
 }
 
-function* loadApp(app: string) {
-  try {
-    const response: ApiResponse<Api.User.GetApp> = yield call(
-      AppsService.loadApp,
-      app,
-    )
-    yield put(loadAppSuccess({ ...response.data, app }))
-  } catch (e) {
-    console.error(e)
-    yield put(loadAppError(app))
-    if (!(e instanceof ColonqError)) {
-      yield put(notifyErrorObject(e) as any)
-    }
-  }
-}
-
 // Watchers
 
 function* watchLoadApps() {
   yield takeLeading(UserAction.LOAD_APPS_REQUEST, loadApps)
-}
-
-function* watchLoadApp() {
-  const loading: Record<string, true> = {}
-
-  while (true) {
-    const { payload: app } = yield take(UserAction.LOAD_APP_REQUEST)
-
-    if (!(app in loading)) {
-      loading[app] = true
-      yield fork(function* () {
-        yield call(loadApp, app)
-        delete loading[app]
-      })
-    }
-  }
 }
 
 export default function* userSaga(): Generator<unknown, any, any> {
@@ -134,7 +100,7 @@ export default function* userSaga(): Generator<unknown, any, any> {
       continue
     }
 
-    const tasks: Task[] = yield all([fork(watchLoadApps), fork(watchLoadApp)])
+    const tasks: Task[] = yield all([fork(watchLoadApps)])
 
     // Executing actions that may have started while authentication way being performed
     yield takeEvery(channel, function* (a) {

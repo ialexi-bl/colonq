@@ -1,5 +1,4 @@
 import { Api } from 'core/api/config'
-import { Lesson } from './types'
 import { createAction } from 'store/util'
 
 export enum UserAction {
@@ -25,19 +24,6 @@ export enum UserAction {
   REQUEST_AUTH_METHOD = 'USER/REQUEST_AUTH_METHOD',
 }
 
-export type LoadAppSuccessPayload = {
-  app: string
-  icon: string
-  title: string
-  lessons: Lesson[]
-  iconsSet: string
-  hasSettings: boolean
-}
-export type UpdateLessonsPayload = {
-  app: string
-  lessons: Lesson[]
-}
-
 export const authenticate = createAction(UserAction.AUTHENTICATE_REQUEST)
 export const authenticateStart = createAction(UserAction.AUTHENTICATE_START)
 export const authenticateError = createAction(UserAction.AUTHENTICATE_ERROR)
@@ -50,13 +36,4 @@ export const loadApps = createAction(UserAction.LOAD_APPS_REQUEST)
 export const loadAppsError = createAction(UserAction.LOAD_APPS_ERROR)
 export const loadAppsSuccess = createAction<Api.User.CategoryDescription[]>(
   UserAction.LOAD_APPS_SUCCESS,
-)
-
-export const loadApp = createAction<string>(UserAction.LOAD_APP_REQUEST)
-export const loadAppError = createAction<string>(UserAction.LOAD_APP_ERROR)
-export const loadAppSuccess = createAction<LoadAppSuccessPayload>(
-  UserAction.LOAD_APP_SUCCESS,
-)
-export const updateLessons = createAction<UpdateLessonsPayload>(
-  UserAction.UPDATE_LESSONS,
 )

@@ -78,7 +78,9 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
-    "cosmos": "react-cosmos"
+    "cosmos": "react-cosmos",
+    "deploy": "./deploy.sh",
+    "deploy-only": "./deploy.sh --deploy-only"
   },
   "eslintConfig": {
     "extends": "react-app"
