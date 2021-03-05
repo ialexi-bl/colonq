@@ -1,4 +1,5 @@
 import { memo, useEffect, useState } from 'react'
+import NotExists from 'components/icons/NotExists'
 import SqrtIcon from 'components/icons/Sqrt'
 import TrigAnswer, { Expr } from './TrigAnswer'
 import cn from 'clsx'
@@ -8,7 +9,16 @@ export type TrigExpressionProps = {
   value: TrigAnswer
 }
 export default function TrigExpression({ active, value }: TrigExpressionProps) {
-  const { fraction, numerator, denominator } = value.toObject()
+  const {
+    undefined: isUndef,
+    fraction,
+    numerator,
+    denominator,
+  } = value.toObject()
+  if (!active && isUndef) {
+    return <NotExists />
+  }
+
   return (
     <Fraction
       numerator={numerator}
@@ -55,10 +65,10 @@ function Expression({ expr, active }: { expr: Expr; active?: boolean }) {
       {expr.map((x) =>
         x.type === 'sqrt' ? (
           <Sqrt key={x.type} cursor={x.cursor} value={x.value} />
-        ) : x.type === 'coef' ? (
-          <Value key={x.type} value={x.value} />
-        ) : (
+        ) : x.type === 'cursor' ? (
           active && <Cursor key={x.type} />
+        ) : (
+          <Value key={x.type} value={x.type === 'coef' ? x.value : '-'} />
         ),
       )}
     </div>
@@ -74,7 +84,7 @@ const Sqrt = memo(function Sqrt({
   active?: boolean
 }) {
   return (
-    <SqrtIcon className={'inline-block h-12 text-6xl'}>
+    <SqrtIcon className={'inline-block h-12'}>
       {!active && cursor === 'start' && <Cursor large />}
       <span>{value}</span>
       {!active && cursor === 'end' && <Cursor large />}

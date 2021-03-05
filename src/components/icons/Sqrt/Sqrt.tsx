@@ -17,10 +17,13 @@ export default function SqrtIcon({ children, ...props }: SqrtIconProps) {
         x={'35'}
         y={'15'}
         width={'50'}
-        height={'69'}
+        height={'80'}
+        fontSize={'65'}
         className={'text-center'}
+        style={{ lineHeight: 1 }}
       >
         {children}
+        <span></span>
       </foreignObject>
     </svg>
   )

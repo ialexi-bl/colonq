@@ -86,6 +86,9 @@ module.exports = {
       flex: {
         2: '2 2 0%',
       },
+      fontFamily: {
+        display: ['Neucha', 'Brush Script MT', 'Ubuntu Mono', 'cursive'],
+      },
     },
   },
   variants: {

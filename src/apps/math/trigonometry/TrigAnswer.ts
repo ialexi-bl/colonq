@@ -1,6 +1,12 @@
 import { TrigActiveKeys } from './TrigKeyboard'
 
-type CursorPosition = 'start' | 'coef' | 'rootStart' | 'rootEnd' | 'end'
+type CursorPosition =
+  | 'start'
+  | 'minus'
+  | 'coef'
+  | 'rootStart'
+  | 'rootEnd'
+  | 'end'
 export type Coef = {
   type: 'coef'
   value: number | string
@@ -10,20 +16,25 @@ export type Sqrt = {
   value: number | string | null
   cursor: false | 'start' | 'end'
 }
+export type Minus = {
+  type: 'minus'
+}
 export type Csr = {
   type: 'cursor'
 }
-export type Expr = (Coef | Sqrt | Csr)[]
+export type Expr = (Coef | Minus | Sqrt | Csr)[]
 export type Answer = {
   fraction: boolean
   numerator: Expr
   denominator: Expr
+  undefined: boolean
 }
 
 class Expression {
   public coef: number | null = null
   public rootValue: number | null = null
   public rootVisible = false
+  public negative = false
 
   valid() {
     return this.rootVisible ? this.rootValue !== null : this.coef !== null
@@ -48,49 +59,46 @@ class Expression {
   }
 
   leftPosition(position: CursorPosition): CursorPosition {
-    if (position === 'end') {
-      if (this.rootVisible) {
-        return this.rootValue === null ? 'rootStart' : 'rootEnd'
-      }
-      if (this.coef !== null) {
-        return 'coef'
-      }
-      return 'start'
+    /* eslint-disable no-fallthrough */
+    switch (position) {
+      case 'end':
+        if (this.rootVisible && this.rootValue !== null) return 'rootEnd'
+      case 'rootEnd':
+        if (this.rootVisible && this.rootValue === null) return 'rootStart'
+      case 'rootStart':
+        if (this.coef !== null) return 'coef'
+      case 'coef':
+        if (this.negative) return 'minus'
+      default:
+        return 'start'
     }
-    if (position === 'rootEnd') {
-      return this.rootValue !== null
-        ? 'rootStart'
-        : this.coef === null
-        ? 'start'
-        : 'coef'
-    }
-    if (position === 'rootStart') {
-      return this.coef === null ? 'start' : 'coef'
-    }
-    return 'start'
+    /* eslint-enable no-fallthrough */
   }
 
   rightPosition(position: CursorPosition): CursorPosition {
-    if (position === 'start') {
-      if (this.coef !== null) return 'coef'
-      if (this.rootVisible) return 'rootStart'
-      return 'start'
+    /* eslint-disable no-fallthrough */
+    switch (position) {
+      case 'start':
+        if (this.negative) return 'minus'
+      case 'minus':
+        if (this.coef !== null) return 'coef'
+      case 'coef':
+        if (this.rootVisible) return 'rootStart'
+      case 'rootStart':
+        if (this.rootValue !== null) return 'rootEnd'
+      default:
+        return 'end'
     }
-    if (position === 'coef') {
-      if (this.rootVisible) return 'rootStart'
-      return 'coef'
-    }
-    if (position === 'rootStart') {
-      if (this.rootValue !== null) return 'rootEnd'
-      return 'end'
-    }
-    if (position === 'rootEnd') return 'end'
-    return 'end'
+    /* eslint-enable no-fallthrough */
   }
 
   toArray(cursor?: null | CursorPosition): Expr {
     const result: Expr = []
     if (cursor === 'start') result.push({ type: 'cursor' })
+    if (this.negative) {
+      result.push({ type: 'minus' })
+      if (cursor === 'minus') result.push({ type: 'cursor' })
+    }
     if (this.coef !== null) {
       result.push({
         type: 'coef',
@@ -130,16 +138,18 @@ class Cursor {
 }
 
 export default class TrigAnswer {
+  public static UNDEFINED = 'Неопределён'
+
   public cursor = new Cursor()
   public isFraction = false
 
   public denominator = new Expression()
   public numerator = new Expression()
 
-  public static fromString(str: string) {
+  public static fromString(str: string): TrigAnswer {
     const answer = new TrigAnswer()
 
-    if (str === 'Неопределён') {
+    if (str === TrigAnswer.UNDEFINED) {
       answer.isFraction = true
       answer.numerator.coef = 1
       answer.denominator.coef = 0
@@ -155,21 +165,23 @@ export default class TrigAnswer {
     return answer
   }
 
-  public allowedKeys() {
+  public allowedKeys(): TrigActiveKeys {
     const keys: TrigActiveKeys = {
       sqrt: this.canSqrt(),
       frac: this.canFrac(),
       left: this.canLeft(),
       right: this.canRight(),
+      minus: this.canMinus(),
       submit: this.canSubmit(),
       delete: this.canDelete(),
+      undefined: true,
     }
 
     // numbers
     const { location, position } = this.cursor
     const expr = this[location]
     if (
-      (position === 'start' && expr.coef === null) ||
+      ((position === 'start' || position === 'minus') && expr.coef === null) ||
       (expr.rootVisible && position === 'rootStart' && expr.rootValue === null)
     ) {
       keys[0] = keys[1] = keys[2] = keys[3] = true
@@ -178,44 +190,51 @@ export default class TrigAnswer {
     return keys
   }
 
-  public 0() {
+  public 0(): void {
     return this.number(0)
   }
 
-  public 1() {
+  public 1(): void {
     return this.number(1)
   }
 
-  public 2() {
+  public 2(): void {
     return this.number(2)
   }
 
-  public 3() {
+  public 3(): void {
     return this.number(3)
   }
 
-  public sqrt() {
+  public minus(): void {
+    if (this.canMinus()) {
+      this[this.cursor.location].negative = true
+      this.cursor.position = 'minus'
+    }
+  }
+
+  public sqrt(): void {
     if (this.canSqrt()) {
       this[this.cursor.location].rootVisible = true
       this.cursor.position = 'rootStart'
     }
   }
 
-  public up() {
+  public up(): void {
     if (this.cursor.location === 'denominator') {
       this.cursor.location = 'numerator'
       this.cursor.position = this.numerator.getEndPosition()
     }
   }
 
-  public down() {
+  public down(): void {
     if (this.isFraction && this.cursor.location === 'numerator') {
       this.cursor.location = 'denominator'
       this.cursor.position = 'start'
     }
   }
 
-  public right() {
+  public right(): void {
     const { location, position } = this.cursor
     if (!this.canRight()) return
 
@@ -229,7 +248,7 @@ export default class TrigAnswer {
     this.cursor.position = expr.rightPosition(position)
   }
 
-  public left() {
+  public left(): void {
     const { location, position } = this.cursor
     if (!this.canLeft()) return
 
@@ -243,13 +262,13 @@ export default class TrigAnswer {
     this.cursor.position = expr.leftPosition(position)
   }
 
-  public frac() {
+  public frac(): void {
     this.isFraction = true
     this.cursor.location = 'denominator'
     this.cursor.position = 'start'
   }
 
-  public delete() {
+  public delete(): void {
     const { location, position } = this.cursor
     const expr = this[location]
 
@@ -260,13 +279,16 @@ export default class TrigAnswer {
         this.cursor.location = 'numerator'
         this.cursor.position = this.numerator.getEndPosition()
       }
-    } else if (position === 'coef') {
-      expr.coef = null
+    } else if (position === 'minus') {
       this.cursor.position = 'start'
+      expr.negative = false
+    } else if (position === 'coef') {
+      this.cursor.position = expr.leftPosition(position)
+      expr.coef = null
     } else if (position === 'rootStart') {
       if (expr.rootValue === null) {
+        this.cursor.position = expr.leftPosition(position)
         expr.rootVisible = false
-        this.cursor.position = expr.coef === null ? 'start' : 'coef'
       } else {
         this.left()
       }
@@ -278,27 +300,30 @@ export default class TrigAnswer {
 
   public toObject(): Answer {
     const { location, position } = this.cursor
-
     return {
+      undefined:
+        this.denominator.coef === 0 || this.denominator.rootValue === 0,
       fraction: this.isFraction,
       numerator: this.numerator.toArray(location[0] === 'n' ? position : null),
       denominator: this.denominator.toArray(
         location[0] === 'd' ? position : null,
-      ),
+    ),
     }
   }
 
-  public toString() {
+  public toString(): string {
     if (!this.isFraction) {
       return this.exprToString(this.numerator.coef, this.numerator.rootValue)
     }
 
+    // @ts-ignore
+    const negative = this.numerator.negative ^ this.denominator.negative
     let nCoef = this.numerator.coef ?? 1
     let nRoot = this.numerator.rootValue ?? 1
     let dCoef = this.denominator.coef ?? 1
     let dRoot = this.denominator.rootValue ?? 1
 
-    if (dCoef === 0 || dRoot === 0) return 'Неопределён'
+    if (dCoef === 0 || dRoot === 0) return TrigAnswer.UNDEFINED
     if (nCoef === 0 || nRoot === 0) return '0'
 
     if (dRoot > 1) {
@@ -321,7 +346,10 @@ export default class TrigAnswer {
       dRoot /= d
     }
 
-    let result = this.exprToString(nCoef, nRoot)
+    let result = ''
+    if (negative) result += '-'
+    result += this.exprToString(nCoef, nRoot)
+
     if (dCoef !== 1) {
       result += `/${dCoef}`
     }
@@ -346,11 +374,11 @@ export default class TrigAnswer {
     return this.gcd(b, a % b)
   }
 
-  private number(number: 0 | 1 | 2 | 3) {
+  private number(number: 0 | 1 | 2 | 3): void {
     const { location, position } = this.cursor
     const expr = this[location]
 
-    if (position === 'start' && expr.coef === null) {
+    if ((position === 'start' || position === 'minus') && expr.coef === null) {
       expr.coef = number
       this.cursor.position = 'coef'
     } else if (position === 'rootStart' && expr.rootValue === null) {
@@ -362,6 +390,12 @@ export default class TrigAnswer {
   private valid() {
     return (
       this.numerator.valid() && (!this.isFraction || this.denominator.valid())
+    )
+  }
+
+  private canMinus() {
+    return (
+      this.cursor.position === 'start' && !this[this.cursor.location].negative
     )
   }
 

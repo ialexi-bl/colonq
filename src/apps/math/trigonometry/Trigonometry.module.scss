@@ -4,17 +4,20 @@
   }
   .TrigBtn::after {
     color: theme('textColor.disabled.100');
-    font-size: theme('fontSize.xs');
+    font-size: theme('fontSize.sm');
     text-transform: lowercase;
     position: absolute;
     bottom: 20%;
     right: 20%;
   }
 
+  .TrigZero::after {
+    content: 'ё';
+  }
   .TrigSqrt::after {
-    content: 'q';
+    content: 'e';
   }
   .TrigFrac::after {
-    content: 'w';
+    content: '/';
   }
 }

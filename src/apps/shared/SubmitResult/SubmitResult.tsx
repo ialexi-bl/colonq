@@ -1,19 +1,14 @@
 import { Api } from 'core/api/config'
 import AchievementsDisplay from '../AchievementsDisplay'
-import cn from 'clsx'
+import Popup from 'components/shared/Popup'
 
 export type SubmitResultProps = {
   response: Api.Session.Submit | null
 }
 export default function SubmitResult({ response }: SubmitResultProps) {
   return (
-    <div
-      className={cn(
-        'absolute inset-0 duration-500 transform bg-secondary-900',
-        !response && 'translate-y-full',
-      )}
-    >
+    <Popup shown={response}>
       {response && <AchievementsDisplay delay={500} response={response} />}
-    </div>
+    </Popup>
   )
 }

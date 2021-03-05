@@ -1,14 +1,21 @@
 import { TwoLatestDisplay } from 'components/shared/TwoLatestDisplay'
 import { useEffect } from 'react'
 import ProgressBar from 'apps/shared/ProgressBar'
-import SessionControls, { SessionExit } from 'apps/shared/SessionControls'
+import SessionControls, {
+  SessionExit,
+  SessionHelp,
+  SessionHide,
+} from 'apps/shared/SessionControls'
 import SubmitResult from 'apps/shared/SubmitResult'
 import TrigAnswer from './TrigAnswer'
+import TrigHelp from './TrigHelp'
 import TrigKeyboard, { TrigKey } from './TrigKeyboard'
 import TrigView, { TrigProblem } from './TrigView'
+import isKeyboardConnected from 'util/keyboard-connected'
 import useForceUpdate from 'hooks/use-force-update'
 import useHideNavigation from 'hooks/use-hide-navigation'
 import useSubmitAnswers from 'apps/hooks/use-submit-answers'
+import useToggle from 'hooks/use-toggle'
 import useTwoLatestProblemControls from 'apps/hooks/use-two-latest-problem-controls'
 
 export type TrigProblemRaw = {
@@ -21,34 +28,44 @@ export type TrigSessionProps = {
 }
 
 const methodsBindings: Record<string, TrigKey | 'down' | 'up'> = {
-  digit0: '0',
-  digit1: '1',
-  digit2: '2',
-  digit3: '3',
-  keyq: 'sqrt',
-  keyw: 'frac',
-  keye: 'delete',
-  enter: 'submit',
-  space: 'submit',
-  slash: 'frac',
-  period: 'sqrt',
-  arrowup: 'up',
-  backquote: '0',
-  arrowdown: 'down',
-  arrowleft: 'left',
-  backspace: 'delete',
-  arrowright: 'right',
+  Digit0: '0',
+  Digit1: '1',
+  Digit2: '2',
+  Digit3: '3',
+  KeyQ: 'sqrt',
+  KeyS: 'sqrt',
+  KeyV: 'sqrt',
+  KeyE: 'sqrt',
+  KeyT: 'sqrt',
+  KeyR: 'sqrt',
+  KeyX: 'sqrt',
+  KeyW: 'frac',
+  KeyU: 'undefined',
+  Minus: 'minus',
+  Enter: 'submit',
+  Space: 'submit',
+  Slash: 'frac',
+  Period: 'sqrt',
+  ArrowUp: 'up',
+  Backquote: '0',
+  ArrowDown: 'down',
+  ArrowLeft: 'left',
+  Backspace: 'delete',
+  Backslash: 'undefined',
+  ArrowRight: 'right',
 }
 export default function TrigSession({ problems }: TrigSessionProps) {
   const forceUpdate = useForceUpdate()
+  const [helpShown, toggleHelp] = useToggle(false)
   const {
     next,
     done,
+    hide,
     current,
     answers,
+    progress,
     previous,
     previous2,
-    progress,
   } = useTwoLatestProblemControls<TrigProblem, string>(
     () => problems.map<TrigProblem>((x) => ({ ...x, value: new TrigAnswer() })),
     (x, y) => x.answer === y,
@@ -58,14 +75,29 @@ export default function TrigSession({ problems }: TrigSessionProps) {
 
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
-      if (e.repeat || !current) return
-      const method = methodsBindings[e.code.toLowerCase()]
+      if (
+        !(e.code in methodsBindings) ||
+        e.repeat ||
+        // Combinations that include control keys are ignored
+        e.altKey ||
+        e.ctrlKey ||
+        e.metaKey ||
+        e.shiftKey ||
+        !current
+      ) {
+        return
+      }
+      const method = methodsBindings[e.code]
 
       if (method === 'submit') {
         if (current.data.value.allowedKeys().submit) {
           next(current.data.value.toString())
         }
-      } else if (method) {
+      } else if (method === 'undefined') {
+        if (current)
+          current.data.value = TrigAnswer.fromString(TrigAnswer.UNDEFINED)
+        next(TrigAnswer.UNDEFINED)
+      } else {
         current.data.value[method]()
         forceUpdate()
       }
@@ -96,6 +128,10 @@ export default function TrigSession({ problems }: TrigSessionProps) {
         onKeyPress={(key) => {
           if (key === 'submit') {
             if (current) next(current.data.value.toString())
+          } else if (key === 'undefined') {
+            if (current)
+              current.data.value = TrigAnswer.fromString(TrigAnswer.UNDEFINED)
+            next(TrigAnswer.UNDEFINED)
           } else {
             current?.data.value[key]()
             forceUpdate()
@@ -104,7 +140,13 @@ export default function TrigSession({ problems }: TrigSessionProps) {
       />
       <SessionControls>
         <SessionExit />
+        <SessionHide hide={hide} />
+        {isKeyboardConnected() && <SessionHelp onClick={toggleHelp} />}
       </SessionControls>
+
+      {isKeyboardConnected() && (
+        <TrigHelp close={toggleHelp} shown={helpShown} />
+      )}
       <SubmitResult response={submitResponse} />
     </div>
   )
